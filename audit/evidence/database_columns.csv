@@ -1,0 +1,1717 @@
+table,column,definition,nullable,default
+f_transporteslg,idpagosdetalle,int NULL DEFAULT NULL,True,True
+f_transporteslg,idcasos,int NULL DEFAULT NULL,True,True
+f_transporteslg,idciudad,int NULL DEFAULT NULL,True,True
+f_transporteslg,carpeta,int NULL DEFAULT NULL,True,True
+f_transporteslg,idfacturaplanilla,int NULL DEFAULT NULL,True,True
+f_transporteslg,descripcion,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+f_transporteslg,monto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+f_transporteslg,nro,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+log_ovp,id,int NOT NULL AUTO_INCREMENT,False,False
+log_ovp,TABLA,varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,True,True
+log_ovp,FECHA,datetime NULL DEFAULT NULL,True,True
+log_ovp,NOMBRE,varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,True,True
+log_ovp,TEXTO,text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,True,False
+log_ovp,TIPO,varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,True,True
+log_ovp,IP_USUARIO,varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,False,False
+log_ovp,PC_USUARIO,varchar(150) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,False,False
+log_ovp,ID_USUARIO,int NOT NULL,False,False
+log_ovp,USERNAME,varchar(150) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,False,False
+log_ovp,FILENAME,varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,False,False
+log_ovp,ACCION,varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,False,False
+log_ovp,JSON,text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,True,False
+log_ovp,JSONOVP,text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,True,False
+log_ovp,created_at,datetime NOT NULL,False,False
+log_ovp,updated_at,datetime NOT NULL,False,False
+pbi_facturacion,my_row_id,bigint UNSIGNED NOT NULL AUTO_INCREMENT,False,False
+pbi_facturacion,idfactura,int NOT NULL DEFAULT 0,False,True
+pbi_facturacion,cliente,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_facturacion,fecha,date NULL DEFAULT NULL,True,True
+pbi_facturacion,monto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+pbi_facturacion,nrofactura,int NULL DEFAULT NULL,True,True
+pbi_facturacion,estadofactura,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,my_row_id,bigint UNSIGNED NOT NULL AUTO_INCREMENT,False,False
+pbi_ingresos,idingresodetalle,int NULL DEFAULT 0,True,True
+pbi_ingresos,idingreso,int NULL DEFAULT NULL,True,True
+pbi_ingresos,cliente,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,numeroingreso,varchar(23) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,fechaingreso,datetime NULL DEFAULT NULL,True,True
+pbi_ingresos,placa,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,contenedor,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,idtipoingreso,int NULL DEFAULT NULL,True,True
+pbi_ingresos,tipoingreso,varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+pbi_ingresos,precinto,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,idtipodescarga,int NULL DEFAULT NULL,True,True
+pbi_ingresos,tipodescarga,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+pbi_ingresos,idtipocamion,int NULL DEFAULT NULL,True,True
+pbi_ingresos,tipocamion,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,idtipocontenedor,int NULL DEFAULT NULL,True,True
+pbi_ingresos,tipocontenedor,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,idtipoproducto,int NULL DEFAULT NULL,True,True
+pbi_ingresos,tipoproducto,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+pbi_ingresos,piezas_manifestadas,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,peso_total,"decimal(13, 2) NULL DEFAULT NULL",True,True
+pbi_ingresos,proveedor,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,no_contrato,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,delivery_batch,varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,rubro_producto,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,project,varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,invoice,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,dui,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,cantidad_pallet,int NULL DEFAULT NULL,True,True
+pbi_ingresos,cantidad_cajas,int NULL DEFAULT NULL,True,True
+pbi_ingresos,hora_inicio,time NULL DEFAULT NULL,True,True
+pbi_ingresos,hora_fin,time NULL DEFAULT NULL,True,True
+pbi_ingresos,cantidad_estibadores,int NULL DEFAULT NULL,True,True
+pbi_ingresos,nota_adicional,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+pbi_ingresos,idusuario_recibido,int NULL DEFAULT NULL,True,True
+pbi_ingresos,usuario_recibido,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,fechasistema,varchar(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,nombre_entrega,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,ci_entrega,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,empresa_entrega,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,codigo,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,serie,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,descripcion,varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,centro_distribucion,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,sustanciascontroladas,bigint NOT NULL DEFAULT 0,False,True
+pbi_ingresos,categoria,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,cantidad,"decimal(13, 2) NULL DEFAULT NULL",True,True
+pbi_ingresos,idembalaje,int NULL DEFAULT NULL,True,True
+pbi_ingresos,codigoembalaje,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,lote,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,costo_un,"decimal(13, 2) NULL DEFAULT NULL",True,True
+pbi_ingresos,cantidad_no_conf,"decimal(13, 2) NULL DEFAULT NULL",True,True
+pbi_ingresos,no_conf,varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+pbi_ingresos,merma,varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+pbi_ingresos,fechaproduccion,varchar(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,fechavencimiento,varchar(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,relacion_caja,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,volumen,"decimal(13, 2) NULL DEFAULT NULL",True,True
+pbi_ingresos,bultos,"decimal(13, 3) NULL DEFAULT NULL",True,True
+pbi_ingresos,peso,"decimal(13, 2) NULL DEFAULT NULL",True,True
+pbi_ingresos,temperatura,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,observaciones,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+pbi_ingresos,ubicacionalmacen,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,codigoembalaje_salida,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_ingresos,factor_conversion,"decimal(13, 2) NOT NULL DEFAULT 0.00",False,True
+pbi_ingresos,fecha_cierre_transito,datetime NULL DEFAULT NULL,True,True
+pbi_ingresos,fecha_emision_parte,datetime NULL DEFAULT NULL,True,True
+pbi_logistico,my_row_id,bigint UNSIGNED NOT NULL AUTO_INCREMENT,False,False
+pbi_logistico,idembarque,int NOT NULL DEFAULT 0,False,True
+pbi_logistico,tipoembarque,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_logistico,cliente,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_logistico,ciudad,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_logistico,embarque,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_logistico,prefijo,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_logistico,Tipo,varchar(28) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',False,True
+pbi_logistico,Cargo,"decimal(13, 2) NULL DEFAULT NULL",True,True
+pbi_logistico,Costo,"decimal(13, 2) NULL DEFAULT NULL",True,True
+pbi_logistico,Balance,"decimal(14, 2) NULL DEFAULT NULL",True,True
+pbi_logistico,fecharealizacion,date NULL DEFAULT NULL,True,True
+pbi_logistico,peso,"decimal(13, 2) NULL DEFAULT NULL",True,True
+pbi_logistico,incoterms,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_logistico,mediotransporte,varchar(70) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_logistico,transportista,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_logistico,descripcioncarga,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+pbi_logistico,salidade,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_logistico,fechasalida,date NULL DEFAULT NULL,True,True
+pbi_logistico,arriboa,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_logistico,fechaarribo,date NULL DEFAULT NULL,True,True
+pbi_logistico,origen,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_logistico,destino,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_logistico,nombre,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_logistico,finalizado,varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',False,True
+pbi_reporte_inventario_fisico,my_row_id,bigint UNSIGNED NOT NULL AUTO_INCREMENT,False,False
+pbi_reporte_inventario_fisico,idinventariofisico,int NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,fecha_creacion,datetime NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,ciudad,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,codigo_almacen,varchar(15) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,almacen,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,marca,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,chasis,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,modelo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,color,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,categoria,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,estado,varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,usuario_conteo,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,fecha_inicio_conteo,datetime NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,fecha_fin_conteo,datetime NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,inventariofisicoetiqueta,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,usuario_fin_inventario,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_reporte_inventario_fisico,fecha_fin_inventario,datetime NULL DEFAULT NULL,True,True
+pbi_salidas,my_row_id,bigint UNSIGNED NOT NULL AUTO_INCREMENT,False,False
+pbi_salidas,idsalidadetalle,int NULL DEFAULT 0,True,True
+pbi_salidas,almacen,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,cliente,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,numerosalida,varchar(23) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,True,True
+pbi_salidas,fechasalida,varchar(28) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,True,True
+pbi_salidas,solicitado_por,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,autorizado_por,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,delivery_note,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,proyecto_no,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,contrato_no,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,rubro_producto,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,ciudad,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,direccion_entrega,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,transporte,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,placa,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,cantidad_pallet,int NULL DEFAULT NULL,True,True
+pbi_salidas,cantidad_cajas,int NULL DEFAULT NULL,True,True
+pbi_salidas,autorizacion_compra,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,hora_inicio_a,time NULL DEFAULT NULL,True,True
+pbi_salidas,hora_fin_a,time NULL DEFAULT NULL,True,True
+pbi_salidas,cantidad_estibadores_a,int NULL DEFAULT NULL,True,True
+pbi_salidas,nota_adicional,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+pbi_salidas,hora_inicio_b,time NULL DEFAULT NULL,True,True
+pbi_salidas,hora_fin_b,time NULL DEFAULT NULL,True,True
+pbi_salidas,cantidad_estibadores_b,int NULL DEFAULT NULL,True,True
+pbi_salidas,nombre_entrega,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,ci_entrega,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,nombre_recibido,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,ci_recibido,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,empresa_recibido,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,fecha_recibido,varchar(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,True,True
+pbi_salidas,entrega_a_tiempo,varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,True,True
+pbi_salidas,entrega_completa_conforme,varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,True,True
+pbi_salidas,codigo,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,serie,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,descripcion,varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,categoria,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,cantidad,"decimal(13, 2) NULL DEFAULT NULL",True,True
+pbi_salidas,codigoembalaje,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,lote,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,merma,varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+pbi_salidas,fechavencimiento,varchar(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,True,True
+pbi_salidas,bultos,"decimal(13, 2) NULL DEFAULT NULL",True,True
+pbi_salidas,cantidad_no_conf,"decimal(13, 2) NULL DEFAULT NULL",True,True
+pbi_salidas,no_conf,varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+pbi_salidas,peso,"decimal(13, 2) NULL DEFAULT NULL",True,True
+pbi_salidas,temperatura,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_salidas,observaciones,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+pbi_salidas,numeroingreso,varchar(23) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,True,True
+pbi_salidas,fechaingreso,datetime NULL DEFAULT NULL,True,True
+pbi_salidas,ubicacionalmacen,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_vencimientos,my_row_id,bigint UNSIGNED NOT NULL AUTO_INCREMENT,False,False
+pbi_vencimientos,idalmacen,int NULL DEFAULT NULL,True,True
+pbi_vencimientos,idcliente,int NULL DEFAULT NULL,True,True
+pbi_vencimientos,almacen,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_vencimientos,cliente,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_vencimientos,codigo,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_vencimientos,serie,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_vencimientos,descripcion,varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_vencimientos,cantidadactual,"decimal(14, 2) NULL DEFAULT NULL",True,True
+pbi_vencimientos,codigoembalaje,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_vencimientos,fechaingreso,varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,True,True
+pbi_vencimientos,fechavencimiento,varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,True,True
+pbi_vencimientos,lote,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+pbi_vencimientos,diasvencimiento,int NULL DEFAULT NULL,True,True
+pbi_vencimientos,estado,varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',False,True
+pbi_vencimientos,color,varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',False,True
+pbi_vencimientos,idingresodetalle,int NOT NULL DEFAULT 0,False,True
+t_accesorios_vehiculos,idaccesorios_vehiculos,int NOT NULL AUTO_INCREMENT,False,False
+t_accesorios_vehiculos,idcliente,int NULL DEFAULT NULL,True,True
+t_accesorios_vehiculos,accesorios_vehiculos,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_accesorios_vehiculos,requiere_cantidad,int NULL DEFAULT NULL,True,True
+t_accesorios_vehiculos,requiere_texto,int NULL DEFAULT NULL,True,True
+t_accesorios_vehiculos,created_at,datetime NULL DEFAULT NULL,True,True
+t_accesorios_vehiculos,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_accesorios_vehiculos_salidas,idaccesorios_vehiculos_salidas,int NOT NULL AUTO_INCREMENT,False,False
+t_accesorios_vehiculos_salidas,accesorios_vehiculos_salidas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_accesorios_vehiculos_salidas,requiere_cantidad,int NULL DEFAULT NULL,True,True
+t_accesorios_vehiculos_salidas,requiere_texto,int NULL DEFAULT NULL,True,True
+t_aduana,idaduana,int NOT NULL AUTO_INCREMENT,False,False
+t_aduana,aduana,varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_agentecarga,idagentecarga,int NOT NULL AUTO_INCREMENT,False,False
+t_agentecarga,idempresa,int NULL DEFAULT NULL,True,True
+t_agentecarga,agentecarga,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_agentecarga,numeroidentificacion,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_agentecarga,telefono,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_agentecarga,fax,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_agentecarga,email,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_agentecarga,numerocuenta,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_agentecarga,nombrecontacto,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_agentecarga,plazo,int NULL DEFAULT NULL,True,True
+t_agentecarga,id_OVPProv,varchar(11) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_agentecarga,idtipodocumento,int NULL DEFAULT NULL,True,True
+t_agentecarga,numerofacturacion,int NULL DEFAULT NULL,True,True
+t_agentecarga,razonsocial,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_agentecargacorreofacturacion,idagentecargacorreofacturacion,int NOT NULL AUTO_INCREMENT,False,False
+t_agentecargacorreofacturacion,idagentecarga,int NULL DEFAULT NULL,True,True
+t_agentecargacorreofacturacion,correo,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_agentecargadireccion,idagentecargadireccion,int NOT NULL AUTO_INCREMENT,False,False
+t_agentecargadireccion,idagentecarga,int NULL DEFAULT NULL,True,True
+t_agentecargadireccion,direccion,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_agentecargadireccion,ciudad,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_agentecargadireccion,idpais,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_agentecargadireccion,nombrecontacto,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_agentecargadireccion,email,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_almacen,idalmacen,int NOT NULL AUTO_INCREMENT,False,False
+t_almacen,almacen,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_almacen,codigo_almacen,varchar(15) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_almacen,idciudad,int NULL DEFAULT NULL,True,True
+t_almacen,direccion,varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_almacen,filas,int NULL DEFAULT NULL,True,True
+t_almacen,columnas,int NULL DEFAULT NULL,True,True
+t_almacendetalle,idalmacendetalle,int NOT NULL AUTO_INCREMENT,False,False
+t_almacendetalle,idalmacen,int NULL DEFAULT NULL,True,True
+t_almacendetalle,filainicial,int NULL DEFAULT NULL,True,True
+t_almacendetalle,columnainicial,int NULL DEFAULT NULL,True,True
+t_almacendetalle,tipo,int NULL DEFAULT NULL,True,True
+t_almacendetalle,idtipoalmacendetalle,int NULL DEFAULT NULL,True,True
+t_almacendetalle,idcategoriaalmacendetalle,int NULL DEFAULT NULL,True,True
+t_almacendetalle,sector,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_almacendetalle,texto,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_almacendetalle,columna,int NULL DEFAULT NULL,True,True
+t_almacendetalle,nombre,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_almacendetalle,filafinal,int NULL DEFAULT NULL,True,True
+t_almacendetalle,columnafinal,int NULL DEFAULT NULL,True,True
+t_almacendetalle,lineasuperior,int NULL DEFAULT NULL,True,True
+t_almacendetalle,color,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_almacendetalle,orden,int NULL DEFAULT NULL,True,True
+t_almacendetalle,activo,int NULL DEFAULT NULL,True,True
+t_almacendetalle,bloqueado,int NULL DEFAULT NULL,True,True
+t_almacendetalle,ubicacion_unica,int NULL DEFAULT NULL,True,True
+t_anticipo,idanticipo,int NOT NULL AUTO_INCREMENT,False,False
+t_anticipo,identidad,int NULL DEFAULT NULL,True,True
+t_anticipo,idtipoentidad,int NULL DEFAULT NULL,True,True
+t_anticipo,fecha,date NULL DEFAULT NULL,True,True
+t_anticipo,recibo,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_anticipo,idcuenta,int NULL DEFAULT NULL,True,True
+t_anticipo,idtipotransferencia,int NULL DEFAULT NULL,True,True
+t_anticipo,glosa,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_anticipo,monto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_anticipo,anticiporeal,int NULL DEFAULT NULL,True,True
+t_anticipo,idusuario,int NULL DEFAULT NULL,True,True
+t_ate_gas,idate_gas,int NOT NULL AUTO_INCREMENT,False,False
+t_ate_gas,idalmacen,int NULL DEFAULT NULL,True,True
+t_ate_gas,idcliente,int NULL DEFAULT NULL,True,True
+t_ate_gas,sede,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,tipo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,chasis,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,marca,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,modelo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,color,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,cliente,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,canal,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,configuracion,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,tipo_tanque,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,tipo_ot,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,valor_neto,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,pedido_ot,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,fecha_ot,date NULL DEFAULT NULL,True,True
+t_ate_gas,prog_envio,date NULL DEFAULT NULL,True,True
+t_ate_gas,estado_vehiculo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,observaciones,text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,True,False
+t_ate_gas,fecha_recepcion,datetime NULL DEFAULT NULL,True,True
+t_ate_gas,fecha_programacion_salida,datetime NULL DEFAULT NULL,True,True
+t_ate_gas,fecha_salida,datetime NULL DEFAULT NULL,True,True
+t_ate_gas,destino_salida,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,transportista_salida,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,nombre_original_salida,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,nombre_guardado_salida,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,ubicacion_fisica_salida,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas,created_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas,edited_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa,idate_gas_etapa,int NOT NULL AUTO_INCREMENT,False,False
+t_ate_gas_etapa,idate_gas,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa,paso,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa,idalmacendetalle,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa,idetapa,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa,observaciones_inventario,text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,True,False
+t_ate_gas_etapa,idestado_etapa,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa,fecha_inventario,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa,created_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa,edited_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa,deteled_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_imagen,idate_gas_etapa_imagen,int NOT NULL AUTO_INCREMENT,False,False
+t_ate_gas_etapa_imagen,idate_gas_etapa,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_imagen,nombre_original,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_imagen,nombre_guardado,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_imagen,ubicacion_fisica,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_imagen,ubicacion_thumb,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_imagen,created_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_imagen,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_inventario,idate_gas_etapa_inventario,int NOT NULL AUTO_INCREMENT,False,False
+t_ate_gas_etapa_inventario,idate_gas_etapa,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_inventario,iddanios_vehiculos,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_inventario,descripcion,text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,True,False
+t_ate_gas_etapa_inventario,created_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_inventario,edited_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_inventario,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_inventario_imagen,idate_gas_etapa_inventario_imagen,int NOT NULL AUTO_INCREMENT,False,False
+t_ate_gas_etapa_inventario_imagen,idate_gas_etapa,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_inventario_imagen,iddanios_vehiculos,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_inventario_imagen,nombre_original,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_inventario_imagen,nombre_guardado,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_inventario_imagen,ubicacion_fisica,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_inventario_imagen,ubicacion_thumb,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_inventario_imagen,created_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_inventario_imagen,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tecnico,idate_gas_etapa_tecnico,int NOT NULL AUTO_INCREMENT,False,False
+t_ate_gas_etapa_tecnico,idate_gas_etapa,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tecnico,idusuario,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tecnico,created_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tecnico,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tecnico_qa,idate_gas_etapa_tecnico_qa,int NOT NULL AUTO_INCREMENT,False,False
+t_ate_gas_etapa_tecnico_qa,idate_gas_etapa,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tecnico_qa,idusuario,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tecnico_qa,created_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tecnico_qa,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tiempos,idate_gas_etapa_tiempos,int NOT NULL AUTO_INCREMENT,False,False
+t_ate_gas_etapa_tiempos,idate_gas_etapa,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tiempos,inicio,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tiempos,fin,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tiempos,idusuario,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tiempos,idate_gas_motivo_pausa,int NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tiempos,motivo_pausa,text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,True,False
+t_ate_gas_etapa_tiempos,created_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tiempos,edited_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_etapa_tiempos,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_motivo_pausa,idate_gas_motivo_pausa,int NOT NULL AUTO_INCREMENT,False,False
+t_ate_gas_motivo_pausa,ate_gas_motivo_pausa,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ate_gas_ubicacion,idate_gas_ubicacion,int NOT NULL AUTO_INCREMENT,False,False
+t_ate_gas_ubicacion,idate_gas,int NULL DEFAULT NULL,True,True
+t_ate_gas_ubicacion,idate_gas_etapa,int NULL DEFAULT NULL,True,True
+t_ate_gas_ubicacion,idalmacendetalle,int NULL DEFAULT NULL,True,True
+t_ate_gas_ubicacion,fecha_ingreso,datetime NULL DEFAULT NULL,True,True
+t_ate_gas_ubicacion,fecha_salida,datetime NULL DEFAULT NULL,True,True
+t_baseproductos,idbaseproductos,int NOT NULL AUTO_INCREMENT,False,False
+t_baseproductos,idcliente,int NULL DEFAULT NULL,True,True
+t_baseproductos,rubro,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_baseproductos,codigo,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_baseproductos,serie,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_baseproductos,descripcion,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_baseproductos,categoria,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_baseproductos,idembalaje,int NULL DEFAULT NULL,True,True
+t_baseproductos,umcompra,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_baseproductos,umalterna,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_baseproductos,alto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_baseproductos,ancho,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_baseproductos,largo,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_baseproductos,color,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_baseproductos,centro_distribucion,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_baseproductos,idembalaje_salida,int NULL DEFAULT NULL,True,True
+t_baseproductos,factor_conversion,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_baseproductos,meta_timbrado,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cargo,idcargo,int NOT NULL AUTO_INCREMENT,False,False
+t_cargo,idembarque,int NULL DEFAULT NULL,True,True
+t_cargo,idconcepto,int NULL DEFAULT NULL,True,True
+t_cargo,iddivisa,int NULL DEFAULT NULL,True,True
+t_cargo,monto,"decimal(13, 3) NULL DEFAULT NULL",True,True
+t_cargo,cantidad,"decimal(13, 3) NULL DEFAULT NULL",True,True
+t_cargo,iddestinatario,int NULL DEFAULT NULL,True,True
+t_cargo,idtipodestinatario,int NULL DEFAULT NULL,True,True
+t_cargo,notas,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_cargo,idfacturanotadebito,int NULL DEFAULT NULL,True,True
+t_cargo,idtipofacturanotadebito,int NULL DEFAULT NULL,True,True
+t_cargo,idplanilla,int NULL DEFAULT NULL,True,True
+t_cargo,idtipoplanilla,int NULL DEFAULT NULL,True,True
+t_cargo,invoiceseleccionado,int NULL DEFAULT NULL,True,True
+t_cargo,idinvoice,int NULL DEFAULT NULL,True,True
+t_cargo,esagente,int NULL DEFAULT NULL,True,True
+t_cargo,idordenservicioi,int NULL DEFAULT NULL,True,True
+t_cargo,ordenservicioiseleccionado,int NULL DEFAULT NULL,True,True
+t_cargo,factura,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cargo,iddestinocargo,int NULL DEFAULT NULL,True,True
+t_cargo,idusuario,int NULL DEFAULT NULL,True,True
+t_cargo,created_at,datetime NULL DEFAULT NULL,True,True
+t_categoriaalmacendetalle,idcategoriaalmacendetalle,int NOT NULL AUTO_INCREMENT,False,False
+t_categoriaalmacendetalle,categoriaalmacendetalle,varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_centro_rubro,idcentro_rubro,int NOT NULL AUTO_INCREMENT,False,False
+t_centro_rubro,idcliente,int NULL DEFAULT NULL,True,True
+t_centro_rubro,centro_distribucion,varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_centro_rubro,rubro,varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ciudad,idciudad,int NOT NULL AUTO_INCREMENT,False,False
+t_ciudad,idempresa,int NULL DEFAULT NULL,True,True
+t_ciudad,codigo,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ciudad,ciudad,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ciudad,modotransporte,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ciudad,pais,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ciudad,timezone_name,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ciudad,utc_offset_minutos,smallint NULL DEFAULT NULL,True,True
+t_ciudad,almacen,int NULL DEFAULT NULL,True,True
+t_ciudad,parametrizacion,int NULL DEFAULT NULL,True,True
+t_ciudad,idaduana,int NULL DEFAULT NULL,True,True
+t_clasificacion,idclasificacion,int NOT NULL AUTO_INCREMENT,False,False
+t_clasificacion,clasificacion,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_cleintemetodotimbrado,idcleintemetodotimbrado,int NOT NULL AUTO_INCREMENT,False,False
+t_cleintemetodotimbrado,idcliente,int NULL DEFAULT NULL,True,True
+t_cleintemetodotimbrado,metodotimbrado,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_cleintemetodotimbrado,monto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cleintemetodotimbrado,iddivisa,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_cliente,idcliente,int NOT NULL AUTO_INCREMENT,False,False
+t_cliente,idempresa,int NULL DEFAULT NULL,True,True
+t_cliente,cliente,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,web,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,numeroidentificacion,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,direccion,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,idciudad,int NULL DEFAULT NULL,True,True
+t_cliente,pais,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,telefono,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,fax,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,email,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,representante_legal,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,telefono_representante,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,email_representante,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,nombrecontacto,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,idtipodocumento,int NULL DEFAULT NULL,True,True
+t_cliente,numerofacturacion,bigint NULL DEFAULT NULL,True,True
+t_cliente,razonsocial,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,username,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,contrasena,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,numerocuenta,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,plazo,int NULL DEFAULT NULL,True,True
+t_cliente,id_OVP,int NULL DEFAULT NULL,True,True
+t_cliente,color,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,color_fecha_pase_salida,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cliente,notificacion_vencimiento,int NULL DEFAULT NULL,True,True
+t_cliente,idtipoliquidacion,int NULL DEFAULT NULL,True,True
+t_cliente,monto_fee_mensual,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,tarifa_adicional,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,descarguio_adicional,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,inbound,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,outbound,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,servicios_administrativos,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,servicio_nocturno,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,servicio_fin_semana,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,estibadores,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,posiciones_fee,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,alto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,ancho,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,largo,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,alto_adicional,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,ancho_adicional,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,largo_adicional,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cliente,dias_por_vencer,int NULL DEFAULT NULL,True,True
+t_cliente,dias_vencido,int NULL DEFAULT NULL,True,True
+t_cliente,id_asgard,int NULL DEFAULT NULL,True,True
+t_cliente,id_cliente_usuario_asgard,int NULL DEFAULT NULL,True,True
+t_cliente_color,idcliente_color,int NOT NULL AUTO_INCREMENT,False,False
+t_cliente_color,idcliente,int NULL DEFAULT NULL,True,True
+t_cliente_color,condicion,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_cliente_color,color,varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_cliente_no_conf_no_considerar,idcliente_no_conf_no_considerar,int NOT NULL AUTO_INCREMENT,False,False
+t_cliente_no_conf_no_considerar,idcliente,int NULL DEFAULT NULL,True,True
+t_cliente_no_conf_no_considerar,idno_conf,int NULL DEFAULT NULL,True,True
+t_clientecorreofacturacion,idclientecorreofacturacion,int NOT NULL AUTO_INCREMENT,False,False
+t_clientecorreofacturacion,idcliente,int NULL DEFAULT NULL,True,True
+t_clientecorreofacturacion,correo,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_clientecorreonotificacion,idclientecorreonotificacion,int NOT NULL AUTO_INCREMENT,False,False
+t_clientecorreonotificacion,idcliente,int NULL DEFAULT NULL,True,True
+t_clientecorreonotificacion,nombre,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_clientecorreonotificacion,correo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_clientecorreonotificacion,vencimiento,int NULL DEFAULT NULL,True,True
+t_clientecorreonotificacion,vencido,int NULL DEFAULT NULL,True,True
+t_clientecorreovencimientoprm,idclientecorreovencimientoprm,int NOT NULL AUTO_INCREMENT,False,False
+t_clientecorreovencimientoprm,idcliente,int NULL DEFAULT NULL,True,True
+t_clientecorreovencimientoprm,correo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_clientediasvencimiento,idclientediasvencimiento,int NOT NULL AUTO_INCREMENT,False,False
+t_clientediasvencimiento,idcliente,int NULL DEFAULT NULL,True,True
+t_clientediasvencimiento,rubro_producto,varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_clientediasvencimiento,diasvencimiento,int NULL DEFAULT NULL,True,True
+t_clientedireccion,idclientedireccion,int NOT NULL AUTO_INCREMENT,False,False
+t_clientedireccion,idcliente,int NULL DEFAULT NULL,True,True
+t_clientedireccion,direccion,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_clientedireccion,ciudad,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_clientedireccion,idpais,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_clientedireccion,nombrecontacto,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_clientedireccion,email,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_clientegestionlogistica,idclientegestionlogistica,int NOT NULL AUTO_INCREMENT,False,False
+t_clientegestionlogistica,idcliente,int NULL DEFAULT NULL,True,True
+t_clientegestionlogistica,importacion_exportacion,int NULL DEFAULT NULL,True,True
+t_clientegestionlogistica,idmediotransporte,int NULL DEFAULT NULL,True,True
+t_clientegestionlogistica,idtipocarga,int NULL DEFAULT NULL,True,True
+t_clientegestionlogistica,aduana,varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_clientegestionlogistica,idaduana,int NULL DEFAULT NULL,True,True
+t_clientegestionlogistica,iddestino,int NULL DEFAULT NULL,True,True
+t_clientegestionlogistica,idtemperatura,int NULL DEFAULT NULL,True,True
+t_clientegestionlogistica,idhorario,int NULL DEFAULT NULL,True,True
+t_clientegestionlogistica,volumen,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_clientegestionlogistica,peso_desde,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_clientegestionlogistica,peso_hasta,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_clientegestionlogistica,cantidad_pallets,int NULL DEFAULT NULL,True,True
+t_clientegestionlogistica,monto_fijo,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_clientegestionlogistica,monto_por_peso,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_clientereporte,idclientereporte,int NOT NULL AUTO_INCREMENT,False,False
+t_clientereporte,idcliente,int NULL DEFAULT NULL,True,True
+t_clientereporte,idreporte,int NULL DEFAULT NULL,True,True
+t_clienteserviciologistico,idclienteserviciologistico,int NOT NULL AUTO_INCREMENT,False,False
+t_clienteserviciologistico,idcliente,int NULL DEFAULT NULL,True,True
+t_clienteserviciologistico,idconcepto,int NULL DEFAULT NULL,True,True
+t_clienteserviciologistico,monto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_clienteserviciologistico,iddivisa,int NULL DEFAULT NULL,True,True
+t_clienteserviciologistico,montofijo,int NULL DEFAULT NULL,True,True
+t_cobro,idcobro,int NOT NULL AUTO_INCREMENT,False,False
+t_cobro,numero,int NULL DEFAULT NULL,True,True
+t_cobro,fecha,date NULL DEFAULT NULL,True,True
+t_cobro,fechapago,date NULL DEFAULT NULL,True,True
+t_cobro,idanticipo,int NULL DEFAULT NULL,True,True
+t_cobro,idtipocobro,int NULL DEFAULT NULL,True,True
+t_cobro,idfacturanotadebito,int NULL DEFAULT NULL,True,True
+t_cobro,monto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_codigosrecuperarcontrasena,idcodigosrecuperarcontrasena,int NOT NULL AUTO_INCREMENT,False,False
+t_codigosrecuperarcontrasena,codigo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_codigosrecuperarcontrasena,idusuario,int NULL DEFAULT NULL,True,True
+t_codigosrecuperarcontrasena,fecha,datetime NULL DEFAULT NULL,True,True
+t_codigosrecuperarcontrasena,activo,int NULL DEFAULT NULL,True,True
+t_columnas_moverdividir,idcolumnas_moverdividir,int NOT NULL AUTO_INCREMENT,False,False
+t_columnas_moverdividir,field,varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_columnas_moverdividir,header,varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_columnas_moverdividir,type,varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_columnas_pedido,idcolumnas_pedido,int NOT NULL AUTO_INCREMENT,False,False
+t_columnas_pedido,field,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_columnas_pedido,header,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_columnas_pedido,type,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_concepto,idconcepto,int NOT NULL AUTO_INCREMENT,False,False
+t_concepto,idempresa,int NULL DEFAULT NULL,True,True
+t_concepto,concepto,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_concepto,codigo,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_concepto,idcuenta,int NULL DEFAULT NULL,True,True
+t_concepto,tipo,int NULL DEFAULT NULL,True,True
+t_concepto,idconceptocargo,int NULL DEFAULT NULL,True,True
+t_concepto,concepto_en,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_concepto,flete,int NULL DEFAULT NULL,True,True
+t_concepto,activo,int NULL DEFAULT NULL,True,True
+t_concepto,id_OVP,int NULL DEFAULT NULL,True,True
+t_concepto,id_OVPRef,varchar(11) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_consideraciones,idconsideraciones,int NOT NULL AUTO_INCREMENT,False,False
+t_consideraciones,idempresa,int NULL DEFAULT NULL,True,True
+t_consideraciones,consideraciones,varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_contemplacion,idcontemplacion,int NOT NULL AUTO_INCREMENT,False,False
+t_contemplacion,idempresa,int NULL DEFAULT NULL,True,True
+t_contemplacion,contemplacion,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_contrasenamaestra,idcontrasenamaestra,int NOT NULL AUTO_INCREMENT,False,False
+t_contrasenamaestra,contrasena,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_contrasenamaestra,fechavencimiento,date NULL DEFAULT NULL,True,True
+t_correonit,idcorreonit,int NOT NULL AUTO_INCREMENT,False,False
+t_correonit,idtipodocumento,int NULL DEFAULT NULL,True,True
+t_correonit,numero,int NULL DEFAULT NULL,True,True
+t_correonit,correo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_correosembarque,idcorreosembarque,int NOT NULL AUTO_INCREMENT,False,False
+t_correosembarque,idembarque,int NULL DEFAULT NULL,True,True
+t_correosembarque,correo,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_costo,idcosto,int NOT NULL AUTO_INCREMENT,False,False
+t_costo,idembarque,int NULL DEFAULT NULL,True,True
+t_costo,idconcepto,int NULL DEFAULT NULL,True,True
+t_costo,iddivisa,int NULL DEFAULT NULL,True,True
+t_costo,monto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_costo,cantidad,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_costo,iddestinatario,int NULL DEFAULT NULL,True,True
+t_costo,idtipodestinatario,int NULL DEFAULT NULL,True,True
+t_costo,notas,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_costo,idfacturanotadebito,int NULL DEFAULT NULL,True,True
+t_costo,idtipofacturanotadebito,int NULL DEFAULT NULL,True,True
+t_costo,idcargo,int NULL DEFAULT NULL,True,True
+t_costo,esagente,int NULL DEFAULT NULL,True,True
+t_costo,idordenservicioe,int NULL DEFAULT NULL,True,True
+t_costo,ordenservicioeseleccionado,int NULL DEFAULT NULL,True,True
+t_costo,factura,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_costo,nota_entrega,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_costo,idusuario,int NULL DEFAULT NULL,True,True
+t_costo,created_at,datetime NULL DEFAULT NULL,True,True
+t_costocotizacion,idcostocotizacion,int NOT NULL AUTO_INCREMENT,False,False
+t_costocotizacion,idcotizacion,int NULL DEFAULT NULL,True,True
+t_costocotizacion,idconcepto,int NULL DEFAULT NULL,True,True
+t_costocotizacion,cantidad,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_costocotizacion,montocargo,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_costocotizacion,montocosto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_costocotizacion,iddivisa,int NULL DEFAULT NULL,True,True
+t_cotizacion,idcotizacion,int NOT NULL AUTO_INCREMENT,False,False
+t_cotizacion,idempresa,int NULL DEFAULT NULL,True,True
+t_cotizacion,numero,int NULL DEFAULT NULL,True,True
+t_cotizacion,gestion,int NULL DEFAULT NULL,True,True
+t_cotizacion,fecha,datetime NULL DEFAULT NULL,True,True
+t_cotizacion,idcliente,int NULL DEFAULT NULL,True,True
+t_cotizacion,otrocliente,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cotizacion,nombre,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cotizacion,idtipoembarque,int NULL DEFAULT NULL,True,True
+t_cotizacion,importacion_exportacion,int NULL DEFAULT NULL,True,True
+t_cotizacion,noidentificacion,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cotizacion,idorigen,int NULL DEFAULT NULL,True,True
+t_cotizacion,iddestino,int NULL DEFAULT NULL,True,True
+t_cotizacion,idexpedidor,int NULL DEFAULT NULL,True,True
+t_cotizacion,idexpedidordireccion,int NULL DEFAULT NULL,True,True
+t_cotizacion,idtipoexpedidor,int NULL DEFAULT NULL,True,True
+t_cotizacion,descripcioncarga,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_cotizacion,piezas,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cotizacion,peso,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_cotizacion,idtipobulto,int NULL DEFAULT NULL,True,True
+t_cotizacion,volumen,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cotizacion,idincoterms,int NULL DEFAULT NULL,True,True
+t_cotizacion,idciudad,int NULL DEFAULT NULL,True,True
+t_cotizacion,idusuario,int NULL DEFAULT NULL,True,True
+t_cotizacion,idestadocotizacion,int NULL DEFAULT NULL,True,True
+t_cotizacionconsideraciones,idcotizacionconsideraciones,int NOT NULL AUTO_INCREMENT,False,False
+t_cotizacionconsideraciones,idcotizacion,int NULL DEFAULT NULL,True,True
+t_cotizacionconsideraciones,idconsideraciones,int NULL DEFAULT NULL,True,True
+t_cotizacioncontemplacion,idcotizacioncontemplacion,int NOT NULL AUTO_INCREMENT,False,False
+t_cotizacioncontemplacion,idcotizacion,int NULL DEFAULT NULL,True,True
+t_cotizacioncontemplacion,idcontemplacion,int NULL DEFAULT NULL,True,True
+t_cotizacioncontemplacion,estado,int NULL DEFAULT NULL,True,True
+t_cuenta,idcuenta,int NOT NULL AUTO_INCREMENT,False,False
+t_cuenta,idempresa,int NULL DEFAULT NULL,True,True
+t_cuenta,banco,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cuenta,cuenta,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_cuenta,moneda,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_danios_vehiculos,iddanios_vehiculos,int NOT NULL AUTO_INCREMENT,False,False
+t_danios_vehiculos,danios_vehiculos,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_destinocargo,iddestinocargo,int NOT NULL AUTO_INCREMENT,False,False
+t_destinocargo,destinocargo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_devolucion,iddevolucion,int NOT NULL AUTO_INCREMENT,False,False
+t_devolucion,numero,int NULL DEFAULT NULL,True,True
+t_devolucion,identidad,int NULL DEFAULT NULL,True,True
+t_devolucion,idtipoentidad,int NULL DEFAULT NULL,True,True
+t_devolucion,fechadevolucion,date NULL DEFAULT NULL,True,True
+t_devolucion,idcuenta,int NULL DEFAULT NULL,True,True
+t_devolucion,numerotransaccion,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_devolucion,concepto,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_devolucion,ordende,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_devoluciondetalle,iddevoluciondetalle,int NOT NULL AUTO_INCREMENT,False,False
+t_devoluciondetalle,iddevolucion,int NULL DEFAULT NULL,True,True
+t_devoluciondetalle,idanticipo,int NULL DEFAULT NULL,True,True
+t_devoluciondetalle,monto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_dias_creacion_entrega,iddias_creacion_entrega,int NOT NULL AUTO_INCREMENT,False,False
+t_dias_creacion_entrega,idcliente,int NOT NULL,False,False
+t_dias_creacion_entrega,contrato_no,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,False,False
+t_dias_creacion_entrega,tienda,varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,False,False
+t_dias_creacion_entrega,dia_creacion,int NOT NULL,False,False
+t_dias_creacion_entrega,dia_entrega,int NOT NULL,False,False
+t_diasemana,iddiasemana,int NOT NULL AUTO_INCREMENT,False,False
+t_diasemana,diasemana,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_diasvencimiento,iddiasvencimiento,int NOT NULL AUTO_INCREMENT,False,False
+t_diasvencimiento,diasvencimiento,int NULL DEFAULT NULL,True,True
+t_divisa,iddivisa,int NOT NULL AUTO_INCREMENT,False,False
+t_divisa,divisa,varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_divisa,codigo,varchar(5) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_divisaordenservicio,iddivisaordenservicio,int NOT NULL AUTO_INCREMENT,False,False
+t_divisaordenservicio,divisaordenservicio,varchar(5) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_divisaordenservicio,iddivisa,int NULL DEFAULT NULL,True,True
+t_doc_errada,iddoc_errada,int NOT NULL AUTO_INCREMENT,False,False
+t_doc_errada,doc_errada,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_dosificacion,iddosificacion,int NOT NULL AUTO_INCREMENT,False,False
+t_dosificacion,idempresa,int NULL DEFAULT NULL,True,True
+t_dosificacion,razonsocial,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_dosificacion,nitrazonsocial,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_dosificacion,nroautorizacion,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_dosificacion,fechalimite,date NULL DEFAULT NULL,True,True
+t_dosificacion,nrofacturaactual,int NULL DEFAULT NULL,True,True
+t_dosificacion,llave,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_dosificacion,actividadeconomica,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_dosificacion,leyenda,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_dosificacion,fechainicio,date NULL DEFAULT NULL,True,True
+t_dosificacion,fechafin,date NULL DEFAULT NULL,True,True
+t_embalaje,idembalaje,int NOT NULL AUTO_INCREMENT,False,False
+t_embalaje,codigoembalaje,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_embalaje,embalaje,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_embalaje,divisible,int NULL DEFAULT NULL,True,True
+t_embarque,idembarque,int NOT NULL AUTO_INCREMENT,False,False
+t_embarque,idempresa,int NULL DEFAULT NULL,True,True
+t_embarque,idcotizacion,int NULL DEFAULT NULL,True,True
+t_embarque,idcliente,int NULL DEFAULT NULL,True,True
+t_embarque,embarque,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_embarque,correlativo,int NULL DEFAULT NULL,True,True
+t_embarque,gestion,int NULL DEFAULT NULL,True,True
+t_embarque,idtipoembarque,int NULL DEFAULT NULL,True,True
+t_embarque,importacion_exportacion,int NULL DEFAULT NULL,True,True
+t_embarque,numeroguia,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_embarque,idciudad,int NULL DEFAULT NULL,True,True
+t_embarque,idusuario,int NULL DEFAULT NULL,True,True
+t_embarque,fecharealizacion,date NULL DEFAULT NULL,True,True
+t_embarque,valordeclarado,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_embarque,descripcioncarga,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_embarque,carpetapacena,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_embarque,servicio_logistico,int NULL DEFAULT NULL,True,True
+t_embarque,noidentificacion,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_embarque,idexpedidor,int NULL DEFAULT NULL,True,True
+t_embarque,idexpedidordireccion,int NULL DEFAULT NULL,True,True
+t_embarque,idtipoexpedidor,int NULL DEFAULT NULL,True,True
+t_embarque,idultimoconsignatario,int NULL DEFAULT NULL,True,True
+t_embarque,idultimoconsignatariodireccion,int NULL DEFAULT NULL,True,True
+t_embarque,idtipoultimoconsignatario,int NULL DEFAULT NULL,True,True
+t_embarque,identidadnotificar,int NULL DEFAULT NULL,True,True
+t_embarque,identidadnotificardireccion,int NULL DEFAULT NULL,True,True
+t_embarque,idtipoentidadnotificar,int NULL DEFAULT NULL,True,True
+t_embarque,idagentecarga,int NULL DEFAULT NULL,True,True
+t_embarque,idagentecargadireccion,int NULL DEFAULT NULL,True,True
+t_embarque,idagentedestino,int NULL DEFAULT NULL,True,True
+t_embarque,idagentedestinodireccion,int NULL DEFAULT NULL,True,True
+t_embarque,idmediotransporte,int NULL DEFAULT NULL,True,True
+t_embarque,idtipocarga,int NULL DEFAULT NULL,True,True
+t_embarque,idtransportista,int NULL DEFAULT NULL,True,True
+t_embarque,numerovehiculo,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_embarque,idsalida,int NULL DEFAULT NULL,True,True
+t_embarque,fechasalida,date NULL DEFAULT NULL,True,True
+t_embarque,idarribo,int NULL DEFAULT NULL,True,True
+t_embarque,fechaarribo,date NULL DEFAULT NULL,True,True
+t_embarque,idorigen,int NULL DEFAULT NULL,True,True
+t_embarque,iddestino,int NULL DEFAULT NULL,True,True
+t_embarque,idhorario,int NULL DEFAULT NULL,True,True
+t_embarque,idtemperatura,int NULL DEFAULT NULL,True,True
+t_embarque,numero_precinto,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_embarque,estibadoresSLG,int NULL DEFAULT NULL,True,True
+t_embarque,estibadores,int NULL DEFAULT NULL,True,True
+t_embarque,costo_operador_transporte,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_embarque,notas,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_embarque,peso,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_embarque,volumen,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_embarque,piezas,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_embarque,idtipobulto,int NULL DEFAULT NULL,True,True
+t_embarque,nodui,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_embarque,fechafinalizacion,date NULL DEFAULT NULL,True,True
+t_embarque,idincoterms,int NULL DEFAULT NULL,True,True
+t_embarque,email,varchar(350) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_empresa,idempresa,int NOT NULL AUTO_INCREMENT,False,False
+t_empresa,empresa,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_empresa,titulo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_empresa,operaciones,int NULL DEFAULT NULL,True,True
+t_empresa,contabilidad,int NULL DEFAULT NULL,True,True
+t_empresa,almacen,int NULL DEFAULT NULL,True,True
+t_empresa,asgard_operaciones,int NULL DEFAULT NULL,True,True
+t_empresa,asgard_almacen,int NULL DEFAULT NULL,True,True
+t_empresadivisa,idempresadivisa,int NOT NULL AUTO_INCREMENT,False,False
+t_empresadivisa,idempresa,int NULL DEFAULT NULL,True,True
+t_empresadivisa,iddivisa,int NULL DEFAULT NULL,True,True
+t_estado_etapa,idestado_etapa,int NOT NULL AUTO_INCREMENT,False,False
+t_estado_etapa,estado_etapa,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_estadofactura,idestadofactura,int NOT NULL AUTO_INCREMENT,False,False
+t_estadofactura,estadofactura,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_estadofactura,estadonotadebito,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_etapa,idetapa,int NOT NULL AUTO_INCREMENT,False,False
+t_etapa,etapa,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_etapa,severity,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_evento,idevento,int NOT NULL AUTO_INCREMENT,False,False
+t_evento,idembarque,int NULL DEFAULT NULL,True,True
+t_evento,idtipoevento,int NULL DEFAULT NULL,True,True
+t_evento,fechaplanificada,date NULL DEFAULT NULL,True,True
+t_evento,fecha,date NULL DEFAULT NULL,True,True
+t_evento,con_observacion,int NULL DEFAULT NULL,True,True
+t_evento,ideventodescripcion,int NULL DEFAULT NULL,True,True
+t_evento,evento,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_evento,idusuario,int NULL DEFAULT NULL,True,True
+t_evento,fecharegistro,date NULL DEFAULT NULL,True,True
+t_evento,enviado,int NULL DEFAULT NULL,True,True
+t_eventocotizacion,ideventocotizacion,int NOT NULL AUTO_INCREMENT,False,False
+t_eventocotizacion,idcotizacion,int NULL DEFAULT NULL,True,True
+t_eventocotizacion,idtipoevento,int NULL DEFAULT NULL,True,True
+t_eventocotizacion,fechaplanificada,date NULL DEFAULT NULL,True,True
+t_eventocotizacion,evento,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_eventocotizacion,idusuario,int NULL DEFAULT NULL,True,True
+t_eventocotizacion,fecharegistro,date NULL DEFAULT NULL,True,True
+t_eventodescripcion,ideventodescripcion,int NOT NULL AUTO_INCREMENT,False,False
+t_eventodescripcion,eventodescripcion,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_factura,idfactura,int NOT NULL AUTO_INCREMENT,False,False
+t_factura,idembarque,int NULL DEFAULT NULL,True,True
+t_factura,iddosificacion,int NULL DEFAULT NULL,True,True
+t_factura,nrofactura,int NULL DEFAULT NULL,True,True
+t_factura,fecha,date NULL DEFAULT NULL,True,True
+t_factura,hora,time NULL DEFAULT NULL,True,True
+t_factura,idcobrara,int NULL DEFAULT NULL,True,True
+t_factura,idcobraratipo,int NULL DEFAULT NULL,True,True
+t_factura,nombre,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,idtipodocumento,int NULL DEFAULT NULL,True,True
+t_factura,nit,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,codigocontrol,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,idestadofactura,int NULL DEFAULT NULL,True,True
+t_factura,pallets,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,rotacion,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,outIdOrdenFactura,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_factura,outNumeroFactura,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_factura,outCodigoDeControl,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_factura,outNumeroAutorizacion,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_factura,errorOVPFact,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_factura,cuf,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,urlDocumento,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,NombreDocumentoPDF,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,NombreDocumentoXML,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,DocumentoXML,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_factura,leyenda,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,cufd,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,municipio,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,telefono,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,direccion,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,codigoEmision,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,fecha_anulacion,datetime NULL DEFAULT NULL,True,True
+t_factura,idusuarios_anulacion,int NULL DEFAULT NULL,True,True
+t_factura,idmotivoanulacion,int NULL DEFAULT NULL,True,True
+t_factura,otro_motivoanulacion,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_factura,resplado_anulacion,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_facturapago,idfacturapago,int NOT NULL AUTO_INCREMENT,False,False
+t_facturapago,idtipofacturapago,int NULL DEFAULT NULL,True,True
+t_facturapago,fecha,date NULL DEFAULT NULL,True,True
+t_facturapago,numerofactura,int NULL DEFAULT NULL,True,True
+t_facturapago,gestion,int NULL DEFAULT NULL,True,True
+t_facturapago,idtransportista,int NULL DEFAULT NULL,True,True
+t_facturapago,idpagara,int NULL DEFAULT NULL,True,True
+t_facturapago,idpagaradireccion,int NULL DEFAULT NULL,True,True
+t_facturapago,fechadocumento,date NULL DEFAULT NULL,True,True
+t_facturapago,idpagaratipo,int NULL DEFAULT NULL,True,True
+t_facturapago,idcobrara,int NULL DEFAULT NULL,True,True
+t_facturapago,idcobraratipo,int NULL DEFAULT NULL,True,True
+t_facturapago,idembarque,int NULL DEFAULT NULL,True,True
+t_facturapago,idestadofacturapago,int NULL DEFAULT NULL,True,True
+t_facturapago,tipocambio,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_facturapago,observaciones,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_facturapago,iddivisa,int NULL DEFAULT NULL,True,True
+t_facturapago,tipoop,"int NULL DEFAULT NULL COMMENT '1 para costo, 2 para cargo'",True,True
+t_facturapago,outNroAsignacion,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_facturapago,errorOVP,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_facturapago,fecha_anulacion,datetime NULL DEFAULT NULL,True,True
+t_facturapago,idusuarios_anulacion,int NULL DEFAULT NULL,True,True
+t_facturapago,idmotivoanulacion,int NULL DEFAULT NULL,True,True
+t_facturapago,otro_motivoanulacion,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_facturapago,resplado_anulacion,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_formapago,idformapago,int NOT NULL AUTO_INCREMENT,False,False
+t_formapago,formapago,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,False,False
+t_horario,idhorario,int NOT NULL AUTO_INCREMENT,False,False
+t_horario,horario,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_importacion_exportacion,importacion_exportacion,int NOT NULL,False,False
+t_importacion_exportacion,importacion_exportacion_texto,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_importacion_exportacion,importacion_exportacion_codigo,varchar(5) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_importacion_exportacion,parametrizacion,int NULL DEFAULT NULL,True,True
+t_incobrable,idincobrable,int NOT NULL AUTO_INCREMENT,False,False
+t_incobrable,numero,int NULL DEFAULT NULL,True,True
+t_incobrable,fecha,date NULL DEFAULT NULL,True,True
+t_incobrable,idtipocobro,int NULL DEFAULT NULL,True,True
+t_incobrable,idfacturanotadebito,int NULL DEFAULT NULL,True,True
+t_incobrable,monto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_incoterms,idincoterms,int NOT NULL AUTO_INCREMENT,False,False
+t_incoterms,incoterms,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,idingreso,int NOT NULL AUTO_INCREMENT,False,False
+t_ingreso,numero,int NULL DEFAULT NULL,True,True
+t_ingreso,gestion,int NULL DEFAULT NULL,True,True
+t_ingreso,idalmacen,int NULL DEFAULT NULL,True,True
+t_ingreso,idcliente,int NULL DEFAULT NULL,True,True
+t_ingreso,es_vehiculo,int NULL DEFAULT NULL,True,True
+t_ingreso,idcliente_destino,int NULL DEFAULT NULL,True,True
+t_ingreso,envio_api,datetime NULL DEFAULT NULL,True,True
+t_ingreso,respuesta_api,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,payload_api,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_ingreso,response_api,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_ingreso,fecha,datetime NULL DEFAULT NULL,True,True
+t_ingreso,placa,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,contenedor,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,idtipoingreso,int NULL DEFAULT NULL,True,True
+t_ingreso,precinto,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,idtipodescarga,int NULL DEFAULT NULL,True,True
+t_ingreso,idtipocamion,int NULL DEFAULT NULL,True,True
+t_ingreso,idtipocontenedor,int NULL DEFAULT NULL,True,True
+t_ingreso,idtipoproducto,int NULL DEFAULT NULL,True,True
+t_ingreso,tipo_camion,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,piezas_manifestadas,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,piezas_recibidas,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,peso_total,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_ingreso,proveedor,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,no_contrato,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,delivery_batch,varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,rubro_producto,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,project,varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,type,varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,invoice,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,dui,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,hoja_ruta,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,cantidad_pallet,int NULL DEFAULT NULL,True,True
+t_ingreso,cantidad_cajas,int NULL DEFAULT NULL,True,True
+t_ingreso,num_res_adm,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,hora_inicio,time NULL DEFAULT NULL,True,True
+t_ingreso,hora_fin,time NULL DEFAULT NULL,True,True
+t_ingreso,cantidad_estibadores,int NULL DEFAULT NULL,True,True
+t_ingreso,nota_adicional,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_ingreso,fechasistema,date NULL DEFAULT NULL,True,True
+t_ingreso,horasistema,time NULL DEFAULT NULL,True,True
+t_ingreso,idusuario_recibido,int NULL DEFAULT NULL,True,True
+t_ingreso,nombre_entrega,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,ci_entrega,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,empresa_entrega,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,partida,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingreso,fecha_cierre_transito,datetime NULL DEFAULT NULL,True,True
+t_ingreso,fecha_emision_parte,datetime NULL DEFAULT NULL,True,True
+t_ingreso,idsalida_origen,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,idingresodetalle,int NOT NULL AUTO_INCREMENT,False,False
+t_ingresodetalle,idingreso,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,idingresodetallepadre,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,codigo,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,serie,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,descripcion,varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,centro_distribucion,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,sustanciascontroladas,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,categoria,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,openbox,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,cantidad,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_ingresodetalle,idembalaje,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,metros,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_ingresodetalle,largo,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_ingresodetalle,ancho,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_ingresodetalle,alto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_ingresodetalle,lote,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,bultos,"decimal(13, 3) NULL DEFAULT NULL",True,True
+t_ingresodetalle,costo_un,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_ingresodetalle,no_conf,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,cantidad_no_conf,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_ingresodetalle,idno_conf,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,idclasificacion,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,idmerma,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,fechaproduccion,date NULL DEFAULT NULL,True,True
+t_ingresodetalle,fechavencimiento,date NULL DEFAULT NULL,True,True
+t_ingresodetalle,relacion_caja,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,volumen,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_ingresodetalle,area,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_ingresodetalle,peso,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_ingresodetalle,pallet,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,temperatura,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,iddoc_errada,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,observaciones,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_ingresodetalle,dividido,datetime NULL DEFAULT NULL,True,True
+t_ingresodetalle,cerrado,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,modelo,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,marca,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,color,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,partida_especifica,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,invoice,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,no_dim,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,fecha_pase_salida,datetime NULL DEFAULT NULL,True,True
+t_ingresodetalle,kilometraje,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetalle,tiene_danios,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,danios,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_ingresodetalle,tiene_faltante,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,faltante,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_ingresodetalle,embarque_id,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,created_by,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,created_at,datetime NULL DEFAULT NULL,True,True
+t_ingresodetalle,edited_by,int NULL DEFAULT NULL,True,True
+t_ingresodetalle,edited_at,datetime NULL DEFAULT NULL,True,True
+t_ingresodetalle_accesorios,idingresodetalle_accesorios,int NOT NULL AUTO_INCREMENT,False,False
+t_ingresodetalle_accesorios,idingresodetalle,int NULL DEFAULT NULL,True,True
+t_ingresodetalle_accesorios,idaccesorios_vehiculos,int NULL DEFAULT NULL,True,True
+t_ingresodetalle_accesorios,cantidad,int NULL DEFAULT NULL,True,True
+t_ingresodetalle_accesorios,observaciones,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ingresodetalle_accesorios,texto,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_ingresodetalle_accesorios,created_at,datetime NULL DEFAULT NULL,True,True
+t_ingresodetalle_accesorios,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_ingresodetallecliente,idingresodetallecliente,int NOT NULL AUTO_INCREMENT,False,False
+t_ingresodetallecliente,idcliente,int NULL DEFAULT NULL,True,True
+t_ingresodetallecliente,idalmacen,int NULL DEFAULT NULL,True,True
+t_ingresodetallecliente,codigo,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ingresodetallecliente,descripcion,varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_inter_company,idinter_company,int NOT NULL AUTO_INCREMENT,False,False
+t_inter_company,idcliente_1,int NULL DEFAULT NULL,True,True
+t_inter_company,almacen_1,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inter_company,idcliente_2,int NULL DEFAULT NULL,True,True
+t_inter_company,almacen_2,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inter_company_data,idinter_company_data,int NOT NULL AUTO_INCREMENT,False,False
+t_inter_company_data,idinter_company_pasos,int NULL DEFAULT NULL,True,True
+t_inter_company_data,campo,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inter_company_data,tipo_data,int NULL DEFAULT NULL,True,True
+t_inter_company_data,dato_fijo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inter_company_data,dato_variable,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inter_company_pasos,idinter_company_pasos,int NOT NULL AUTO_INCREMENT,False,False
+t_inter_company_pasos,idinter_company,int NULL DEFAULT NULL,True,True
+t_inter_company_pasos,paso,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inter_company_pasos,template,text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,True,False
+t_inter_company_pasos,url,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisico,idinventariofisico,int NOT NULL AUTO_INCREMENT,False,False
+t_inventariofisico,idcliente,int NULL DEFAULT NULL,True,True
+t_inventariofisico,idalmacen,int NULL DEFAULT NULL,True,True
+t_inventariofisico,es_vehiculo,int NULL DEFAULT NULL,True,True
+t_inventariofisico,idstatus,int NULL DEFAULT NULL,True,True
+t_inventariofisico,categoria,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisico,fecha,date NULL DEFAULT NULL,True,True
+t_inventariofisico,idasignado,int NULL DEFAULT NULL,True,True
+t_inventariofisico,idapoyo,int NULL DEFAULT NULL,True,True
+t_inventariofisico,fecha_inicio,datetime NULL DEFAULT NULL,True,True
+t_inventariofisico,fecha_fin,datetime NULL DEFAULT NULL,True,True
+t_inventariofisico,fecha_inicio_conteo,datetime NULL DEFAULT NULL,True,True
+t_inventariofisico,fecha_fin_conteo,datetime NULL DEFAULT NULL,True,True
+t_inventariofisico,fecha_fin_inventario,datetime NULL DEFAULT NULL,True,True
+t_inventariofisico,idusuario_fin_inventario,int NULL DEFAULT NULL,True,True
+t_inventariofisico,idusuario_conteo,int NULL DEFAULT NULL,True,True
+t_inventariofisico,created_at,datetime NULL DEFAULT NULL,True,True
+t_inventariofisico,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_inventariofisicoconteo,idinventariofisicoconteo,int NOT NULL AUTO_INCREMENT,False,False
+t_inventariofisicoconteo,idinventariofisico,int NULL DEFAULT NULL,True,True
+t_inventariofisicoconteo,serie,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicoconteo,codigo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicoconteo,categoria,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicoconteo,descripcion,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicoconteo,lote,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicoconteo,idusuario,int NULL DEFAULT NULL,True,True
+t_inventariofisicoconteoimagen,idinventariofisicoconteoimagen,int NOT NULL AUTO_INCREMENT,False,False
+t_inventariofisicoconteoimagen,idinventariofisicoconteo,int NULL DEFAULT NULL,True,True
+t_inventariofisicoconteoimagen,imagen,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicodetalle,idinventariofisicodetalle,int NOT NULL AUTO_INCREMENT,False,False
+t_inventariofisicodetalle,idinventariofisico,int NULL DEFAULT NULL,True,True
+t_inventariofisicodetalle,codigo,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicodetalle,serie,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicodetalle,descripcion,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicodetalle,ubicacion,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicodetalle,categoria,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicodetalle,cantidad,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_inventariofisicodetalle,cantidad_real,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_inventariofisicodetalle,embalaje,varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicodetalle,lote,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicodetalle,fecha_vencimiento,date NULL DEFAULT NULL,True,True
+t_inventariofisicodetalle,observaciones,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicodetalle,idinventariofisicoetiqueta,int NULL DEFAULT NULL,True,True
+t_inventariofisicodetallearchivo,idinventariofisicodetallearchivo,int NOT NULL AUTO_INCREMENT,False,False
+t_inventariofisicodetallearchivo,idinventariofisicodetalle,int NULL DEFAULT NULL,True,True
+t_inventariofisicodetallearchivo,inventariofisicodetallearchivo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicodetallearchivo,nombre_fisico,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_inventariofisicoetiqueta,idinventariofisicoetiqueta,int NOT NULL AUTO_INCREMENT,False,False
+t_inventariofisicoetiqueta,inventariofisicoetiqueta,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_invoice,idinvoice,int NOT NULL AUTO_INCREMENT,False,False
+t_invoice,fecha,date NULL DEFAULT NULL,True,True
+t_invoice,numero,int NULL DEFAULT NULL,True,True
+t_invoice,gestion,int NULL DEFAULT NULL,True,True
+t_invoice,idembarque,int NULL DEFAULT NULL,True,True
+t_invoice,idagentecarga,int NULL DEFAULT NULL,True,True
+t_invoice,idagentecargadireccion,int NULL DEFAULT NULL,True,True
+t_invoice,idestadoinvoice,int NULL DEFAULT NULL,True,True
+t_mediotransporte,idmediotransporte,int NOT NULL AUTO_INCREMENT,False,False
+t_mediotransporte,mediotransporte,varchar(70) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_mediotransporte,parametrizacion,int NULL DEFAULT NULL,True,True
+t_menu,menu,int NOT NULL,False,False
+t_menu,menuname,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_menu,icono,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_merma,idmerma,int NOT NULL AUTO_INCREMENT,False,False
+t_merma,merma,varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_metodopago,idmetodopago,int NOT NULL AUTO_INCREMENT,False,False
+t_metodopago,metodopago,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_modulo,idmodulo,int NOT NULL AUTO_INCREMENT,False,False
+t_modulo,modulo,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_modulo,parent_id,int NULL DEFAULT NULL,True,True
+t_modulo,operaciones,int NULL DEFAULT NULL,True,True
+t_modulo,contabilidad,int NULL DEFAULT NULL,True,True
+t_modulo,almacen,int NULL DEFAULT NULL,True,True
+t_motivoanulacion,idmotivoanulacion,int NOT NULL AUTO_INCREMENT,False,False
+t_motivoanulacion,motivoanulacion,varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_movilizador,idmovilizador,int NOT NULL AUTO_INCREMENT,False,False
+t_movilizador,idcliente,int NULL DEFAULT NULL,True,True
+t_movilizador,movilizador,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_movilizador,created_at,datetime NULL DEFAULT NULL,True,True
+t_movilizador,edited_at,datetime NULL DEFAULT NULL,True,True
+t_movilizador,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_no_conf,idno_conf,int NOT NULL AUTO_INCREMENT,False,False
+t_no_conf,no_conf,varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_no_conf,no_considerar,int NULL DEFAULT NULL,True,True
+t_notadebito,idnotadebito,int NOT NULL AUTO_INCREMENT,False,False
+t_notadebito,idembarque,int NULL DEFAULT NULL,True,True
+t_notadebito,fecha,date NULL DEFAULT NULL,True,True
+t_notadebito,nronotadebito,int NULL DEFAULT NULL,True,True
+t_notadebito,gestion,int NULL DEFAULT NULL,True,True
+t_notadebito,idcobrara,int NULL DEFAULT NULL,True,True
+t_notadebito,idcobraratipo,int NULL DEFAULT NULL,True,True
+t_notadebito,idcuenta,int NULL DEFAULT NULL,True,True
+t_notadebito,idestadonotadebito,int NULL DEFAULT NULL,True,True
+t_notadebito,observaciones,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_notadebito,iddivisa,int NULL DEFAULT NULL,True,True
+t_notadebito,fecha_anulacion,datetime NULL DEFAULT NULL,True,True
+t_notadebito,idusuarios_anulacion,int NULL DEFAULT NULL,True,True
+t_notadebito,idmotivoanulacion,int NULL DEFAULT NULL,True,True
+t_notadebito,otro_motivoanulacion,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_notadebito,resplado_anulacion,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ordenservicioe,idordenservicioe,int NOT NULL AUTO_INCREMENT,False,False
+t_ordenservicioe,fecha,date NULL DEFAULT NULL,True,True
+t_ordenservicioe,numero,int NULL DEFAULT NULL,True,True
+t_ordenservicioe,gestion,int NULL DEFAULT NULL,True,True
+t_ordenservicioe,idembarque,int NULL DEFAULT NULL,True,True
+t_ordenservicioe,idsolicitadopor,int NULL DEFAULT NULL,True,True
+t_ordenservicioe,iddivisaordenservicio,int NULL DEFAULT NULL,True,True
+t_ordenservicioe,tipocambio,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_ordenservicioe,creditnot,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ordenservicioe,idestado,int NULL DEFAULT NULL,True,True
+t_ordenservicioe,idusuario,int NULL DEFAULT NULL,True,True
+t_ordenservicioi,idordenservicioi,int NOT NULL AUTO_INCREMENT,False,False
+t_ordenservicioi,fecha,date NULL DEFAULT NULL,True,True
+t_ordenservicioi,numero,int NULL DEFAULT NULL,True,True
+t_ordenservicioi,gestion,int NULL DEFAULT NULL,True,True
+t_ordenservicioi,idembarque,int NULL DEFAULT NULL,True,True
+t_ordenservicioi,idsolicitadopor,int NULL DEFAULT NULL,True,True
+t_ordenservicioi,iddivisaordenservicio,int NULL DEFAULT NULL,True,True
+t_ordenservicioi,tipocambio,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_ordenservicioi,creditnot,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_ordenservicioi,idestado,int NULL DEFAULT NULL,True,True
+t_ordenservicioi,idusuario,int NULL DEFAULT NULL,True,True
+t_pago,idpago,int NOT NULL AUTO_INCREMENT,False,False
+t_pago,nropago,int NULL DEFAULT NULL,True,True
+t_pago,fecha,date NULL DEFAULT NULL,True,True
+t_pago,idcuenta,int NULL DEFAULT NULL,True,True
+t_pago,idmetodopago,int NULL DEFAULT NULL,True,True
+t_pago,nrotransaccion,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pago,alaordende,varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pago,concepto,varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pago,pagoa,int NULL DEFAULT NULL,True,True
+t_pago,idusuario,int NULL DEFAULT NULL,True,True
+t_pagodetalle,idpagodetalle,int NOT NULL AUTO_INCREMENT,False,False
+t_pagodetalle,idpago,int NULL DEFAULT NULL,True,True
+t_pagodetalle,idfacturapago,int NULL DEFAULT NULL,True,True
+t_pagodetalle,monto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_pagodetalle,iddivisa,int NULL DEFAULT NULL,True,True
+t_pagotmp,idpagotmp,int NOT NULL AUTO_INCREMENT,False,False
+t_pagotmp,idusuario,int NULL DEFAULT NULL,True,True
+t_pagotmp,idfacturapago,int NULL DEFAULT NULL,True,True
+t_pagotmp,monto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_pais,idpais,varchar(5) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,False,False
+t_pais,pais,varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,True,True
+t_pedido,idpedido,int NOT NULL AUTO_INCREMENT,False,False
+t_pedido,idalmacen,int NULL DEFAULT NULL,True,True
+t_pedido,numero,int NULL DEFAULT NULL,True,True
+t_pedido,gestion,int NULL DEFAULT NULL,True,True
+t_pedido,idcliente,int NULL DEFAULT NULL,True,True
+t_pedido,fecha,datetime NULL DEFAULT NULL,True,True
+t_pedido,es_no_conf,int NULL DEFAULT NULL,True,True
+t_pedido,no_pedido,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pedido,fecha_entrega,date NULL DEFAULT NULL,True,True
+t_pedido,idusuario,int NULL DEFAULT NULL,True,True
+t_pedido,tipo_pedido,int NULL DEFAULT NULL,True,True
+t_pedido,idpedido_padre,int NULL DEFAULT NULL,True,True
+t_pedido,rubro,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pedido,idusuario_revisado,int NULL DEFAULT NULL,True,True
+t_pedido,nota_adicional,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_pedidodetalle,idpedidodetalle,int NOT NULL AUTO_INCREMENT,False,False
+t_pedidodetalle,idpedido,int NULL DEFAULT NULL,True,True
+t_pedidodetalle,codigo,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pedidodetalle,serie,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pedidodetalle,descripcion,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pedidodetalle,unidadmedida,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pedidodetalle,lote,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pedidodetalle,idpedidodetalle_aux,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pedidodisponibilidad,idpedidodisponibilidad,int NOT NULL AUTO_INCREMENT,False,False
+t_pedidodisponibilidad,idpedidodetalle,int NULL DEFAULT NULL,True,True
+t_pedidodisponibilidad,idingresodetalle,int NULL DEFAULT NULL,True,True
+t_pedidodisponibilidad,cantidad,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_pedidodisponibilidad,ubicacionalmacen,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pedidodisponibilidad,ppt,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pedidodisponibilidad,fechavencimiento,date NULL DEFAULT NULL,True,True
+t_pedidodisponibilidad,diasavencer,int NULL DEFAULT NULL,True,True
+t_pedidodisponibilidad,lote,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pedidodisponibilidad,fechaingreso,date NULL DEFAULT NULL,True,True
+t_pedidolog,idpedidolog,int NOT NULL AUTO_INCREMENT,False,False
+t_pedidolog,fecha,datetime NULL DEFAULT NULL,True,True
+t_pedidolog,idusuario,int NULL DEFAULT NULL,True,True
+t_pedidolog,url,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_pedidolog,cuerpo,longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,True,False
+t_pedidolog,respuesta,longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,True,False
+t_pedidopreparacion,idpedidopreparacion,int NOT NULL AUTO_INCREMENT,False,False
+t_pedidopreparacion,idpedido,int NULL DEFAULT NULL,True,True
+t_pedidopreparacion,idpreparador,int NULL DEFAULT NULL,True,True
+t_pedidopreparacion,sector,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_pedidopreparacion,hora_inicio,time NULL DEFAULT NULL,True,True
+t_pedidopreparacion,hora_fin,time NULL DEFAULT NULL,True,True
+t_pedidopreparacion,demora,"decimal(13, 1) NULL DEFAULT NULL",True,True
+t_pedidopreparacion,conforme,int NULL DEFAULT NULL,True,True
+t_pedidopreparacion,conforme2,int NULL DEFAULT NULL,True,True
+t_pedidopreparacion,conforme3,int NULL DEFAULT NULL,True,True
+t_pedidopreparacion,notas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_pedidopreparacionsector,idpedidopreparacionsector,int NOT NULL AUTO_INCREMENT,False,False
+t_pedidopreparacionsector,idpedidopreparacion,int NULL DEFAULT NULL,True,True
+t_pedidopreparacionsector,sector,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_pedidotienda,idpedidotienda,int NOT NULL AUTO_INCREMENT,False,False
+t_pedidotienda,idpedido,int NULL DEFAULT NULL,True,True
+t_pedidotienda,tienda,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pedidotienda,idpedidotienda_aux,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pedidotienda,no_pedido,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_pediodetalletienda,idpediodetalletienda,int NOT NULL AUTO_INCREMENT,False,False
+t_pediodetalletienda,idpedidodetalle,int NULL DEFAULT NULL,True,True
+t_pediodetalletienda,idpedidotienda,int NULL DEFAULT NULL,True,True
+t_pediodetalletienda,cantidad,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_planilla,idplanilla,int NOT NULL AUTO_INCREMENT,False,False
+t_planilla,numero,int NULL DEFAULT NULL,True,True
+t_planilla,fecha,date NULL DEFAULT NULL,True,True
+t_planilla,idembarque,int NULL DEFAULT NULL,True,True
+t_planilla,textoadicional,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_planilla,idestadoplanilla,int NULL DEFAULT NULL,True,True
+t_planilla,pacenainvoice,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_planilla,slginvoice,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_planilla,alloginvoice,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_preciotimbradoproducto,idpreciotimbradoproducto,int NOT NULL AUTO_INCREMENT,False,False
+t_preciotimbradoproducto,idbaseproductos,int NULL DEFAULT NULL,True,True
+t_preciotimbradoproducto,idtimbradoturno,int NULL DEFAULT NULL,True,True
+t_preciotimbradoproducto,precio,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_prestador,idprestador,int NOT NULL AUTO_INCREMENT,False,False
+t_prestador,idempresa,int NULL DEFAULT NULL,True,True
+t_prestador,prestador,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_prestador,numeroidentificacion,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_prestador,telefono,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_prestador,fax,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_prestador,email,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_prestador,numerocuenta,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_prestador,nombrecontacto,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_prestador,plazo,int NULL DEFAULT NULL,True,True
+t_prestador,id_OVPProv,varchar(11) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_prestadordireccion,idprestadordireccion,int NOT NULL AUTO_INCREMENT,False,False
+t_prestadordireccion,idprestador,int NULL DEFAULT NULL,True,True
+t_prestadordireccion,direccion,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_prestadordireccion,ciudad,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_prestadordireccion,idpais,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_prestadordireccion,nombrecontacto,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_prestadordireccion,email,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_prestadorservicio,idprestadorservicio,int NOT NULL AUTO_INCREMENT,False,False
+t_prestadorservicio,idprestador,int NULL DEFAULT NULL,True,True
+t_prestadorservicio,servicio,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_prestadorservicio,tarifa,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_prestadorservicio,observaciones,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_producto,idproducto,int NOT NULL AUTO_INCREMENT,False,False
+t_producto,idembarque,int NULL DEFAULT NULL,True,True
+t_producto,idembalaje,int NULL DEFAULT NULL,True,True
+t_producto,descripcion,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_producto,piezas,int NULL DEFAULT NULL,True,True
+t_producto,peso,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_producto,volumen,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_productomedida,idproductomedida,int NOT NULL AUTO_INCREMENT,False,False
+t_productomedida,idproducto,int NULL DEFAULT NULL,True,True
+t_productomedida,cantidad,int NULL DEFAULT NULL,True,True
+t_productomedida,largo,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_productomedida,alto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_productomedida,ancho,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_proveedor,idproveedor,int NOT NULL AUTO_INCREMENT,False,False
+t_proveedor,idempresa,int NULL DEFAULT NULL,True,True
+t_proveedor,proveedor,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_proveedor,numeroidentificacion,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_proveedor,telefono,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_proveedor,fax,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_proveedor,email,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_proveedor,numerocuenta,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_proveedor,nombrecontacto,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_proveedor,plazo,int NULL DEFAULT NULL,True,True
+t_proveedor,id_OVPProv,varchar(11) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_proveedor,idtipodocumento,int NULL DEFAULT NULL,True,True
+t_proveedor,numerofacturacion,int NULL DEFAULT NULL,True,True
+t_proveedor,razonsocial,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_proveedor,id_asgard,int NULL DEFAULT NULL,True,True
+t_proveedorcorreofacturacion,idproveedorcorreofacturacion,int NOT NULL AUTO_INCREMENT,False,False
+t_proveedorcorreofacturacion,idproveedor,int NULL DEFAULT NULL,True,True
+t_proveedorcorreofacturacion,correo,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_proveedordireccion,idproveedordireccion,int NOT NULL AUTO_INCREMENT,False,False
+t_proveedordireccion,idproveedor,int NULL DEFAULT NULL,True,True
+t_proveedordireccion,direccion,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_proveedordireccion,ciudad,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_proveedordireccion,idpais,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_proveedordireccion,nombrecontacto,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_proveedordireccion,email,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_referencia_salida,idreferencia_salida,int NOT NULL AUTO_INCREMENT,False,False
+t_referencia_salida,idcliente,int NULL DEFAULT NULL,True,True
+t_referencia_salida,contrato_no,varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_referencia_salida,proyecto_no,varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_referencia_salida,solicitado_por,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_referencia_salida,autorizado_por,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_referencia_salida,rubro_producto,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_referencia_salida,ciudad,varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_referencia_salida,direccion_entrega,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_referencia_salida,transporte,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_referencia_salida,placa,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_referencia_salida,hora_inicio_a,time NULL DEFAULT NULL,True,True
+t_referencia_salida,hora_fin_a,time NULL DEFAULT NULL,True,True
+t_referencia_salida,hora_inicio_b,time NULL DEFAULT NULL,True,True
+t_referencia_salida,hora_fin_b,time NULL DEFAULT NULL,True,True
+t_referencia_salida,empresa_recibido,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_referencia_salida,tipo_pedido,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_referenciacolor,idreferenciacolor,int NOT NULL AUTO_INCREMENT,False,False
+t_referenciacolor,idcliente,int NULL DEFAULT NULL,True,True
+t_referenciacolor,color,varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_referenciacolor,referenciacolor,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_reporte,idreporte,int NOT NULL AUTO_INCREMENT,False,False
+t_reporte,reporte,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_reporte,menu,int NULL DEFAULT NULL,True,True
+t_reporte,enlace,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_reporte,icono,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_reporte,activo,int NULL DEFAULT NULL,True,True
+t_rubro,idrubro,int NOT NULL AUTO_INCREMENT,False,False
+t_rubro,rubro,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,idsalida,int NOT NULL AUTO_INCREMENT,False,False
+t_salida,numero,int NULL DEFAULT NULL,True,True
+t_salida,gestion,int NULL DEFAULT NULL,True,True
+t_salida,idalmacen,int NULL DEFAULT NULL,True,True
+t_salida,idcliente,int NULL DEFAULT NULL,True,True
+t_salida,es_vehiculo,int NULL DEFAULT NULL,True,True
+t_salida,es_no_conf,int NULL DEFAULT NULL,True,True
+t_salida,movimiento,int NULL DEFAULT NULL,True,True
+t_salida,idcliente_destino,int NULL DEFAULT NULL,True,True
+t_salida,idpedido,int NULL DEFAULT NULL,True,True
+t_salida,fecha,datetime NULL DEFAULT NULL,True,True
+t_salida,inter_company,int NULL DEFAULT NULL,True,True
+t_salida,solicitado_por,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,autorizado_por,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,idmovilizador,int NULL DEFAULT NULL,True,True
+t_salida,delivery_note,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,proyecto_no,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,contrato_no,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,rubro_producto,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,direccion_entrega,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,idalmacen_destino,int NULL DEFAULT NULL,True,True
+t_salida,transporte,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,placa,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,ciudad,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,num_res_adm,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,cantidad_cajas,int NULL DEFAULT NULL,True,True
+t_salida,cantidad_pallet,int NULL DEFAULT NULL,True,True
+t_salida,hoja_ruta,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,autorizacion_compra,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,tipo_pedido,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,almacen_destino,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,pedido_consolidado,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,idpedido_consolidado,int NULL DEFAULT NULL,True,True
+t_salida,partida,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,hora_inicio_a,time NULL DEFAULT NULL,True,True
+t_salida,hora_fin_a,time NULL DEFAULT NULL,True,True
+t_salida,cantidad_estibadores_a,int NULL DEFAULT NULL,True,True
+t_salida,hora_inicio_cable,time NULL DEFAULT NULL,True,True
+t_salida,hora_fin_cable,time NULL DEFAULT NULL,True,True
+t_salida,hora_inicio_b,time NULL DEFAULT NULL,True,True
+t_salida,hora_fin_b,time NULL DEFAULT NULL,True,True
+t_salida,cantidad_estibadores_b,int NULL DEFAULT NULL,True,True
+t_salida,nota_adicional,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_salida,idusuario_entrega,int NULL DEFAULT NULL,True,True
+t_salida,nombre_recibido,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,ci_recibido,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,empresa_recibido,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salida,fecha_recibido,date NULL DEFAULT NULL,True,True
+t_salida,entrega_a_tiempo,int NULL DEFAULT NULL,True,True
+t_salida,entrega_completa_conforme,int NULL DEFAULT NULL,True,True
+t_salida,finalizado,int NULL DEFAULT NULL,True,True
+t_salidadetalle,idsalidadetalle,int NOT NULL AUTO_INCREMENT,False,False
+t_salidadetalle,idsalida,int NULL DEFAULT NULL,True,True
+t_salidadetalle,idingresodetalle,int NULL DEFAULT NULL,True,True
+t_salidadetalle,idsectoringresodetalle,int NULL DEFAULT NULL,True,True
+t_salidadetalle,cantidad,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_salidadetalle,metros,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_salidadetalle,area,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_salidadetalle,peso,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_salidadetalle,bultos,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_salidadetalle,cantidad_no_conf,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_salidadetalle,temperatura,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salidadetalle,observaciones,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_salidadetalle,kilometraje,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salidadetalle,tiene_danios,int NULL DEFAULT NULL,True,True
+t_salidadetalle,danios,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_salidadetalle,tiene_faltante,int NULL DEFAULT NULL,True,True
+t_salidadetalle,faltante,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_salidadetalle,kilometraje_pendiente,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salidadetalle,tiene_danios_pendiente,int NULL DEFAULT NULL,True,True
+t_salidadetalle,danios_pendiente,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_salidadetalle,tiene_faltante_pendiente,int NULL DEFAULT NULL,True,True
+t_salidadetalle,faltante_pendiente,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_salidadetalle_accesorios,idsalidadetalle_accesorios,int NOT NULL AUTO_INCREMENT,False,False
+t_salidadetalle_accesorios,idsalidadetalle,int NULL DEFAULT NULL,True,True
+t_salidadetalle_accesorios,idaccesorios_vehiculos,int NULL DEFAULT NULL,True,True
+t_salidadetalle_accesorios,cantidad,int NULL DEFAULT NULL,True,True
+t_salidadetalle_accesorios,texto,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_salidadetalle_accesorios,created_at,datetime NULL DEFAULT NULL,True,True
+t_salidadetalle_accesorios,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_salidadetalle_accesorios_pendiente,idsalidadetalle_accesorios_pendiente,int NOT NULL AUTO_INCREMENT,False,False
+t_salidadetalle_accesorios_pendiente,idsalidadetalle,int NULL DEFAULT NULL,True,True
+t_salidadetalle_accesorios_pendiente,idaccesorios_vehiculos,int NULL DEFAULT NULL,True,True
+t_salidadetalle_accesorios_pendiente,cantidad,int NULL DEFAULT NULL,True,True
+t_salidadetalle_accesorios_pendiente,texto,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_salidadetalle_accesorios_pendiente,created_at,datetime NULL DEFAULT NULL,True,True
+t_salidadetalle_accesorios_pendiente,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_salidadetalleimagen,idsalidadetalleimagen,int NOT NULL AUTO_INCREMENT,False,False
+t_salidadetalleimagen,idsalidadetalle,int NULL DEFAULT NULL,True,True
+t_salidadetalleimagen,imagen,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_salidadetalleimagen_pendiente,idsalidadetalleimagen_pendiente,int NOT NULL AUTO_INCREMENT,False,False
+t_salidadetalleimagen_pendiente,idsalidadetalle,int NULL DEFAULT NULL,True,True
+t_salidadetalleimagen_pendiente,imagen,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_salidadetalleprevio,idsalidadetalleprevio,int NOT NULL AUTO_INCREMENT,False,False
+t_salidadetalleprevio,idsalida,int NULL DEFAULT NULL,True,True
+t_salidadetalleprevio,idsectoringresodetalle,int NULL DEFAULT NULL,True,True
+t_salidadetalleprevio,codigo,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_salidadetalleprevio,cantidad,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_salidadetalleprevio,metros,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_salidadetalleprevio,area,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_salidadetalleprevio,peso,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_salidadetalleprevio,observaciones,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_sector,idsector,int NOT NULL AUTO_INCREMENT,False,False
+t_sector,nave,int NULL DEFAULT NULL,True,True
+t_sector,sector,varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_sector,idalmacen,int NULL DEFAULT NULL,True,True
+t_sector,idtiposector,int NULL DEFAULT NULL,True,True
+t_sector,fila,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_sector,columna,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_sector,largo,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_sector,ancho,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_sector,alto,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_sectoringresodetalle,idsectoringresodetalle,int NOT NULL AUTO_INCREMENT,False,False
+t_sectoringresodetalle,idsector,int NULL DEFAULT NULL,True,True
+t_sectoringresodetalle,nivel,int NULL DEFAULT NULL,True,True
+t_sectoringresodetalle,idingresodetalle,int NULL DEFAULT NULL,True,True
+t_sectoringresodetalle,fecha_ingreso,datetime NULL DEFAULT NULL,True,True
+t_sectoringresodetalle,fecha_salida,datetime NULL DEFAULT NULL,True,True
+t_sectoringresodetalle,X,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_sectoringresodetalle,Y,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_sectoringresodetalle,Z,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_solicitante,idsolicitante,int NOT NULL AUTO_INCREMENT,False,False
+t_solicitante,idcliente,int NULL DEFAULT NULL,True,True
+t_solicitante,nombre,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_solicitante,created_at,datetime NULL DEFAULT NULL,True,True
+t_solicitante,edited_at,datetime NULL DEFAULT NULL,True,True
+t_solicitante,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_status,idstatus,int NOT NULL AUTO_INCREMENT,False,False
+t_status,status,varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_temperatura,idtemperatura,int NOT NULL AUTO_INCREMENT,False,False
+t_temperatura,temperatura,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_temperatura,activo,int NULL DEFAULT NULL,True,True
+t_timbrado,idtimbrado,int NOT NULL AUTO_INCREMENT,False,False
+t_timbrado,idcliente,int NULL DEFAULT NULL,True,True
+t_timbrado,created_at,datetime NULL DEFAULT NULL,True,True
+t_timbradodetalle,idtimbradodetalle,int NOT NULL AUTO_INCREMENT,False,False
+t_timbradodetalle,idtimbrado,int NULL DEFAULT NULL,True,True
+t_timbradodetalle,idtimbradoturno,int NULL DEFAULT NULL,True,True
+t_timbradodetalle,iddiasemana,int NULL DEFAULT NULL,True,True
+t_timbradodetalle,fecha,date NULL DEFAULT NULL,True,True
+t_timbradodetalle,codigo_producto,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,sku,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,nro_tcf,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,factura_timbrada,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,cantidad_timbrado,"decimal(13, 3) NULL DEFAULT NULL",True,True
+t_timbradodetalle,meta_timbrado,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_timbradodetalle,umcompra,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,umalterna,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,metodo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,precio_timbrado,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_timbradodetalle,precio_metodo,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_timbradodetalle,observaciones,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,personal,int NULL DEFAULT NULL,True,True
+t_timbradodetalle,lotes_permiso_senasag,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,faltantes_senasag,int NULL DEFAULT NULL,True,True
+t_timbradodetalle,lote_senasag,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,faltante,int NULL DEFAULT NULL,True,True
+t_timbradodetalle,lote_faltante,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,danados,int NULL DEFAULT NULL,True,True
+t_timbradodetalle,lote_danados,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,quebrados,int NULL DEFAULT NULL,True,True
+t_timbradodetalle,lote_quebrados,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,sin_tapa,int NULL DEFAULT NULL,True,True
+t_timbradodetalle,lote_sin_tapa,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,borrosos,int NULL DEFAULT NULL,True,True
+t_timbradodetalle,lote_borrosos,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,film,"decimal(13, 3) NULL DEFAULT NULL",True,True
+t_timbradodetalle,cinta,"decimal(13, 3) NULL DEFAULT NULL",True,True
+t_timbradodetalle,silicona,"decimal(13, 3) NULL DEFAULT NULL",True,True
+t_timbradodetalle,hora_hinicio,time NULL DEFAULT NULL,True,True
+t_timbradodetalle,hora_fin,time NULL DEFAULT NULL,True,True
+t_timbradodetalle,no_se_cumplio_por,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,lotes_validos,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,lotes_adicionales,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,transportadora,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,total_unidades_timbradas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,total_u_factura,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,carpicola_de_balde_20,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,clasificacion,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,abolladas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,lote_abolladas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,mojadas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,lote_mojadas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,mermadas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,lote_mermadas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,tapa_extra,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,lote_tapa_extra,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,legales_extra_portugues,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,lote_legales_extra,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,caja_extra,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,lote_caja_extra,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,sarro_leve,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,lote_sarro_leve,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,sarro_severo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,lote_sarro_severo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle,created_at,datetime NULL DEFAULT NULL,True,True
+t_timbradodetalle,edited_at,datetime NULL DEFAULT NULL,True,True
+t_timbradodetalle,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,idtimbradodetalle,int NOT NULL AUTO_INCREMENT,False,False
+t_timbradodetalle_bk,idtimbrado,int NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,idtimbradoturno,int NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,iddiasemana,int NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,fecha,date NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,codigo_producto,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,sku,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,nro_tcf,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,factura_timbrada,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,cantidad_timbrado,"decimal(13, 3) NULL DEFAULT NULL",True,True
+t_timbradodetalle_bk,meta_timbrado,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_timbradodetalle_bk,umcompra,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,umalterna,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,metodo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,precio_timbrado,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_timbradodetalle_bk,precio_metodo,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_timbradodetalle_bk,observaciones,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,personal,int NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lotes_permiso_senasag,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,faltantes_senasag,int NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lote_senasag,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,faltante,int NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lote_faltante,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,danados,int NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lote_danados,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,quebrados,int NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lote_quebrados,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,sin_tapa,int NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lote_sin_tapa,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,borrosos,int NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lote_borrosos,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,film,"decimal(13, 3) NULL DEFAULT NULL",True,True
+t_timbradodetalle_bk,cinta,"decimal(13, 3) NULL DEFAULT NULL",True,True
+t_timbradodetalle_bk,silicona,"decimal(13, 3) NULL DEFAULT NULL",True,True
+t_timbradodetalle_bk,hora_hinicio,time NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,hora_fin,time NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,no_se_cumplio_por,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lotes_validos,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lotes_adicionales,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,transportadora,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,total_unidades_timbradas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,total_u_factura,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,carpicola_de_balde_20,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,clasificacion,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,abolladas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lote_abolladas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,mojadas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lote_mojadas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,mermadas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lote_mermadas,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,tapa_extra,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lote_tapa_extra,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,legales_extra_portugues,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lote_legales_extra,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,caja_extra,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lote_caja_extra,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,sarro_leve,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lote_sarro_leve,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,sarro_severo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,lote_sarro_severo,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,created_at,datetime NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,edited_at,datetime NULL DEFAULT NULL,True,True
+t_timbradodetalle_bk,deleted_at,datetime NULL DEFAULT NULL,True,True
+t_timbradoturno,idtimbradoturno,int NOT NULL AUTO_INCREMENT,False,False
+t_timbradoturno,timbradoturno,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timeszones,idtimeszones,int NOT NULL AUTO_INCREMENT,False,False
+t_timeszones,timezone_name,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_timeszones,utc_offset_minutos,smallint NULL DEFAULT NULL,True,True
+t_tipoalmacendetalle,idtipoalmacendetalle,int NOT NULL AUTO_INCREMENT,False,False
+t_tipoalmacendetalle,tipoalmacendetalle,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_tipoalmacendetalle,imagen,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_tipobulto,idtipobulto,int NOT NULL AUTO_INCREMENT,False,False
+t_tipobulto,codigo,varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_tipobulto,tipobulto,varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_tipocambio,idtipocambio,int NOT NULL AUTO_INCREMENT,False,False
+t_tipocambio,idempresa,int NULL DEFAULT NULL,True,True
+t_tipocambio,iddivisaorigen,int NULL DEFAULT NULL,True,True
+t_tipocambio,iddivisadestino,int NULL DEFAULT NULL,True,True
+t_tipocambio,tipocambio,"decimal(13, 6) NULL DEFAULT NULL",True,True
+t_tipocambio,fechainicio,date NULL DEFAULT NULL,True,True
+t_tipocambio,fechafin,date NULL DEFAULT NULL,True,True
+t_tipocamion,idtipocamion,int NOT NULL AUTO_INCREMENT,False,False
+t_tipocamion,tipocamion,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_tipocarga,idtipocarga,int NOT NULL AUTO_INCREMENT,False,False
+t_tipocarga,tipocarga,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_tipocarga,idtemperatura,int NULL DEFAULT NULL,True,True
+t_tipocarga,activo,int NULL DEFAULT NULL,True,True
+t_tipocarga,idconceptocargo,int NULL DEFAULT NULL,True,True
+t_tipocobro,idtipocobro,int NOT NULL AUTO_INCREMENT,False,False
+t_tipocobro,tipocobro,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_tipocontenedor,idtipocontenedor,int NOT NULL AUTO_INCREMENT,False,False
+t_tipocontenedor,tipocontenedor,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_tipodescarga,idtipodescarga,int NOT NULL AUTO_INCREMENT,False,False
+t_tipodescarga,tipodescarga,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_tipodocumento,idtipodocumento,int NOT NULL,False,False
+t_tipodocumento,tipodocumento,varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_tipoembarque,idtipoembarque,int NOT NULL AUTO_INCREMENT,False,False
+t_tipoembarque,tipoembarque,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_tipoembarque,codigo,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_tipoembarque,tipoembarque_en,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_tipoentidad,idtipoentidad,int NOT NULL AUTO_INCREMENT,False,False
+t_tipoentidad,tipoentidad,varchar(60) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_tipoentidad,tabla,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_tipoentidad,columnanombre,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_tipoevento,idtipoevento,int NOT NULL AUTO_INCREMENT,False,False
+t_tipoevento,tipoevento,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_tipofacturapago,idtipofacturapago,int NOT NULL AUTO_INCREMENT,False,False
+t_tipofacturapago,tipofacturapago,varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_tipoingreso,idtipoingreso,int NOT NULL AUTO_INCREMENT,False,False
+t_tipoingreso,tipoingreso,varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_tipoliquidacion,idtipoliquidacion,int NOT NULL AUTO_INCREMENT,False,False
+t_tipoliquidacion,tipoliquidacion,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_tipopedido,idtipopedido,int NOT NULL AUTO_INCREMENT,False,False
+t_tipopedido,tipopedido,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_tipoplanilla,idtipoplanilla,int NOT NULL AUTO_INCREMENT,False,False
+t_tipoplanilla,tipoplanilla,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_tipoplanilla,orden,int NULL DEFAULT NULL,True,True
+t_tipoproducto,idtipoproducto,int NOT NULL AUTO_INCREMENT,False,False
+t_tipoproducto,tipoproducto,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_tipoproducto,es_vehiculo,int NULL DEFAULT NULL,True,True
+t_tiposector,idtiposector,int NOT NULL AUTO_INCREMENT,False,False
+t_tiposector,tiposector,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_tipotransferencia,idtipotransferencia,int NOT NULL AUTO_INCREMENT,False,False
+t_tipotransferencia,tipotransferencia,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_tipousuario,idtipousuario,int NOT NULL AUTO_INCREMENT,False,False
+t_tipousuario,tipousuario,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_token,idtoken,int NOT NULL AUTO_INCREMENT,False,False
+t_token,idusuario,int NULL DEFAULT NULL,True,True
+t_token,token,varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_token,fechaingreso,datetime NULL DEFAULT NULL,True,True
+t_token,fechaexpiracion,datetime NULL DEFAULT NULL,True,True
+t_token_acceso_clientes,id,int NOT NULL AUTO_INCREMENT,False,False
+t_token_acceso_clientes,almacen_id,int NULL DEFAULT NULL,True,True
+t_token_acceso_clientes,token,text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,True,False
+t_transportista,idtransportista,int NOT NULL AUTO_INCREMENT,False,False
+t_transportista,idempresa,int NULL DEFAULT NULL,True,True
+t_transportista,transportista,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_transportista,numeroidentificacion,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_transportista,telefono,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_transportista,fax,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_transportista,email,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_transportista,numerocuenta,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_transportista,nombrecontacto,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_transportista,plazo,int NULL DEFAULT NULL,True,True
+t_transportista,id_OVPProv,varchar(11) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_transportistadireccion,idtransportistadireccion,int NOT NULL AUTO_INCREMENT,False,False
+t_transportistadireccion,idtransportista,int NULL DEFAULT NULL,True,True
+t_transportistadireccion,direccion,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_transportistadireccion,ciudad,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_transportistadireccion,idpais,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_transportistatarifa,idtransportistatarifa,int NOT NULL AUTO_INCREMENT,False,False
+t_transportistatarifa,idtransportista,int NULL DEFAULT NULL,True,True
+t_transportistatarifa,descripcion,varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_transportistatarifa,idformapago,int NULL DEFAULT NULL,True,True
+t_transportistatarifa,tiempoestimado,int NULL DEFAULT NULL,True,True
+t_transportistatarifa,minimo,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_transportistatarifa,maximo,"decimal(13, 2) NULL DEFAULT NULL",True,True
+t_transportistatarifa,numerocontrato,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_transportistatarifa,numeroenmienda,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_transportistatarifa,notas,text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,True,False
+t_transportistatarifa,fechainicio,date NULL DEFAULT NULL,True,True
+t_transportistatarifa,fechafin,date NULL DEFAULT NULL,True,True
+t_ubicacionitem,idubicacionitem,int NOT NULL AUTO_INCREMENT,False,False
+t_ubicacionitem,idingresodetalle,int NULL DEFAULT NULL,True,True
+t_ubicacionitem,idalmacendetalle,int NULL DEFAULT NULL,True,True
+t_ubicacionitem,fechaingreso,datetime NULL DEFAULT NULL,True,True
+t_ubicacionitem,fechasalida,datetime NULL DEFAULT NULL,True,True
+t_usuario,idusuario,int NOT NULL AUTO_INCREMENT,False,False
+t_usuario,idempresa,int NULL DEFAULT NULL,True,True
+t_usuario,nombre,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_usuario,ci,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_usuario,idciudad,int NULL DEFAULT NULL,True,True
+t_usuario,idalmacen,int NULL DEFAULT NULL,True,True
+t_usuario,username,varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_usuario,contrasena,varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_usuario,idtipousuario,int NULL DEFAULT NULL,True,True
+t_usuario,email,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_usuario,telefono,varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_usuario,almacen,int NULL DEFAULT NULL,True,True
+t_usuario,activo,int NULL DEFAULT NULL,True,True
+t_usuario,idcliente_almacen,int NULL DEFAULT NULL,True,True
+t_usuario,fecha_contrasena,date NULL DEFAULT NULL,True,True
+t_usuario,doble_factor,int NULL DEFAULT NULL,True,True
+t_usuario,codigo_doble_factor,varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,True,True
+t_usuario,fecha_doble_factor,datetime NULL DEFAULT NULL,True,True
+t_usuario_almacenes,idusuario_almacenes,int NOT NULL AUTO_INCREMENT,False,False
+t_usuario_almacenes,idusuario,int NULL DEFAULT NULL,True,True
+t_usuario_almacenes,idalmacen,int NULL DEFAULT NULL,True,True
+t_usuario_columnas_moverdividir,idusuario_columnas_moverdividir,int NOT NULL AUTO_INCREMENT,False,False
+t_usuario_columnas_moverdividir,idusuario,int NULL DEFAULT NULL,True,True
+t_usuario_columnas_moverdividir,field,varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_usuario_columnas_pedido,idusuario_columnas_pedido,int NOT NULL AUTO_INCREMENT,False,False
+t_usuario_columnas_pedido,idusuario,int NULL DEFAULT NULL,True,True
+t_usuario_columnas_pedido,field,varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,True,True
+t_usuariomodulo,idusuariomodulo,int NOT NULL AUTO_INCREMENT,False,False
+t_usuariomodulo,idusuario,int NULL DEFAULT NULL,True,True
+t_usuariomodulo,idmodulo,int NULL DEFAULT NULL,True,True
+t_usuariomodulo,lectura,int NULL DEFAULT NULL,True,True
+t_usuariomodulo,escritura,int NULL DEFAULT NULL,True,True

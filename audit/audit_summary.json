@@ -1,0 +1,13 @@
+{
+  "commit": "38f97fea2fa5a3d897c657a236d89f24bb8c2173",
+  "files": 522,
+  "backend_routes": 339,
+  "frontend_routes": 99,
+  "frontend_service_calls": 328,
+  "tables": 189,
+  "columns": 1716,
+  "sql_refs": 2567,
+  "findings": 10,
+  "integrations": 1058,
+  "documents": 4036
+}

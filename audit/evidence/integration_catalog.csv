@@ -1,0 +1,1059 @@
+integration_type,file,line,evidence
+filesystem,AtlantesBE-main/AtlantesBE-main/app/functions/common.php,49,"@mkdir($dir, 0777, true);"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/functions/common.php,63,$imageData = file_get_contents($srcPath);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/functions/generarcarpetas.php,241,"mkdir($rutaCompleta, 0777, true);"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/functions/integraciones_asgard.php,153,"$dirOK = $sftp->mkdir($remoteDir, -1, true);"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/functions/integraciones_asgard.php,158,"if ($this->sftp_dir_exists($sftp, $relativeDir) || $sftp->mkdir($relativeDir, -1, true)) {"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/functions/integraciones_asgard.php,197,"if (!@mkdir($destDir, 0775, true)) {"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/functions/integraciones_asgard.php,213,"private function ftp_mkdir_recursive($ftp, $path)"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/functions/integraciones_asgard.php,222,"if (!@ftp_mkdir($ftp, $part)) { if ($cwd) @ftp_chdir($ftp, $cwd); return false; }"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/logOVP.php,2,class logOVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/logOVP.php,4,"public function saveLog($parametros,$query,$tipo,$tabla,$accion,$jsonovp,$idusuario,$conexion){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/logOVP.php,7,"//$jsonovp= str_replace(""'"", ""\'"", $jsonovp);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/logOVP.php,9,"$querylog = (""INSERT INTO log_ovp (TABLA, FECHA, NOMBRE, TEXTO, TIPO, IP_USUARIO, PC_USUARIO, ID_USUARIO, USERNAME, FILENAME, ACCION, JSON, JSONOVP, created_at,updated_at) VALUES ("
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/logOVP.php,22,"'"".str_replace(""'"", ""\'"", json_encode($jsonovp)).""',"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2,class OVP{
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,4,$this->logOVP = new logOVP();
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,7,"public function agregarpago($idpagos,$estado1,$ciudadovp,$clienteovp,$idusuario,$conexion){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,108,WHEN 1 THEN t_clienteconsignatario.id_OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,113,"END as IdCliente_OVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,129,WHEN 1 THEN 0 -- en 0 porque no hay casos en el historico y no hay codigos OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,130,WHEN 2 THEN t_proveedor.id_OVPProv
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,131,WHEN 3 THEN t_prestador.id_OVPProv
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,132,WHEN 4 THEN t_transportista.id_OVPProv
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,133,WHEN 5 THEN t_agentecarga.id_OVPProv
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,134,"END as id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,141,"t_facturapago.errorOVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,144,"t_concepto.id_OVPRef IdReferencia,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,174,"if (($resultPago->rowCount()) > 0 && $estado1==""ovppago""){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,175,while ($rowOVP =  $resultPago ->fetch(PDO::FETCH_ASSOC)){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,176,"//$dt =  new DateTime($rowOVP[""fecha""] . "" "" .date('H:i:s', time()));"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,178,$dt->add(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,180,$dt->sub(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,185,"$numeroPago = $rowOVP[""embarque""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,188,$parametros['CodigoSeguridad']=codigoSeguridadOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,189,$parametros['login']=userOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,190,$parametros['pwd']=passOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,191,$parametros['BaseDeDatos']=$ciudadovp;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,197,"$parametros['Descripcion']=$rowOVP[""Descripcion""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,198,"$parametros['codigoReferencia']=$rowOVP[""IdReferencia""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,200,"$parametros['Monto'] = $rowOVP[""Montobs""] - $datosExtra[""montobs""]; // USD: 6.96"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,202,"$parametros['Monto'] = $rowOVP[""Montobs""]; // USD: 6.96"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,204,"$parametros['IdTipoValorOrigen']=($rowOVP[""idtipofacturapago""]==1 ? 208 : 209); //(ID que inician en 2** (203)) // CTA DE TERCEROS // CAMBIAR EN PROD POR EL QUE CORRESPONDE"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,205,"$parametros['IdTipoValorFondosARendir']=107; //$rowOVP[""IdTipoValorFondosARendir""]; // DESPACHOS EN TRANSITO SLG"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,211,"$parametros['IdCliente']=$rowOVP[""IdCliente_OVP""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,214,"if ($rowOVP[""idproveedor""] == 31 && $rowOVP[""idcliente""] == 644){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,215,"$rowOVP[""id_OVPProv""] = 50;"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,216,"} elseif ($rowOVP[""idproveedor""] == 44 && $rowOVP[""idcliente""] == 644){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,217,"$rowOVP[""id_OVPProv""] = 48;"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,219,"$parametros['IdProveedor']=$rowOVP[""id_OVPProv""];//LISTA DE CONCEPTOS QUE SE USAN EN PLANILLAS (EJ: CAINCO, CNC, SLG, ETC.)"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,222,$result = $clienteovp->RGI_GrabarAsignacion($parametros);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,228,"$query = (""UPDATE t_facturapago SET outNroAsignacion='$outNroAsignacion', errorOVP=NULL WHERE idfacturapago=$idpagos;"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,229,$resultupdateOVP = $conexion->exec($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,231,"$datolog=$this->logOVP->saveLog($parametros,$query,""agregarFactPago"",""t_facturapago"",""UPDATE"",$result,$idusuario,$conexion);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,242,"$query = (""UPDATE t_facturapago SET errorOVP='$mensajeerror' WHERE idfacturapago=$idpagos;"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,243,$resultupdateOVP = $conexion->exec($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,244,"$datolog=$this->logOVP->saveLog($parametros,$query,""errorAgregarFactPago"",""t_facturapago"",""UPDATE"",$result,$idusuario,$conexion);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,250,"$mensajeerror=""No hay valores para guardar en la OVP."";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,277,"public function agregarfacturaventa($idfacturaplanilla,$nro,$estado1,$ciudadovp,$clienteovp,$idusuario,$conexion){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,285,"$resultOVP = $conexion->prepare(""SELECT"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,299,"t_concepto.id_OVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,318,$resultOVP->execute();
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,320,"$ovpDetalle = $conexion->prepare(""SELECT"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,340,t_cliente.id_OVP AS id_OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,352,$ovpDetalle->execute();
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,355,"if($estado1 == ""ovpfactura""){//verificar si puede guardar en ovp"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,356,if (($resultOVP->rowCount()) > 0){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,357,$detalles = $ovpDetalle->fetch(PDO::FETCH_ASSOC);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,361,$dt->add(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,363,$dt->sub(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,369,while ($rowOVP =  $resultOVP ->fetch(PDO::FETCH_ASSOC)){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,374,"'Descripcion' => $rowOVP['concepto']."" "".$rowOVP['notas'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,378,"'IdProducto' => $rowOVP['id_OVP'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,379,"'Importe' => $rowOVP['subtotal'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,381,"'PrecioUnitario' => $rowOVP['subtotal'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,387,$parametros['CodigoSeguridad']=codigoSeguridadOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,388,$parametros['login']=userOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,389,$parametros['pwd']=passOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,390,$parametros['BaseDeDatos']=$ciudadovp;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,402,"'IdCliente'=>$detalles['id_OVP'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,440,$result = $clienteovp->GC_GrabarVentasCls($parametros);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,449,"$idordenovp=$outIdOrdenFactura."" | "".$outNumeroFactura;"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,452,"$query = (""UPDATE t_factura SET outIdOrdenFactura ='"".$result->outIdOrdenFactura.""',outNumeroFactura ='"".$result->outNumeroFactura.""',outCodigoDeControl ='"".$result->outCodigoDeControl.""',outNumeroAutorizacion ='"".$result->outNumeroAutoriza"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,453,$resultupdateOVP = $conexion->exec($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,454,"$datolog=$this->logOVP->saveLog($parametros,$query,""agregarfactura"",""t_factura"",""UPDATE"",$result,$idusuario,$conexion);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,459,$idordenovp='';
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,467,"$query = (""UPDATE t_factura SET outIdOrdenFactura =NULL,outNumeroFactura =NULL, errorOVPFact='"".$mensajeerror.""' WHERE idfactura=$idfacturaplanilla AND nrofactura=$nro;"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,468,$resultupdateOVP = $conexion->exec($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,469,"$datolog=$this->logOVP->saveLog($parametros,$query,""errorAgregarfactura"",""t_factura"",""UPDATE"",$result,$idusuario,$conexion);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,475,$idordenovp='';
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,477,"$mensajeerror=""no hay valores para guardar la FACTURA en la OVP"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,487,"'idordenovp'=>$idordenovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,498,"public function agregarfacturaventasiat($idfacturaplanilla,$nro,$estado1,$ciudadovp,$clienteovp,$idusuario,$conexion){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,512,"$resultOVP = $conexion->prepare(""SELECT"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,527,"t_concepto.id_OVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,546,$resultOVP->execute();
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,548,"$ovpDetalle = $conexion->prepare(""SELECT"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,569,t_cliente.id_OVP AS id_OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,581,$ovpDetalle->execute();
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,584,"if($estado1 == ""ovpfactura""){//verificar si puede guardar en ovp"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,585,if (($resultOVP->rowCount()) > 0){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,586,$detalles = $ovpDetalle->fetch(PDO::FETCH_ASSOC);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,590,$dt->add(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,592,$dt->sub(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,598,while ($rowOVP =  $resultOVP ->fetch(PDO::FETCH_ASSOC)){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,603,"'Descripcion' => $rowOVP['concepto'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,607,"'IdProducto' => $rowOVP['id_OVP'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,608,"'Importe' => $rowOVP['subtotal'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,610,"'PrecioUnitario' => $rowOVP['subtotal'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,617,'codigoDeSeguridad'=>codigoSeguridadOVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,620,"'baseDeDatos'=>$ciudadovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,623,"'password'=>userOVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,624,'usuario'=>passOVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,641,"'IdCliente'=>$detalles['id_OVP'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,698,$result = $clienteovp->GC_SIAT_GrabarCompraVenta($parametros);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,713,"$idordenovp=$outIdOrdenFactura."" | "".$outNumeroFactura;"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,725,errorOVPFact=NULL
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,728,$resultupdateOVP = $conexion->exec($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,749,"$resultupdateOVP2 = $conexion->exec(""UPDATE t_factura SET fecha='$fecha', hora='$hora', leyenda='$leyenda', cufd='$cufd', municipio='$municipio', telefono='$telefono', direccion='$direccion' WHERE idfactura=$idfacturaplanilla;"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,754,"$datolog=$this->logOVP->saveLog($parametros,$query,""agregarfactura"",""t_factura"",""UPDATE"",$result,$idusuario,$conexion);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,759,$idordenovp='';
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,767,"$query = (""UPDATE t_factura SET outIdOrdenFactura =NULL,outNumeroFactura =NULL, errorOVPFact='"".$mensajeerror.""' WHERE idfactura=$idfacturaplanilla AND nrofactura=$nro;"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,768,$resultupdateOVP = $conexion->exec($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,769,"$datolog=$this->logOVP->saveLog($parametros,$query,""errorAgregarfactura"",""t_factura"",""UPDATE"",$result,$idusuario,$conexion);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,775,$idordenovp='';
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,777,"$mensajeerror=""no hay valores para guardar la FACTURA en la OVP"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,790,$idordenovp='';
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,802,"'idordenovp'=>$idordenovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,824,"public function agregarpagoaterceros($idpagosdetalle,$idpagos,$tipo,$nro,$estado1,$ciudadovp,$clienteovp){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,827,"$idovp = """";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,829,"$idovp = ""SC"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,841,"dav_cliente.id_OVP"" . $idovp . "" as IdCliente,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,845,"dav_concepto.id_OVP"" . $idovp . "" as IdReferencia,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,846,"dav_concepto.idprov_OVP"" . $idovp . "" as IdProveedor,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,847,"(SELECT id_OVP"" . $idovp . "" FROM dav_banco WHERE cuenta='DETP' LIMIT 1) as IdTipoValorFondosARendir,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,866,"dav_cliente.id_OVP"" . $idovp . "" as IdCliente,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,868,"dav_concepto.id_OVP"" . $idovp . "" as IdReferencia,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,869,"dav_concepto.idprov_OVP"" . $idovp . "" as IdProveedor,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,870,"(SELECT id_OVP"" . $idovp . "" FROM dav_banco WHERE cuenta='DETP' LIMIT 1) as IdTipoValorFondosARendir,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,914,"dav_cliente.id_OVP"" . $idovp . "" as IdCliente,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,918,"dav_concepto.id_OVP"" . $idovp . "" as IdReferencia,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,919,"IF(dav_pagos.idbanco=22,51,IF(dav_pagos.idbanco=23,54,IF(dav_pagos.idbanco=44,49,IF(dav_pagos.idbanco=43,(SELECT idprov_OVP"" . $idovp . "" FROM dav_concepto WHERE concepto='PSADA' LIMIT 1),"".($_SESSION[""idciudad""]==11 ? 65 : 0)."")))) as IdPr"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,920,"(SELECT id_OVP"" . $idovp . "" FROM dav_banco WHERE cuenta='DETP' LIMIT 1) as IdTipoValorFondosARendir,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,934,"""dav_pagos.idconceptoOVP=dav_concepto.idconcepto"" :"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,945,"if (mysql_num_rows($resultPago) > 0 && $estado1==""ovpterceros""){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,946,while($rowOVP = mysql_fetch_array($resultPago)){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,947,"//$dt =  new DateTime($rowOVP[""fecha""] . "" "" .date('H:i:s', time()));"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,949,$dt->add(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,951,$dt->sub(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,956,while ($rowOVP2 = mysql_fetch_array($resultPagoDetalle)) {//detalle del pago - lista de conceptos
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,958,"'Descripcion' => $rowOVP2[""Referencia""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,959,"'Monto' => $rowOVP2[""Monto""]"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,965,$parametros['CodigoSeguridad']=codigoSeguridadOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,966,$parametros['login']=userOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,967,$parametros['pwd']=passOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,968,$parametros['BaseDeDatos']=$ciudadovp;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,974,"$parametros['Descripcion']=$rowOVP[""Descripcion""]; // PONER EL NUMERO DE PLANILLA y CONCEPTO PARA IDENTIFICAR"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,975,"$parametros['codigoReferencia']=$rowOVP[""IdReferencia""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,976,"$parametros['Monto']=$rowOVP[""Monto""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,977,"$parametros['IdTipoValorOrigen']=$rowOVP[""IdTipoValorOrigen""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,978,"$parametros['IdTipoValorFondosARendir']=$rowOVP[""IdTipoValorFondosARendir""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,983,"$parametros['NroOrdenRGI']=$rowOVP[""NroOrdenRGI""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,984,"$parametros['IdCliente']=$rowOVP[""IdCliente""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,985,"$parametros['codigoExterno']=$rowOVP[""numero""];//DEFINIMOS EL NUMERO DE PLANILLA PARA IDENFITICAR EN OVP"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,987,"$parametros['IdProveedor']=$rowOVP[""IdProveedor""];//LISTA DE CONCEPTOS QUE SE USAN EN PLANILLAS (EJ: CAINCO, CNC, SLG, ETC.)"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,990,$result = $clienteovp->RGI_GrabarAsignacion($parametros);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,994,"$searchpago = mysql_query(""SELECT idpagosovp from dav_pagosovp where idpagos="" . $idpagos . "" AND idcasos="" . $rowOVP[""idcasos""] . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,996,"$searchpago = mysql_query(""SELECT idpagosovp from dav_pagosovp where idpagosdetalle="".$idpagosdetalle."" AND idcasos="".$rowOVP[""idcasos""]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,999,if (mysql_num_rows($searchpago) > 0) {//actualizar datos del pago OVP ya registrado
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1001,"$query = (""UPDATE dav_pagosovp SET outNroAsignacion='"".$result->respuestaServicio->NroAsignacion.""', IdOrdenIFP='"".$result->respuestaServicio->IdOrden.""', respuestaOVP='"".json_encode($result->respuestaServicio).""', tipo="".$tipo."", errorOVP="
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1002,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1003,"$this->logOVP->saveLog($parametros,$query,""agregarPagoProveedorTipo"".$tipo,""dav_pagosovp"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1004,}else{//insertar datos del pago OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1005,"$query = (""INSERT INTO dav_pagosovp (idcasos, tipo, outNroAsignacion, IdOrdenIFP, respuestaOVP, errorOVP "".($tributo[""tributos""] == 1 ? "", idpagos"" : "", idpagosdetalle"")."") VALUES ("".$rowOVP[""idcasos""]."", "".$tipo."", '"".$result->respuestaSer"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1006,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1007,"$this->logOVP->saveLog($parametros,$query,""agregarPagoProveedorTipo"".$tipo,""dav_pagosovp"",""INSERT"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1014,"<?= ""El pago <b>"".$result->respuestaServicio->NroAsignacion.""</b> se ha registrado en la OVP."" ;?>"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1019,"$searchpago = mysql_query(""SELECT idpagosovp from dav_pagosovp where idpagos="" . $idpagos . "" AND idcasos="" . $rowOVP[""idcasos""] . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1021,"$searchpago = mysql_query(""SELECT idpagosovp from dav_pagosovp where idpagosdetalle="".$idpagosdetalle."" AND idcasos="".$rowOVP[""idcasos""]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1024,if (mysql_num_rows($searchpago) > 0) {//actualizar datos del pago OVP ya registrado
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1026,"$query = (""UPDATE dav_pagosovp SET errorOVP='"".mysql_real_escape_string($result->msgError).""' WHERE idpagosovp="".$spago[""idpagosovp""]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1027,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1028,"$this->logOVP->saveLog($parametros,$query,""errorAgregarPagoProveedorTipo"".$tipo,""dav_pagosovp"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1029,}else{//insertar datos del pago OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1030,"$query = (""INSERT INTO dav_pagosovp (idcasos, tipo, respuestaOVP, errorOVP "".($tributo[""tributos""] == 1 ? "", idpagos"" : "", idpagosdetalle"")."") VALUES ("".$idpagosdetalle."","".$rowOVP[""idcasos""]."", "".$tipo."", '"".json_encode($result->respuestaS"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1031,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1032,"$this->logOVP->saveLog($parametros,$query,""errorAgregarPagoProveedorTipo"".$tipo,""dav_pagosovp"",""INSERT"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1039,"<?= ""El pago no fue guardado en OVP, <b>"".$result->msgError.""</b>."" ;?>"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1049,"<?= ""No hay valores para guardar en la OVP."" ;?>"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1057,"public function agregarresagados($idpagos,$tipo,$estado1,$ciudadovp,$clienteovp){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1060,"$idovp = """";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1062,"$idovp = ""SC"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1075,"dav_cliente.id_OVP"" . $idovp . "" as IdCliente,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1079,"dav_concepto.id_OVP"" . $idovp . "" as IdReferencia,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1080,"(SELECT idprov_OVP"" . $idovp . "" FROM dav_concepto WHERE concepto='OCPND' LIMIT 1) as IdProveedor,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1082,"(SELECT id_OVP"" . $idovp . "" FROM dav_banco WHERE cuenta='DETP' LIMIT 1) as IdTipoValorFondosARendir,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1108,"if (mysql_num_rows($resultPago) > 0 && $estado1==""ovppagoresagado""){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1110,"$resultConceptoPlanilla = mysql_query(""SELECT idconcepto,concepto,descripcion,id_OVP"".$idovp."" as id_OVP from dav_concepto where concepto='CCRPT';"");//concepto de la planilla"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1113,while($rowOVP = mysql_fetch_array($resultPagoDetalle)) {//detalle del pago - lista de conceptos
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1115,"'Descripcion' => $rowOVP[""Referencia""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1116,"'Monto' => $rowOVP[""Monto""]"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1120,while($rowOVP = mysql_fetch_array($resultPago)){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1121,"//$dt =  new DateTime($rowOVP[""fecha""] . "" "" .date('H:i:s', time()));"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1123,$dt->add(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1125,$dt->sub(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1130,$parametros['CodigoSeguridad']=codigoSeguridadOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1131,$parametros['login']=userOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1132,$parametros['pwd']=passOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1133,$parametros['BaseDeDatos']=$ciudadovp;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1139,"$parametros['Descripcion']=$rowOVP[""Descripcion""]; // PONER EL NUMERO DE PLANILLA y CONCEPTO PARA IDENTIFICAR"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1140,"$parametros['codigoReferenciaAsignacion']=$rowOVP[""IdReferencia""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1141,"$parametros['codigoReferenciaCierre']=$rowConcepto[""id_OVP""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1142,"$parametros['Monto']=$rowOVP[""Monto""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1143,"$parametros['IdTipoValorOrigen']=$rowOVP[""IdTipoValorOrigen""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1144,"$parametros['IdTipoValorFondosARendir']=$rowOVP[""IdTipoValorFondosARendir""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1145,"$parametros['IdTipoValorDestino']=$rowOVP[""IdTipoValorDestino""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1150,"$parametros['NroOrdenRGI']=$rowOVP[""NroOrdenRGI""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1151,"$parametros['IdCliente']=$rowOVP[""IdCliente""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1152,"$parametros['codigoExterno']=$rowOVP[""numero""];//DEFINIMOS EL NUMERO DE PLANILLA PARA IDENFITICAR EN OVP"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1154,"$parametros['IdProveedor']=$rowOVP[""IdProveedor""];//LISTA DE CONCEPTOS QUE SE USAN EN PLANILLAS (EJ: CAINCO, CNC, SLG, ETC.)"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1157,$result = $clienteovp->RGI_GrabarResagados($parametros);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1160,"$searchpago = mysql_query(""SELECT idpagosovp from dav_pagosovp where idpagos="".$idpagos."" AND idcasos="".$rowOVP[""idcasos""]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1162,if (mysql_num_rows($searchpago) > 0) {//actualizar datos del pago OVP ya registrado
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1164,"$query = (""UPDATE dav_pagosovp SET tipo="".$tipo."", outNroAsignacion='"".$result->respuestaServicioAsignacion->NroAsignacion.""', IdOrdenIFP='"".$result->respuestaServicioAsignacion->IdOrden.""', errorOVP=NULL, respuestaOVP='"".json_encode($resul"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1165,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1166,"$this->logOVP->saveLog($parametros,$query,""agregarRezagadoTipo"".$tipo,""dav_pagosovp"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1167,}else{//insertar datos del pago OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1168,"$query = (""INSERT INTO dav_pagosovp (idpagos, idcasos, tipo, outNroAsignacion, IdOrdenIFP, respuestaOVP, errorOVP) VALUES ("".$idpagos."", "".$rowOVP[""idcasos""]."", "".$tipo."", '"".$result->respuestaServicioAsignacion->NroAsignacion.""', '"".$resul"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1169,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1170,"$this->logOVP->saveLog($parametros,$query,""agregarRezagadoTipo"".$tipo,""dav_pagosovp"",""INSERT"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1173,//busca los pagos que estan registrados en OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1174,"$resultOVPdatos = mysql_query(""SELECT"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1175,"idpagosovp, idpagos, idcasos, idpagosdetalle, nroLote, outNroAsignacion, IdOrdenIFP, IdOrdenIFC, NroAsignacionFact, errorOVPFact"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1176,FROM dav_pagosovp
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1178,"dav_pagosovp.idcasos="" . $rowOVP[""idcasos""] . """
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1179,AND dav_pagosovp.outNroAsignacion IS NOT NULL
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1180,AND (dav_pagosovp.IdOrdenIFC IS NULL OR dav_pagosovp.IdOrdenIFC = '')
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1181,ORDER BY dav_pagosovp.outNroAsignacion+0 ASC;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1187,if ($cantidad==1){//grabar datos de planillaje en dav_pagosovp
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1188,while($rowOVP = mysql_fetch_array($resultOVPdatos)){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1189,"if ((int)$rowOVP[""outNroAsignacion""] == (int)$json->NroAsignacion) {"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1190,"$query = (""UPDATE dav_pagosovp SET IdOrdenIFC='"".$json->IdOrdenIFC.""', NroAsignacionFact='"".$json->NroAsignacion.""', errorOVPFact=NULL WHERE idpagosovp="".$rowOVP[""idpagosovp""]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1191,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1192,"$this->logOVP->saveLog(NULL,$query,""agregarRezagadoCierreTipo"".$tipo,""dav_pagosovp"",""UPDATE"",NULL);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1195,"$this->logOVP->saveLog(NULL, $query, ""errorAgregarRezagadoCierreTipo"".$tipo, ""dav_pagosovp"", ""UPDATE"", $result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1199,while($rowOVP = mysql_fetch_array($resultOVPdatos)){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1201,"if ((int)$rowOVP[""outNroAsignacion""] == (int)$json[$i]->NroAsignacion) {"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1202,"$query = (""UPDATE dav_pagosovp SET IdOrdenIFC='"".$json[$i]->IdOrdenIFC.""', NroAsignacionFact='"".$json[$i]->NroAsignacion.""', errorOVPFact=NULL WHERE idpagosovp="".$rowOVP[""idpagosovp""]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1203,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1204,"$this->logOVP->saveLog(NULL, $query,""agregarRezagadoCierreTipo"".$tipo,""dav_pagosovp"",""UPDATE"",NULL);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1214,"<?= ""El registro <b>"".$result->respuestaServicioAsignacion->NroAsignacion.""</b> se ha registrado en la OVP."" ;?>"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1218,"$searchpago = mysql_query(""SELECT idpagosovp from dav_pagosovp where idpagos="".$idpagos."" AND idcasos="".$rowOVP[""idcasos""]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1220,if (mysql_num_rows($searchpago) > 0) {//actualizar datos del pago OVP ya registrado
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1222,"$query = (""UPDATE dav_pagosovp SET errorOVP='"".mysql_real_escape_string($result->msgError).""' WHERE idpagosovp="".$spago[""idpagosovp""]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1223,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1224,"$this->logOVP->saveLog($parametros,$query,""errorAgregarRezagadoTipo"".$tipo,""dav_pagosovp"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1225,}else{//insertar datos del pago OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1226,"$query = (""INSERT INTO dav_pagosovp (idpagos, idcasos, tipo, respuestaOVP, errorOVP) VALUES ("".$idpagos."","".$rowOVP[""idcasos""]."", "".$tipo."", '"".json_encode($result).""', '"".mysql_real_escape_string($result->msgError).""');"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1227,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1228,"$this->logOVP->saveLog($parametros,$query,""errorAgregarRezagadoTipo"".$tipo,""dav_pagosovp"",""INSERT"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1235,"<?= ""El registro no fue guardado en OVP, <b>"".$result->msgError.""</b>."" ;?>"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1245,"<?= ""No hay valores para guardar en la OVP."" ;?>"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1253,"public function aplicarpagoproveedor($idpagosdetalle,$idpagos,$tipo,$estado1,$ciudadovp,$clienteovp){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1256,"$idovp = """";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1258,"$idovp = ""SC"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1274,"dav_cliente.id_OVP"" . $idovp . "" as IdCliente,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1277,"dav_concepto.id_OVP"" . $idovp . "" as IdReferencia,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1278,"(SELECT idprov_OVP"" . $idovp . "" FROM dav_concepto WHERE concepto='OCPND' LIMIT 1) as IdProveedor,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1280,"(SELECT id_OVP"" . $idovp . "" FROM dav_banco WHERE cuenta='DETP' LIMIT 1) as IdTipoValorFondosARendir,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1281,"dav_banco.id_OVP"" . $idovp . "" as IdFormaPago,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1283,"dav_pagosovp.idpagosovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1284,"dav_pagosovp.outNroAsignacion,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1285,"dav_pagosovp.errorOVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1286,"dav_pagosovp.IdOrdenIFP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1287,"dav_pagosovp.IdOrdenIFC,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1288,dav_pagosovp.IdOrdenPG
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1296,LEFT JOIN dav_pagosovp ON dav_notasdebito.idnotasdebito=dav_pagosovp.idpagos
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1312,"dav_cliente.id_OVP"" . $idovp . "" as IdCliente,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1314,"dav_concepto.id_OVP"" . $idovp . "" as IdReferencia,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1315,"(SELECT idprov_OVP"" . $idovp . "" FROM dav_concepto WHERE idconcepto=(SELECT idconcepto FROM dav_pagosdetalle WHERE idpagosdetalle="".$idpagosdetalle."") LIMIT 1) as IdProveedor,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1317,"(SELECT id_OVP"" . $idovp . "" FROM dav_banco WHERE cuenta='DETP' LIMIT 1) as IdTipoValorFondosARendir,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1318,"dav_banco.id_OVP"" . $idovp . "" as IdFormaPago,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1320,"dav_pagosovp.idpagosovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1321,"dav_pagosovp.outNroAsignacion,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1322,"dav_pagosovp.errorOVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1323,"dav_pagosovp.IdOrdenIFP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1324,"dav_pagosovp.IdOrdenIFC,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1325,dav_pagosovp.IdOrdenPG
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1331,LEFT JOIN dav_pagosovp ON dav_pagosdetalle.idpagosdetalle=dav_pagosovp.idpagosdetalle
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1338,"if (mysql_num_rows($resultPago) > 0 && $estado1==""ovppagogc""){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1339,while($rowOVP = mysql_fetch_array($resultPago)){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1340,"//$dt =  new DateTime($rowOVP[""fecha""] . "" "" .date('H:i:s', time()));"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1342,$dt->add(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1344,$dt->sub(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1350,"""codigoDeSeguridad"" => codigoSeguridadOVP"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1353,"""baseDeDatos"" => $ciudadovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1355,"""password"" => passOVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1356,"""usuario"" => userOVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1360,"$parametros['codigoProveedor']=$rowOVP[""IdProveedor""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1361,"$parametros['cadIdOrdenFacturasAPagar']=$rowOVP[""IdOrdenIFP""].""*"".$rowOVP[""CodigoFormaPago""].""*"".$rowOVP[""Monto""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1369,"'IdFormaPago'=>$rowOVP[""IdFormaPago""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1370,"'Monto'=>$rowOVP[""Monto""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1371,"'Nombre'=>$rowOVP[""alaordende""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1372,"'Numero'=>($rowOVP[""idmetodopago""]==1 || $rowOVP[""idmetodopago""]==2 ? $rowOVP[""cheque""] : ""NULL""),"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1378,"$parametros['MontoAPagar']=$rowOVP[""Monto""];//""del "".$rowOVP[""debitos1""]."" al "".$rowOVP[""debitos2""]"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1379,"$parametros['strConcepto']=$rowOVP[""alaordende""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1383,"$parametros['codigoReferencia']=$rowOVP[""IdReferencia""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1384,"$parametros['strInfoAdicional']=$rowOVP[""Descripcion""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1389,"$parametros['codigoExterno']=$rowOVP[""numero""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1391,$result = $clienteovp->GC_GrabarPagoFacturasSeleccionadas($parametros);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1394,"$query = (""UPDATE dav_pagosovp SET IdOrdenPG='"".$result->respuestaDocumentoPago->IdOrden.""', respuestaPG='"".json_encode($result->respuestaDocumentoPago).""', errorOVP=NULL WHERE idpagosovp="".$rowOVP[""idpagosovp""]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1395,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1396,"$this->logOVP->saveLog($parametros,$query,""agregarAplicacionPagoProveedorTipo"".$tipo,""dav_pagosovp"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1401,"<?= ""La aplicaci&oacute;n del pago <b>"".$result->respuestaDocumentoPago->IdOrden.""</b> se ha registrado en la OVP."" ;?>"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1405,"$query = (""UPDATE dav_pagosovp SET errorOVP='"".mysql_real_escape_string($result->msgError).""' WHERE idpagosovp="".$rowOVP[""idpagosovp""]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1406,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1407,"$this->logOVP->saveLog($parametros,$query,""errorAgregarAplicacionPagoProveedorTipo"".$tipo,""dav_pagosovp"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1412,"<?= ""El pago no fue aplicado en OVP, <b>"".$result->msgError.""</b>."" ;?>"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1422,"<?= ""No hay valores para guardar en la OVP."" ;?>"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1430,"public function agregarpagoenlote($idpagos,$estado1,$tipo,$ciudadovp,$clienteovp){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1433,"$idovp = """";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1435,"$idovp = ""SC"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1447,"dav_concepto.id_OVP"".$idovp."" as IdReferencia,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1454,"dav_banco.id_OVP"".$idovp."" as IdTipoValor,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1455,"(SELECT id_OVP"".$idovp."" FROM dav_banco WHERE cuenta='DETP' LIMIT 1) as IdTipoValorFondosARendir,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1456,"dav_cliente.id_OVP"".$idovp."" as IdCliente"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1461,LEFT JOIN dav_concepto ON dav_pagos.idconceptoOVP=dav_concepto.idconcepto
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1476,"dav_cliente.id_OVP"".$idovp."" as IdCliente"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1495,"dav_concepto.id_OVP"".$idovp."" as IdReferencia,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1502,"dav_banco.id_OVP"".$idovp."" as IdTipoValor,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1503,"(SELECT id_OVP"".$idovp."" FROM dav_banco WHERE cuenta='DETP' LIMIT 1) as IdTipoValorFondosARendir,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1504,"dav_cliente.id_OVP"".$idovp."" as IdCliente"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1510,LEFT JOIN dav_concepto ON dav_pagos.idconceptoOVP=dav_concepto.idconcepto
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1525,"dav_cliente.id_OVP"".$idovp."" as IdCliente"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1545,"dav_concepto.id_OVP"".$idovp."" as IdReferencia,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1552,"dav_banco.id_OVP"".$idovp."" as IdTipoValor,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1553,"(SELECT id_OVP"".$idovp."" FROM dav_banco WHERE cuenta='DETP' LIMIT 1) as IdTipoValorFondosARendir,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1554,"dav_cliente.id_OVP"".$idovp."" as IdCliente"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1559,LEFT JOIN dav_concepto ON dav_pagos.idconceptoOVP=dav_concepto.idconcepto
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1574,"dav_cliente.id_OVP"".$idovp."" as IdCliente"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1586,"if (mysql_num_rows($resultPago) > 0 && $estado1==""ovppago""){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1589,while($rowOVP = mysql_fetch_array($resultPagoDetalle)) {
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1591,"'CodigoExterno' => $rowOVP[""Numero""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1592,"'Descripcion' => $rowOVP[""Referencia""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1593,"""IdCliente"" => $rowOVP[""IdCliente""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1594,"'ImporteExtranjero' => round(($rowOVP[""Monto""]/6.96),2),"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1595,"'ImporteLocal' => $rowOVP[""Monto""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1596,"'NroOrdenOCarpeta' => $rowOVP[""NroOrdenRGI""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1598,"$itemPagos[] = $rowOVP[""idcasos""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1599,"$itemPagosDetalle[] = $rowOVP[""idpagosdetalle""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1603,while($rowOVP = mysql_fetch_array($resultPago)) {
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1604,"//$dt =  new DateTime($rowOVP[""fecha""] . "" "" .date('H:i:s', time()));"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1606,$dt->add(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1608,$dt->sub(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1613,"'CodigoSeguridad' => codigoSeguridadOVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1614,"'login' => userOVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1615,"'pwd' => passOVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1616,"'BaseDeDatos' => $ciudadovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1624,"""IdReferencia"" => $rowOVP[""IdReferencia""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1625,"""IdTipoValorDisponible"" => $rowOVP[""IdTipoValor""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1626,"""IdTipoValorFondosARendir"" => $rowOVP[""IdTipoValorFondosARendir""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1632,$result = $clienteovp->RGI_GrabarAsignacionEnLote($parametros);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1638,"$searchpago = mysql_query(""SELECT idpagosovp from dav_pagosovp where idpagos="".$rowOVP[""idpagos""]."" AND idcasos="".$itemPagos[$i]."" AND idpagosdetalle="".$itemPagosDetalle[$i]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1641,if (mysql_num_rows($searchpago) > 0) {//actualizar datos del pago OVP ya registrado
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1643,"$query = (""UPDATE dav_pagosovp SET outNroAsignacion='"".$result->respuestaAsignacionesGrabadas->ListaAsignacionesGrabadas->RespuestaAsignacionRGI->NroAsignacion.""', nroLote="".$result->respuestaAsignacionesGrabadas->IdAsignacionLote."", errorO"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1644,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1645,"$this->logOVP->saveLog($parametros,$query,""agregarAsignacionLote"",""dav_pagosovp"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1646,}else{//insertar datos del pago OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1647,"$query = (""INSERT INTO dav_pagosovp (idpagos, idpagosdetalle, idcasos, nroLote, outNroAsignacion, errorOVP) VALUES ("".$rowOVP[""idpagos""]."", "".$itemPagosDetalle[$i]."", "".$itemPagos[$i]."", "".$result->respuestaAsignacionesGrabadas->IdAsignacio"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1648,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1649,"$this->logOVP->saveLog($parametros,$query,""agregarAsignacionLote"",""dav_pagosovp"",""INSERT"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1655,"$searchpago = mysql_query(""SELECT idpagosovp from dav_pagosovp where idpagos="".$rowOVP[""idpagos""]."" AND idcasos="".$itemPagos[$i]."" AND idpagosdetalle="".$itemPagosDetalle[$i]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1659,if (mysql_num_rows($searchpago) > 0) {//actualizar datos del pago OVP ya registrado
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1661,"$query = (""UPDATE dav_pagosovp SET outNroAsignacion='"".$result->respuestaAsignacionesGrabadas->ListaAsignacionesGrabadas->RespuestaAsignacionRGI[$i]->NroAsignacion.""', nroLote="".$result->respuestaAsignacionesGrabadas->IdAsignacionLote."", er"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1662,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1663,"$this->logOVP->saveLog($parametros,$query,""agregarAsignacionLote"",""dav_pagosovp"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1664,}else{//insertar datos del pago OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1665,"$query = (""INSERT INTO dav_pagosovp (idpagos, idpagosdetalle, idcasos, nroLote, outNroAsignacion, errorOVP) VALUES ("".$rowOVP[""idpagos""]."", "".$itemPagosDetalle[$i]."","".$itemPagos[$i]."", "".$result->respuestaAsignacionesGrabadas->IdAsignacion"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1666,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1667,"$this->logOVP->saveLog($parametros,$query,""agregarAsignacionLote"",""dav_pagosovp"",""INSERT"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1677,"<?= ""El lote <b>"".$result->respuestaAsignacionesGrabadas->IdAsignacionLote.""</b> se ha registrado en la OVP."" ;?>"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1681,"$searchpago = mysql_query(""SELECT idpagosovp from dav_pagosovp where idpagos="".$rowOVP[""idpagos""]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1683,if (mysql_num_rows($searchpago) > 0) {//actualizar datos del pago OVP ya registrado
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1685,"$query = (""UPDATE dav_pagosovp SET errorOVP='"".mysql_real_escape_string($result->msgError).""' WHERE idpagosovp="".$spago[""idpagosovp""]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1686,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1687,"$this->logOVP->saveLog($parametros,$query,""errorAgregarLote"",""dav_pagosovp"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1688,}else{//insertar datos del pago OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1689,"$query = (""INSERT INTO dav_pagosovp (idpagos, idpagosdetalle, idcasos, errorOVP) VALUES ("".$rowOVP[""idpagos""]."", "".$rowOVP[""idpagosdetalle""]."","".$rowOVP[""idcasos""]."", '"".mysql_real_escape_string($result->msgError).""');"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1690,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1691,"$this->logOVP->saveLog($parametros,$query,""errorAgregarLote"",""dav_pagosovp"",""INSERT"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1698,"<?= ""El pago no fue guardado en OVP, <b>"".$result->msgError.""</b>."" ;?>"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1709,"<?= ""No hay valores para guardar en la OVP."" ;?>"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1716,"public function agregarplanillaje($idcasos,$idpagos,$nro,$tipo,$estado2,$ciudadovp,$clienteovp){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1720,"$idovp = """";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1722,"$idovp = ""SC"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1729,"$resultOVPcierre = mysql_query(""SELECT dav_casos.idcasos,dav_casos.carpeta,dav_casos.idusuario,dav_cliente.idcliente,dav_cliente.id_OVP"" . $idovp . "" as id_OVP,dav_notasdebito.textoadjunto as adjuntos,dav_notasdebito.fecha"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1735,"$resultOVPcierre = mysql_query(""SELECT dav_casos.idcasos,dav_casos.carpeta,dav_casos.idusuario,dav_cliente.idcliente,dav_cliente.id_OVP"" . $idovp . "" as id_OVP,dav_facturaplanilla.adjuntos,dav_facturaplanilla.fecha"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1743,"$resultConceptoPlanilla = mysql_query(""SELECT idconcepto,concepto,descripcion,id_OVP"".$idovp."" as id_OVP from dav_concepto where concepto='CCRPT';"");//concepto de la planilla"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1747,"if($estado2 == ""ovpplanillaje""){//verificar si puede guardar en ovp"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1748,if (mysql_num_rows($resultOVPcierre) > 0){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1749,while($rowOVP = mysql_fetch_array($resultOVPcierre)){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1750,"//$dt =  new DateTime($rowOVP[""fecha""] . "" "" .date('H:i:s', time()));"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1752,$dt->add(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1754,$dt->sub(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1759,$parametros['CodigoSeguridad']=codigoSeguridadOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1760,$parametros['login']=userOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1761,$parametros['pwd']=passOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1762,$parametros['BaseDeDatos']=$ciudadovp;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1766,"$parametros['NroOrdenRGI']=$rowOVP[""carpeta""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1767,"$parametros['IdCliente']=$rowOVP[""id_OVP""];//VALOR TEMPORAL"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1768,"//$parametros['descripcionTransaccion']=$rowOVP[""adjuntos""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1769,"$parametros['descripcionTransaccion']= utf8_encode(substr($rowOVP[""adjuntos""], 0, 120));"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1770,"$parametros['codigoReferencia']=$rowConcepto[""id_OVP""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1773,$result = $clienteovp->RGI_GrabarCierreCarpeta($parametros);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1778,"$resultOVPdatos = mysql_query(""SELECT"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1779,"idpagosovp, idpagos, idcasos, idpagosdetalle, nroLote, outNroAsignacion, IdOrdenIFP, IdOrdenIFC, NroAsignacionFact, errorOVPFact"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1780,FROM dav_pagosovp
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1782,"dav_pagosovp.idcasos="" . $idcasos . """
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1783,AND dav_pagosovp.outNroAsignacion IS NOT NULL
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1784,AND (dav_pagosovp.IdOrdenIFC IS NULL OR dav_pagosovp.IdOrdenIFC = '')
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1785,ORDER BY dav_pagosovp.outNroAsignacion+0 ASC;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1791,"$query = (""UPDATE dav_notasdebito SET listaAsignacionesOVP='"" . json_encode($result->outRespuestaServicio) . ""' WHERE idcasos="" . $idcasos . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1792,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1793,"$this->logOVP->saveLog($parametros,$query,""cerrarND"",""dav_notasdebito"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1795,"$query = (""UPDATE dav_facturaplanilla SET listaAsignacionesOVP='"".json_encode($result->outRespuestaServicio).""', errorOVP=NULL WHERE idcasos="".$idcasos."" AND nro="".$nro."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1796,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1797,"$this->logOVP->saveLog($parametros,$query,""cerrarPlanilla"",""dav_facturaplanilla"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1803,if ($cantidad==1){//grabar datos de planillaje en dav_pagosovp
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1804,while($rowOVP = mysql_fetch_array($resultOVPdatos)){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1805,"if ((int)$rowOVP[""outNroAsignacion""] == (int)$json->NroAsignacion) {"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1806,"$query = (""UPDATE dav_pagosovp SET IdOrdenIFC='"" . $json->IdOrdenIFC . ""', NroAsignacionFact='"" . $json->NroAsignacion . ""', errorOVPFact=NULL WHERE idpagosovp="" . $rowOVP[""idpagosovp""] . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1807,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1808,"$this->logOVP->saveLog(NULL, $query, ""asignarCodIFC"", ""dav_pagosovp"", ""UPDATE"", NULL);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1811,"$this->logOVP->saveLog(NULL, $query, ""errorAsignarCodIFC"", ""dav_pagosovp"", ""UPDATE"", $result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1815,while($rowOVP = mysql_fetch_array($resultOVPdatos)){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1817,"if ((int)$rowOVP[""outNroAsignacion""] == (int)$json[$i]->NroAsignacion) {"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1818,"$query = (""UPDATE dav_pagosovp SET IdOrdenIFC='"" . $json[$i]->IdOrdenIFC . ""', NroAsignacionFact='"" . $json[$i]->NroAsignacion . ""', errorOVPFact=NULL WHERE idpagosovp="" . $rowOVP[""idpagosovp""] . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1819,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1820,"$this->logOVP->saveLog(NULL, $query, ""asignarCodIFC"", ""dav_pagosovp"", ""UPDATE"", NULL);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1827,"$query = (""UPDATE dav_facturaplanilla SET errorOVP='"" . mysql_real_escape_string($result->msgError) . ""' WHERE idcasos="" . $idcasos . "" AND nro="" . $nro . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1828,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1829,"$this->logOVP->saveLog($parametros,$query,""errorCerrarPlanilla"",""dav_facturaplanilla"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1832,while($rowOVP = mysql_fetch_array($resultOVPdatos)){//grabar datos de planillaje en dav_pagosdetalle
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1833,"$query = (""UPDATE dav_pagosovp SET errorOVPFact='"".mysql_real_escape_string($result->msgError).""' WHERE idpagosovp="".$rowOVP[""idpagosovp""]."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1834,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1835,"$this->logOVP->saveLog($parametros,$query,""errorCodIFC"",""dav_pagosovp"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1844,"<?= ""No hay valores para guardar PLANILLAJE en la OVP."" ;?>"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1853,"public function agregaranticipo($idanticipos,$estado1,$ciudadovp,$clienteovp){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1856,"$idovp = """";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1858,"$idovp = ""SC"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1864,"$resultOVP = mysql_query(""SELECT"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1871,"dav_banco.id_OVP"".$idovp."" as idBancoOVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1877,"dav_cliente.id_OVP"".$idovp."" as idClienteOVP"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1887,"if($estado1 == ""ovpanticipo""){//verificar si puede guardar en ovp"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1888,if (mysql_num_rows($resultOVP) > 0){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1889,while($rowOVP = mysql_fetch_array($resultOVP)){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1890,"//$dt =  new DateTime($rowOVP[""fecha""] . "" "" .date('H:i:s', time()));"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1892,$dt->add(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1894,$dt->sub(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1899,$parametros['CodigoSeguridad']=codigoSeguridadOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1900,$parametros['login']=userOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1901,$parametros['pwd']=passOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1902,$parametros['BaseDeDatos']=$ciudadovp;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1904,"$parametros['IdCliente']=$rowOVP[""idClienteOVP""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1913,"'Descripcion' => substr($rowOVP[""glosa""], 0, 60),//limite de caracteres"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1916,"'IdFormaPago' => $rowOVP[""idBancoOVP""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1917,"'Monto' => $rowOVP[""monto""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1918,"'Nombre' => $rowOVP[""banco""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1919,"'Numero' => $rowOVP[""recibo""],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1922,$result = $clienteovp->GC_GrabarAnticipoCliente($parametros);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1928,"$query = (""UPDATE dav_anticipos SET IdOrden ='"".$result->respuestaDocumentoGC->IdOrden.""',outNumero ='"".$result->respuestaDocumentoGC->Numero.""', errorOVPAnt=NULL WHERE idanticipos="".$idanticipos."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1929,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1930,"$this->logOVP->saveLog($parametros,$query,""agregarAnticipo"",""dav_anticipos"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1932,"$query = (""UPDATE dav_anticipos SET IdOrden=NULL,outNumero=NULL, errorOVPAnt='"".mysql_real_escape_string($result->msgError).""' WHERE idanticipos="".$idanticipos."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1933,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1934,"$this->logOVP->saveLog($parametros,$query,""errorAgregarAnticipo"",""dav_anticipos"",""UPDATE"",$result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1938,"echo ""no hay valores para guardar ANTICIPOS en la OVP"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1944,"public function agregarcobro($idanticipos,$estado2,$ciudadovp,$clienteovp,$tipocobro,$idfacpago,$monto2,$tributos,$idcobros,$fecha){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1948,$dt->add(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1950,$dt->sub(new DateInterval('PT' . OVPTIME . 'M'));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1956,"$idovp = """";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1958,"$idovp = ""SC"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1964,"$resultAnticipo = mysql_query(""SELECT idanticipos,IdOrden,dav_cliente.id_OVP"".$idovp."" as idcliente,IFNULL(saldo,monto) as saldo"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,1992,if ($val['fecha'] < '2020-05-01' || $val['fecha'] == NULL ){//verificamos si son registros iniciales de OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2002,"dav_pagosovp.idpagos as idpovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2008,"dav_pagosovp.idpagosovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2009,"dav_pagosovp.outNroAsignacion,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2010,"dav_pagosovp.IdOrdenIFC,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2011,dav_pagosovp.cobrado
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2015,"LEFT JOIN dav_pagosovp ""."
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2017,"""ON dav_pagosdetalle.idpagosdetalle=dav_pagosovp.idpagosdetalle"" :"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2018,"""ON dav_pagos.idpagos=dav_pagosovp.idpagos"""
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2038,"dav_pagosovp.idpagosovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2039,"dav_pagosovp.outNroAsignacion,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2040,"dav_pagosovp.IdOrdenIFC,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2041,"dav_pagosovp.cobrado,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2042,dav_pagosovp.saldo
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2046,LEFT JOIN dav_pagosovp ON dav_pagosovp.idpagosdetalle=dav_pagosdetalle.idpagosdetalle
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2055,"AND (IFNULL(dav_pagosovp.saldo,0)!=0 OR dav_pagosovp.saldo IS NULL)"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2056,"AND IFNULL(dav_pagosovp.cobrado,0)=0"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2067,"dav_pagosovp.idpagosovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2068,"dav_pagosovp.outNroAsignacion,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2069,"dav_pagosovp.IdOrdenIFC,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2070,"dav_pagosovp.IdOrdenIFP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2071,dav_pagosovp.cobrado
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2075,LEFT JOIN dav_pagosovp ON dav_pagosovp.idpagos=dav_notasdebito.idnotasdebito
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2089,"if($estado2 == ""ovpcobro"") {//verificar si puede guardar en ovp"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2092,"//$resultLimpiar = mysql_query(""UPDATE dav_cobros SET errorOVP=NULL WHERE idcobros="".$idcobros."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2093,while ($rowOVP = mysql_fetch_array($resFactura)) {
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2096,$parametros['CodigoSeguridad'] = codigoSeguridadOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2097,$parametros['login'] = userOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2098,$parametros['pwd'] = passOVP;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2099,$parametros['BaseDeDatos'] = $ciudadovp;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2106,"if ($tipocobro == 1 && !empty($rowOVP[""outIdOrdenFactura""])) {//factura"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2107,$parametros['MontoAAplicar'] = $monto;// o usar $monto | $rowOVP['monto']
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2108,"$parametros['IdOrdenFactura'] = $rowOVP[""outIdOrdenFactura""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2109,$parametros['IdFormaPagoFactura'] = ($rowOVP['fecha'] < '2020-05-01' ? 204 : 21);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2110,$result = $clienteovp->GC_GrabarAplicacionAnticipo($parametros);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2115,"$resultupdateOVP = mysql_query(""UPDATE dav_facturaplanilla SET cobrado='"" . $result->GC_GrabarAplicacionAnticipoResult . ""' WHERE idfacturaplanilla="" . $rowOVP[""idfacturaplanilla""] . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2116,"$query = (""UPDATE dav_cobros SET errorOVP=NULL,resultOVP=CONCAT(ifnull(resultOVP,''),'FacturaNro: "" . $rowOVP[""nro""] . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2117,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2120,"$this->logOVP->saveLog($parametros, $query, ""agregarAplicacionAnticipoFactura"", ""dav_cobros"", ""UPDATE"", $result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2122,"$query = (""UPDATE dav_cobros SET errorOVP=CONCAT(ifnull(errorOVP,''),'"" . mysql_real_escape_string($result->msgError) . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2123,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2124,"$this->logOVP->saveLog($parametros, $query, ""errorAgregarAplicacionAnticipoFactura"", ""dav_cobros"", ""UPDATE"", $result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2126,"} elseif ($tipocobro == 1 && empty($rowOVP[""outIdOrdenFactura""])) {"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2127,"$query = (""UPDATE dav_cobros SET errorOVP=CONCAT(ifnull(errorOVP,''), 'FacturaNro: "" . $rowOVP[""nro""] . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2128,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2129,"$this->logOVP->saveLog($parametros, $query, ""errorAgregarAplicacionAnticipoFaltaFactura"", ""dav_cobros"", ""UPDATE"", NULL);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2133,"!empty($rowOVP[""IdOrdenIFC""]) && $tributos == 1) {//planillas tributos"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2135,$parametros['MontoAAplicar'] = ($rowOVP['fecha'] < '2020-05-01' ? $rowOVP['monto'] : $monto);// o usar $monto | $rowOVP['monto']
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2137,"$parametros['IdOrdenFactura'] = $rowOVP[""IdOrdenIFC""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2139,$result = $clienteovp->GC_GrabarAplicacionAnticipo($parametros);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2144,"$resultupdateOVP = mysql_query(""UPDATE dav_pagosovp SET cobrado='"" . $result->GC_GrabarAplicacionAnticipoResult . ""' WHERE idpagosovp="" . $rowOVP[""idpagosovp""] . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2145,"$query = (""UPDATE dav_cobros SET errorOVP=NULL,resultOVP=CONCAT(ifnull(resultOVP,''),'CPBTE: "" . $rowOVP[""numero""] . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2146,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2147,"$querysaldo = ""UPDATE dav_anticipos SET saldo="".($detalleAnticipo[""saldo""]-($rowOVP['fecha'] < '2020-05-01' ? $rowOVP['monto'] : $monto))."" WHERE idanticipos="".$detalleAnticipo[""idanticipos""]."";"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2149,"$this->logOVP->saveLog($parametros, $query, ""agregarAplicacionAnticipoPlanilla"", ""dav_cobros"", ""UPDATE"", $result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2151,"$query = (""UPDATE dav_cobros SET errorOVP=CONCAT(ifnull(errorOVP,''),'"" . mysql_real_escape_string($result->msgError) . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2152,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2153,"$this->logOVP->saveLog($parametros, $query, ""errorAgregarAplicacionAnticipoPlanilla"", ""dav_cobros"", ""UPDATE"", $result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2155,"} elseif ($tipocobro == 2 && (empty($rowOVP[""outNroAsignacion""]) || empty($rowOVP[""IdOrdenIFC""])) && $tributos == 1) {"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2156,"$query = (""UPDATE dav_cobros SET errorOVP=CONCAT(ifnull(errorOVP,''), 'CPBTE: "" . $rowOVP[""numero""] . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2157,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2158,"$this->logOVP->saveLog($parametros, $query, ""errorAgregarAplicacionAnticipoFaltaPlanilla"", ""dav_cobros"", ""UPDATE"", NULL);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2162,"!empty($rowOVP[""IdOrdenIFC""]) && empty($rowOVP[""cobrado""]) && $tributos == 0) {//planillas otros"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2163,$rowOVP['monto'] = (is_null($rowOVP['saldo']) ? $rowOVP['monto'] : ($rowOVP['saldo'] != 0 ? $rowOVP['saldo'] : 0));
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2164,if ($monto == $rowOVP['monto']) {//monto aplicado == a monto de planillas
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2165,$parametros['MontoAAplicar'] = $rowOVP['monto'];
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2166,} elseif ($rowOVP['monto'] < $monto) {//monto de planillas < monto aplicado
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2167,$parametros['MontoAAplicar'] = $rowOVP['monto'];
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2168,} elseif ($rowOVP['monto'] > $monto) {//monto de planillas > monto aplicado
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2171,"$parametros['IdOrdenFactura'] = $rowOVP[""IdOrdenIFC""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2174,$result = $clienteovp->GC_GrabarAplicacionAnticipo($parametros);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2179,if ($monto == $rowOVP['monto']) {//monto aplicado == a monto de planillas
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2180,"$saldoanticipo = (float)$detalleAnticipo[""saldo""]-(float)$rowOVP['monto'];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2181,$monto = $monto - $rowOVP['monto'];
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2182,"$queryovp = (""UPDATE dav_pagosovp SET cobrado='"" . $result->GC_GrabarAplicacionAnticipoResult . ""', saldo="" . $monto . "" WHERE idpagosovp="" . $rowOVP[""idpagosovp""] . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2183,} elseif ($rowOVP['monto'] < $monto) {//monto de planillas < monto aplicado
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2184,"$saldoanticipo = (float)$detalleAnticipo[""saldo""]-(float)$rowOVP['monto'];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2185,$monto = $monto - $rowOVP['monto'];
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2187,"$queryovp = (""UPDATE dav_pagosovp SET cobrado='"" . $result->GC_GrabarAplicacionAnticipoResult . ""', saldo="" . $saldo . "" WHERE idpagosovp="" . $rowOVP[""idpagosovp""] . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2188,} elseif ($rowOVP['monto'] > $monto) {//monto de planillas > monto aplicado
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2190,$saldo = $rowOVP['monto'] - $monto;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2193,"$queryovp = (""UPDATE dav_pagosovp SET cobrado='"" . $result->GC_GrabarAplicacionAnticipoResult . ""', saldo="" . $saldo . "" WHERE idpagosovp="" . $rowOVP[""idpagosovp""] . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2195,"$queryovp = (""UPDATE dav_pagosovp SET cobrado='0', saldo="" . $saldo . "" WHERE idpagosovp="" . $rowOVP[""idpagosovp""] . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2198,$resultupdateOVP = mysql_query($queryovp);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2201,"$query = (""UPDATE dav_cobros SET errorOVP=NULL,resultOVP=CONCAT(ifnull(resultOVP,''),'CPBTE: "" . $rowOVP[""numero""] . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2202,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2203,"//$this->logOVP->saveLog($parametros, $query, ""agregarAplicacionAnticipoPlanilla"", ""dav_cobros"", ""UPDATE"", $result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2205,"$query = (""UPDATE dav_cobros SET errorOVP=CONCAT(ifnull(errorOVP,''),'"" . mysql_real_escape_string($result->msgError) . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2206,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2208,"//$this->logOVP->saveLog($parametros, $query, ""errorAgregarAplicacionAnticipoPlanilla"", ""dav_cobros"", ""UPDATE"", $result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2210,"} elseif ($tipocobro == 2 && (empty($rowOVP[""outNroAsignacion""]) || empty($rowOVP[""IdOrdenIFC""])) && $tributos == 0) {"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2211,"$query = (""UPDATE dav_cobros SET errorOVP=CONCAT(ifnull(errorOVP,''), 'CPBTE: "" . $rowOVP[""numero""] . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2212,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2213,"$this->logOVP->saveLog($parametros, $query, ""errorAgregarAplicacionAnticipoFaltaPlanilla"", ""dav_cobros"", ""UPDATE"", NULL);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2216,"if ($tipocobro == 3 && !empty($rowOVP[""outNroAsignacion""]) && !empty($rowOVP[""IdOrdenIFC""]) ) {//notas de debito"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2217,$parametros['MontoAAplicar'] = $monto;// o usar $monto | $rowOVP['monto']
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2218,"$parametros['IdOrdenFactura'] = $rowOVP[""IdOrdenIFC""];"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2220,$result = $clienteovp->GC_GrabarAplicacionAnticipo($parametros);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2225,"$resultupdateOVP = mysql_query(""UPDATE dav_pagosovp SET cobrado='"" . $result->GC_GrabarAplicacionAnticipoResult . ""' WHERE idpagosovp="" . $rowOVP[""idpagosovp""] . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2226,"$query = (""UPDATE dav_cobros SET errorOVP=NULL,resultOVP=CONCAT(ifnull(resultOVP,''),'ND: "" . ($rowOVP[""numero""] . ""/"" . $rowOVP[""gestion""]) . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2227,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2230,"$this->logOVP->saveLog($parametros, $query, ""agregarAplicacionAnticipoND"", ""dav_cobros"", ""UPDATE"", $result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2232,"$query = (""UPDATE dav_cobros SET errorOVP=CONCAT(ifnull(errorOVP,''),'"" . mysql_real_escape_string($result->msgError) . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2233,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2234,"$this->logOVP->saveLog($parametros, $query, ""errorAgregarAplicacionAnticipoND"", ""dav_cobros"", ""UPDATE"", $result);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2236,"} elseif ($tipocobro == 3 && (empty($rowOVP[""outNroAsignacion""]) || empty($rowOVP[""IdOrdenIFC""]))) {"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2237,"$query = (""UPDATE dav_cobros SET errorOVP=CONCAT(ifnull(errorOVP,''), 'ND: "" . ($rowOVP[""numero""] . ""/"" . $rowOVP[""gestion""]) . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2238,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2239,"$this->logOVP->saveLog($parametros, $query, ""errorAgregarAplicacionAnticipoFaltaND"", ""dav_cobros"", ""UPDATE"", NULL);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2244,"$resultLimpiar = mysql_query(""UPDATE dav_cobros SET errorOVP=NULL WHERE idcobros="".$idcobros."";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2245,while ($rowOVP = mysql_fetch_array($resFactura)) {
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2246,"if ($tipocobro == 1 && empty($rowOVP[""outIdOrdenFactura""])) {//factura"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2247,"$query = (""UPDATE dav_cobros SET errorOVP=CONCAT(ifnull(errorOVP,''), 'FacturaNro: "" . $rowOVP[""nro""] . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2248,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2249,"$this->logOVP->saveLog(NULL,$query,""errorCobroNoEncuentraFactura"",""dav_cobros"",""UPDATE"",NULL);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2252,"if (($tipocobro == 2) && (empty($rowOVP[""outNroAsignacion""]) || empty($rowOVP[""IdOrdenIFC""]))) {//planillas y otros"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2253,"$cpbte = (!empty($rowOVP['idpagos']) ? $rowOVP[""numero""] : ""S/CPBTE"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2254,"$query = (""UPDATE dav_cobros SET errorOVP=CONCAT(ifnull(errorOVP,''), 'CPBTE: "" . $cpbte . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2255,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2256,"$this->logOVP->saveLog(NULL,$query,""errorCobroNoEncuentraPlanilla"",""dav_cobros"",""UPDATE"",NULL);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2259,"if (($tipocobro == 3) && (empty($rowOVP[""outNroAsignacion""]) || empty($rowOVP[""IdOrdenIFC""]))) {//planillas y otros"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2260,"$cpbte = (!empty($rowOVP['idnotasdebito']) ? ($rowOVP[""numero""].""/"".$rowOVP[""gestion""]) : ""S/ND"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2261,"$query = (""UPDATE dav_cobros SET errorOVP=CONCAT(ifnull(errorOVP,''), 'ND: "" . $cpbte . ""<br>') WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2262,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2263,"$this->logOVP->saveLog(NULL,$query,""errorCobroNoEncuentraND"",""dav_cobros"",""UPDATE"",NULL);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2268,"$query = (""UPDATE dav_cobros SET resultOVP=NULL, errorOVP='Error inesperado, vuelva a intentarlo.' WHERE idcobros="" . $idcobros . "";"");"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2269,$resultupdateOVP = mysql_query($query);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/functions/ovp.php,2270,"$this->logOVP->saveLog(NULL,$query,""errorInesperadoCobro"",""dav_cobros"",""UPDATE"",NULL);"
+mail,AtlantesBE-main/AtlantesBE-main/app/functions/sendmail.php,4,class SendMail{
+sendgrid,AtlantesBE-main/AtlantesBE-main/app/functions/sendmail.php,11,$email = new \SendGrid\Mail\Mail();
+mail,AtlantesBE-main/AtlantesBE-main/app/functions/sendmail.php,11,$email = new \SendGrid\Mail\Mail();
+sendgrid,AtlantesBE-main/AtlantesBE-main/app/functions/sendmail.php,449,$sendgrid = new \SendGrid(SENDGRID_API_KEY);
+sendgrid,AtlantesBE-main/AtlantesBE-main/app/functions/sendmail.php,454,$response = $sendgrid->send($email);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,2782,"if (!mkdir($folderPath, 0777, true)) {"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,2856,@unlink($ruta); // @ para evitar warning si no puede borrar
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,2933,"mkdir($folderPath, 0777, true);"
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,3212,$curl_login = curl_init();
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,3214,"curl_setopt_array($curl_login, array("
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,3302,$curl = curl_init();
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,3304,"curl_setopt_array($curl, array("
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,3395,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,3401,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,3442,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,3448,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,3780,$imageData = file_get_contents($filePath);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,3829,$imageData = file_get_contents($filePath);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,4866,"mkdir($folderPath, 0777, true);"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,4947,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,4953,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,5000,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,5006,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,8812,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,8818,$contenido = file_get_contents($file);
+mail,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,9108,$mail=new SendMail();
+mail,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,9230,$mail=new SendMail();
+mail,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,9390,$mail=new SendMail();
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,10436,"mkdir($uploadDir, 0777, true);"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,10479,"if (move_uploaded_file($tmpName, $destination)) {"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,10566,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,11137,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,11143,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,11482,"mkdir($folderPath, 0777, true);"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,11603,"mkdir($folderPath, 0777, true);"
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,14745,$azureBlobInventario = (defined('azure_blob_enabled') && azure_blob_enabled) ? new BlobStorageService() : null;
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,14781,$imageData  = file_get_contents($filePath);
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,14824,$azureBlobImagenes = (defined('azure_blob_enabled') && azure_blob_enabled) ? new BlobStorageService() : null;
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,14849,$imageData  = file_get_contents($filePath);
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,14903,$azureEnabled = defined('azure_blob_enabled') && azure_blob_enabled;
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,14904,$blobStorage  = $azureEnabled ? new BlobStorageService() : null;
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,15026,"if (!move_uploaded_file($tmpNames[$i], $tempOrig)) continue;"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,15046,"if (!is_dir($dirMain)) mkdir($dirMain, 0777, true);"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,15049,"if (!move_uploaded_file($tmpNames[$i], $dest)) continue;"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,15107,"if (!move_uploaded_file($tmp, $tempOrig)) continue;"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,15127,"if (!is_dir($dir)) mkdir($dir, 0777, true);"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,15130,"if (!move_uploaded_file($tmp, $dest)) continue;"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,15162,if (file_exists($tf)) @unlink($tf);
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,15693,$azureBlobEstado = (defined('azure_blob_enabled') && azure_blob_enabled) ? new BlobStorageService() : null;
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,15733,$imageData  = file_get_contents($filePath);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,15782,$imageData  = file_get_contents($filePath);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,15891,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,15897,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,15937,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,15943,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,16559,&& class_exists('ZipArchive')){
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,16560,$zip=new ZipArchive();
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,16568,"$signature=file_get_contents($tempFile, false, null, 0, 32);"
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,16582,$azureEnabled=defined('azure_blob_enabled') && azure_blob_enabled;
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,16583,$blobStorage=$azureEnabled ? new BlobStorageService() : null;
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,16635,if($tempFile!==null && is_file($tempFile)) @unlink($tempFile);
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,16669,$blobStorage=(defined('azure_blob_enabled') && azure_blob_enabled) ? new BlobStorageService() : null;
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/almacenes.php,21898,$imageData = file_get_contents($filePath);
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,430,$curl = curl_init();
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,432,"curl_setopt_array($curl, array("
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,463,$curl = curl_init();
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,465,"curl_setopt_array($curl, array("
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,498,$curl = curl_init();
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,500,"curl_setopt_array($curl, array("
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,619,$curl = curl_init();
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,621,"curl_setopt_array($curl, array("
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,714,$curl = curl_init();
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,716,"curl_setopt_array($curl, array("
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,809,$curl = curl_init();
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,811,"curl_setopt_array($curl, array("
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,904,$curl = curl_init();
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,906,"curl_setopt_array($curl, array("
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,1014,$curl = curl_init();
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,1016,"curl_setopt_array($curl, array("
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,1110,$curl = curl_init();
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,1112,"curl_setopt_array($curl, array("
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,1206,$curl = curl_init();
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,1208,"curl_setopt_array($curl, array("
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,1302,$curl = curl_init();
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,1304,"curl_setopt_array($curl, array("
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,1398,$curl = curl_init();
+curl,AtlantesBE-main/AtlantesBE-main/app/routes/asgard.php,1400,"curl_setopt_array($curl, array("
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/routes/common.php,27,$azureBlobComun = defined('azure_blob_enabled') ? (bool) constant('azure_blob_enabled') : false;
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/routes/common.php,37,$blobStorage = new BlobStorageService();
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,83,"IFNULL(t_factura.errorOVPFact,'') as errorOVPFact,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,115,"$idordenovp=(!empty($row[""outIdOrdenFactura""]) || $row[""outIdOrdenFactura""] !=NULL ? $row[""outNumeroFactura""]."" | "".$row[""outIdOrdenFactura""] : '');"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,144,"'idordenovp'=>$idordenovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,145,"'errorOVPFact'=>$row['errorOVPFact'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,208,"IFNULL(t_factura.errorOVPFact,'') as errorOVPFact"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,232,"$idordenovp=(!empty($row[""outIdOrdenFactura""]) || $row[""outIdOrdenFactura""] !=NULL ? $row[""outNumeroFactura""]."" | "".$row[""outIdOrdenFactura""] : '');"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,260,"'idordenovp'=>$idordenovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,261,'errorOVPFact'=>$row['errorOVPFact']
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,652,| Migrar a OVP / generar factura / enviar correo
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,657,if (OVPACTIVO == 1) {
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,659,"$respuesta = migrarfacturaovp($idfactura, $idusuario, $conexion);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,694,$mensaje = 'Se generó la factura pero no se pudo migrar a OVP';
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,829,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,834,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,877,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,882,$contenido = file_get_contents($file);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,908,"$app->put('/contabilidad/facturas/migrarovp/{idfactura}', function(Request $request, Response $response, array $args) use ($conexion) {"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,923,"$respuesta= migrarfacturaovp($idfactura, $idusuario, $conexion);"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,1257,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,2100,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,2105,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,2148,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,2153,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,2723,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,2728,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,2771,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,2776,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,2930,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,2935,$contenido = file_get_contents($file);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3009,"IFNULL(t_facturapago.errorOVP,'') as errorOVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3053,"IFNULL(t_facturapago.errorOVP,''),"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3077,"'errorOVP'=>$row['errorOVP'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3145,"IFNULL(t_facturapago.errorOVP,'') as errorOVP"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3182,"IFNULL(t_facturapago.errorOVP,'')"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3200,'errorOVP'=>$row['errorOVP']
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3234,"IFNULL(t_facturapago.errorOVP,'') as errorOVP"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3257,'errorOVP'=>$row['errorOVP']
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3658,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3663,$contenido = file_get_contents($file);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3690,"$app->put('/contabilidad/ordenespago/migrarovp/{idfacturapago}', function(Request $request, Response $response, array $args) use ($conexion) {"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3704,$clienteovp='';
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3705,$ovppago = new OVP();//iniciamos OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3707,"$clienteovp = new SoapClient(servicioovp, array('trace' => 1, 'encoding' => 'UTF-8'));//ISO-8859-1"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3712,"$respuesta=$ovppago->agregarpago($idfacturapago,""ovppago"",ciudadovp,$clienteovp,$idusuario,$conexion);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,3717,"$respuesta=$ovppago->agregarpago($idfacturapago,""ovppago"",ciudadovp,$clienteovp,$idusuario,$conexion);"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,4320,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,4325,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,4880,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,4886,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,4929,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,4935,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,5404,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,5410,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,5800,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,5806,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,6753,unlink(folder_files.$idempresa.'/documentos/facturas/QR_code-'.$idfactura.'.png');
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,7142,"function migrarfacturaovp($idfactura, $idusuario, $conexion){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,7144,$clienteovp='';
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,7145,$ovppago = new OVP();//iniciamos OVP
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,7146,"$clienteovp = new SoapClient(servicioovp, array('trace' => 1, 'encoding' => 'UTF-8'));//ISO-8859-1"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,7149,"$respuesta=$ovppago->agregarfacturaventasiat($idfactura,$row['nrofactura'],""ovpfactura"",ciudadovp,$clienteovp,$idusuario,$conexion);"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,7199,"$contenido = file_get_contents(folder_files.$idempresa.""/documentos/facturas/factura$nombrearchivo$idfactura.pdf"");"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,7208,"$contenido = file_get_contents(folder_files.$idempresa.""/documentos/facturas/xml/$nombreDocumentoXML"");"
+mail,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,7215,"(new SendMail())->enviarMail($correos, [], ""FACTURA N° $nrofactura - SLG S.R.L."", '', ""<div style='margin:0; padding: 0; border: 1px solid black; font-family: Tahoma'>"
+sendgrid,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,7231,"new \SendGrid\Mail\Attachment($data,"
+sendgrid,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,7234,"new \SendGrid\Mail\Attachment($base64_encoded,"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,7239,"unlink(folder_files.$idempresa.""/documentos/facturas/xml/$nombreDocumentoXML"");"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/contabilidad.php,8469,"mkdir($rutaDirectorio, 0775, true);"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,655,"id_OVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,656,id_OVPRef
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,662,$concepto_ovp=$row['concepto'];
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,664,"if(strlen($row[""id_OVPRef""])>0){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,665,"$concepto_ovp=$row['concepto']."" ("".$row[""id_OVPRef""]."")"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,668,if((int)$row['id_OVP']>0){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,669,"$concepto_ovp=$row['concepto']."" ("".$row[""id_OVP""]."")"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,679,"'concepto_ovp'=>$concepto_ovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,685,"'id_OVP'=>$row['id_OVP'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,686,'id_OVPRef'=>$row['id_OVPRef']
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,711,$id_OVP=$params['id_OVP'];
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,712,$id_OVPRef=$params['id_OVPRef'];
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,732,"$query=""INSERT INTO t_concepto (idempresa,  concepto,       codigo,             concepto_en,    activo, id_OVP)"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,733,"VALUES ($idempresa, '$concepto',    '$codigoconcepto',  '$concepto_en', 1,      '$id_OVP');"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,736,"$query=$query.""INSERT INTO t_concepto (idempresa,   concepto,           codigo,         concepto_en,            tipo,   activo, idconceptocargo,     id_OVPRef)"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,737,"VALUES ($idempresa,  '$conceptocosto',   '$codigocosto', '$concepto_encosto',    1,      1,      @idconcepto_nuevo,   '$id_OVPRef');"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,771,$id_OVP=$params['id_OVP'];
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,772,$id_OVPRef=$params['id_OVPRef'];
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,800,id_OVP='$id_OVP'
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,808,id_OVPRef='$id_OVPRef'
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,829,'params'=>$id_OVPRef
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,3157,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/datosmaestro.php,3196,if(unlink($file)){
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,512,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,518,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,1439,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,1476,if(unlink($file)){
+mail,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,2779,$mail=new SendMail();
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,2852,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,2858,$contenido = file_get_contents($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,2901,unlink($file);
+filesystem,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,2907,$contenido = file_get_contents($file);
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,3040,"t_concepto.id_OVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,3090,$concepto_ovp=$rowcargos['concepto'];
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,3091,if((int)$rowcargos['id_OVP']>0){
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,3092,"$concepto_ovp=$rowcargos['concepto']."" ("".$rowcargos[""id_OVP""]."")"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,3100,"'concepto_ovp'=>$concepto_ovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,3101,"'id_OVP'=>$rowcargos['id_OVP'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,3139,"IFNULL(t_concepto.id_OVPRef,'') as id_OVPRef,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,3177,$concepto_ovp=$rowcostos['concepto'];
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,3178,"if(strlen($rowcostos[""id_OVPRef""])>0){"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,3179,"$concepto_ovp=$rowcostos['concepto']."" ("".$rowcostos[""id_OVPRef""]."")"";"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,3186,"'concepto_ovp'=>$concepto_ovp,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/embarques.php,3187,"'id_OVPRef'=>$rowcostos['id_OVPRef'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,536,"IFNULL(t_cliente.id_OVP,0) as id_OVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,635,"'id_OVP'=>(int)$row['id_OVP'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,772,$id_OVP = $params['id_OVP'] ?? 0;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,875,"id_OVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,913,":id_OVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,956,"':id_OVP' => $id_OVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,1405,$id_OVP = $params['id_OVP'] ?? 0;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,1513,"id_OVP = :id_OVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,1556,"':id_OVP' => $id_OVP,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,2340,"IFNULL(t_transportista.id_OVPProv,0) as id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,2360,"'id_OVPProv'=>(int)$row['id_OVPProv'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,2418,$id_OVPProv = $params['id_OVPProv'] ?? 0;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,2462,id_OVPProv
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,2473,:id_OVPProv
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,2489,':id_OVPProv' => $id_OVPProv
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,2657,$id_OVPProv = $params['id_OVPProv'] ?? 0;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,2706,id_OVPProv = :id_OVPProv
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,2722,"':id_OVPProv' => $id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,2973,"IFNULL(t_agentecarga.id_OVPProv,0) as id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,2999,"'id_OVPProv'=>(int)$row['id_OVPProv'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,3061,$id_OVPProv = $params['id_OVPProv'] ?? 0;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,3115,"id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,3129,":id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,3148,"':id_OVPProv' => $id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,3350,$id_OVPProv = $params['id_OVPProv'] ?? 0;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,3404,"id_OVPProv = :id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,3422,"':id_OVPProv' => $id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,3801,"IFNULL(t_proveedor.id_OVPProv,0) as id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,3846,"'id_OVPProv'=>(int)$row['id_OVPProv'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,3908,$id_OVPProv = $params['id_OVPProv'] ?? 0;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,3962,"id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,3976,":id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,3995,"':id_OVPProv' => $id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,4210,$id_OVPProv = $params['id_OVPProv'] ?? 0;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,4269,"id_OVPProv = :id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,4288,"':id_OVPProv' => $id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,4656,"IFNULL(t_prestador.id_OVPProv,0) as id_OVPProv,"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,4676,"'id_OVPProv'=>(int)$row['id_OVPProv'],"
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,4734,$id_OVPProv = $params['id_OVPProv'] ?? 0;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,4778,id_OVPProv
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,4789,:id_OVPProv
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,4805,':id_OVPProv' => $id_OVPProv
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,4973,$id_OVPProv = $params['id_OVPProv'] ?? 0;
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,5022,id_OVPProv = :id_OVPProv
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/routes/entidades.php,5038,"':id_OVPProv' => $id_OVPProv,"
+mail,AtlantesBE-main/AtlantesBE-main/app/routes/usuarios.php,204,$mail=new SendMail();
+mail,AtlantesBE-main/AtlantesBE-main/app/routes/usuarios.php,445,$mail=new SendMail();
+mail,AtlantesBE-main/AtlantesBE-main/app/routes/usuarios.php,864,$mail=new SendMail();
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,8,"*   azure_blob_enabled           - bool, master switch"
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,9,*   azure_blob_auth_mode         - 'connection_string' | 'sas'
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,10,*   azure_blob_connection_string - full connection string (auth_mode=connection_string)
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,11,*   azure_blob_account_name      - account name (auth_mode=sas)
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,12,*   azure_blob_sas_token         - SAS token without leading '?' (auth_mode=sas)
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,13,*   azure_blob_container         - container name
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,19,class BlobStorageService
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,33,$this->authMode  = defined('azure_blob_auth_mode') ? azure_blob_auth_mode : 'connection_string';
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,34,$this->container = defined('azure_blob_container') ? azure_blob_container : '';
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,37,$connStr           = defined('azure_blob_connection_string') ? azure_blob_connection_string : '';
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,45,$this->accountName = defined('azure_blob_account_name') ? azure_blob_account_name : '';
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,46,$this->sasToken    = defined('azure_blob_sas_token')    ? azure_blob_sas_token    : '';
+filesystem,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,117,$content = file_get_contents($localPath);
+curl,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,237,if (function_exists('curl_init')) {
+curl,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,246,$ch = curl_init($url);
+curl,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,247,"curl_setopt($ch, CURLOPT_CUSTOMREQUEST,  $method);"
+curl,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,248,"curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);"
+curl,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,249,"curl_setopt($ch, CURLOPT_HEADER,         true);"
+curl,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,250,"curl_setopt($ch, CURLOPT_HTTPHEADER,     $flatHeaders);"
+curl,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,251,"curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);"
+curl,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,253,"curl_setopt($ch, CURLOPT_POSTFIELDS, $body);"
+curl,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,256,"curl_setopt($ch, CURLOPT_NOBODY, true);"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,294,"$responseRaw = @file_get_contents($url, false, $context);"
+filesystem,AtlantesBE-main/AtlantesBE-main/app/services/BlobStorageService.php,302,// Parse status code from $http_response_header (populated by file_get_contents)
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/start.php,85,require 'functions/ovp.php';
+soap_ovp,AtlantesBE-main/AtlantesBE-main/app/start.php,86,require 'functions/logOVP.php';
+mail,AtlantesBE-main/AtlantesBE-main/app/start.php,87,require 'functions/sendmail.php';
+azure_blob,AtlantesBE-main/AtlantesBE-main/app/start.php,91,require 'services/BlobStorageService.php';
+filesystem,AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/index.php,37,mkdir($PNG_TEMP_DIR);
+filesystem,AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/phpqrcode.php,877,self::$frames[$version] = self::unserial(file_get_contents($fileName));
+filesystem,AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/phpqrcode.php,2622,$bitMask = self::unserial(file_get_contents($fileName));
+filesystem,AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/phpqrcode.php,2626,mkdir(QR_CACHE_DIR.'mask_'.$maskNo);
+filesystem,AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/qrmask.php,150,$bitMask = self::unserial(file_get_contents($fileName));
+filesystem,AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/qrmask.php,154,mkdir(QR_CACHE_DIR.'mask_'.$maskNo);
+filesystem,AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/qrspec.php,565,self::$frames[$version] = self::unserial(file_get_contents($fileName));
+filesystem,AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/tools/merge.php,56,$anotherCode = file_get_contents($fileName);
+filesystem,AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/tools/merge.php,62,"$versionDataEx = explode(""\n"", file_get_contents($versionFile));"
+filesystem,AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/tools/merge.php,64,$outputContents = file_get_contents($headerFile);
+filesystem,AtlantesBE-main/AtlantesBE-main/lib/piramide-uploader/PiramideUploader.php,30,"$dir = mkdir($directory, 0777, true);"
+filesystem,AtlantesBE-main/AtlantesBE-main/lib/piramide-uploader/PiramideUploader.php,36,"$mpf = move_uploaded_file($this->info_file[""temporal_name""], $directory . ""/"" . $this->info_file[""complete_name""]);"
+filesystem,AtlantesBE-main/AtlantesBE-main/scripts/strip-phpunit-eager-load.php,29,$content  = file_get_contents($path);
+filesystem,AtlantesBE-main/AtlantesBE-main/scripts/strip-phpunit-eager-load.php,42,$content  = file_get_contents($slimUtil);
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/bootstrap.php,7,require_once __DIR__ . '/../app/services/BlobStorageService.php';
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/bootstrap.php,10,// Constantes mínimas para que BlobStorageService no falle al instanciarse
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/bootstrap.php,12,"if (!defined('azure_blob_auth_mode'))         define('azure_blob_auth_mode',         'connection_string');"
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/bootstrap.php,13,"if (!defined('azure_blob_connection_string')) define('azure_blob_connection_string', '');"
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/bootstrap.php,14,"if (!defined('azure_blob_account_name'))      define('azure_blob_account_name',      '');"
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/bootstrap.php,15,"if (!defined('azure_blob_sas_token'))         define('azure_blob_sas_token',         '');"
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/bootstrap.php,16,"if (!defined('azure_blob_container'))         define('azure_blob_container',         '');"
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/bootstrap.php,17,"if (!defined('azure_blob_enabled'))           define('azure_blob_enabled',           false);"
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,17,*       azure_blob_enabled = true
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,18,*       azure_blob_connection_string = (conn string de Azurite — ver phpunit.xml)
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,19,*       azure_blob_container = 'warehouse'
+filesystem,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,110,unlink($jpegFile);
+filesystem,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,130,unlink($pngFile);
+filesystem,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,153,unlink($pdfFile);
+filesystem,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,174,unlink($jpegFile);
+filesystem,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,206,unlink($jpegFile);
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,233,$ch = curl_init($this->baseUrl . '/login');
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,234,"curl_setopt($ch, CURLOPT_POST,           true);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,235,"curl_setopt($ch, CURLOPT_POSTFIELDS,     http_build_query(array('username' => $user, 'contrasena' => $pass)));"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,236,"curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,246,$ch = curl_init($this->baseUrl . $path);
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,247,"curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,248,"curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Authorization: ' . $this->token));"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,257,$ch = curl_init($this->baseUrl . $path);
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,258,"curl_setopt($ch, CURLOPT_POST,           true);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,259,"curl_setopt($ch, CURLOPT_POSTFIELDS,     json_encode($data));"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,260,"curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,261,"curl_setopt($ch, CURLOPT_HTTPHEADER,     array("
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,278,$ch = curl_init($this->baseUrl . $path);
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,279,"curl_setopt($ch, CURLOPT_POST,           true);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,280,"curl_setopt($ch, CURLOPT_POSTFIELDS,     $postFields);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,281,"curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/AteGasImagesE2ETest.php,282,"curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Authorization: ' . $this->token));"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/HttpTestCase.php,38,$ch  = curl_init($url);
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/HttpTestCase.php,40,"curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/HttpTestCase.php,41,"curl_setopt($ch, CURLOPT_TIMEOUT, 120);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/HttpTestCase.php,42,"curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/HttpTestCase.php,43,"curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/HttpTestCase.php,44,"curl_setopt($ch, CURLOPT_HTTPHEADER, ["
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/HttpTestCase.php,51,"curl_setopt($ch, CURLOPT_POSTFIELDS, $body);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/HttpTestCase.php,90,$ch = curl_init($this->baseUrl . '/login');
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/HttpTestCase.php,91,"curl_setopt($ch, CURLOPT_POST,           true);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/HttpTestCase.php,92,"curl_setopt($ch, CURLOPT_POSTFIELDS,     json_encode(['username' => $user, 'contrasena' => $pass]));"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/HttpTestCase.php,93,"curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/HttpTestCase.php,94,"curl_setopt($ch, CURLOPT_TIMEOUT,        120);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/HttpTestCase.php,95,"curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);"
+curl,AtlantesBE-main/AtlantesBE-main/tests/E2E/HttpTestCase.php,96,"curl_setopt($ch, CURLOPT_HTTPHEADER,     ['Content-Type: application/json']);"
+filesystem,AtlantesBE-main/AtlantesBE-main/tests/E2E/SmokeSuiteTest.php,55,$content = file_get_contents($file);
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/Unit/BlobStorageServiceTest.php,8,* Tests unitarios para BlobStorageService.
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/Unit/BlobStorageServiceTest.php,12,class BlobStorageServiceTest extends TestCase
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/Unit/BlobStorageServiceTest.php,49,return new ConfigurableBlobStorageService(
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/Unit/BlobStorageServiceTest.php,69,$svc = new \BlobStorageService(); // usa constantes vacías del bootstrap
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/Unit/BlobStorageServiceTest.php,98,$svc = new \BlobStorageService();
+filesystem,AtlantesBE-main/AtlantesBE-main/tests/Unit/BlobStorageServiceTest.php,112,unlink($tmp);
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/Unit/BlobStorageServiceTest.php,153,$svc = new \BlobStorageService();
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/Unit/BlobStorageServiceTest.php,238,$svc = new StreamFallbackBlobStorageService(
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/Unit/BlobStorageServiceTest.php,260,$svc = new StreamFallbackBlobStorageService(
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/Unit/BlobStorageServiceTest.php,277,$svc = new StreamFallbackBlobStorageService(
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/Unit/BlobStorageServiceTest.php,315,class ConfigurableBlobStorageService extends \BlobStorageService
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/Unit/BlobStorageServiceTest.php,320,$ref = new \ReflectionClass(\BlobStorageService::class);
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/Unit/BlobStorageServiceTest.php,335,class StreamFallbackBlobStorageService extends \BlobStorageService
+azure_blob,AtlantesBE-main/AtlantesBE-main/tests/Unit/BlobStorageServiceTest.php,346,$ref = new \ReflectionClass(\BlobStorageService::class);
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/agentes-carga/agentes-carga.component.ts,31,public id_OVPProv: number=0;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/agentes-carga/agentes-carga.component.ts,113,this.id_OVPProv = 0;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/agentes-carga/agentes-carga.component.ts,135,this.id_OVPProv = this.agentescarga[indiceagentecarga].id_OVPProv;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/agentes-carga/agentes-carga.component.ts,205,"id_OVPProv: this.id_OVPProv,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/clientes/clientes.component.ts,35,public id_OVP: number=0;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/clientes/clientes.component.ts,238,return (item.activo && item.id_OVP!=null && item.id_OVP!=0);
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/clientes/clientes.component.ts,296,this.id_OVP = 0;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/clientes/clientes.component.ts,351,this.id_OVP = this.clientes[indicecliente].id_OVP;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/clientes/clientes.component.ts,701,"id_OVP: this.id_OVP,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/conceptos/conceptos.component.ts,27,public id_OVP: string;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/conceptos/conceptos.component.ts,28,public id_OVPRef: string;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/conceptos/conceptos.component.ts,87,this.conceptos[cc].id_OVPRef=response.conceptos[indice].id_OVPRef;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/conceptos/conceptos.component.ts,112,this.id_OVP='';
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/conceptos/conceptos.component.ts,113,this.id_OVPRef='';
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/conceptos/conceptos.component.ts,129,this.id_OVP = this.conceptos[indice].id_OVP;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/conceptos/conceptos.component.ts,130,this.id_OVPRef = this.conceptos[indice].id_OVPRef;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/conceptos/conceptos.component.ts,156,"id_OVP: this.id_OVP,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/conceptos/conceptos.component.ts,157,"id_OVPRef: this.id_OVPRef,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,697,"'concepto_ovp': '',"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,698,"'id_OVP': 0,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,942,"'concepto_ovp': this.conceptos[indiceconcepto].concepto_ovp,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,943,"'id_OVP': this.conceptos[indiceconcepto].id_OVP,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,975,this.embarque.cargos[indicecargo].concepto_ovp = this.conceptos[indiceconcepto].concepto_ovp;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,976,this.embarque.cargos[indicecargo].id_OVP = this.conceptos[indiceconcepto].id_OVP;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,1009,"'concepto_ovp': this.conceptos[indiceconcepto].concepto_ovp,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,1010,"'id_OVPRef': this.conceptos[indiceconcepto].id_OVPRef,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,1044,"'concepto_ovp': this.conceptos[indiceconceptocargo].concepto_ovp,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,1045,"'id_OVP': this.conceptos[indiceconceptocargo].id_OVP,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,1078,this.embarque.costos[indicecosto].concepto_ovp = this.conceptos[indiceconcepto].concepto_ovp;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,1079,this.embarque.costos[indicecosto].id_OVPRef = this.conceptos[indiceconcepto].id_OVPRef;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,1425,if (this.embarque.cargos[cc].idfacturanotadebito == 0 && this.embarque.cargos[cc].idcargo > 0 && this.embarque.cargos[cc].id_OVP != null && (this.embarque.cargos[cc].iddestinocargo==1 || this.embarque.cargos[cc].iddestinocargo==5)){
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,1428,"'concepto': this.embarque.cargos[cc].concepto_ovp,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,1680,"'concepto': this.embarque.cargos[cc].concepto_ovp,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,1837,"'concepto': this.embarque.cargos[cc].concepto_ovp,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,1998,if (this.embarque.cargos[cc].idplanilla == 0 && this.embarque.cargos[cc].idcargo>0 && this.embarque.cargos[cc].id_OVP==null){
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,2127,if(this.embarque.costos[cc].id_OVPRef.length==0){
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,2135,"'concepto': this.embarque.costos[cc].concepto_ovp,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/embarques-detalle/embarques-detalle.component.ts,2397,if (this.embarque.cargos[cc].idordenservicioi == 0 && this.embarque.cargos[cc].idfacturanotadebito == 0 && this.embarque.cargos[cc].idcargo > 0 && this.embarque.cargos[cc].esagente && this.embarque.cargos[cc].id_OVP==null && (this.embarque.
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/facturas/facturas.component.ts,171,this.errormigracion = this.facturas[indicefactura].errorOVPFact;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/facturas/facturas.component.ts,207,"$(""#confirmarMigracionOVP"").modal('hide');"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/facturas/facturas.component.ts,215,this.facturas[indicefactura].errorOVPFact=response.respuesta.mensajeerror;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/facturas/facturas.component.ts,220,this.facturas[indicefactura].idordenovp=response.respuesta.idordenovp;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/inventario-fisico-conteo/inventario-fisico-conteo.component.ts,477,"'itemImageSrc': ""data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAADwCAYAAABxLb1rAAAAAXNSR0IArs4c6QAAIABJREFUeF7MvQe4ZWV5Nnyv3fc+/Zw5U870CgxNmqBIlIga/xCJxsSoEaIm0c8ajVFUULEQNVY09tg1ihijn1iwgYUiZRhgmAIzDEwvp+/e1p/7ed5nrXfvc2ZA/fJ//+bimrPP2"
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/menulateral/menulateral.component.ts,3,import { FreshchatService } from '../services/freshchat.service';
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/menulateral/menulateral.component.ts,240,private freshchat: FreshchatService
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/menulateral/menulateral.component.ts,623,//this.freshchat.loadFreshchat();
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/menulateral/menulateral.component.ts,624,this.freshchat.loadFreshserviceWidget();
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/models/embarque.model.ts,62,"concepto_ovp: string,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/models/embarque.model.ts,63,"id_OVPRef: string,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/models/embarque.model.ts,91,"concepto_ovp: string,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/models/embarque.model.ts,92,"id_OVP: number,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/ordenes-pago/ordenes-pago.component.ts,134,this.errormigracion = this.ordenespago[indicefacturapago].errorOVP;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/ordenes-pago/ordenes-pago.component.ts,138,"$(""#confirmarMigracionOVP"").modal('hide');"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/ordenes-pago/ordenes-pago.component.ts,148,this.ordenespago[indicefactura].errorOVP=response.respuesta.mensajeerror;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/pagos-agente-exterior/pagos-agente-exterior.component.ts,97,this.errormigracion = this.pagosagenteexterior[indicefacturapago].errorOVP;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/pagos-agente-exterior/pagos-agente-exterior.component.ts,101,"$(""#confirmarMigracionOVP"").modal('hide');"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/pagos-agente-exterior/pagos-agente-exterior.component.ts,111,this.pagosagenteexterior[indicefactura].errorOVP=response.respuesta.mensajeerror;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/prestadores-servicio/prestadores-servicio.component.ts,29,public id_OVPProv: number=0;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/prestadores-servicio/prestadores-servicio.component.ts,96,this.id_OVPProv = 0;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/prestadores-servicio/prestadores-servicio.component.ts,113,this.id_OVPProv = this.prestadores[indiceprestador].id_OVPProv;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/prestadores-servicio/prestadores-servicio.component.ts,157,"id_OVPProv: this.id_OVPProv,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/proveedores/proveedores.component.ts,30,public id_OVPProv: number=0;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/proveedores/proveedores.component.ts,114,this.id_OVPProv = 0;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/proveedores/proveedores.component.ts,138,this.id_OVPProv = this.proveedores[indiceproveedor].id_OVPProv;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/proveedores/proveedores.component.ts,208,"id_OVPProv: this.id_OVPProv,"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/services/contabilidad.service.ts,48,"return this._http.put(this.url + 'contabilidad/facturas/migrarovp/'+idfactura,JSON.stringify(correos),{headers:headers});"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/services/contabilidad.service.ts,198,"return this._http.put(this.url + 'contabilidad/ordenespago/migrarovp/'+idfacturapago,null,{headers:headers});"
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,6,fcWidget?: any;      // Freshchat
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,7,FreshWidget?: any;   // Freshservice
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,14,export class FreshchatService {
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,15,private freshchatLoaded = false;
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,18,loadFreshchat(): void {
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,19,if (this.freshchatLoaded) {
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,20,this.initFreshchat();
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,24,const scriptId = 'Freshchat-js-sdk';
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,28,this.freshchatLoaded = true;
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,29,this.initFreshchat();
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,36,script.src = 'https://kposrlhelpdesk-help.freshchat.com/js/widget.js';
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,38,this.freshchatLoaded = true;
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,39,this.initFreshchat();
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,45,private initFreshchat(): void {
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,47,console.warn('Freshchat: fcWidget no está disponible todavía');
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,51,if (!environment.freshchatToken) {
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,52,console.warn('Freshchat: token no configurado');
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,57,"token: environment.freshchatToken,"
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,58,"host: 'https://kposrlhelpdesk-help.freshchat.com',"
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,80,script.src = 'https://assets.freshservice.com/widget/freshwidget.js';
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,90,if (!window.FreshWidget) {
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,91,console.warn('Freshservice: FreshWidget no está disponible todavía');
+freshchat,AtlantesFE-main/AtlantesFE-main/src/app/services/freshchat.service.ts,95,"window.FreshWidget.init('', {"
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/transportistas/transportistas.component.ts,30,public id_OVPProv: number=0;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/transportistas/transportistas.component.ts,97,this.id_OVPProv = 0;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/transportistas/transportistas.component.ts,115,this.id_OVPProv = this.transportistas[indicetransportista].id_OVPProv;
+soap_ovp,AtlantesFE-main/AtlantesFE-main/src/app/transportistas/transportistas.component.ts,159,"id_OVPProv: this.id_OVPProv,"
+freshchat,AtlantesFE-main/AtlantesFE-main/src/environments/environment.prod.ts,3,freshchatToken: ''
+freshchat,AtlantesFE-main/AtlantesFE-main/src/environments/environment.ts,7,freshchatToken: ''
