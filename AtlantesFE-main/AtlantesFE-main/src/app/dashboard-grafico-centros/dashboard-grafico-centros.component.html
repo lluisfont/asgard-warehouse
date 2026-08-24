@@ -1,0 +1,67 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="8.3"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Dashboard Gr&aacute;fico por Centros</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_dashboard_grafico_centros" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <ng-select name="idcliente" id="idcliente" [items]="entidades"
+                            bindLabel="entidad"
+                            bindValue="id"
+                            placeholder="Todos"
+                            (change)="cambioCliente()"
+                        [(ngModel)]="idcliente">
+                        </ng-select>
+                        <small *ngIf="error_idcliente" class="text-danger">Campo Requerido</small>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fecha" class="form-label text-secondary small">Fecha</label>
+                        <p-calendar 
+                            [(ngModel)]="fecha" 
+                            inputId="fecha"
+                            styleClass="col-12"
+                            [iconDisplay]="'input'" 
+                            [showIcon]="true" 
+                            [dateFormat]="'dd/mm/yy'"
+                            [minDate]="minDate"
+                            [maxDate]="maxDate"
+                            [readonlyInput]="true"
+                            [disabledDates]="invalidDates"
+                            [disabled]="fechasHabilitadasStr.length === 0"
+                            (onSelect)="error_fecha=false"
+                            />
+                        <small *ngIf="error_fecha" class="text-danger">Campo Requerido</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarDashBoard();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+                <br />
+                <div class="chart-wrap" [style.height]="chartHeight">
+                    <p-chart
+                        #chart
+                        *ngIf="data"
+                        type="bar"
+                        [data]="data"
+                        [options]="options"
+                        style="display:block; width:100%; height:100%;">
+                    </p-chart>
+                </div>
+                <!--<p-chart *ngIf="data" type="bar" [data]="data" [options]="options" [style]="chartStyle" />-->
+            </div>
+        </div>
+    </main>
+</div>

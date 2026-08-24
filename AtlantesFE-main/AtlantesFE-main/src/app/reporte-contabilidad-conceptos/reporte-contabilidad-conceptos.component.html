@@ -1,0 +1,182 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="7.14"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Montos por Concepto</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_reporte_contabilidad_montos_concepto" class="card-body">
+                <br />
+                
+                
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="fechainicial" class="form-label text-secondary small">Desde</label>
+                        <input type="date" class="form-control" id="fechainicial" name="fechainicial" [(ngModel)]="fechainicial" [disabled]="generado" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="fechafinal" class="form-label text-secondary small">Hasta</label>
+                        <input type="date" class="form-control" id="fechafinal" name="fechafinal" [(ngModel)]="fechafinal" [disabled]="generado" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+                
+                
+                <p-table *ngIf="reporte.length>0" [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                            <!--<button type="button" (click)="exportPdf()" class="btn btn-danger mb-3"><i class="bi bi-file-earmark-pdf"></i></button>-->
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Embarque
+                                    <p-columnFilter type="text" field="embarque" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha Realizaci&oacute;n
+                                    <p-columnFilter type="date" field="fecharealizacion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha de emisi&oacute;n
+                                    <p-columnFilter type="date" field="fecha" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Concepto
+                                    <p-columnFilter type="text" field="concepto" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Orden de Ingreso
+                                    <p-columnFilter type="numeric" field="montoi" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Factura SLG
+                                    <p-columnFilter type="numeric" field="montofactura" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Nota de Cobranza
+                                    <p-columnFilter type="numeric" field="montonotadebito" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Invoice
+                                    <p-columnFilter type="numeric" field="montoinvoice" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cargo
+                                    <p-columnFilter type="numeric" field="montocargo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Orden de Egreso
+                                    <p-columnFilter type="numeric" field="montoe" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Costo OP
+                                    <p-columnFilter type="numeric" field="montoop" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Costo
+                                    <p-columnFilter type="numeric" field="montocosto" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    DIM/DUI
+                                    <p-columnFilter type="text" field="nodui" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Estado
+                                    <p-columnFilter type="text" field="estado" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Proveedor/Agente
+                                    <p-columnFilter type="text" field="proveedor" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Transportista
+                                    <p-columnFilter type="text" field="transportista" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-conceptos>
+                        <tr>
+                            <td>{{conceptos.embarque}}</td>
+                            <td>{{conceptos.cliente}}</td>
+                            <td>{{conceptos.fecharealizacion | date:'dd/MM/yyyy'}}</td>
+                            <td>{{conceptos.fecha | date:'dd/MM/yyyy'}}</td>
+                            <td>{{conceptos.concepto}}</td>
+                            <td>{{conceptos.montoi | number:'0.2-2'}}</td>
+                            <td>{{conceptos.montofactura | number:'0.2-2'}}</td>
+                            <td>{{conceptos.montonotadebito | number:'0.2-2'}}</td>
+                            <td>{{conceptos.montoinvoice | number:'0.2-2'}}</td>
+                            <td>{{conceptos.montocargo | number:'0.2-2'}}</td>
+                            <td>{{conceptos.montoe | number:'0.2-2'}}</td>
+                            <td>{{conceptos.montoop | number:'0.2-2'}}</td>
+                            <td>{{conceptos.montocosto | number:'0.2-2'}}</td>
+                            <td>{{conceptos.nodui}}</td>
+                            <td>{{conceptos.estado}}</td>
+                            <td>{{conceptos.proveedor}}</td>
+                            <td>{{conceptos.transportista}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="15">No existen registros</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+                
+            </div>
+        </div>
+    </main>
+</div>

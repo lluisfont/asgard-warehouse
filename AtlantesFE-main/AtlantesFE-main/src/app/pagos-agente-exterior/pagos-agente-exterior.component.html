@@ -1,0 +1,151 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="3.4"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Pagos Agente Exterior</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_pagos_agente_exterior" class="card-body">
+                <br />
+                <p-table [value]="pagosagenteexterior" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-striped"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    [globalFilterFields]="['outNroAsignacion','numerofactura','fecha','embarque','cliente','monto','estadonotadebito','agente']"
+                    >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>
+                                
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    OVP
+                                    <p-columnFilter type="text" field="outNroAsignacion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Numero
+                                    <p-columnFilter type="text" field="numerofactura" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha
+                                    <p-columnFilter type="date" field="fecha" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Embarque
+                                    <p-columnFilter type="text" field="embarque" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Agente
+                                    <p-columnFilter type="text" field="agente" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Monto (BOB)
+                                    <p-columnFilter type="numeric" field="monto" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Estado
+                                    <p-columnFilter type="text" field="estadonotadebito" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-pagoagenteexterior>
+                        <tr>
+                            <td class="text-center"><i class="bi bi-file-earmark" role='button' (click)="downloadPagoAgenteExterior(pagoagenteexterior.idfacturapago)"></i></td>
+                            <td [class.bg-danger-light] = "pagoagenteexterior.errorOVP.length > 0">
+                                <div *ngIf="pagoagenteexterior.outNroAsignacion.length>0">{{pagoagenteexterior.outNroAsignacion}}</div>
+                                <i *ngIf="pagoagenteexterior.outNroAsignacion.length==0" class="bi bi-arrow-right-circle" role='button' data-bs-toggle="modal" data-bs-target="#confirmarMigracionOVP" (click)="prepararMigracion(pagoagenteexterior.idfacturapago);"></i>
+                            </td>
+                            <td>{{pagoagenteexterior.numerofactura}}</td>
+                            <td>{{pagoagenteexterior.fecha  | date:'dd/MM/yyyy'}}</td>
+                            <td>{{pagoagenteexterior.embarque}}</td>
+                            <td>{{pagoagenteexterior.cliente}}</td>
+                            <td>{{pagoagenteexterior.agente}}</td>
+                            <td>{{pagoagenteexterior.monto | number:'0.2-2'}}</td>
+                            <td>{{pagoagenteexterior.estadonotadebito}}</td>
+                            
+                            
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="9">No existen registros</td>
+                        </tr>
+                    </ng-template>
+                    
+                </p-table>
+                
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal" id="confirmarMigracionOVP" tabindex="-1" aria-labelledby="confirmarMigracionOVPLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-right">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+                <div *ngIf="errormigracion.length>0" class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Error!</h4>
+                    <p>{{errormigracion}}</p>
+                </div>
+                <br />
+                <h4>¿Desea migrar la factura a la OVP?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="migrarPagoAgenteExterior()">Migrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ventanaLoading" tabindex="-1" aria-labelledby="ventanaLoadingLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: none !important;">
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

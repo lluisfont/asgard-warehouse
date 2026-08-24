@@ -1,0 +1,497 @@
+<div id="principal">
+    <app-menusuperior [permite_cambio_almacen]="false"></app-menusuperior>
+    <app-menulateral [menu_item]="1.4"></app-menulateral>
+    <main id="main" class="main" *ngIf="pedido">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/pedidos']">Pedidos</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Pedido {{pedido.numeropedido}}</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_pedidos" class="card-body">
+                <br />
+                <div class="pagetitle"><h1>INFORMACI&Oacute;N GENERAL</h1></div>
+                <div class="row mb-3">
+                    <div class="col-md-9">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <ng-select name="idcliente" id="idcliente" [items]="entidades"
+                            bindLabel="entidad"
+                            bindValue="id"
+                            placeholder="Seleccione"
+                            (change)="verificarCliente()"
+                            [readonly]="clientebloqueado || !editar_pedidos"
+                        [(ngModel)]="pedido.idcliente">
+                        </ng-select>
+                        <small *ngIf="erroridcliente" class="text-danger">Campo Requerido</small>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="fecha" class="form-label text-secondary small">Fecha Creaci&oacute;n</label>
+                        <input type="datetime-local" class="form-control" id="fecha" name="fecha" [(ngModel)]="pedido.fecha" [disabled]="true" (change)="errorfecha=false" />
+                        <small *ngIf="errorfecha" class="text-danger">Campo Requerido</small>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-9">
+                        <label for="no_pedido" class="form-label text-secondary small">Documento Compra</label>
+                        <input type="text" class="form-control" id="no_pedido" name="no_pedido" [(ngModel)]="pedido.no_pedido" [disabled]="true" />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="fecha_entrega" class="form-label text-secondary small">Fecha Entrega</label>
+                        <input type="date" class="form-control" id="fecha_entrega" name="fecha_entrega" [(ngModel)]="pedido.fecha_entrega" [disabled]="true" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-2">
+                        <label for="total_final" class="form-label text-secondary small">Total Bultos</label>
+                        <input type="text" class="form-control" id="total_final" name="total_final" value="{{total_final}}" [disabled]="true" />
+                    </div>
+                    <div class="col-md-2">
+                        <label for="cantidad_final" class="form-label text-secondary small">Total Items</label>
+                        <input type="text" class="form-control" id="cantidad_final" name="cantidad_final" value="{{cantidad_final}}" [disabled]="true" />
+                    </div>
+                    <div class="col-md-2">
+                        <label for="cantidad_tiendas" class="form-label text-secondary small">Cantidad Tiendas</label>
+                        <input type="text" class="form-control" id="cantidad_tiendas" name="cantidad_tiendas" value="{{pedido.pedidotienda.length}}" [disabled]="true" />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="rubro" class="form-label text-secondary small">Rubro</label>
+                        <ng-select name="rubro" id="rubro" [items]="rubros"
+                            bindLabel="rubro"
+                            bindValue="rubro"
+                            placeholder="Seleccione"
+                            [disabled]="!editar_pedidos"
+                        [(ngModel)]="pedido.rubro">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="idusuario_revisado" class="form-label text-secondary small">Revisado por</label>
+                        <ng-select name="idusuario_revisado" id="idusuario_revisado" [items]="usuarios"
+                            bindLabel="nombre"
+                            bindValue="idusuario"
+                            placeholder="Seleccione"
+                            [disabled]="!editar_pedidos"
+                        [(ngModel)]="pedido.idusuario_revisado">
+                        </ng-select>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-5 mb-3 pagetitle">
+                        <h1>DETALLE DE ITEMS</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div *ngIf="editar_pedidos" class="col-md-3 mb-3">
+                        <button type="button" [disabled]="pedido.idcliente==null" class="btn btn-outline-primary col-12" data-bs-toggle="modal" data-bs-target="#ventanaCargaMasiva">Cargar Datos</button>
+                    </div>
+                    <div *ngIf="editar_pedidos" class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-outline-warning col-12" (click)="getDisponibilidad()">Cargar Disponibilidad</button>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-outline-success col-12" (click)="generarExcel()">Exportar MS Excel</button>
+                    </div>
+                    <div *ngIf="editar_pedidos" class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-outline-danger col-12" data-bs-toggle="modal" data-bs-target="#confirmarEliminarTodos">Borrar Todo</button>
+                    </div>
+                </div>
+                <br />
+                <p-table [value]="pedidotabla" [resizableColumns]="true" columnResizeMode="expand" responsiveLayout="scroll" styleClass="p-datatable-gridlines p-datatable-sm" scrollDirection="both" [scrollable]="true" scrollHeight="570px">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width:150px" pResizableColumn pFrozenColumn>Codigo</th>
+                            <th style="width:200px" pResizableColumn>Descripci&oacute;n</th>
+                            <th style="width:100px" pResizableColumn>Lote</th>
+                            <th style="width:75px" pResizableColumn>U/M</th>
+                            <th style="width:150px" pResizableColumn *ngFor="let tiendas of pedido.pedidotienda">
+                                {{tiendas.no_pedido}}<br *ngIf="tiendas.no_pedido!=null" />{{tiendas.tienda}}<br />
+                                <input *ngIf="editar_salidas" type="checkbox" [checked]="tiendas.marcado" name="marcado{{tiendas.idpedidotienda}}" id="marcado{{tiendas.idpedidotienda}}" (change)="tiendas.marcado=!tiendas.marcado; error_tiendas=false" [disabled]="tiendas.total_disponible_tienda==0" />
+                            </th>
+                            <th style="width:150px" pResizableColumn>Total</th>
+                            
+                            <th style="width:150px" pResizableColumn>Ubicacion</th>
+                            <th style="width:150px" pResizableColumn>Cantidad</th>
+                            <th style="width:150px" pResizableColumn>PPT</th>
+                            <th style="width:150px" pResizableColumn>Vencimiento</th>
+                            <th style="width:150px" pResizableColumn>Lote</th>
+                            
+                            
+                            <!--
+                            <ng-container *ngFor="let ubicacion of pedido.ubicaciones">
+                                <th style="width:150px" pResizableColumn>Ubicacion {{ubicacion.ubicacion+1}}</th>
+                                <th style="width:150px" pResizableColumn>Cantidad {{ubicacion.ubicacion+1}}</th>
+                                <th style="width:150px" pResizableColumn>PPT {{ubicacion.ubicacion+1}}</th>
+                                <th style="width:150px" pResizableColumn>Vencimiento {{ubicacion.ubicacion+1}}</th>
+                                <th style="width:150px" pResizableColumn>Lote {{ubicacion.ubicacion+1}}</th>
+                            </ng-container>
+                            -->
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-detalle let-rowIndex="rowIndex">
+                        <tr>
+                            <td style="width:150px" pFrozenColumn>{{detalle.codigo}}</td>
+                            <td style="width:200px">{{detalle.descripcion}}</td>
+                            <td style="width:100px">{{detalle.lote_ini}}</td>
+                            <td style="width:75px">{{detalle.unidadmedida}}</td>
+                            <td style="width:150px;" *ngFor="let tiendas of pedido.pedidotienda">{{detalle['t_'+tiendas.idpedidotienda] | number:'0.0-2'}}</td>
+                            <td style="width:150px">{{detalle.total | number:'0.0-2' }}</td>
+                            <td style="width:150px;">{{detalle.ubicacion}}</td>
+                            <td style="width:150px;">{{detalle.cantidad_disponible | number:'0.0-2'}}</td>
+                            <td style="width:150px;">{{detalle.ppt}}</td>
+                            <td style="width:150px;" [ngClass]="{'vencido': (detalle.diasavencer < 0),'vigente':(detalle.diasavencer==null)}">{{detalle.fechavencimiento | date:'dd/MM/yyyy'}}</td>
+                            <td style="width:150px;">{{detalle.lote}}</td>
+                            <!--
+                            <ng-container *ngFor="let ubicacion of pedido.ubicaciones">
+                                <td style="width:150px;">{{detalle['ub_'+ubicacion.ubicacion]}}</td>
+                                <td style="width:150px;">{{detalle['ct_'+ubicacion.ubicacion] | number:'0.0-2'}}</td>
+                                <td style="width:150px;">{{detalle['pp_'+ubicacion.ubicacion]}}</td>
+                                <td style="width:150px;" [ngClass]="{'vencido': (detalle['dv_'+ubicacion.ubicacion] < 0),'vigente':(detalle['dv_'+ubicacion.ubicacion]==null)}">{{detalle['fv_'+ubicacion.ubicacion] | date:'dd/MM/yyyy'}}</td>
+                                <td style="width:150px;">{{detalle['lt_'+ubicacion.ubicacion]}}</td>
+                            </ng-container>
+                            -->
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <br />
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <span *ngIf="error_tiendas" class="text-danger">Debe seleccionar al menos una tienda</span>
+                    </div>
+                    <div class="col-md-4 text-end mb-3">
+                        <button *ngIf="editar_salidas" type="button" [disabled]="pedidotabla.length==0" class="btn btn-outline-primary" (click)="generarEgresos()">Generar Egresos</button>
+                    </div>
+                </div>
+                <ng-container *ngIf="pedido.salidas_automaticas.length>0">
+                    <div class="row">
+                        <div class="col-12 mb-3 pagetitle">
+                            <h1>SALIDAS CREADAS AUTOMATICAMENTE</h1>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="erroresfinalizar.length>0">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <h4 class="alert-heading">Error!</h4>
+                                <p>Se encontraron los siguientes errores:</p>
+                                <ul>
+                                    <li *ngFor="let errorfinalizar of erroresfinalizar">{{errorfinalizar.error}}</li>
+                                </ul>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <p-table [value]="pedido.salidas_automaticas" styleClass="p-datatable-sm" [autoLayout]="true">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width:100px"></th>
+                                <th>Numero de Egreso</th>
+                                <th>Almacen Destino</th>
+                                <th>Numero de pedido</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-salidas>
+                            <tr>
+                                <td class="text-center"><i *ngIf="ver_salidas" class="bi bi-folder2-open" role='button' (click)="abrirDetalle(salidas.idsalida)"></i>&nbsp;<i *ngIf="ver_salidas" class="bi bi-box-arrow-up-right" role='button' (click)="abrirDetalleNuevo(salidas.idsalida)"></i></td>
+                                <td>{{ salidas.numero }}</td>
+                                <td>{{ salidas.almacen_destino }}</td>
+                                <td>{{ salidas.numero_pedido }}</td>
+                                <td><button *ngIf="!salidas.finalizado && editar_salidas" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#confirmarFinalizar" (click)="idsalida=salidas.idsalida">Finalizar</button></td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle btn-warning" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Acta
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                            <li><a class="dropdown-item" role='button' (click)="verActaSalida(salidas.idsalida,0)">Unidad Inventario</a></li>
+                                            <li><a class="dropdown-item" role='button' (click)="verActaSalida(salidas.idsalida,1)">Unidad Salida</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <!--
+                    <div class="row">
+                        <div class="col-md-6 mb-3 pagetitle">
+                            <p-table [value]="pedido.salidas_automaticas" styleClass="p-datatable-sm" [autoLayout]="true">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:100px"></th>
+                                        <th>Numero de Egreso</th>
+                                        <th>Almacen Destino</th>
+                                        <th>Numero de pedido</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-salidas>
+                                    <tr>
+                                        <td class="text-center"><i *ngIf="ver_salidas" class="bi bi-folder2-open" role='button' (click)="abrirDetalle(salidas.idsalida)"></i>&nbsp;<i *ngIf="ver_salidas" class="bi bi-box-arrow-up-right" role='button' (click)="abrirDetalleNuevo(salidas.idsalida)"></i></td>
+                                        <td>{{ salidas.numero }}</td>
+                                        <td>{{ salidas.almacen_destino }}</td>
+                                        <td>{{ salidas.numero_pedido }}</td>
+                                        <td><button *ngIf="!salidas.finalizado && editar_salidas" type="button" class="btn btn-dark col-xl-4 col-sm-10 col-xs-10" data-bs-toggle="modal" data-bs-target="#confirmarFinalizar">Finalizar</button></td>
+                                        <td></td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                    -->
+                </ng-container>
+                    
+                        
+                
+                <br />
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="nota_adicional" class="form-label text-secondary small">Notas Adicionales</label>
+                        <textarea autosize class="form-control" id="nota_adicional" name="nota_adicional" rows="3" [(ngModel)]="pedido.nota_adicional" [disabled]="!editar_pedidos"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 mb-3 pagetitle">
+                        <h1>PREPARACI&Oacute;N DEL PEDIDO</h1>
+                    </div>
+                </div>
+                <div class="row" *ngIf="editar_pedidos">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-outline-primary col-12" (click)="agregarPreparacion()">Agregar Fila</button>
+                    </div>
+                </div>
+                <p-table [value]="pedido.preparacion" [resizableColumns]="true" columnResizeMode="expand" responsiveLayout="scroll" styleClass="p-datatable-gridlines p-datatable-sm" scrollDirection="both">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>Preparador</th>
+                            <th pResizableColumn>Sector</th>
+                            <th pResizableColumn>Cant. Bultos</th>
+                            <th pResizableColumn>Hora Inicio</th>
+                            <th pResizableColumn>Hora Fin</th>
+                            <th pResizableColumn>Demora en Horas</th>
+                            <th pResizableColumn>Pedido Conforme</th>
+                            <th pResizableColumn>Pedido Conforme rev 2</th>
+                            <th pResizableColumn>Pedido Conforme rev 3</th>
+                            <th pResizableColumn>Notas</th>
+                            <th></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template #preparaciona pTemplate="body" let-preparacion let-rowIndex="rowIndex">
+                        <tr>
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <select class="form-select form-select-sm no-border" id="idpreparador{{rowIndex}}" name="idpreparador{{rowIndex}}" [(ngModel)]="preparacion.idpreparador" (change)="getNombreUsuario(rowIndex)" [disabled]="!editar_pedidos">
+                                            <option *ngFor="let usuario of usuarios"  [ngValue]="usuario.idusuario">{{usuario.nombre}}</option>
+                                        </select>
+                                        <!--<input type="time" class="form-control" id="hora_inicio{{rowIndex}}" name="hora_inicio{{rowIndex}}" [(ngModel)]="preparacion.hora_inicio" >-->
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{preparacion.preparador}}
+                                    </ng-template>
+                                </p-cellEditor>
+
+                                <!--
+                                <select class="form-select form-select-sm no-border" id="idpreparador{{rowIndex}}" name="idpreparador{{rowIndex}}" [(ngModel)]="preparacion.idpreparador">
+                                    <option *ngFor="let usuario of usuarios"  [ngValue]="usuario.idusuario">{{usuario.nombre}}</option>
+                                </select>
+                                <small *ngIf="errordetalle[rowIndex].erroridembalaje" class="text-danger">Campo Requerido</small>-->
+                            </td>
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <p-multiSelect
+                                            [options]="sectores"
+                                            [(ngModel)]="preparacion.sector"
+                                            optionLabel="sector"
+                                            [filter]="false"
+                                            [showToggleAll]="false"
+                                            appendTo="body"
+                                            (onChange)="cambioSector(rowIndex)"
+                                            [disabled]="!editar_pedidos"
+                                            placeholder="Seleccione" />
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{preparacion.texto_sector}}
+                                    </ng-template>
+                                </p-cellEditor>
+
+                            </td>
+                            <td>
+                                {{preparacion.bultos}}
+                            </td>
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input type="time" class="form-control" id="hora_inicio{{rowIndex}}" name="hora_inicio{{rowIndex}}" [(ngModel)]="preparacion.hora_inicio" [disabled]="!editar_pedidos" >
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{preparacion.hora_inicio}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input type="time" class="form-control" id="hora_fin{{rowIndex}}" name="hora_fin{{rowIndex}}" [(ngModel)]="preparacion.hora_fin" [disabled]="!editar_pedidos" >
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{preparacion.hora_fin}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input type="number" step="0.1" class="form-control" id="demora{{rowIndex}}" name="demora{{rowIndex}}" [(ngModel)]="preparacion.demora" [disabled]="!editar_pedidos" >
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{preparacion.demora}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="conforme{{rowIndex}}" id="conforme{{rowIndex}}" [checked]="preparacion.conforme" (change)="preparacion.conforme=!preparacion.conforme" [disabled]="!editar_pedidos" />
+                            </td>
+                            <td>
+                                <input type="checkbox" name="conforme2{{rowIndex}}" id="conforme2{{rowIndex}}" [checked]="preparacion.conforme2" (change)="preparacion.conforme2=!preparacion.conforme2" [disabled]="!editar_pedidos" />
+                            </td>
+                            <td>
+                                <input type="checkbox" name="conforme3{{rowIndex}}" id="conforme3{{rowIndex}}" [checked]="preparacion.conforme3" (change)="preparacion.conforme3=!preparacion.conforme3" [disabled]="!editar_pedidos" />
+                            </td>
+                            <td pEditableColumn>
+                              <p-cellEditor>
+                                  <ng-template pTemplate="input">
+                                      <input type="text" class="form-control" id="notas{{rowIndex}}" name="notas{{rowIndex}}" [(ngModel)]="preparacion.notas" [disabled]="!editar_pedidos" >
+                                  </ng-template>
+                                  <ng-template pTemplate="output">
+                                      {{preparacion.notas}}
+                                  </ng-template>
+                              </p-cellEditor>
+                          </td>
+                            <td>
+                                <i *ngIf="editar_pedidos" class="bi bi-x-circle-fill" role="button" data-bs-toggle="modal" data-bs-target="#confirmarEliminarPreparacion" (click)="indicepreparacioneliminar=rowIndex"></i>
+                            </td>
+                        </tr>
+
+                    </ng-template>
+                </p-table>
+                <hr />
+
+                <div class="row">
+                    <div class="col-6">
+                        <button *ngIf="editar_pedidos" type="button" class="btn btn-primary col-xl-4 col-sm-10 col-xs-10" (click)="savePedido()">Guardar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>
+
+
+<div class="modal" id="ventanaCargaMasiva" tabindex="-1" aria-labelledby="ventanaCargaMasivaLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaCargaMasivaLabel">Carga Masiva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Para cargar el pedido desde un archivo xlsx llene el formato que se muestra <a target="_blank" href="{{urlFormatoPedido}}">aqui</a> y cargelo a continuaci&oacute;n
+                <br /><br />
+                <input class="form-control" type="file" name="fileUpload" id="fileUpload" #UploadFileInput (change)="fileChangeEvent($event)" >
+                <small *ngIf="errorarchivo" class="text-danger">Campo requerido</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="cargarMasivamente()">Cargar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarEliminarTodos" tabindex="-1" aria-labelledby="confirmarEliminarTodosLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar todos los registros?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarTodos()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarEliminarPreparacion" tabindex="-1" aria-labelledby="confirmarEliminarPreparacionLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar este registro?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarPreparacion()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarFinalizar" tabindex="-1" aria-labelledby="confirmarFinalizarLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+
+                <br />
+                <h4>¿Est&aacute; seguro que desea finalizar la salida?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" [disabled]="finalizando" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" [disabled]="finalizando" class="btn btn-danger" (click)="finalizarSalida()">Finalizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ventanaLoading" tabindex="-1" aria-labelledby="ventanaLoadingLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: none !important;">
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

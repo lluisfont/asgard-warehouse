@@ -1,0 +1,636 @@
+<p-confirmDialog />
+<div id="principal">
+    <app-menusuperior [permite_cambio_almacen]="true"></app-menusuperior>
+    <app-menulateral [menu_item]="12.3"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Control de Producci&oacute;n</li>
+                </ol>
+            </nav>
+        </div>
+        <div>
+            <div class="row g-3">
+                <!-- Total VINs -->
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="rounded p-3 me-3 bg-primary bg-opacity-10">
+                                <i class="bi bi-box text-primary fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Total VINs</div>
+                                <div class="fs-4 fw-bold">{{total_vin}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pendientes -->
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="rounded p-3 me-3 bg-warning bg-opacity-10">
+                                <i class="bi bi-calendar text-warning fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">En actividad</div>
+                                <div class="fs-4 fw-bold">{{total_en_actividad}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- En Recepción -->
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="rounded p-3 me-3 bg-success bg-opacity-10">
+                                <i class="bi bi-clipboard-check text-success fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Pausados</div>
+                                <div class="fs-4 fw-bold">{{total_pausados}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="rounded p-3 me-3 bg-success bg-opacity-10">
+                                <i class="bi bi-clipboard-check text-success fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Con Inventario</div>
+                                <div class="fs-4 fw-bold">{{total_con_inventario}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br />
+        <div class="card">
+            <div *ngIf="ver_gestion_movimiento" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="filtro_chasis" class="form-label text-secondary small">Buscar VIN</label>
+                        <input type="text" class="form-control" id="filtro_chasis" name="filtro_chasis" (input)="filtrarGestionMovimiento()" [(ngModel)]="filtro_chasis" >
+                    </div>
+                </div>
+                
+                <ng-container *ngFor="let gestionmovimiento of gestionmovimientos_filtrado; let rowIndex = index">
+                    <div class="card">
+                        <div class="card-body">
+                            <br />
+                            <div class="row p-2">
+                                <div class="col-md-2">
+                                    <div>
+                                        <div class="fw-semibold">VIN</div>
+                                        <div class="text-muted">{{gestionmovimiento.chasis}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="fw-semibold">Marca</div>
+                                    <div class="text-muted">{{gestionmovimiento.marca}}</div>
+                                    <div class="text-muted">{{gestionmovimiento.modelo}}</div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="fw-semibold">Etapa</div>
+                                    <p-tag [severity]="gestionmovimiento.severity" value="{{gestionmovimiento.etapa}}"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="fw-semibold">Ubicaci&oacute;n</div>
+                                    <div class="text-muted">{{gestionmovimiento.ubicacion}}</div>
+                                    <!--
+                                    <div class="text-muted">Tecnicos</div>
+                                    <ul>
+                                        <li *ngFor="let tecnico of asignacion_trabajo.tecnicos; let rowIndexTecnico = index">
+                                            {{tecnico.nombre}} <button type="button" class="btn btn-light btn-sm" (click)="eliminarTecnico(rowIndex,rowIndexTecnico)"><i class="bi bi-x"></i></button>
+                                        </li>
+                                    </ul>
+                                    -->
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="fw-semibold">Tipo de Tanque</div>
+                                    <div class="text-muted">{{gestionmovimiento.tipo_tanque}}</div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-outline-dark" (click)="prepararVer(rowIndex)">Ver</button>
+                                        <button [disabled]="gestionmovimiento.idestado_etapa!=2" type="button" class="btn btn-outline-primary" (click)="prepararInventario(rowIndex)">Inventario</button>
+                                    </div>
+                                    <!--
+                                    <div class="text-muted">Tecnicos QA</div>
+                                    <ul>
+                                        <li *ngFor="let tecnico_qa of asignacion_trabajo.tecnicos_qa; let rowIndexTecnicoQa = index">
+                                            {{tecnico_qa.nombre}} <button type="button" class="btn btn-light btn-sm"><i class="bi bi-x"></i></button>
+                                        </li>
+                                    </ul>
+                                    -->
+                                </div>
+                            </div>
+
+                            <div class="row bg-light p-2 border rounded">
+                                <div class="col-12 d-flex justify-content-between">
+                                    <div>Tecnicos: <ng-container *ngFor="let tecnico of gestionmovimiento.tecnicos; let rowIndexTecnico = index"><p-tag severity="info" [value]="tecnico.nombre"/>&nbsp;</ng-container>QA: <ng-container *ngFor="let tecnico_qa of gestionmovimiento.tecnicos_qa; let rowIndexTecnicoQA = index"><p-tag severity="secondary" [value]="tecnico_qa.nombre"/>&nbsp;</ng-container></div>
+                                    <div><p-tag *ngIf="gestionmovimiento.fecha_inventario" severity="success" value="Inventario OK"/></div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <button *ngIf="gestionmovimiento.idestado_etapa==1" type="button" class="btn btn-success" [disabled]="gestionmovimiento.idetapa==null" (click)="prepararInicio(rowIndex)"><i class="bi bi-play"></i> Iniciar</button>
+                                    <div *ngIf="gestionmovimiento.idestado_etapa==2" class="btn-group" role="group">
+                                        <button type="button" class="btn btn-dark" (click)="prepararPausa(rowIndex)">Pausar</button>
+                                        <button type="button" class="btn btn-primary" (click)="prepararFinalizacion(rowIndex)">Finalizar</button>
+                                    </div>
+                                    <button *ngIf="gestionmovimiento.idestado_etapa==3" type="button" class="btn btn-danger" (click)="prepararInicio(rowIndex)"><i class="bi bi-play"></i> Reiniciar</button>
+                                </div>
+                                <div>
+                                    <p-tag severity="info" [value]="gestionmovimiento.estado_etapa"/>
+                                    <span class="p-2" *ngIf="gestionmovimiento.inicio">Inicio: {{gestionmovimiento.inicio  | date:'dd/MM/yy hh:mm'}}</span>
+                                    <span class="p-2" *ngIf="gestionmovimiento.inicio">Tiempo: {{tiempoFormateado(gestionmovimiento.tiempo)}}</span>
+                                </div>
+                            </div>
+                                
+                        </div>
+                        
+                    </div>
+                    
+                </ng-container>
+                
+                <!--
+                <ul class="list-group">
+                    <li class="list-group-item mb-2" *ngFor="let gestionmovimiento of gestionmovimientos; let rowIndex = index">
+                        
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div>
+                                    <div class="fw-semibold">VIN</div>
+                                    <div class="text-muted">{{gestionmovimiento.chasis}}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="fw-semibold">Marca</div>
+                                <div class="text-muted">{{gestionmovimiento.marca}}</div>
+                                <div class="text-muted">{{gestionmovimiento.modelo}}</div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="fw-semibold">Etapa</div>
+                                <p-tag severity="{{gestionmovimiento.severity}}" value="{{gestionmovimiento.etapa}}"/>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="fw-semibold">Ubicaci&oacute;n</div>
+                                <div class="text-muted">{{gestionmovimiento.ubicacion}}</div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-outline-dark">Ver</button>
+                                    <button type="button" class="btn btn-outline-primary">Inventario</button>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-between">
+                                <div>Tecnicos: <ng-container *ngFor="let tecnico of gestionmovimiento.tecnicos; let rowIndexTecnico = index"><p-tag severity="secondary" [value]="tecnico.nombre"/>&nbsp;</ng-container>QA: <ng-container *ngFor="let tecnico_qa of gestionmovimiento.tecnicos_qa; let rowIndexTecnicoQA = index"><p-tag severity="secondary" [value]="tecnico_qa.nombre"/>&nbsp;</ng-container></div>
+                                <div>INVENTARIO OK</div>
+                            </div>
+                        </div>
+                        <hr />
+                        <button type="button" class="btn btn-success"><i class="bi bi-play"></i> Iniciar</button>
+                    </li>
+                </ul>
+                -->
+                
+            </div>
+        </div>
+    </main>
+</div>
+
+
+<p-dialog #modal_ver header="Actualizar Ubicaión y Etapa" [modal]="true" [(visible)]="visible_ver" [style]="{ width: '50rem' }">
+    <p-card header="Información del Vehiculo">
+        <div class="row">
+            <div class="col-md-6 p-2">
+                <label for="chasis" class="form-label">VIN/Chasis</label>
+                <input type="text" class="form-control" id="chasis" [(ngModel)]="chasis" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" id="marca" [(ngModel)]="marca" disabled>
+            </div>
+            <div class="col-12 p-2">
+                <label for="modelo" class="form-label">Modelo</label>
+                <input type="text" class="form-control" id="modelo" [(ngModel)]="modelo" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label class="form-label">T&eacute;cnicos</label>
+                <ul>
+                    <li *ngFor="let tecnico of tecnicos; let rowIndexTecnico = index">
+                        {{tecnico.nombre}}
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6 p-2">
+                <label class="form-label">T&eacute;cnicos QA</label>
+                <ul>
+                    <li *ngFor="let tecnico_qa of tecnicos_qa; let rowIndexTecnicoQA = index">
+                        {{tecnico_qa.nombre}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </p-card>
+    <br />
+    <div class="row">
+        <div class="col-md-6">
+            <label for="idalmacendetalle" class="form-label">Ubicaci&oacute;n (seg&uacute;n Layout)</label>
+            <p-dropdown 
+                [options]="almacen_ubicaciones" 
+                [filter]="true" 
+                [(ngModel)]="idalmacendetalle" 
+                name="idalmacendetalle" 
+                id="idalmacendetalle" 
+                placeholder="Seleccione" 
+                optionLabel="ubicacion" 
+                optionValue="idalmacendetalle" 
+                [style]="{'width':'100%'}"
+                [disabled]="cargando"
+                [appendTo]="modal_ver"
+                ></p-dropdown>
+        </div>
+        <div class="col-md-6">
+            <label for="idetapa" class="form-label">Etapa del Proceso</label>
+            <p-dropdown 
+                [options]="etapas" 
+                [filter]="true" 
+                [(ngModel)]="idetapa" 
+                name="idetapa" 
+                id="idetapa" 
+                placeholder="Seleccione" 
+                optionLabel="etapa" 
+                optionValue="idetapa" 
+                [style]="{'width':'100%'}"
+                [disabled]="cargando"
+                [appendTo]="modal_ver"
+                ></p-dropdown>
+        </div>
+    </div>
+    <br />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" [disabled]="cargando" (click)="visible_ver = false">Cerrar</button>&nbsp;
+        <button type="button" class="btn btn-primary" [disabled]="cargando" (click)="guardarVer()">Guardar</button>
+    </div>
+</p-dialog>
+
+<p-dialog #modal_inventario header="Inventario Visual" [modal]="true" [(visible)]="visible_inventario" [style]="{ width: '50rem' }" [closeOnEscape]="false" [closable]="false">
+    <p-card header="Información del Vehiculo">
+        <div class="row">
+            <div class="col-md-6 p-2">
+                <label for="chasis" class="form-label">VIN/Chasis</label>
+                <input type="text" class="form-control" id="chasis" [(ngModel)]="chasis" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" id="marca" [(ngModel)]="marca" disabled>
+            </div>
+            <div class="col-12 p-2">
+                <label for="modelo" class="form-label">Modelo</label>
+                <input type="text" class="form-control" id="modelo" [(ngModel)]="modelo" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="ubicacion" class="form-label">Ubicacion</label>
+                <input type="text" class="form-control" id="ubicacion" [(ngModel)]="ubicacion" disabled>
+            </div>
+        </div>
+    </p-card>
+    <br />
+    <div class="fw-semibold">Tipos de Da&ntilde;os detectados (seleccione todos los que apliquen)</div>
+    <div class="row p-2">
+        <div *ngFor="let inventarios of inventario" class="col-md-6 p-1 field-checkbox">
+            <p-checkbox 
+                [(ngModel)]="inventarios.marcado"
+                [binary]="true"
+                [label]="inventarios.danios_vehiculos" 
+                name="danios_vehiculos" 
+                [disabled]="cargando"
+                />
+        </div>
+    </div>
+    <br />
+    <ng-container *ngFor="let inventarios of inventario; let rowIndexDanio = index">
+    <div *ngIf="inventarios.marcado" class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{inventarios.danios_vehiculos}}</h5>
+            <div class="mb-3">
+                <label for="descripcion{{rowIndexDanio}}" class="form-label">Descripci&oacute;n</label>
+                <textarea class="form-control" id="descripcion{{rowIndexDanio}}" rows="3" [(ngModel)]="inventarios.descripcion" placeholder="Describa el problema encontrado" [disabled]="cargando"></textarea>
+            </div>
+            <div class="card image-upload-section">
+                <div class="image-source-actions">
+                    <button type="button" class="image-source-action image-source-camera" [disabled]="cargando" (click)="openCameraForDamage(rowIndexDanio)">
+                        <i class="bi bi-camera-fill"></i>
+                        <span>Tomar foto</span>
+                        <small>Usar la cámara del dispositivo</small>
+                    </button>
+                    <button type="button" class="image-source-action image-source-gallery" [disabled]="cargando" (click)="damageGallery.click()">
+                        <i class="bi bi-images"></i>
+                        <span>Elegir de galería</span>
+                        <small>Puede seleccionar varias imágenes</small>
+                    </button>
+                    <input
+                        #damageGallery
+                        type="file"
+                        class="d-none"
+                        multiple
+                        accept="image/*,.heic,.heif,image/heic,image/heif"
+                        [disabled]="cargando"
+                        (change)="onGallerySelected($event, rowIndexDanio)" />
+                </div>
+                <div *ngIf="uploadedFiles[rowIndexDanio]?.length" class="pending-files">
+                    <div class="pending-files-title">Imágenes pendientes</div>
+                    <div *ngFor="let file of uploadedFiles[rowIndexDanio]; let fi = index" class="pending-file">
+                        <i class="bi bi-file-earmark-image"></i>
+                        <div class="pending-file-info">
+                            <span>{{ file.name }}</span>
+                            <small>{{ file.size / 1048576 | number:'1.2-2' }} MB</small>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-danger" [disabled]="cargando" (click)="removePendingFile(rowIndexDanio, fi)" aria-label="Eliminar imagen pendiente">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="inventarios.imagenes" class="row">
+                    <div *ngFor="let image of inventarios.imagenes; let index = index" class="col-md-4" key="index">
+                        <img 
+                            [src]="image.itemImageSrc" 
+                            style="cursor: pointer; width: 80%" 
+                            
+                            />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </ng-container>
+    <div class="mb-3">
+        <label for="observaciones_inventario" class="form-label">Observaciones Adicionales</label>
+        <textarea class="form-control" id="observaciones_inventario" rows="3" [disabled]="cargando" [(ngModel)]="observaciones_inventario" placeholder="Ingrese observaciones generales sobre el estado de la unidad"></textarea>
+    </div>
+    <div class="card image-upload-section">
+        <div class="image-source-actions">
+            <button type="button" class="image-source-action image-source-camera" [disabled]="cargando" (click)="openCameraForMain()">
+                <i class="bi bi-camera-fill"></i>
+                <span>Tomar foto</span>
+                <small>Usar la cámara del dispositivo</small>
+            </button>
+            <button type="button" class="image-source-action image-source-gallery" [disabled]="cargando" (click)="mainGallery.click()">
+                <i class="bi bi-images"></i>
+                <span>Elegir de galería</span>
+                <small>Puede seleccionar varias imágenes</small>
+            </button>
+            <input
+                #mainGallery
+                type="file"
+                class="d-none"
+                multiple
+                accept="image/*,.heic,.heif,image/heic,image/heif"
+                [disabled]="cargando"
+                (change)="onGallerySelected($event, -1)" />
+        </div>
+        <div *ngIf="uploadedFilesMain.length" class="pending-files">
+            <div class="pending-files-title">Imágenes pendientes</div>
+            <div *ngFor="let file of uploadedFilesMain; let fi = index" class="pending-file">
+                <i class="bi bi-file-earmark-image"></i>
+                <div class="pending-file-info">
+                    <span>{{ file.name }}</span>
+                    <small>{{ file.size / 1048576 | number:'1.2-2' }} MB</small>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-danger" [disabled]="cargando" (click)="removePendingFile(-1, fi)" aria-label="Eliminar imagen pendiente">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div *ngIf="imagenesMain" class="row">
+            <div *ngFor="let image of imagenesMain; let index = index" class="col-md-4" key="index">
+                <img 
+                    [src]="image.itemImageSrc" 
+                    style="cursor: pointer; width: 80%" 
+                    
+                    />
+            </div>
+        </div>
+        
+    </div>
+    
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" [disabled]="cargando" (click)="cerrarModal($event)">Cerrar</button>&nbsp;
+        <button type="button" class="btn btn-primary" [disabled]="cargando" (click)="guardarInventario()">Guardar</button>
+    </div>
+</p-dialog>
+
+<p-dialog
+    header="Tomar fotografías"
+    [modal]="true"
+    [(visible)]="cameraVisible"
+    [style]="{ width: '46rem' }"
+    [breakpoints]="{ '768px': '95vw' }"
+    [closeOnEscape]="false"
+    (onShow)="startCamera(cameraVideo, cameraCanvas)"
+    (onHide)="onCameraDialogHide()">
+    <div class="camera-dialog-content">
+        <label for="cameraDevice" class="form-label">Cámara</label>
+        <select
+            id="cameraDevice"
+            class="form-select"
+            [(ngModel)]="selectedDeviceId"
+            [disabled]="cameraLoading || capturePreviewVisible || videoDevices.length < 2"
+            (change)="changeCamera(cameraVideo, cameraCanvas)">
+            <option *ngFor="let device of videoDevices; let deviceIndex = index" [value]="device.deviceId">
+                {{ device.label || 'Cámara ' + (deviceIndex + 1) }}
+            </option>
+        </select>
+
+        <div class="camera-stage">
+            <div *ngIf="cameraLoading" class="camera-loading">
+                <span class="spinner-border" role="status" aria-hidden="true"></span>
+                <span>Iniciando cámara...</span>
+            </div>
+            <video
+                #cameraVideo
+                autoplay
+                muted
+                playsinline
+                webkit-playsinline
+                class="camera-video"
+                [class.d-none]="capturePreviewVisible || cameraLoading"></video>
+            <canvas
+                #cameraCanvas
+                class="camera-canvas"
+                [class.d-none]="!capturePreviewVisible"></canvas>
+        </div>
+
+        <div class="camera-counter">
+            {{ cameraTargetFileCount }} imagen(es) pendiente(s) en este destino
+        </div>
+
+        <div *ngIf="!capturePreviewVisible" class="camera-controls">
+            <button *ngIf="!cameraActive" type="button" class="btn btn-outline-primary" [disabled]="cameraLoading" (click)="startCamera(cameraVideo, cameraCanvas)">
+                <i class="bi bi-play-fill"></i> Iniciar
+            </button>
+            <button type="button" class="btn btn-success camera-capture-button" [disabled]="!cameraActive || cameraLoading" (click)="capturePhoto(cameraVideo, cameraCanvas)">
+                <i class="bi bi-camera"></i> Capturar
+            </button>
+            <button type="button" class="btn btn-outline-warning" [disabled]="!cameraActive || !torchSupported || cameraLoading" (click)="toggleTorch()">
+                <i class="bi" [ngClass]="torchOn ? 'bi-lightbulb-fill' : 'bi-lightbulb'"></i>
+                {{ torchOn ? 'Apagar linterna' : 'Encender linterna' }}
+            </button>
+            <button type="button" class="btn btn-outline-danger" [disabled]="!cameraActive" (click)="stopCamera()">
+                <i class="bi bi-stop-fill"></i> Detener
+            </button>
+        </div>
+
+        <div *ngIf="capturePreviewVisible" class="camera-controls camera-confirm-controls">
+            <button type="button" class="btn btn-outline-secondary" (click)="cancelCapturedPhoto()">
+                <i class="bi bi-arrow-counterclockwise"></i> Repetir
+            </button>
+            <button type="button" class="btn btn-success" (click)="confirmCapturedPhoto()">
+                <i class="bi bi-check-lg"></i> Agregar foto
+            </button>
+        </div>
+
+        <div class="camera-dialog-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeCameraDialog()">Cerrar cámara</button>
+        </div>
+    </div>
+</p-dialog>
+
+<p-dialog #modal_iniciar header="{{titulo_iniciar}} Actividad" [modal]="true" [(visible)]="visible_iniciar" [style]="{ width: '50rem' }">
+    <p-card header="Información del Vehiculo">
+        <div class="row">
+            <div class="col-md-6 p-2">
+                <label for="chasis" class="form-label">VIN/Chasis</label>
+                <input type="text" class="form-control" id="chasis" [(ngModel)]="chasis" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="marca" class="form-label">Ubicaci&oacute;n ACtual</label>
+                <input type="text" class="form-control" id="marca" [(ngModel)]="ubicacion" disabled>
+            </div>
+            <div class="col-6 p-2">
+                <label for="modelo" class="form-label">Etapa</label>
+                <input type="text" class="form-control" id="modelo" [(ngModel)]="etapa" disabled>
+            </div>
+        </div>
+    </p-card>
+    <br />
+    <div class="alert alert-success" role="alert">
+        Se registrar&aacute;
+        <ul>
+            <li>Hora de {{descripcion_iniciar}}</li>
+            <li *ngIf="idestado_etapa==1">T&eacute;cnico Responsable: {{tokenDetalle.nombre}}</li>
+        </ul>
+    </div>
+    <br />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" (click)="visible_iniciar = false">Cerrar</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="iniciar()">Confirmar</button>
+    </div>
+</p-dialog>
+
+<p-dialog #modal_pausar header="Pausar Actividad" [modal]="true" [(visible)]="visible_pausar" [style]="{ width: '50rem' }">
+    <p-card header="Información del Vehiculo">
+        <div class="row">
+            <div class="col-md-6 p-2">
+                <label for="chasis" class="form-label">VIN/Chasis</label>
+                <input type="text" class="form-control" id="chasis" [(ngModel)]="chasis" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="marca" class="form-label">Ubicaci&oacute;n ACtual</label>
+                <input type="text" class="form-control" id="marca" [(ngModel)]="ubicacion" disabled>
+            </div>
+            <div class="col-6 p-2">
+                <label for="modelo" class="form-label">Etapa</label>
+                <input type="text" class="form-control" id="modelo" [(ngModel)]="etapa" disabled>
+            </div>
+        </div>
+    </p-card>
+    <br />
+    <label for="idate_gas_motivo_pausa" class="form-label">Motivo de Pausa</label>
+    <p-dropdown 
+        [options]="ate_gas_motivos_pausa" 
+        [filter]="true" 
+        [(ngModel)]="idate_gas_motivo_pausa" 
+        name="idate_gas_motivo_pausa" 
+        id="idate_gas_motivo_pausa" 
+        placeholder="Seleccione" 
+        optionLabel="ate_gas_motivo_pausa" 
+        optionValue="idate_gas_motivo_pausa" 
+        [style]="{'width':'100%'}"
+        [disabled]="cargando"
+        [appendTo]="modal_ver"
+        (onChange)="error_idate_gas_motivo_pausa=false"
+        ></p-dropdown>
+    <small *ngIf="error_idate_gas_motivo_pausa" class="text-danger">Campo Obligatorio</small>
+    <br />
+    <label for="motivo_pausa" class="form-label">Comentario</label>
+    <textarea class="form-control" id="motivo_pausa" rows="3" [(ngModel)]="motivo_pausa" (input)="error_motivo_pausa=false" placeholder="Describa el motivo de la Pausa"></textarea>
+    <small *ngIf="error_motivo_pausa" class="text-danger">Campo Obligatorio</small>
+    <br />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" (click)="visible_pausar = false">Cerrar</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="pausar()">Confirmar</button>
+    </div>
+</p-dialog>
+
+
+<p-dialog #modal_finalizar header="Finalizar Actividad" [modal]="true" [(visible)]="visible_finalizar" [style]="{ width: '50rem' }">
+    <p-card header="Información del Vehiculo">
+        <div class="row">
+            <div class="col-md-6 p-2">
+                <label for="chasis" class="form-label">VIN/Chasis</label>
+                <input type="text" class="form-control" id="chasis" [(ngModel)]="chasis" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="marca" class="form-label">Ubicaci&oacute;n ACtual</label>
+                <input type="text" class="form-control" id="marca" [(ngModel)]="ubicacion" disabled>
+            </div>
+            <div class="col-6 p-2">
+                <label for="modelo" class="form-label">Etapa</label>
+                <input type="text" class="form-control" id="modelo" [(ngModel)]="etapa" disabled>
+            </div>
+        </div>
+    </p-card>
+    <br />
+    <div class="alert alert-success" role="alert">
+        Se registrar&aacute;
+        <ul>
+            <li>Hora de Finalización</li>
+            <li>Duraci&oacute;n total de la actividad</li>
+        </ul>
+    </div>
+    <br />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" (click)="visible_finalizar = false">Cerrar</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="finalizar()">Confirmar</button>
+    </div>
+</p-dialog>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+

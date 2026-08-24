@@ -1,0 +1,78 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="13.6"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Reporte de Salidas</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_reporte_ate_gas_salidas" class="card-body">
+                <br />
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <ng-select name="idcliente" id="idcliente" [items]="entidades"
+                            bindLabel="entidad"
+                            bindValue="id"
+                            placeholder="Todos"
+                            (change)="error_idcliente=false"
+                        [(ngModel)]="idcliente">
+                        </ng-select>
+                        <small *ngIf="error_idcliente" class="text-danger">Campo Requerido</small>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechainicial" class="form-label text-secondary small">Fecha de Salida Desde</label>
+                        <input type="date" class="form-control" id="fechainicial" name="fechainicial" max="{{fechafinal}}" [(ngModel)]="fechainicial"  (change)="error_fechainicial=false" >
+                        <small *ngIf="error_fechainicial" class="text-danger">Campo Requerido</small>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechafinal" class="form-label text-secondary small">Fecha de Salida Hasta</label>
+                        <input type="date" class="form-control" id="fechafinal" name="fechafinal" min="{{fechainicial}}" [(ngModel)]="fechafinal" (change)="error_fechafinal=false;" >
+                        <small *ngIf="error_fechafinal" class="text-danger">Campo Requerido</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+
+                <p-table *ngIf="reporte.length>0" [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th *ngFor="let col of columnas" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    {{col.header}}
+                                    <p-columnFilter [type]="col.tipo" [field]="col.field" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-reporte>
+                        <tr>
+                            <td *ngFor="let col of columnas">
+                                <ng-container *ngIf="col.tipo == 'date'; else texto">
+                                    {{reporte[col.field] ? (reporte[col.field] | date:'dd/MM/yyyy HH:mm') : ''}}
+                                </ng-container>
+                                <ng-template #texto>{{reporte[col.field]}}</ng-template>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </main>
+</div>

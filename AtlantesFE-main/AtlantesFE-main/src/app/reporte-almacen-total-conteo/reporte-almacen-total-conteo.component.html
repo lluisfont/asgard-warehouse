@@ -1,0 +1,186 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="5.19"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Reporte Total de Conteo</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            
+            <div *ngIf="ver_reporte_almacen_total_conteo" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <ng-select name="idcliente" id="idcliente" [items]="entidades" 
+                            bindLabel="entidad" 
+                            bindValue="id_num"
+                            placeholder="Seleccione"
+                            (change)="error_idcliente=false"
+                            [(ngModel)]="idcliente">
+                        </ng-select>
+                        <small *ngIf="error_idcliente" class="text-danger">Campo Requerido</small>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechainicial" class="form-label text-secondary small">Desde</label>
+                        <input type="date" class="form-control" id="fechainicial" name="fechainicial" max="{{fechafinal}}" [(ngModel)]="fechainicial" (change)="error_fechainicial=false" >
+                        <small *ngIf="error_fechainicial" class="text-danger">Campo Requerido</small>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechafinal" class="form-label text-secondary small">Hasta</label>
+                        <input type="date" class="form-control" id="fechafinal" name="fechafinal" min="{{fechainicial}}" [(ngModel)]="fechafinal" (change)="error_fechafinal=false;" >
+                        <small *ngIf="error_fechafinal" class="text-danger">Campo Requerido</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="idciudad" class="form-label text-secondary small">Ciudad</label>
+                        <p-multiSelect 
+                            styleClass="w-100"
+                            [options]="ciudades" 
+                            [(ngModel)]="idciudad" 
+                            optionLabel="ciudad" 
+                            optionValue="idciudad" 
+                            placeholder="Todas"
+                            (onChange)="setAlmacenes()"
+                            />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="idalmacen" class="form-label text-secondary small">Almacen</label>
+                        <p-multiSelect 
+                            styleClass="w-100"
+                            [options]="almacenes_mostrar" 
+                            [(ngModel)]="idalmacen" 
+                            optionLabel="codigo_y_almacen" 
+                            optionValue="idalmacen" 
+                            placeholder="Todas"
+
+                            />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+                
+                
+                <p-table *ngIf="reporte.length>0" [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                            <!--<button type="button" (click)="exportPdf()" class="btn btn-danger mb-3"><i class="bi bi-file-earmark-pdf"></i></button>-->
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    No Inventario
+                                    <p-columnFilter type="numeric" field="idinventariofisico" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Centro
+                                    <p-columnFilter type="text" field="codigo_almacen" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ubicaci&oacute;n
+                                    <p-columnFilter type="text" field="almacen" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Centro Encontrado
+                                    <p-columnFilter type="text" field="codigo_almacen_conteo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ubicaci&oacute;n Encontrado
+                                    <p-columnFilter type="text" field="almacen_conteo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Marca del Vehiculo
+                                    <p-columnFilter type="text" field="codigo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    N&uacute;mero de Chasis
+                                    <p-columnFilter type="text" field="serie" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Modelo del Vehiculo
+                                    <p-columnFilter type="text" field="descripcion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Descripci&oacute;n del Color
+                                    <p-columnFilter type="text" field="categoria" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                              <div class="flex justify-content-center align-items-center">
+                                  Categor&iacute;a
+                                <p-columnFilter type="text" field="lote" display="menu"></p-columnFilter>
+                              </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Estado Conteo
+                                    <p-columnFilter type="text" field="estado_conteo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Etiqueta
+                                    <p-columnFilter type="numeric" field="inventariofisicoetiqueta" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-reporte>
+                        <tr>
+                            <td>{{reporte.idinventariofisico}}</td>
+                            <td>{{reporte.codigo_almacen}}</td>
+                            <td>{{reporte.almacen}}</td>
+                            <td>{{reporte.codigo_almacen_conteo}}</td>
+                            <td>{{reporte.almacen_conteo}}</td>
+                            <td>{{reporte.codigo}}</td>
+                            <td>{{reporte.serie}}</td>
+                            <td>{{reporte.descripcion}}</td>
+                            <td>{{reporte.categoria}}</td>
+                            <td>{{reporte.lote}}</td>
+                            <td>{{reporte.estado_conteo}}</td>
+                            <td>{{reporte.inventariofisicoetiqueta}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="12">No existen registros</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+                
+                
+            </div>
+        </div>
+    </main>
+</div>

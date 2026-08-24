@@ -1,0 +1,6 @@
+.thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;  /* cuadrado; puedes usar 4/3, 16/9, etc. */
+  background: #000;      /* barras negras */
+  overflow: hidden;
+}

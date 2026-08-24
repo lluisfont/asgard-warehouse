@@ -1,0 +1,266 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="11.2"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <!--<h1>Cotizaciones</h1>-->
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Usuarios</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_usuarios" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-9"><button *ngIf="editar_usuarios" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ventanaUsuario" (click)="prepararDatos(0)">Nuevo Usuario</button></div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="filtro" [(ngModel)]="filtro" placeholder="Buscar" (keyup)="p=1">
+                    </div>
+                </div>
+                <br />
+                
+                <div class="list-group">
+                    <ng-container *ngFor="let usuario of usuarios | appFilter: filtro: '' | paginate: { itemsPerPage: items, currentPage: p, id: 'page' }">
+                        <a role="button" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#ventanaUsuario" (click)="prepararDatos(usuario.idusuario)">
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-6">
+                                    <strong><i class="bi bi-person"></i> <del *ngIf="!usuario.activo">{{usuario.nombre}}</del><ng-container *ngIf="usuario.activo">{{usuario.nombre}}</ng-container></strong>
+                                </div>
+                                <div class="col-lg-3 col-sm-6">
+                                    <i class="bi bi-building"></i> {{usuario.empresa}}
+                                </div>
+                                <div class="col-lg-3 col-sm-6">
+                                    <i class="bi bi-envelope"></i> {{usuario.email}}
+                                </div>
+                                <div class="col-lg-2 col-sm-6">
+                                    <i class="bi bi-person"></i> {{usuario.tipousuario}}
+                                </div>
+                            </div>
+                        </a>
+                    </ng-container>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-10">
+                        <pagination-controls 
+                            (pageChange)="p = $event"  
+                            id="page"
+                            nextLabel="Sig"
+                            previousLabel="Ant"
+                            >
+                        </pagination-controls>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" [(ngModel)]="items" name="items" (change)="p=1">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal" id="ventanaUsuario" tabindex="-1" aria-labelledby="ventanaUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaUsuarioLabel">{{cabecera_modal}} Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">General</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="permisos-tab" data-bs-toggle="tab" data-bs-target="#permisos" type="button" role="tab" aria-controls="permisos" aria-selected="false">Permisos</button>
+                        </li>
+                        <li *ngIf="mostrarAlmacenes" class="nav-item" role="presentation">
+                            <button class="nav-link" id="almacenes-tab" data-bs-toggle="tab" data-bs-target="#almacenes" type="button" role="tab" aria-controls="almacenes" aria-selected="false">Almacenes</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                            <br />
+                            <div class="row mb-3">
+                                <div class="col-md-7">
+                                    <label for="nombre" class="form-label text-secondary small">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="nombre" (change)="errornombre=false" [disabled]="!activo || !editar_usuarios" />
+                                    <small *ngIf="errornombre" class="text-danger">Campo Obligatorio</small>
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="idtipousuario" class="form-label text-secondary small">Tipo de Usuario</label>
+                                    <ng-select name="idtipousuario" id="idtipousuario" [items]="tiposusuario" 
+                                        bindLabel="tipousuario" 
+                                        bindValue="idtipousuario"
+                                        placeholder="Seleccione"
+                                        (change)="erroridtipousuario=false"
+                                         [disabled]="!activo || !editar_usuarios"
+                                    [(ngModel)]="idtipousuario">
+                                    </ng-select>
+                                    <small *ngIf="erroridtipousuario" class="text-danger">Campo Obligatorio</small>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="email" class="form-label text-secondary small">Correo Electr&oacute;nico</label>
+                                    <input type="text" class="form-control" id="email" name="email" [(ngModel)]="email" (change)="erroremail=false" [disabled]="!activo || !editar_usuarios" />
+                                    <small *ngIf="erroremail" class="text-danger">{{mensajeerroremail}}</small>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="ci" class="form-label text-secondary small">Documento de Identidad</label>
+                                    <input type="text" class="form-control" id="ci" name="ci" [(ngModel)]="ci" [disabled]="!activo || !editar_usuarios" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="telefono" class="form-label text-secondary small">Tel&eacute;fono</label>
+                                    <input type="text" class="form-control" id="telefono" name="telefono" [(ngModel)]="telefono" [disabled]="!activo || !editar_usuarios" />
+                                </div>                            
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="idempresa" class="form-label text-secondary small">Empresa</label>
+                                    <ng-select [(ngModel)]="idempresa" (change)="erroridciudad=false" placeholder="Seleccione" [disabled]="true" (change)="cambioEmpresa()">
+                                        <ng-container *ngFor="let empresa of empresas">
+                                            <ng-option [value]="empresa.idempresa">{{empresa.empresa}}</ng-option>
+                                        </ng-container>
+                                    </ng-select>
+                                    <small *ngIf="erroridempresa" class="text-danger">Campo Obligatorio</small>
+                                </div>
+                                
+                                
+                                <div class="col-md-4">
+                                    <label for="idciudad" class="form-label text-secondary small">Ciudad</label>
+                                    <ng-select [(ngModel)]="idciudad" (change)="erroridciudad=false" placeholder="Seleccione" [disabled]="!activo || !editar_usuarios" (change)="cambioCiudad()">
+                                        <ng-container *ngFor="let ciudad of ciudades">
+                                            <ng-option [value]="ciudad.idciudad">{{ciudad.ciudad}}</ng-option>
+                                        </ng-container>
+                                    </ng-select>
+                                    <small *ngIf="erroridciudad" class="text-danger">Campo Obligatorio</small>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="idalmacen" class="form-label text-secondary small">Almacen</label>
+                                    <ng-select [(ngModel)]="idalmacen" (change)="verificarCambioAlmacen(); erroridalmacen=false" placeholder="Seleccione" [disabled]="!activo || !editar_usuarios">
+                                        <ng-container *ngFor="let almacen of almacenes">
+                                            <ng-option *ngIf="almacen.idciudad==idciudad" [value]="almacen.idalmacen">{{almacen.almacen}}</ng-option>
+                                        </ng-container>
+                                    </ng-select>
+                                    <small *ngIf="erroridalmacen" class="text-danger">Campo Obligatorio</small>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="username" class="form-label text-secondary small">Username</label>
+                                    <input type="text" class="form-control" id="username" name="username" [(ngModel)]="username" (change)="errorusername=false" [disabled]="idusuario>0" />
+                                    <small *ngIf="errorusername" class="text-danger">{{mensajeerrorusername}}</small>
+                                </div>
+                                <!--
+                                <div class="col-md-4" *ngIf="idusuario==0">
+                                    <label for="contrasena" class="form-label text-secondary small">Contrase&ntilde;a</label>
+                                    <input type="password" class="form-control" id="contrasena" name="contrasena" [(ngModel)]="contrasena" (change)="errorcontrasena=false" />
+                                    <small *ngIf="errorcontrasena" class="text-danger">{{mensajeerrorcontrasena}}</small>
+                                </div>
+                                <div class="col-md-4" *ngIf="idusuario==0">
+                                    <label for="contrasena_2" class="form-label text-secondary small">Confirme Contrase&ntilde;a</label>
+                                    <input type="password" class="form-control" id="contrasena_2" name="contrasena_2" [(ngModel)]="contrasena_2" (change)="errorcontrasena_2=false" />
+                                    <small *ngIf="errorcontrasena_2" class="text-danger">No coincide</small>
+                                </div>
+                                -->
+                            </div>
+                            <div class="row mb-3" *ngIf="idusuario>0">
+                                <div class="col-md-12">
+                                    <div class="form-check form-switch">
+                                        <input type="checkbox" class="form-check-input" id="activo" name="activo" [checked]="activo" (change)="activo=!activo"  [disabled]="!editar_usuarios" />
+                                        <label class="form-check-label text-secondary small" for="activo">Usuario Activo</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="permisos" role="tabpanel" aria-labelledby="permisos-tab">
+                            <!--<pre>{{ permisos | json }}</pre>-->
+                            <br />
+                            <p-treeTable [value]="permisos" [scrollable]="true" [tableStyle]="{'min-width':'50rem'}" styleClass="p-treetable-gridlines">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Modulo</th>
+                                        <th>Lectura</th>
+                                        <th>Escritura</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+                                    <tr [ttRow]="rowNode">
+                                        <td>
+                                            <p-treeTableToggler [rowNode]="rowNode" />
+                                            {{ rowData.name }}
+                                        </td>
+                                        <td>
+                                            <p-checkbox 
+                                                [(ngModel)]="rowData.lectura" 
+                                                [binary]="true" 
+                                                inputId="lectura{{rowData.id}}"
+                                                (onChange)="marcaPermiso(rowNode.node, 'lectura', $event.checked)"
+                                                [disabled]="!editar_usuarios"
+                                                />
+
+                                        </td>
+                                        <td>
+                                            <p-checkbox 
+                                                [(ngModel)]="rowData.escritura" 
+                                                [binary]="true" 
+                                                [disabled]="!rowData.lectura || !editar_usuarios"
+                                                inputId="escritura{{rowData.id}}"
+                                                (onChange)="marcaPermiso(rowNode.node, 'escritura', $event.checked)"
+                                                />
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                
+                            </p-treeTable>
+                        </div>
+                        <div *ngIf="mostrarAlmacenes" class="tab-pane fade" id="almacenes" role="tabpanel" aria-labelledby="almacenes-tab">
+                            <br />
+                            <div class="row mb-3">
+                                <div class="col-md-4 mb-3 form-check">
+                                    <input class="form-check-input" type="checkbox" id="marcar_todos" [checked]="marcar_todos" (change)="marcarTodos()">
+                                    <label class="form-check-label fw-bold" for="marcar_todos">
+                                        MARCAR TODOS
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div  *ngFor="let usuario_almacen of usuario_almacenes" class="col-md-4 mb-3 form-check">
+                                    <input class="form-check-input" type="checkbox" id="{{usuario_almacen.idalmacen}}" [disabled]="usuario_almacen.idalmacen==idalmacen" [checked]="usuario_almacen.almacen_marcado" (change)="usuario_almacen.almacen_marcado=!usuario_almacen.almacen_marcado">
+                                    <label class="form-check-label" for="{{usuario_almacen.idalmacen}}">
+                                        {{usuario_almacen.codigo_almacen}} {{usuario_almacen.almacen}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button *ngIf="editar_usuarios" type="button" class="btn btn-primary" (click)="verificarDatos();">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

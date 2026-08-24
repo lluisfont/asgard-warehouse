@@ -1,0 +1,384 @@
+<div id="principal">
+    <app-menusuperior [permite_cambio_almacen]="true"></app-menusuperior>
+    <app-menulateral [menu_item]="1.6"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Inventario F&iacute;sico</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_inventario_fisico_gestion || ver_inventario_fisico_conteo || finalizar_inventario_fisico_conteo" class="card-body">
+                <br />
+                <div *ngIf="editar_inventario_fisico_gestion" class="row">
+                    <div class="col-6 mb-3">
+                        <!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoInventarioFisico" (click)="preperarAgregar()">Nuevo Recuento</button>-->
+                        <button type="button" class="btn btn-primary" (click)="preperarAgregar()">Nuevo Recuento</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-9 mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="filtrarubicacion" id="filtrarubicacion0" checked (click)="verInventarioFisico(0)">
+                            <label class="form-check-label" for="filtrarubicacion0">
+                                Todos
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="filtrarubicacion" id="filtrarubicacion1" (click)="verInventarioFisico(1)">
+                            <label class="form-check-label" for="filtrarubicacion1">
+                                Con Diferencias
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="filtrarubicacion" id="filtrarubicacion2" (click)="verInventarioFisico(2)">
+                            <label class="form-check-label" for="filtrarubicacion2">
+                                Sin Diferencias
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-md-3"></div>-->
+                    <!--
+                    <div class="col-md-3 mb-3">
+                        <input type="text" class="form-control" name="filtro" [(ngModel)]="filtro" placeholder="Buscar" (keyup)="p=1">
+                    </div>
+                    -->
+                </div>
+                <br />
+                <p-table [value]="inventariosFisico" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>
+                                
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Numero Inventario
+                                    <p-columnFilter type="text" field="idinventariofisico" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Almacen
+                                    <p-columnFilter type="text" field="codigo_y_almacen" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th *ngIf="ver_inventario_fisico_gestion" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Encontrados
+                                    <p-columnFilter type="numeric" field="encontrados" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th *ngIf="ver_inventario_fisico_gestion" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Sobrantes
+                                    <p-columnFilter type="numeric" field="sobrantes" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th *ngIf="ver_inventario_fisico_gestion" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Faltantes
+                                    <p-columnFilter type="numeric" field="faltantes" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Pendientes
+                                    <p-columnFilter type="numeric" field="pendientes" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha de Inventario
+                                    <p-columnFilter type="date" field="fecha" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Diferencia
+                                    <p-columnFilter type="text" field="diferencia_texto" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Status
+                                    <p-columnFilter type="text" field="status" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Categor&iacute;a
+                                    <p-columnFilter type="text" field="categoria" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-inventariofisico>
+                        <tr>
+                            <td class="d-flex justify-content-between">
+                                <i *ngIf="(ver_inventario_fisico_conteo || finalizar_inventario_fisico_conteo) && inventariofisico.es_vehiculo" class="bi bi-list-check" role='button' (click)="verificarInicioConteo(inventariofisico.idinventariofisico,inventariofisico.fecha_inicio_conteo)"></i>&nbsp;
+                                <i *ngIf="ver_inventario_fisico_gestion" class="bi bi-folder2-open" role='button' (click)="abrirDetalle(inventariofisico.idinventariofisico)"></i>&nbsp;
+                                <i *ngIf="ver_inventario_fisico_gestion" class="bi bi-box-arrow-up-right" role='button' (click)="abrirDetalleNuevo(inventariofisico.idinventariofisico)"></i>
+                            </td>
+                            <td>{{inventariofisico.idinventariofisico}}</td>
+                            <td>{{inventariofisico.codigo_y_almacen}}</td>
+                            <td *ngIf="ver_inventario_fisico_gestion">{{inventariofisico.encontrados}}</td>
+                            <td *ngIf="ver_inventario_fisico_gestion">{{inventariofisico.sobrantes}}</td>
+                            <td *ngIf="ver_inventario_fisico_gestion">{{inventariofisico.faltantes}}</td>
+                            <td>{{inventariofisico.pendientes}}</td>
+                            <td>{{inventariofisico.cliente}}</td>
+                            <td>{{inventariofisico.fecha  | date:'dd/MM/yyyy'}}</td>
+                            <td>{{inventariofisico.diferencia_texto}}</td>
+                            <td>{{inventariofisico.status}}</td>
+                            <td>{{inventariofisico.categoria}}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-light btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" role="button" (click)="downloadActa(inventariofisico.idinventariofisico)">Descargar Archivo</a></li>
+                                        <li><a class="dropdown-item" role="button" *ngIf="editar_inventario_fisico_gestion && !inventariofisico.fecha_fin_inventario && inventariofisico.fecha_fin_conteo"  data-bs-toggle="modal" data-bs-target="#confirmarFinalizarInventarioFisico" (click)="idinventariofisico=inventariofisico.idinventariofisico">Finalizar Inventario</a></li>
+                                        <li><a class="dropdown-item" role="button" *ngIf="editar_inventario_fisico_gestion && !inventariofisico.fecha_inicio_conteo"  data-bs-toggle="modal" data-bs-target="#confirmarEliminarInventario" (click)="idinventariofisico=inventariofisico.idinventariofisico">Eliminar Inventario</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="12">No existen registros</td>
+                        </tr>
+                    </ng-template>
+                    
+                </p-table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<p-dialog #nuevo_recuento header="Nuevo Recuento" [modal]="true" [(visible)]="visible_nuevo_recuento" [style]="{ width: '50rem' }">
+    <div class="row">
+        <div class="col-12 mb-3">
+            <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+            <p-dropdown 
+                [options]="entidades" 
+                [filter]="true" 
+                [(ngModel)]="idcliente" 
+                name="idcliente" 
+                id="idcliente" 
+                placeholder="Seleccione" 
+                optionLabel="entidad" 
+                optionValue="id" 
+                (onChange)="erroridcliente=false" 
+                [style]="{'width':'100%'}"
+                [appendTo]="nuevo_recuento"
+                ></p-dropdown>
+            <small *ngIf="erroridcliente" class="text-danger">Campo Requerido</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-3">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="es_vehiculo" [checked]="es_vehiculo" (change)="es_vehiculo=!es_vehiculo">
+                <label class="form-check-label" for="es_vehiculo">
+                    Para Veh&iacute;culos
+                </label>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngIf="es_vehiculo">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="carga_masiva" [checked]="carga_masiva" (change)="carga_masiva=!carga_masiva">
+                    <label class="form-check-label" for="carga_masiva">
+                        Carga Masiva
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="carga_masiva" class="row">
+            <div class="col-12 mb-3">
+                Para cargar Items directamente desde un archivo xlsx llene el formato que se muestra <a target="_blank" href="{{urlFormatoIngreso}}">aqui</a> y cargelo a continuaci&oacute;n
+                <br /><br />
+                <input class="form-control" type="file" name="fileUpload" id="fileUpload" #UploadFileInput (change)="fileChangeEvent($event)" >
+                <small *ngIf="errorarchivo" class="text-danger">Campo requerido</small>
+            </div>
+        </div>
+        <div *ngIf="mensajes_error.length>0" class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Error!</h4>
+            <p>Se encontraron los siguientes errores.</p>
+            <hr>
+            <ul>
+                <li *ngFor="let mensaje_error of mensajes_error">Fila {{mensaje_error.fila}}: {{mensaje_error.mensaje}}</li>
+            </ul>
+        </div>
+    </ng-container>
+        
+    <hr />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" (click)="visible_nuevo_recuento = false">Cerrar</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="crearInventarioFisico()">Crear Recuento</button>
+        <!--
+        <p-button label="Cancel" severity="secondary" (onClick)="visible_nuevo_recuento = false" />
+        <p-button label="Save" (onClick)="crearInventarioFisico()" />
+        -->
+    </div>
+</p-dialog>
+
+
+<!--
+<div class="modal fade" id="nuevoInventarioFisico" tabindex="-1" aria-labelledby="nuevoInventarioFisicoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoInventarioFisicoLabel">Nuevo Recuento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <p-dropdown [options]="entidades" [filter]="true" [(ngModel)]="idcliente" name="idcliente" id="idcliente" placeholder="Seleccione" optionLabel="entidad" optionValue="id" (onChange)="erroridcliente=false" [style]="{'width':'100%'}"></p-dropdown>
+                        <small *ngIf="erroridcliente" class="text-danger">Campo Requerido</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="carga_masiva" [checked]="carga_masiva" (change)="carga_masiva=!carga_masiva">
+                            <label class="form-check-label" for="carga_masiva">
+                                Carga Masiva
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="carga_masiva" class="row">
+                    <div class="col-12 mb-3">
+                        Para cargar Items directamente desde un archivo xlsx llene el formato que se muestra <a target="_blank" href="{{urlFormatoIngreso}}">aqui</a> y cargelo a continuaci&oacute;n
+                        <br /><br />
+                        <input class="form-control" type="file" name="fileUpload" id="fileUpload" #UploadFileInput (change)="fileChangeEvent($event)" >
+                        <small *ngIf="errorarchivo" class="text-danger">Campo requerido</small>
+                    </div>
+                </div>
+                <div *ngIf="mensajes_error.length>0" class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Error!</h4>
+                    <p>Se encontraron los siguientes errores.</p>
+                    <hr>
+                    <ul>
+                        <li *ngFor="let mensaje_error of mensajes_error">Fila {{mensaje_error.fila}}: {{mensaje_error.mensaje}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="crearInventarioFisico()">Crear Recuento</button>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+<div class="modal" id="confirmarIniciarConteo" tabindex="-1" aria-labelledby="confirmarIniciarConteoLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+                
+                <br />
+                <h5>¿Est&aacute; seguro que desea iniciar el conteo con los siguientes datos?</h5>
+                <hr />
+                <p>No Conteo: <strong>{{idinventariofisico}}</strong></p>
+                <p>Fecha Creaci&oacute;n: <strong>{{fecha_creacion | date:'dd/MM/yyyy'}}</strong></p>
+                <p>Usuario: <strong>{{tokenDetalle.nombre}}</strong></p>
+                <p>Almacen: <strong>{{almacen}}</strong></p>
+                <p>Fecha Inicio: <strong>{{fecha_inicio}}</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="inicializarConteo()">Iniciar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarFinalizarInventarioFisico" tabindex="-1" aria-labelledby="confirmarFinalizarInventarioFisicoLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+                <br />
+                <h4>¿Est&aacute; seguro que desea finalizar el inventario?</h4>
+                <p>Ya no ser&aacute; posible hacer mas modificaciones</p>
+                <p>Asegurese de guardar los datos antes de realizar esta acci&oacute;n</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="finalizarInventario()">Finalizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarEliminarInventario" tabindex="-1" aria-labelledby="confirmarEliminarInventarioLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+                
+                <br />
+                <h5>¿Est&aacute; seguro que desea eliminar el inventario fisico?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarInventario()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="ventanaLoading" tabindex="-1" aria-labelledby="ventanaLoadingLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: none !important;">
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

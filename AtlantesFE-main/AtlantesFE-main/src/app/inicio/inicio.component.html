@@ -1,0 +1,49 @@
+<!--
+<div class="wrapper">
+    <app-menulateral style="background-color: #7386D5"></app-menulateral>
+    <div id="content">
+        <app-menusuperior></app-menusuperior>
+        <div class="container-fluid">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">Inicio</li>
+                </ol>
+            </nav>
+            <hr />
+            Esta es la pagina de inicio
+        </div>
+    </div>
+</div>
+-->
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="0"></app-menulateral>
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <!--<h1>Inicio</h1>-->
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active">Inicio</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="assets/img/gift1.gif" alt="" class="w-100" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    
+
+    </main><!-- End #main -->
+</div>
+<!--<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>-->

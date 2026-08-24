@@ -1,0 +1,495 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="5.1"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Reporte de inventario</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_reporte_almacen_inventario" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <ng-select name="idcliente" id="idcliente" [items]="entidades" 
+                            bindLabel="entidad" 
+                            bindValue="id"
+                            placeholder="Todos"
+                        [(ngModel)]="idcliente">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechacorte" class="form-label text-secondary small">Fecha de corte</label>
+                        <input type="date" class="form-control" id="fechacorte" name="fechacorte" [(ngModel)]="fechacorte" >
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="idtipoingreso" class="form-label text-secondary small">Tipo Ingreso</label>
+                        <ng-select name="idtipoingreso" id="idtipoingreso" [items]="tiposingreso" 
+                            bindLabel="tipoingreso" 
+                            bindValue="idtipoingreso"
+                            placeholder="Todos"
+                            [multiple]="true"
+                        [(ngModel)]="idtipoingreso">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="idno_conf" class="form-label text-secondary small">No Conf</label>
+                        <ng-select name="idno_conf" id="idno_conf" [items]="no_confs" 
+                            bindLabel="no_conf" 
+                            bindValue="idno_conf"
+                            placeholder="Todos"
+                            [multiple]="true"
+                        [(ngModel)]="idno_conf">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+            
+
+            
+                <p-table *ngIf="reporte.length>0" [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    [globalFilterFields]="['cliente','numeroingreso','fechaingreso','ubicacionalmacen','codigo','serie','descripcion','categoria','cantidad','codigoembalaje','lote','costo_un','no_conf','merma','fechavencimiento','relacion_caja','bultos','peso','temperatura','placa','tipoingreso','tipodescarga','tipocamion','tipoproducto','piezas_manifestadas','peso_total','proveedor','no_contrato','delivery_batch','rubro_producto','project','invoice','dui','cantidad_pallet','cantidad_cajas','hora_inicio','hora_fin','cantidad_estibadores','nota_adicional','usuario_recibido','fechasistema','nombre_entrega','ci_entrega','empresa_entrega','observaciones','centro_distribucion']"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                            <!--<button type="button" (click)="exportPdf()" class="btn btn-danger mb-3"><i class="bi bi-file-earmark-pdf"></i></button>-->
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ingreso
+                                    <p-columnFilter type="text" field="numeroingreso" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha ingreso
+                                    <p-columnFilter type="date" field="fechaingreso" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ubicacion
+                                    <p-columnFilter type="text" field="ubicacionalmacen" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Codigo
+                                    <p-columnFilter type="text" field="codigo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Serie
+                                    <p-columnFilter type="text" field="serie" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Descripci&oacute;n
+                                    <p-columnFilter type="text" field="descripcion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Categor&iacute;a
+                                    <p-columnFilter type="text" field="categoria" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cantidad
+                                    <p-columnFilter type="numeric" field="cantidad" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Embalaje
+                                    <p-columnFilter type="text" field="codigoembalaje" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Lote
+                                    <p-columnFilter type="text" field="lote" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Precio Un (USD)
+                                    <p-columnFilter type="numeric" field="costo_un" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    No Conf.
+                                    <p-columnFilter type="text" field="no_conf" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Clasificaci&oacute;n
+                                    <p-columnFilter type="text" field="clasificacion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    MERMA
+                                    <p-columnFilter type="text" field="merma" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <!--
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fec. Prod
+                                    <p-columnFilter type="date" field="fechaproduccion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            -->
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fec. Venc
+                                    <p-columnFilter type="date" field="fechavencimiento" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    PPT
+                                    <p-columnFilter type="text" field="relacion_caja" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <!--
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Volumen
+                                    <p-columnFilter type="numeric" field="volumen" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            -->
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Bultos
+                                    <p-columnFilter type="numeric" field="bultos" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Peso
+                                    <p-columnFilter type="numeric" field="peso" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Pallet
+                                    <p-columnFilter type="text" field="pallet" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Temperatura
+                                    <p-columnFilter type="text" field="temperatura" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Placa
+                                    <p-columnFilter type="text" field="placa" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tipo Ingreso
+                                    <p-columnFilter type="text" field="tipoingreso" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tipo de Descarga
+                                    <p-columnFilter type="text" field="tipodescarga" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Medio Transporte
+                                    <p-columnFilter type="text" field="tipocamion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tipo Producto
+                                    <p-columnFilter type="text" field="tipoproducto" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cant. Manifestada
+                                    <p-columnFilter type="text" field="piezas_manifestadas" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Peso Total (KG)
+                                    <p-columnFilter type="numeric" field="peso_total" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Proveedor
+                                    <p-columnFilter type="text" field="proveedor" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ref. Cliente
+                                    <p-columnFilter type="text" field="no_contrato" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    No Lote
+                                    <p-columnFilter type="text" field="delivery_batch" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Rubro
+                                    <p-columnFilter type="text" field="rubro_producto" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Proyecto
+                                    <p-columnFilter type="text" field="project" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Invoice
+                                    <p-columnFilter type="text" field="invoice" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    No DUI
+                                    <p-columnFilter type="text" field="dui" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cantidad Pallet
+                                    <p-columnFilter type="text" field="cantidad_pallet" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <!--
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    No Res Adm
+                                    <p-columnFilter type="text" field="num_res_adm" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    No Hoja Ruta
+                                    <p-columnFilter type="text" field="hoja_ruta" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            -->
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cantidad de Cajas
+                                    <p-columnFilter type="numeric" field="cantidad_cajas" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Hora Inicio Maq
+                                    <p-columnFilter type="time" field="hora_inicio" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Hora Fin Maq
+                                    <p-columnFilter type="time" field="hora_fin" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Estibadores
+                                    <p-columnFilter type="numeric" field="cantidad_estibadores" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Notas
+                                    <p-columnFilter type="text" field="nota_adicional" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Recibido por
+                                    <p-columnFilter type="text" field="usuario_recibido" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha sistema
+                                    <p-columnFilter type="date" field="fechasistema" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Entregado por
+                                    <p-columnFilter type="text" field="nombre_entrega" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    CI
+                                    <p-columnFilter type="text" field="ci_entrega" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Empresa
+                                    <p-columnFilter type="text" field="empresa_entrega" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Observaciones
+                                    <p-columnFilter type="text" field="observaciones" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Centro Distribuci&oacute;n
+                                    <p-columnFilter type="text" field="centro_distribucion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    &Uacute;ltimo despacho
+                                    <p-columnFilter type="date" field="fecha_ultima_salida" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    FC
+                                    <p-columnFilter type="numeric" field="factor_conversion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    QTY
+                                    <!--<p-columnFilter type="numeric" field="cantidad_estibadores" display="menu"></p-columnFilter>-->
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    U.M
+                                    <p-columnFilter type="text" field="codigoembalaje_salida" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-inventarios>
+                        <tr>
+                            <td>{{inventarios.cliente}}</td>
+                            <td>{{inventarios.numeroingreso}}</td>
+                            <td>{{inventarios.fechaingreso | date:'dd/MM/yyyy'}}</td>
+                            <td>{{inventarios.ubicacionalmacen}}</td>
+                            <td>{{inventarios.codigo}}</td>
+                            <td>{{inventarios.serie}}</td>
+                            <td>{{inventarios.descripcion}}</td>
+                            <td>{{inventarios.categoria}}</td>
+                            <!--<td><i class="bi" [ngClass]="{'bi-check2-square': inventarios.sustanciascontroladas, 'bi-x-square': !inventarios.sustanciascontroladas}"></i></td>-->
+                            <td>{{inventarios.cantidad}}</td>
+                            <td>{{inventarios.codigoembalaje}}</td>
+                            <td>{{inventarios.lote}}</td>
+                            <td>{{inventarios.costo_un}}</td>
+                            <td>{{inventarios.no_conf}}</td>
+                            <td>{{inventarios.clasificacion}}</td>
+                            <td>{{inventarios.merma}}</td>
+                            <!--<td>{{inventarios.fechaproduccion | date:'dd/MM/yyyy'}}</td>-->
+                            <td [ngClass]="{'vencido': inventarios.diasavencer < 0,'vigente':inventarios.diasavencer==null, 'por_vencer': (inventarios.diasavencer >= 0 && inventarios.diasavencer <= 15)}">{{inventarios.fechavencimiento | date:'dd/MM/yyyy'}}</td>
+                            <td>{{inventarios.relacion_caja}}</td>
+                            <!--<td>{{inventarios.volumen}}</td>-->
+                            <td>{{inventarios.bultos}}</td>
+                            <td>{{inventarios.peso}}</td>
+                            <td>{{inventarios.pallet}}</td>
+                            <td>{{inventarios.temperatura}}</td>
+                            
+                            
+                            <td>{{inventarios.placa}}</td>
+                            <!--<td>{{inventarios.contenedor}}</td>-->
+                            <td>{{inventarios.tipoingreso}}</td>
+                            <td>{{inventarios.tipodescarga}}</td>
+                            <td>{{inventarios.tipocamion}}</td>
+                            <td>{{inventarios.tipoproducto}}</td>
+                            <td>{{inventarios.piezas_manifestadas}}</td>
+                            <td>{{inventarios.peso_total}}</td>
+                            
+                            <td>{{inventarios.proveedor}}</td>
+                            <td>{{inventarios.no_contrato}}</td>
+                            <td>{{inventarios.delivery_batch}}</td>
+                            <td>{{inventarios.rubro_producto}}</td>
+                            <td>{{inventarios.project}}</td>
+
+                            <td>{{inventarios.invoice}}</td>
+                            <td>{{inventarios.dui}}</td>
+                            <td>{{inventarios.cantidad_pallet}}</td>
+                            <td>{{inventarios.cantidad_cajas}}</td>
+                            <td>{{inventarios.hora_inicio}}</td>
+                            <td>{{inventarios.hora_fin}}</td>
+                            <td>{{inventarios.cantidad_estibadores}}</td>
+                            
+                            <td>{{inventarios.nota_adicional}}</td>
+                            <td>{{inventarios.usuario_recibido}}</td>
+                            <td>{{inventarios.fechasistema | date:'dd/MM/yyyy'}}</td>
+                            <td>{{inventarios.nombre_entrega}}</td>
+                            <td>{{inventarios.ci_entrega}}</td>
+                            <td>{{inventarios.empresa_entrega}}</td>
+                            <td>{{inventarios.observaciones}}</td>
+                            <td>{{inventarios.centro_distribucion}}</td>
+                            <td>{{inventarios.fecha_ultima_salida | date:'dd/MM/yyyy'}}</td>
+                            <td>{{inventarios.factor_conversion}}</td>
+                            <td>{{inventarios.cantidad/inventarios.factor_conversion | number:'0.2-2'}}</td>
+                            <td>{{inventarios.codigoembalaje_salida}}</td>
+                        </tr>
+                    </ng-template>
+                    <!--
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="13">No existen registros</td>
+                        </tr>
+                    </ng-template>
+                    -->
+                </p-table>
+            </div>
+        </div>
+    </main>
+</div>

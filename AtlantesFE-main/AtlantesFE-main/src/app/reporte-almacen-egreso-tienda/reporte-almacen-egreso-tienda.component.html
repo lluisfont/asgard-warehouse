@@ -1,0 +1,158 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="5.9"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Egreso por Tienda</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_reporte_almacen_egreso_por_tiendas" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <ng-select name="idcliente" id="idcliente" [items]="entidades" 
+                            bindLabel="entidad" 
+                            bindValue="id"
+                            placeholder="Todos"
+                            (change)="error_idcliente=false"
+                        [(ngModel)]="idcliente">
+                        </ng-select>
+                        <small *ngIf="error_idcliente" class="text-danger">Seleccione un Cliente</small>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechainicial" class="form-label text-secondary small">Desde</label>
+                        <input type="date" class="form-control" id="fechainicial" name="fechainicial" max="{{fechafinal}}" [(ngModel)]="fechainicial" >
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechafinal" class="form-label text-secondary small">Hasta</label>
+                        <input type="date" class="form-control" id="fechafinal" name="fechafinal" min="{{fechainicial}}" [(ngModel)]="fechafinal" >
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+                
+                <p-table *ngIf="reporte.length>0" [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    [globalFilterFields]="filtros"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                            <!--<button type="button" (click)="exportPdf()" class="btn btn-danger mb-3"><i class="bi bi-file-earmark-pdf"></i></button>-->
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Codigo
+                                    <p-columnFilter type="text" field="codigo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Serie
+                                    <p-columnFilter type="text" field="serie" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Descripci&oacute;n
+                                    <p-columnFilter type="text" field="descripcion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Categor&iacute;a
+                                    <p-columnFilter type="text" field="categoria" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Centro Distribuci&oacute;n
+                                    <p-columnFilter type="text" field="centro_distribucion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Embalaje
+                                    <p-columnFilter type="text" field="codigoembalaje" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Inicial
+                                    <p-columnFilter type="numeric" field="inicial" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ingresos
+                                    <p-columnFilter type="numeric" field="ingresos" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            
+                            
+                            <th *ngFor="let columna of columnas" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    {{columna.proyecto}}
+                                    <p-columnFilter type="numeric" field="{{columna.columna}}" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            
+                            
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Total Desp
+                                    <p-columnFilter type="numeric" field="salidas" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Saldo
+                                    <p-columnFilter type="numeric" field="saldo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            
+                            
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-tiendas>
+                        <tr style="background-color: #{{tiendas.color}}">
+                            <td>{{tiendas.codigo}}</td>
+                            <td>{{tiendas.serie}}</td>
+                            <td>{{tiendas.descripcion}}</td>
+                            <td>{{tiendas.categoria}}</td>
+                            <td>{{tiendas.centro_distribucion}}</td>
+                            <td>{{tiendas.codigoembalaje}}</td>
+                            <td>{{tiendas.inicial | number:'0.2-2'}}</td>
+                            <td>{{tiendas.ingresos | number:'0.2-2'}}</td>
+                            <td *ngFor="let columna of columnas">{{tiendas[columna.columna] | number:'0.2-2'}}</td>
+                            <td>{{tiendas.salidas | number:'0.2-2'}}</td>
+                            <td>{{tiendas.saldo | number:'0.2-2'}}</td>
+                        </tr>
+                    </ng-template>
+                    <!--
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="18">No existen registros</td>
+                        </tr>
+                    </ng-template>
+                    -->
+                </p-table>
+                
+                
+            </div>
+        </div>
+    </main>
+</div>

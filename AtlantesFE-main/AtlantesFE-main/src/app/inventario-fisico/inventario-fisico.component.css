@@ -1,0 +1,9 @@
+::ng-deep .p-datatable-tbody > tr > td {
+  position: static !important;
+  overflow: visible !important;
+  z-index: auto;
+}
+
+.dropdown-menu {
+  z-index: 1055 !important;
+}

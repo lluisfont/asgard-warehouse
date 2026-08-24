@@ -1,0 +1,249 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="3.1"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Facturas</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_facturas" class="card-body">
+                <br />
+                <p-table [value]="facturas" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-striped"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    [globalFilterFields]="['nrofactura','idordenovp','fecha','embarque','nombre','valorfacturado','estadofactura']"
+                    >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th></th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    OVP
+                                    <p-columnFilter type="text" field="idordenovp" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Numero
+                                    <p-columnFilter type="text" field="nrofactura" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha
+                                    <p-columnFilter type="date" field="fecha" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Embarque
+                                    <p-columnFilter type="text" field="embarque" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Nombre
+                                    <p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Monto (BOB)
+                                    <p-columnFilter type="numeric" field="valorfacturado" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Estado
+                                    <p-columnFilter type="text" field="estadofactura" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-factura>
+                        <tr>
+                            <td class="text-center"><i class="bi bi-file-earmark" role='button' (click)="downloadFactura(factura.idfactura)"></i><i class="bi bi-file-earmark-ruled" role='button' (click)="downloadFacturaMembretada(factura.idfactura)"></i><i *ngIf="factura.idestadofactura==1 && editar_facturas && factura.cobrado==0" class="bi bi-file-x-fill" role='button' data-bs-toggle="modal" data-bs-target="#confirmarAnularFactura" (click)="prepararAnular(factura.idfactura)"></i></td>
+                            <td>
+                                <div *ngIf="factura.outIdOrdenFactura.length>0">{{factura.idordenovp}}</div>
+                                <i *ngIf="factura.outIdOrdenFactura.length==0 && factura.idestadofactura==1" class="bi bi-arrow-right-circle" role='button' data-bs-toggle="modal" data-bs-target="#confirmarMigracionOVP" (click)="prepararMigracion(factura.idfactura);"></i>
+                            </td>
+                            <td>{{factura.nrofactura}}</td>
+                            <td>{{factura.fecha | date:'dd/MM/yyyy'}}</td>
+                            <td>{{factura.embarque}}</td>
+                            <td>{{factura.nombre}}</td>
+                            <td>{{factura.valorfacturado | number:'0.2-2'}}</td>
+                            <td  *ngIf="factura.idestadofactura==2; else no_anulada">
+                                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#FacturaAnulada" (click)="datosAnulacion(factura.idfactura)">{{factura.estadofactura}}</button>
+                            </td>
+                            <ng-template #no_anulada>
+                                <td>{{factura.estadofactura}}</td>
+                            </ng-template>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="10">No existen registros</td>
+                        </tr>
+                    </ng-template>
+                    
+                </p-table>
+            </div>
+        </div>
+    </main>
+</div>
+<div class="modal" id="confirmarAnularFactura" tabindex="-1" aria-labelledby="confirmarAnularFacturaLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+                
+                <br />
+                <h4>¿Est&aacute; seguro que desea anular la factura?</h4>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label for="idmotivoanulacion" class="form-label text-secondary small">Motivo de anulaci&oacute;n</label>
+                        <ng-select name="idmotivoanulacion" id="idmotivoanulacion" [items]="motivosanulacion" 
+                            bindLabel="motivoanulacion" 
+                            bindValue="idmotivoanulacion"
+                            placeholder="Seleccione"
+                            (change)="error_idmotivoanulacion=false"
+                        [(ngModel)]="idmotivoanulacion">
+                        </ng-select>
+                        <small *ngIf="error_idmotivoanulacion" class="text-danger">Campo requerido</small>
+                    </div>
+                </div>
+                <div class="row" *ngIf="idmotivoanulacion==5">
+                    <div class="col-12 mb-3">
+                        <label for="otro_motivoanulacion" class="form-label text-secondary small">Especifique</label>
+                        <input type="text" class="form-control" id="otro_motivoanulacion" name="otro_motivoanulacion" [(ngModel)]="otro_motivoanulacion" (change)="error_otro_motivoanulacion=false;" />
+                        <small *ngIf="error_otro_motivoanulacion" class="text-danger">Campo requerido</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label for="resplado_anulacion" class="form-label text-secondary small">Documento de respaldo</label>
+                        <input class="form-control" type="file" name="resplado_anulacion" id="resplado_anulacion" #UploadFileInput (change)="fileChangeEvent($event)" >
+                        <small *ngIf="errorarchivo" class="text-danger">Campo requerido</small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="anularFactura()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="FacturaAnulada" tabindex="-1" aria-labelledby="FacturaAnuladaLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Factura Anulada</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-secondary small">Fecha anulaci&oacute;n</label>
+                        <div>{{ver_fechaanulacion | date:'dd/MM/yyyy'}}</div>
+                        
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-secondary small">Anulado Por</label>
+                        <div>{{ver_usuarioanulacion}}</div>
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label class="form-label text-secondary small">Motivo de anulaci&oacute;n</label>
+                        <div>{{ver_motivoanulacion}}</div>
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label  class="form-label text-secondary small">Documento de respaldo</label>
+                        <!--<div>{{ver_respaldoanulacion}}</div>-->
+                        <button type="button" class="btn btn-link" (click)="descargarResplado()">{{ver_respaldoanulacion}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="confirmarMigracionOVP" tabindex="-1" aria-labelledby="confirmarMigracionOVPLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-right">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+                <div *ngIf="errormigracion.length>0" class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Error!</h4>
+                    <p>{{errormigracion}}</p>
+                </div>
+                <br />
+                
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <div class="row" *ngFor="let correo_factura of correos_factura; let indice = index; trackBy: trackByFn;">
+                            <div class="col-10 mb-1">
+                                <input type="text" class="form-control form-control-sm col-12" name="correofactura-{{indice}}" [(ngModel)]="correo_factura.correo" (change)="correo_factura.error=false"  [readonly]="correo_factura.idcorreofacturacion>0" >
+                                <small *ngIf="correo_factura.error" class="text-danger">Correo invalido</small>
+                            </div>
+                            <div class="col-2 mb-1">
+                                <i *ngIf="correo_factura.idcorreofacturacion==0" class="bi bi-x-circle-fill" role="button" (click)="eliminarCorreoFactura(indice)"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 mb-3">
+
+                    </div>
+                    <div class="col-4 mb-3">
+                        <button type="button" class="btn btn-outline-secondary" (click)="agregarCorreoFactura()">Agregar Correo</button>
+                    </div>
+                </div>
+                
+                <h4>¿Desea migrar la factura a la OVP?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="migrarFactura()">Migrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="ventanaLoading" tabindex="-1" aria-labelledby="ventanaLoadingLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: none !important;">
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

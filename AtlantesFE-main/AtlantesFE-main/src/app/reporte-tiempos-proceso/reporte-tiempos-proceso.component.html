@@ -1,0 +1,344 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="13.1"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Reporte de Tiempo de procesos</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_reporte_tiempos_proceso" class="card-body">
+                <br />
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <ng-select name="idcliente" id="idcliente" [items]="entidades"
+                            bindLabel="entidad"
+                            bindValue="id"
+                            placeholder="Todos"
+                            (change)="error_idcliente=false"
+                        [(ngModel)]="idcliente">
+                        </ng-select>
+                        <small *ngIf="error_idcliente" class="text-danger">Campo Requerido</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_filtro" id="tipo_filtro1" [checked]="tipo_filtro==1" (click)="tipo_filtro=1">
+                            <label class="form-check-label" for="tipo_filtro1">
+                                Filtrar por fecha de registro/recepci&oacute;n
+                            </label>
+                            </div>
+                            <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_filtro" id="tipo_filtro2" [checked]="tipo_filtro==2" (click)="tipo_filtro=2">
+                            <label class="form-check-label" for="tipo_filtro2">
+                                Filtrar por fecha de fin de proceso
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechainicial" class="form-label text-secondary small">Desde</label>
+                        <input type="date" class="form-control" id="fechainicial" name="fechainicial" max="{{fechafinal}}" [(ngModel)]="fechainicial"  (change)="error_fechainicial=false" >
+                        <small *ngIf="error_fechainicial" class="text-danger">Campo Requerido</small>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechafinal" class="form-label text-secondary small">Hasta</label>
+                        <input type="date" class="form-control" id="fechafinal" name="fechafinal" min="{{fechainicial}}" [(ngModel)]="fechafinal" (change)="error_fechafinal=false;" >
+                        <small *ngIf="error_fechafinal" class="text-danger">Campo Requerido</small>
+                    </div>
+                </div>
+                <!--
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="idetapa" class="form-label text-secondary small">Proceso</label>
+                        <ng-select name="idetapa" id="idetapa" [items]="etapas"
+                            bindLabel="etapa"
+                            bindValue="idetapa"
+                            placeholder="Todos"
+                        [(ngModel)]="idetapa">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="marca" class="form-label text-secondary small">Marca</label>
+                        <input type="text" class="form-control" id="marca" name="marca" [(ngModel)]="marca" >
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="tecnico" class="form-label text-secondary small">T&eacute;cnico</label>
+                        <ng-select name="tecnico" id="tecnico" [items]="tecnicos"
+                            bindLabel="nombre"
+                            bindValue="nombre"
+                            placeholder="Todos"
+                        [(ngModel)]="tecnico">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="ubicacion" class="form-label text-secondary small">Ubicaci&oacute;n</label>
+                        <input type="text" class="form-control" id="ubicacion" name="ubicacion" [(ngModel)]="ubicacion" >
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="sede" class="form-label text-secondary small">Sede</label>
+                        <input type="text" class="form-control" id="sede" name="sede" [(ngModel)]="sede" >
+                    </div>
+                </div>
+            -->
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+                
+                <p-table *ngIf="reporte.length>0" [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha de Registro
+                                    <p-columnFilter type="date" field="created_at" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha de Registro VIN 
+                                    <p-columnFilter type="date" field="created_at_fecha" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Hora Registro VIN 
+                                    <p-columnFilter 
+                                        field="created_at_hora" 
+                                        display="menu" 
+                                        matchMode="custom"
+                                        [showMatchModes]="false"
+                                        [showOperator]="false"
+                                        [showAddButton]="false"
+                                    >
+                                        <ng-template pTemplate="filter" let-filter="filterCallback">
+                                            <div class="flex flex-column gap-2">
+
+                                                <!-- Selector -->
+                                                <select (change)="onModoChange($event)">
+                                                    <option value="exacto">Hora exacta</option>
+                                                    <option value="rango">Rango</option>
+                                                </select>
+
+                                                <!-- Hora exacta -->
+                                                <input *ngIf="modoSeleccionado === 'exacto'"
+                                                    type="time"
+                                                    #exact
+                                                    (change)="onExactTimeChange(exact.value, filter)" />
+
+                                                <!-- Rango -->
+                                                <div *ngIf="modoSeleccionado === 'rango'" class="flex flex-column gap-1">
+                                                    <label>Desde</label>
+                                                    <input type="time" #desde ... />
+
+                                                    <label>Hasta</label>
+                                                    <input type="time" #hasta ... />
+                                                </div>
+
+                                            </div>
+                                        </ng-template>
+                                    </p-columnFilter>
+                                    
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha Recepci&oacute;
+                                    <p-columnFilter type="date" field="fecha_recepcion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha Recepci&oacute; VIN 
+                                    <p-columnFilter type="date" field="fecha_recepcion_fecha" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Hora Recepci&oacute; VIN 
+                                    <p-columnFilter 
+                                        field="fecha_recepcion_hora" 
+                                        display="menu" 
+                                        matchMode="custom"
+                                        [showMatchModes]="false"
+                                        [showOperator]="false"
+                                        [showAddButton]="false"
+                                    >
+                                        <ng-template pTemplate="filter" let-filter="filterCallback">
+                                            <div class="flex flex-column gap-2">
+
+                                                <!-- Selector -->
+                                                <select (change)="onModoChange($event)">
+                                                    <option value="exacto">Hora exacta</option>
+                                                    <option value="rango">Rango</option>
+                                                </select>
+
+                                                <!-- Hora exacta -->
+                                                <input *ngIf="modoSeleccionado === 'exacto'"
+                                                    type="time"
+                                                    #exact
+                                                    (change)="onExactTimeChange(exact.value, filter)" />
+
+                                                <!-- Rango -->
+                                                <div *ngIf="modoSeleccionado === 'rango'" class="flex flex-column gap-1">
+                                                    <label>Desde</label>
+                                                    <input type="time" #desde ... />
+
+                                                    <label>Hasta</label>
+                                                    <input type="time" #hasta ... />
+                                                </div>
+
+                                            </div>
+                                        </ng-template>
+                                    </p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Sede
+                                    <p-columnFilter type="text" field="sede" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Chasis
+                                    <p-columnFilter type="text" field="chasis" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Marca
+                                    <p-columnFilter type="text" field="marca" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Modelo
+                                    <p-columnFilter type="text" field="modelo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Color
+                                    <p-columnFilter type="text" field="color" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Configuraci&oacute;n
+                                    <p-columnFilter type="text" field="configuracion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tipo tanque
+                                    <p-columnFilter type="text" field="tipo_tanque" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    T&eacute;cnico
+                                    <p-columnFilter type="text" field="tecnico" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Proceso
+                                    <p-columnFilter type="text" field="etapa" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ubicaci&oacute;n (&uacute;ltima)
+                                    <p-columnFilter type="text" field="ubicacion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha Inicio
+                                    <p-columnFilter type="date" field="inicio" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha Fin
+                                    <p-columnFilter type="date" field="fin" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tiempo Total (segundos)
+                                    <p-columnFilter type="number" field="tiempo_total" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tiempo Total (H:m:s)
+                                    <p-columnFilter type="number" field="tiempo_total_formato" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tiempo en pausa (segundos)
+                                    <p-columnFilter type="number" field="tiempo_total" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tiempo en Pausa (H:m:s)
+                                    <p-columnFilter type="number" field="tiempo_total_formato" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-reporte>
+                        <tr>
+                            <td>{{reporte.created_at | date:'dd/MM/yyyy HH:mm'}}</td>
+                            <td>{{reporte.created_at_fecha | date:'dd/MM/yyyy'}}</td>
+                            <td>{{reporte.created_at_hora | date:'HH:mm'}}</td>
+                            <td>{{reporte.fecha_recepcion ? (reporte.created_at_fecha | date:'dd/MM/yyyy') : '' }}</td>
+                            <td>{{reporte.fecha_recepcion_fecha ? (reporte.created_at_fecha | date:'dd/MM/yyyy') : ''}}</td>
+                            <td>{{reporte.fecha_recepcion_hora ? (reporte.fecha_recepcion_hora | date:'HH:mm') : ''}}</td>
+                            <td>{{reporte.sede}}</td>
+                            <td>{{reporte.chasis}}</td>
+                            <td>{{reporte.marca}}</td>
+                            <td>{{reporte.modelo}}</td>
+                            <td>{{reporte.color}}</td>
+                            <td>{{reporte.configuracion}}</td>
+                            <td>{{reporte.tipo_tanque}}</td>
+                            <td>{{reporte.tecnico}}</td>
+                            <td>{{reporte.etapa}}</td>
+                            <td>{{reporte.ubicacion}}</td>
+                            <td>{{reporte.inicio ? (reporte.inicio | date:'dd/MM/yyyy HH:mm') : ''}}</td>
+                            <td>{{reporte.fin ? (reporte.fin | date:'dd/MM/yyyy HH:mm') : ''}}</td>
+                            <td>{{reporte.tiempo_total}}</td>
+                            <td>{{reporte.tiempo_total_formato}}</td>
+                            <td>{{reporte.tiempo_en_pausa}}</td>
+                            <td>{{reporte.tiempo_en_pausa_formato}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+            </div>
+        </div>
+    </main>
+</div>

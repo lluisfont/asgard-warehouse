@@ -1,0 +1,18 @@
+#fecha::-webkit-clear-button {
+    display: none;
+}
+
+.no-border {
+    border: 0;
+    box-shadow: none; /* You may want to include this as bootstrap applies these styles too */
+}
+
+.vh-70 {
+    height: 70vh !important;
+}
+
+.cursor_pointer{
+    cursor: pointer;
+}
+
+

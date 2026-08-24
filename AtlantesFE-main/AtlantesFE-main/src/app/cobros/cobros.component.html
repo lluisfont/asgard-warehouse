@@ -1,0 +1,553 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="3.8"></app-menulateral>
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <!--<h1>Embarques</h1>-->
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Cobros</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <div class="card">
+            <div *ngIf="ver_cobros" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-lg-8 mb-3">
+                        <label for="identidad" class="form-label text-secondary small">Cliente</label>
+                        <ng-select [(ngModel)]="identidad" (change)="erroridentidad=false;" placeholder="[Ninguno]">
+                            <ng-container *ngFor="let entidad of entidades">
+                                <ng-option [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                            </ng-container>
+                        </ng-select>
+                        <small *ngIf="erroridentidad" class="text-danger">Debe seleccionar un cliente</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="consultarDatos()">Consultar</button>
+                    </div>
+                </div>
+                <hr />
+                <ng-container *ngIf="cobros">
+                    <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="cobros-tab" data-bs-toggle="tab" data-bs-target="#cobros" type="button" role="tab" aria-controls="cobros" aria-selected="true">Cobros</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="anticipos-tab" data-bs-toggle="tab" data-bs-target="#anticipos" type="button" role="tab" aria-controls="anticipos" aria-selected="false">Anticipos</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="historico-tab" data-bs-toggle="tab" data-bs-target="#historico" type="button" role="tab" aria-controls="historico" aria-selected="false">Historico</button>
+                        </li>
+                        <!--
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="datoscliente-tab" data-bs-toggle="tab" data-bs-target="#datoscliente" type="button" role="tab" aria-controls="datoscliente" aria-selected="false">Datos Cliente</button>
+                        </li>
+                        -->
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="cobros" role="tabpanel" aria-labelledby="cobros-tab">
+                            <br />
+                            <div class="list-group">
+                                <label class="list-group-item list-group-item-dark">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-sm-6"><strong>Documento</strong></div>
+                                        <div class="col-lg-2 col-sm-3"><strong>Fecha</strong></div>
+                                        <div class="col-lg-2 col-sm-3"><strong>Embarque</strong></div>
+                                        <div class="col-lg-2 col-sm-4"><strong>Dias mora</strong></div>
+                                        <div class="col-lg-2 col-sm-4"><strong>Monto</strong></div>
+                                        <div class="col-lg-1 col-sm-4"><strong>Invoice</strong></div>
+                                    </div>
+                                </label>
+                                
+                                <label class="list-group-item list-group-item-action" *ngFor="let cobro of cobros; let indice = index" role="button">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-sm-6"><input class="form-check-input me-1" type="checkbox" [disabled]="!editar_cobros" (change)="cobro.marcado = !cobro.marcado; getTotal()"> <strong>{{cobro.tipodocumento}} {{cobro.numerodocumento}}</strong></div>
+                                        <div class="col-lg-2 col-sm-3">{{cobro.fecha | date:'dd/MM/yyyy'}}</div>
+                                        <div class="col-lg-2 col-sm-3">{{cobro.embarque}}</div>
+                                        <div class="col-lg-2 col-sm-4">{{cobro.dias}}</div>
+                                        <div class="col-lg-2 col-sm-4 text-right">BOB {{cobro.saldo | number:'0.2-2'}}</div>
+                                        <div class="col-lg-1 col-sm-4">{{cobro.invoice}}</div>
+                                    </div>
+                                </label>
+                                
+                                <label class="list-group-item list-group-item-dark">
+                                    <div class="row">
+                                        <div class="col-lg-9 col-sm-5"><strong>TOTAL</strong></div>
+                                        <div class="col-lg-2 col-sm-5 text-right"><strong>BOB {{ totalcobrar | number:'0.2-2'}}</strong></div>
+                                        <div class="col-lg-1 col-sm-2"></div>
+                                    </div>
+                                </label>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-9 col-sm-6"></div>
+                                <div class="col-lg-3 col-sm-6"><button *ngIf="editar_cobros" type="button" class="btn btn-success col-12" [disabled]="totalcobrar==0" data-bs-toggle="modal" data-bs-target="#ventanaAplicar" (click)="prepararCobro()">Aplicar</button></div>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade" id="anticipos" role="tabpanel" aria-labelledby="anticipos-tab">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6"><button *ngIf="editar_cobros" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#ventanaAnticipo" (click)="prepararNuevoAnticipo()">Nuevo Anticipo</button></div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-outline-success" (click)="exportarAnticiposExcel()">Excel</button>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" name="filtro" [(ngModel)]="filtro" placeholder="Buscar" (keyup)="p=1">
+                                </div>
+                            </div>
+                            <br />
+                            <!--
+                            <p-table [value]="anticiposcobros" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th></th>
+                                        <th pResizableColumn>Glosa</th>
+                                        <th style="width:170px" pResizableColumn>Monto</th>
+                                        <th style="width:170px" pResizableColumn>Recibo</th>
+                                        <th pResizableColumn>R. Dist</th>
+                                        <th pResizableColumn>A favor</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-anticipocobros let-rowIndex="rowIndex">
+                                    <tr>
+                                        <td class="text-center">
+                                            <input class="form-check-input" type="checkbox" id="marcado{{rowIndex}}" name="marcado{{rowIndex}}" (change)="marcaranticipocobros(rowIndex);">
+                                        </td>
+                                        <td>{{anticipocobros.glosa}} <i *ngIf="anticiposcobros_marcados==1 && anticipocobros.marcado" class="bi bi-calculator" role="button" (click)="calcularMontos(rowIndex);"></i></td>
+                                        <td>
+                                            <input *ngIf="anticipocobros.idanticipo==0; else montobloqueado" [disabled]="!anticipocobros.marcado || multiplesrecibos" type="number" step="0.01" class="form-control form-control-sm ancho160" id="monto{{rowIndex}}" name="monto{{rowIndex}}" [(ngModel)]="anticipocobros.monto" (ngModelChange)="calcularTotales()" />
+                                        </td>
+                                        <ng-template #montobloqueado>
+                                            <td>{{anticipocobros.monto | number:'0.2-2'}}</td>
+                                        </ng-template>
+                                        <td>
+                                            <input *ngIf="anticipocobros.idanticipo==0; else recibobloqueado" [disabled]="!anticipocobros.marcado || multiplesrecibos" type="text" class="form-control form-control-sm ancho160" id="recibo{{rowIndex}}" name="recibo{{rowIndex}}" [(ngModel)]="anticipocobros.recibo" />
+                                        </td>
+                                        <ng-template #recibobloqueado>
+                                            <td>{{anticipocobros.recibo}}</td>
+                                        </ng-template>
+                                        <td>
+                                            <input *ngIf="anticipocobros.idanticipo==0" type="checkbox" id="multiplesrecibos" name="multiplesrecibos" [checked]="multiplesrecibos" [disabled]="!anticipocobros.marcado" (change)="recibosDistintos();" />
+                                        </td>
+                                        <td>{{anticipocobros.saldo | number:'0.2-2'}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            -->
+                            
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-dark">
+                                    <div class="row">
+                                        <div class="col-lg-1"><strong>Fecha</strong></div>
+                                        <div class="col-lg-2 col-sm-6"><strong>Recibo</strong></div>
+                                        <div class="col-lg-2 col-sm-6"><strong>Cuenta</strong></div>
+                                        <div class="col-lg-4 col-sm-6"><strong>Glosa</strong></div>
+                                        <div class="col-lg-1 col-sm-4"><strong>Monto BOB</strong></div>
+                                        <div class="col-lg-1 col-sm-4"><strong>Aplicado BOB</strong></div>
+                                        <div class="col-lg-1 col-sm-4"><strong>Saldo BOB</strong></div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-action" *ngFor="let anticipo of anticipos | appFilter: filtro: '' | paginate: { itemsPerPage: items, currentPage: p, id: 'page' }; let indice = index">
+                                    <a role="button" (click)="downloadAnticipo(anticipo.idanticipo)">
+                                        <div class="row">
+                                            <div class="col-lg-1">{{anticipo.fecha | date:'dd/MM/yyyy'}}</div>
+                                            <div class="col-lg-2 col-sm-6">{{anticipo.recibo}}</div>
+                                            <div class="col-lg-2 col-sm-6">{{anticipo.banco}} {{anticipo.cuenta}}</div>
+                                            <div class="col-lg-4 col-sm-6">{{anticipo.glosa}}</div>
+                                            <div class="col-lg-1 col-sm-4">{{anticipo.monto | number:'0.2-2'}}</div>
+                                            <div class="col-lg-1 col-sm-4">{{anticipo.aplicado | number:'0.2-2'}}</div>
+                                            <div class="col-lg-1 col-sm-4">{{anticipo.saldo | number:'0.2-2'}}</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="list-group-item list-group-item-dark">
+                                    <div class="row">
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-2 col-sm-6"></div>
+                                        <div class="col-lg-2 col-sm-6"></div>
+                                        <div class="col-lg-4 col-sm-6"></div>
+                                        <div class="col-lg-1 col-sm-4"><strong>{{totalanticiposmonto | number:'0.2-2'}}</strong></div>
+                                        <div class="col-lg-1 col-sm-4"><strong>{{totalanticiposaplicado | number:'0.2-2'}}</strong></div>
+                                        <div class="col-lg-1 col-sm-4"><strong>{{totalanticipossaldo | number:'0.2-2'}}</strong></div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <pagination-controls 
+                                        (pageChange)="p = $event"  
+                                        id="page"
+                                        nextLabel="Sig"
+                                        previousLabel="Ant"
+                                        >
+                                    </pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" [(ngModel)]="items" name="items" (change)="p=1">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="historico" role="tabpanel" aria-labelledby="historico-tab">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="fecha_historico_inicial" class="form-label text-secondary small">Fecha de Pago Inicial</label>
+                                    <input type="date" class="form-control" id="fecha_historico_inicial" name="fecha_historico_inicial" [(ngModel)]="fecha_historico_inicial" max="{{fecha_historico_final}}">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="fecha_historico_final" class="form-label text-secondary small">Fecha de Pago Final</label>
+                                    <input type="date" class="form-control" id="fecha_historico_final" name="fecha_historico_final" [(ngModel)]="fecha_historico_final" min="{{fecha_historico_inicial}}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <button type="button" class="btn btn-dark col-12" (click)="verHistorial()">Consultar Hist&oacute;rico</button>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-9"></div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" name="filtro_h" [(ngModel)]="filtro_h" placeholder="Buscar" (keyup)="p_h=1">
+                                </div>
+                            </div>
+                            
+                            <br />
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-dark">
+                                    <div class="row">
+                                        <div class="col-lg-1 col-sm-2"><strong>Fecha</strong></div>
+                                        <div class="col-lg-1 col-sm-2"><strong>Numero</strong></div>
+                                        <div class="col-lg-2 col-sm-2"><strong>Recibo</strong></div>
+                                        <div class="col-lg-2 col-sm-6"><strong>Banco</strong></div>
+                                        <div class="col-lg-4 col-sm-8"><strong>Embarques</strong></div>
+                                        <div class="col-lg-2 col-sm-4"><strong>Monto BOB</strong></div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-action" *ngFor="let historico_cobro of historico_cobros | appFilter: filtro_h: '' | paginate: { itemsPerPage: items_h, currentPage: p_h, id: 'page_h' }; let indice = index">
+                                    <a role="button" (click)="downloadCobro(historico_cobro.numero)">
+                                        <div class="row">
+                                            <div class="col-lg-1 col-sm-2">{{historico_cobro.fechapago | date:'dd/MM/yyyy'}}</div>
+                                            <div class="col-lg-1 col-sm-2">{{historico_cobro.numero}}</div>
+                                            <div class="col-lg-2 col-sm-2">{{historico_cobro.recibo}}</div>
+                                            <div class="col-lg-2 col-sm-6">{{historico_cobro.banco}}</div>
+                                            <div class="col-lg-4 col-sm-8 text-truncate">{{historico_cobro.embarque}}</div>
+                                            <div class="col-lg-2 col-sm-4">{{historico_cobro.monto | number:'0.2-2'}}</div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <pagination-controls 
+                                        (pageChange)="p_h = $event"  
+                                        id="page_h"
+                                        nextLabel="Sig"
+                                        previousLabel="Ant"
+                                        >
+                                    </pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" [(ngModel)]="items_h" name="items_h" (change)="p_h=1">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        <!--
+                        <div class="tab-pane fade" id="datoscliente" role="tabpanel" aria-labelledby="datoscliente-tab">
+                            datoscliente
+                        </div>
+                        -->
+                    </div>
+                </ng-container>
+                    
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal fade" id="ventanaAplicar" tabindex="-1" aria-labelledby="ventanaAplicarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaAplicarLabel">Aplicar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="mensajeserror.length>0" class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Error!</h4>
+                    <p>Se encontraron los siguientes errores al intentar aplicar</p>
+                    <hr>
+                    <ul>
+                        <li *ngFor="let mensajeerror of mensajeserror"><div [innerHTML]="mensajeerror"></div></li>
+                    </ul>
+                </div>
+                <h4>Ingresos</h4>
+                <p-table [value]="anticiposcobros" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th></th>
+                            <th pResizableColumn>Glosa</th>
+                            <th style="width:170px" pResizableColumn>Monto</th>
+                            <th style="width:170px" pResizableColumn>Recibo</th>
+                            <!--<th pResizableColumn>Indiv</th>-->
+                            <th pResizableColumn>R. Dist</th>
+                            <th pResizableColumn>A favor</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-anticipocobros let-rowIndex="rowIndex">
+                        <tr>
+                            <td class="text-center">
+                                <input class="form-check-input" type="checkbox" id="marcado{{rowIndex}}" name="marcado{{rowIndex}}" (change)="marcaranticipocobros(rowIndex);">
+                            </td>
+                            <td>{{anticipocobros.glosa}} <i *ngIf="anticiposcobros_marcados==1 && anticipocobros.marcado" class="bi bi-calculator" role="button" (click)="calcularMontos(rowIndex);"></i></td>
+                            <td>
+                                <input *ngIf="anticipocobros.idanticipo==0; else montobloqueado" [disabled]="!anticipocobros.marcado || multiplesrecibos" type="number" step="0.01" class="form-control form-control-sm ancho160" id="monto{{rowIndex}}" name="monto{{rowIndex}}" [(ngModel)]="anticipocobros.monto" (ngModelChange)="calcularTotales()" />
+                            </td>
+                            <ng-template #montobloqueado>
+                                <td>{{anticipocobros.monto | number:'0.2-2'}}</td>
+                            </ng-template>
+                            <td>
+                                <input *ngIf="anticipocobros.idanticipo==0; else recibobloqueado" [disabled]="!anticipocobros.marcado || multiplesrecibos" type="text" class="form-control form-control-sm ancho160" id="recibo{{rowIndex}}" name="recibo{{rowIndex}}" [(ngModel)]="anticipocobros.recibo" />
+                            </td>
+                            <ng-template #recibobloqueado>
+                                <td>{{anticipocobros.recibo}}</td>
+                            </ng-template>
+                            <!--
+                            <td>
+                                <input *ngIf="anticipocobros.idanticipo==0" type="checkbox" id="individuales" name="individuales" [disabled]="!anticipocobros.marcado" (change)="individuales=!individuales" />
+                            </td>
+                            -->
+                            <td>
+                                <input *ngIf="anticipocobros.idanticipo==0" type="checkbox" id="multiplesrecibos" name="multiplesrecibos" [checked]="multiplesrecibos" [disabled]="!anticipocobros.marcado" (change)="recibosDistintos();" />
+                            </td>
+                            <td>{{anticipocobros.saldo | number:'0.2-2'}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <!--<td></td>-->
+                            <td></td>
+                            <td>
+                                {{total_afavor_cliente | number:'0.2-2'}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                    
+                    
+                </p-table>
+                <br />
+                <div class="row">
+                    <div class="col-lg-4 mb-3">
+                        <label for="fechapago" class="form-label text-secondary small">Fecha de Pago</label>
+                        <input type="date" class="form-control" id="fecha_pagos" name="fecha_pagos" [(ngModel)]="fecha_pagos">
+                    </div>
+                    <div *ngIf="usar_cobranza" class="col-lg-4 mb-3">
+                        <label for="idcuenta_pagos" class="form-label text-secondary small">Banco/Cuenta</label>
+                        <ng-select name="idcuenta_pagos" id="idcuenta_pagos" [(ngModel)]="idcuenta_pagos" placeholder="Seleccione" (change)="error_idcuenta_pagos=false">
+                            <ng-container *ngFor="let cuenta of cuentas">
+                                <ng-option [value]="cuenta.idcuenta">{{cuenta.banco}} {{cuenta.cuenta}} {{cuenta.moneda}}</ng-option>
+                            </ng-container>
+                        </ng-select>
+                        <small *ngIf="error_idcuenta_pagos" class="text-danger">Campo Obligatorio</small>
+                    </div>
+                    <div *ngIf="usar_cobranza" class="col-lg-4 mb-3">
+                        <label for="idtipotransferencia_pagos" class="form-label text-secondary small">Tipo Transferencia</label>
+                        <ng-select name="idtipotransferencia_pagos" id="idtipotransferencia_pagos" [items]="tipostransferencia" 
+                            bindLabel="tipotransferencia" 
+                            bindValue="idtipotransferencia"
+                            placeholder="Seleccione"
+                            (change)="error_idtipotransferencia_pagos=false"
+                        [(ngModel)]="idtipotransferencia_pagos">
+                        </ng-select>
+                        <small *ngIf="error_idtipotransferencia_pagos" class="text-danger">Campo Obligatorio</small>
+                    </div>
+                </div>
+                <ng-container *ngIf="usar_cobranza">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="glosa_pagos" class="form-label text-secondary small">Glosa</label>
+                            <textarea autosize class="form-control" name="glosa_pagos" id="glosa_pagos" [(ngModel)]="glosa_pagos"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="anticiporeal_pagos" name="anticiporeal_pagos" (change)="anticiporeal_pagos = !anticiporeal_pagos">
+                                <label class="form-check-label text-secondary small" for="anticiporeal_pagos">Anticipo real</label>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <br />
+                <h4>Aplicaci&oacute;n</h4>
+                <p-table [value]="cobrosmarcados" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>Documento</th>
+                            <th pResizableColumn>Embarque</th>
+                            <th pResizableColumn>Monto</th>
+                            <ng-container *ngFor="let anticiposcobro of anticiposcobros; let indice = index">
+                                <th style="width:170px" *ngIf="anticiposcobro.marcado" pResizableColumn>
+                                    Recibo {{anticiposcobro.recibo}}
+                                </th>
+                            </ng-container>
+                            
+                            <th pResizableColumn>Saldo</th>
+                            <th style="width:170px" *ngIf="multiplesrecibos" pResizableColumn>Recibo</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-cobromarcado let-rowIndex="rowIndex">
+                        <tr>
+                            <td>{{cobromarcado.tipodocumento}} {{cobromarcado.numerodocumento}}</td>
+                            <td>{{cobromarcado.embarque}}</td>
+                            <td>{{cobromarcado.saldo | number:'0.2-2'}}</td>
+                            <ng-container *ngFor="let anticiposcobro of anticiposcobros; let indice = index">
+                                <td *ngIf="anticiposcobro.marcado">
+                                    <input type="number" step="0.01" class="form-control form-control-sm ancho160" id="cobrado{{rowIndex}}-{{indice}}" name="cobrado{{rowIndex}}-{{indice}}" [(ngModel)]="cobromarcado.cobros[indice]" (ngModelChange)="calcularTotales()" />
+                                </td>
+                            </ng-container>
+                            
+                            <td>
+                                {{cobromarcado.saldonuevo | number:'0.2-2'}}
+                            </td>
+                            <td *ngIf="multiplesrecibos">
+                                <input type="text" class="form-control form-control-sm ancho160" id="reciboindividual{{rowIndex}}" name="reciboindividual{{rowIndex}}" [(ngModel)]="cobromarcado.reciboindividual" />
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>{{total_saldo_cobrosmarcados | number:'0.2-2'}}</td>
+                            <ng-container *ngFor="let anticiposcobro of anticiposcobros; let indice = index">
+                                <td *ngIf="anticiposcobro.marcado">
+                                    {{anticiposcobro.totalaplicado | number:'0.2-2'}}
+                                </td>
+                            </ng-container>
+                            <td>{{total_saldonuevo_cobrosmarcados | number:'0.2-2'}}</td>
+                            <td *ngIf="multiplesrecibos"></td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                
+                
+                
+                    
+                        
+            </div>
+            <div class="modal-footer">
+                <div class="text-danger" *ngIf="mensajeserror.length>0">Existen errores en los datos cargados</div>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="aplicar()">Aplicar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ventanaAnticipo" tabindex="-1" aria-labelledby="ventanaAnticipoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaAnticipoLabel">Nuevo Anticipo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="fecha_anticipos" class="form-label text-secondary small">Fecha</label>
+                        <input type="date" class="form-control" id="fecha_anticipos" name="fecha_anticipos" [(ngModel)]="fecha_anticipos" (change)="error_fecha_anticipos=false" />
+                        <small *ngIf="error_fecha_anticipos" class="text-danger">Campo Obligatorio</small>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="recibo_anticipos" class="form-label text-secondary small">Recibo</label>
+                        <input type="text" class="form-control" id="recibo_anticipos" name="recibo_anticipos" [(ngModel)]="recibo_anticipos" (change)="error_recibo_anticipos=false" />
+                        <small *ngIf="error_recibo_anticipos" class="text-danger">Campo Obligatorio</small>
+                    </div>  
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="idcuenta_anticipos" class="form-label text-secondary small">Banco/Cuenta</label>
+                        <ng-select name="idcuenta_anticipos" id="idcuenta_anticipos" [(ngModel)]="idcuenta_anticipos" placeholder="Seleccione" (change)="error_idcuenta_anticipos=false">
+                            <ng-container *ngFor="let cuenta of cuentas">
+                                <ng-option [value]="cuenta.idcuenta">{{cuenta.banco}} {{cuenta.cuenta}} {{cuenta.moneda}}</ng-option>
+                            </ng-container>
+                        </ng-select>
+                        <small *ngIf="error_idcuenta_anticipos" class="text-danger">Campo Obligatorio</small>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="glosa_anticipos" class="form-label text-secondary small">Glosa</label>
+                        <textarea autosize class="form-control" name="glosa_anticipos" id="glosa_anticipos" [(ngModel)]="glosa_anticipos"></textarea>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="idtipotransferencia_anticipos" class="form-label text-secondary small">Tipo Transferencia</label>
+                        <ng-select name="idtipotransferencia_anticipos" id="idtipotransferencia_anticipos" [items]="tipostransferencia" 
+                            bindLabel="tipotransferencia" 
+                            bindValue="idtipotransferencia"
+                            placeholder="Seleccione"
+                            (change)="error_idtipotransferencia_anticipos=false"
+                        [(ngModel)]="idtipotransferencia_anticipos">
+                        </ng-select>
+                        <small *ngIf="error_idtipotransferencia_anticipos" class="text-danger">Campo Obligatorio</small>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="monto_anticipos" class="form-label text-secondary small">Monto</label>
+                        <input type="number" step="0.01" class="form-control" id="monto_anticipos" name="monto_anticipos" [(ngModel)]="monto_anticipos" (change)="error_monto_anticipos=false" />
+                        <small *ngIf="error_monto_anticipos" class="text-danger">Campo Obligatorio</small>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="anticiporeal_anticipos" name="anticiporeal_anticipos" (change)="anticiporeal_anticipos = !anticiporeal_anticipos">
+                            <label class="form-check-label text-secondary small" for="anticiporeal_anticipos">Anticipo real</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="guardarAnticipo()">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

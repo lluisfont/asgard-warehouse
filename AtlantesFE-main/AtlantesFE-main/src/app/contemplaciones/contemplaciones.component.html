@@ -1,0 +1,96 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="11.5"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <!--<h1>Cotizaciones</h1>-->
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Contemplaciones</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_contemplaciones" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-9"><button *ngIf="editar_contemplaciones" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ventanaContemplacion" (click)="prepararDatos(0)">Nueva Contemplaci&oacute;n</button></div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="filtro" [(ngModel)]="filtro" placeholder="Buscar" (keyup)="p=1">
+                    </div>
+                </div>
+                <br />
+                
+                
+                <div class="list-group">
+                    <ng-container *ngFor="let contemplacion of contemplaciones | appFilter: filtro: '' | paginate: { itemsPerPage: items, currentPage: p, id: 'page' }">
+                        <a role="button" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#ventanaContemplacion" (click)="prepararDatos(contemplacion.idcontemplacion)">
+                            <div class="row">
+                                <div class="col">
+                                    {{contemplacion.contemplacion}}
+                                </div>
+                            </div>
+                        </a>
+                    </ng-container>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-10">
+                        <pagination-controls 
+                            (pageChange)="p = $event"  
+                            id="page"
+                            nextLabel="Sig"
+                            previousLabel="Ant"
+                            >
+                        </pagination-controls>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" [(ngModel)]="items" name="items" (change)="p=1">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal" id="ventanaContemplacion" tabindex="-1" aria-labelledby="ventanaContemplacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaContemplacionLabel">{{cabecera_modal}} Contemplaci&oacute;n</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <br />
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="contemplacion" class="form-label text-secondary small">Contemplacion</label>
+                        <input type="text" class="form-control" id="contemplacion" name="contemplacion" [(ngModel)]="contemplacion" (change)="error_contemplacion=false" [disabled]="!editar_contemplaciones" />
+                        <small *ngIf="error_contemplacion" class="text-danger">Campo Obligatorio</small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button *ngIf="editar_contemplaciones" type="button" class="btn btn-primary" (click)="guardarDatos();">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

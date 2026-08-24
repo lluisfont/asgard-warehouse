@@ -1,0 +1,180 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="7.9"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Libro de Ventas</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_reporte_contabilidad_libro_ventas" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="fechainicial" class="form-label text-secondary small">Desde</label>
+                        <input type="date" class="form-control" id="fechacorte" name="fechainicial" [max]="fechafinal" [(ngModel)]="fechainicial" [disabled]="generado" />
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechafinal" class="form-label text-secondary small">Hasta</label>
+                        <input type="date" class="form-control" id="fechafinal" name="fechafinal" [min]="fechainicial" [(ngModel)]="fechafinal" [disabled]="generado" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+                
+                <p-table *ngIf="reporte.length>0" [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    [globalFilterFields]="['especificacion','correlativo','fecha','numerofactutra','noautorizacion','codigoestado','nitcliente','nombre','monto','importeotros','exportaciones','ventasgravadas','subtotal','descuentos','importebase','debitofiscal','codigocontrol']"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                            <!--<button type="button" (click)="exportPdf()" class="btn btn-danger mb-3"><i class="bi bi-file-earmark-pdf"></i></button>-->
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    ESPECIFICACION
+                                    <p-columnFilter type="numeric" field="especificacion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    N°
+                                    <p-columnFilter type="numeric" field="correlativo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    FECHA DE LA FACTURA
+                                    <p-columnFilter type="date" field="fecha" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    N° DE LA FACTURA
+                                    <p-columnFilter type="numeric" field="numerofactutra" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    N° DE AUTORIZACION
+                                    <p-columnFilter type="text" field="noautorizacion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    ESTADO
+                                    <p-columnFilter type="text" field="codigoestado" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    NIT/CI CLIENTE
+                                    <p-columnFilter type="numeric" field="nitcliente" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    NOMBRE O RAZON SOCIAL
+                                    <p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    IMPORTE TOTAL DE LA VENTA
+                                    <p-columnFilter type="numeric" field="monto" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    IMPORTE ICE/IEHD/IPJ/TASAS/OTROS NO SUJETOS AL IVA
+                                    <p-columnFilter type="numeric" field="importeotros" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    EXPORTACIONES Y OPERACIONES EXENTAS
+                                    <p-columnFilter type="numeric" field="exportaciones" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    VENTAS GRAVADAS A TASA CERO
+                                    <p-columnFilter type="numeric" field="ventasgravadas" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    SUBTOTAL
+                                    <p-columnFilter type="numeric" field="subtotal" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    DESCUENTOS BONIFICACIONES Y REBAJAS SUJETAS AL IVA
+                                    <p-columnFilter type="numeric" field="descuentos" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    IMPORTE BASE PARA DEBITO FISCAL
+                                    <p-columnFilter type="numeric" field="importebase" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    DEBITO FISCAL
+                                    <p-columnFilter type="numeric" field="debitofiscal" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    CODIGO DE CONTROL
+                                    <p-columnFilter type="text" field="codigocontrol" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-libroventas>
+                        <tr>
+                            <td>{{libroventas.especificacion}}</td>
+                            <td>{{libroventas.correlativo | number:'0.0-0'}}</td>
+                            <td>{{libroventas.fecha | date:'dd/MM/yyyy'}}</td>
+                            <td>{{libroventas.numerofactutra | number:'0.0-0'}}</td>
+                            <td>{{libroventas.noautorizacion }}</td>
+                            <td>{{libroventas.codigoestado }}</td>
+                            <td>{{libroventas.nitcliente }}</td>
+                            <td>{{libroventas.nombre }}</td>
+                            <td>{{libroventas.monto | number:'0.2-2'}}</td>
+                            <td>{{libroventas.importeotros | number:'0.2-2'}}</td>
+                            <td>{{libroventas.exportaciones | number:'0.2-2'}}</td>
+                            <td>{{libroventas.ventasgravadas | number:'0.2-2'}}</td>
+                            <td>{{libroventas.subtotal | number:'0.2-2'}}</td>
+                            <td>{{libroventas.descuentos | number:'0.2-2'}}</td>
+                            <td>{{libroventas.importebase | number:'0.2-2'}}</td>
+                            <td>{{libroventas.debitofiscal | number:'0.2-2'}}</td>
+                            <td>{{libroventas.codigocontrol }}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="10">No existen registros</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+                
+            </div>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,126 @@
+<div id="principal">
+  <app-menusuperior></app-menusuperior>
+  <app-menulateral [menu_item]="5.5"></app-menulateral>
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Reporte de Posiciones</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="card">
+      <div *ngIf="ver_reporte_almacen_posiciones" class="card-body">
+        <br />
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+          </div>
+        </div>
+        <p-table *ngIf="reporte.length>0" [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+            [globalFilterFields]="['cliente','ubicacion','numeroingreso','fechaingreso','codigo','descripcion','categoria','centro_distribucion','saldo','codigoembalaje','lote']"
+            >
+            <ng-template pTemplate="caption">
+                <div class="flex">
+                    <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                    <!--<button type="button" (click)="exportPdf()" class="btn btn-danger mb-3"><i class="bi bi-file-earmark-pdf"></i></button>-->
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pResizableColumn>
+                        <div class="flex justify-content-center align-items-center">
+                            Cliente
+                            <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th pResizableColumn>
+                        <div class="flex justify-content-center align-items-center">
+                            Ingreso
+                            <p-columnFilter type="text" field="numeroingreso" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th pResizableColumn>
+                        <div class="flex justify-content-center align-items-center">
+                            Fecha ingreso
+                            <p-columnFilter type="date" field="fechaingreso" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th pResizableColumn>
+                        <div class="flex justify-content-center align-items-center">
+                            Ubicacion
+                            <p-columnFilter type="text" field="ubicacion" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th pResizableColumn>
+                        <div class="flex justify-content-center align-items-center">
+                            Codigo
+                            <p-columnFilter type="text" field="codigo" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th pResizableColumn>
+                        <div class="flex justify-content-center align-items-center">
+                            Descripci&oacute;n
+                            <p-columnFilter type="text" field="descripcion" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th pResizableColumn>
+                        <div class="flex justify-content-center align-items-center">
+                            Categor&iacute;a
+                            <p-columnFilter type="text" field="categoria" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th pResizableColumn>
+                        <div class="flex justify-content-center align-items-center">
+                            Centro Distribuci&oacute;n
+                            <p-columnFilter type="text" field="centro_distribucion" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th pResizableColumn>
+                        <div class="flex justify-content-center align-items-center">
+                            Saldo
+                            <p-columnFilter type="numeric" field="saldo" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th pResizableColumn>
+                        <div class="flex justify-content-center align-items-center">
+                            Embalaje
+                            <p-columnFilter type="text" field="codigoembalaje" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th pResizableColumn>
+                        <div class="flex justify-content-center align-items-center">
+                            Lote
+                            <p-columnFilter type="text" field="lote" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-posiciones>
+                <tr style='background-color: {{posiciones.color}}'>
+                    <td>{{posiciones.cliente}}</td>
+                    <td>{{posiciones.numeroingreso}}</td>
+                    <td>{{ (posiciones.fechaingreso !== null && posiciones.fechaingreso !== '' && posiciones.fechaingreso !== 'VARIOS') ? (posiciones.fechaingreso | date: 'dd/MM/yyyy') : posiciones.fechaingreso}}</td>
+                    <td>{{posiciones.ubicacion}}</td>
+                    <td>{{posiciones.codigo}}</td>
+                    <td>{{posiciones.descripcion}}</td>
+                    <td>{{posiciones.categoria}}</td>
+                    <td>{{posiciones.centro_distribucion}}</td>
+                    <td>{{posiciones.saldo}}</td>
+                    <td>{{posiciones.codigoembalaje}}</td>
+                    <td>{{posiciones.lote}}</td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="11">No existen registros</td>
+                </tr>
+            </ng-template>
+
+        </p-table>
+      </div>
+    </div>
+  </main>
+</div>

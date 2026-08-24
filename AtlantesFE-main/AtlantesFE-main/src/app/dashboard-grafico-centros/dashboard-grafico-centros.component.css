@@ -1,0 +1,9 @@
+.chart-wrap {
+  width: 100%;
+}
+
+:host ::ng-deep .chart-wrap p-chart,
+:host ::ng-deep .chart-wrap p-chart > div,
+:host ::ng-deep .chart-wrap canvas {
+  height: 100% !important;
+}

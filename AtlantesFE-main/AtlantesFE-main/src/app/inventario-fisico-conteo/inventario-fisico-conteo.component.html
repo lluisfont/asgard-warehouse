@@ -1,0 +1,365 @@
+<div id="principal">
+    <app-menusuperior [permite_cambio_almacen]="false"></app-menusuperior>
+    <app-menulateral [menu_item]="1.6"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inventario-fisico']">Inventario F&iacute;sico</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Conteo No. {{idinventariofisico}}</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div class="card-body" *ngIf="inventariofisicoconteo && (ver_inventario_fisico_conteo || finalizar_inventario_fisico_conteo)">
+                <br />
+                <div class="pagetitle"><h1>INFORMACI&Oacute;N GENERAL</h1></div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="cliente" class="form-label text-secondary small">Fecha Inicio de Conteo</label>
+                        <input type="datetime-local" class="form-control" id="fecha_inicio_conteo" name="fecha_inicio_conteo" [(ngModel)]="inventariofisicoconteo.fecha_inicio_conteo" disabled >
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="cliente" class="form-label text-secondary small">Fecha Fin de Conteo</label>
+                        <input type="datetime-local" class="form-control" id="fecha_fin_conteo" name="fecha_fin_conteo" [(ngModel)]="inventariofisicoconteo.fecha_fin_conteo" disabled >
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="cliente" class="form-label text-secondary small">Almacen</label>
+                        <input type="text" class="form-control" id="almacen" name="almacen" [(ngModel)]="inventariofisicoconteo.almacen" disabled >
+                    </div>
+                </div>
+                <ng-container *ngIf="!inventariofisicoconteo.fecha_fin_conteo && editar_inventario_fisico_conteo">
+                    <div class="pagetitle"><h1>CARGA DE DATOS</h1></div>
+                    <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="manual-tab" data-bs-toggle="tab" data-bs-target="#manual" type="button" role="tab" aria-controls="manual" aria-selected="true">Manual</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="qrscan-tab" data-bs-toggle="tab" data-bs-target="#qrscan" type="button" role="tab" aria-controls="qrscan" aria-selected="false">QR/Codigo de Barras</button>
+                        </li>
+                        <li *ngIf="false" class="nav-item" role="presentation">
+                            <button class="nav-link" id="ocr-tab" data-bs-toggle="tab" data-bs-target="#ocr" type="button" role="tab" aria-controls="ocr" aria-selected="false">OCR</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="manual" role="tabpanel" aria-labelledby="manual-tab">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="serie" class="form-label text-secondary small">Serie</label>
+                                    <br />
+                                    <p-autoComplete
+                                        inputId="serie"
+                                        [(ngModel)]="serie"
+                                        [suggestions]="FilteredLista_items"
+                                        (completeMethod)="filterItem($event)"
+                                        optionLabel="serie"
+                                        (change)="normalizarSerie()"
+                                        [disabled]="procesando"
+                                         />
+                                    <br />
+                                    <small *ngIf="error_serie" class="text-danger">{{mensaje_error_serie}}</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <button type="button" class="btn btn-outline-primary col-12" (click)="agregarManual()" [disabled]="procesando">Agregar/Guardar</button>
+                                </div>
+                            </div>  
+                        </div>
+                        <div class="tab-pane fade" id="qrscan" role="tabpane2" aria-labelledby="qrscan-tab">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-3 mb-3"></div>
+                                <div class="col-md-6 mb-3">
+                                    <select #select1 (change)="action.playDevice(select1.value)" class="form-select form-select-md">
+                                        <option [value]="null" selected>Select device</option>
+                                        <option *ngFor="let c of action.devices.value; let i = index" [value]="c.deviceId" [selected]="i == action.deviceIndexActive">{{c.label}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-3"></div>
+                            </div>
+                                    
+                            <div class="row">
+                                <div class="col-md-3 mb-3"></div>
+                                <div class="col-md-6 mb-3"><ngx-scanner-qrcode #action="scanner" [config]="scannerConfig" (event)="capturar($event, action)"></ngx-scanner-qrcode></div>
+                                <div class="col-md-3 mb-3"></div>
+                            </div>
+                            <p *ngIf="action.isLoading" class="d-flex justify-content-center">Cargando...</p>
+                            <div class="d-flex justify-content-center">
+                                <button type="button" class="btn btn-outline-primary" (click)="action.isStart ? action.stop() : action.start()"><i [ngClass]="action.isStart ? 'bi bi-camera-video-off' : 'bi bi-camera-video'" style="font-size: 2rem;"></i></button>
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-success"
+                                    [disabled]="!action.isStart"
+                                    (click)="action.isTorch = !action.isTorch; handle(action, 'torcher')"
+                                    >
+                                    <i
+                                      class="bi"
+                                      [ngClass]="action.isTorch ? 'bi-lightbulb-fill' : 'bi-lightbulb'"
+                                      style="font-size: 2rem;">
+                                    </i>
+                                </button>
+                                <!--<i [ngClass]="action.isStart ? 'bi bi-camera-video-off' : 'bi bi-camera-video'" role="button" style="font-size: 2rem;" (click)="action.isStart ? action.stop() : action.start()"></i>-->
+                                <!--<button (click)="action.isStart ? action.stop() : action.start()">{{action.isStart ? 'Stop' : 'Start'}}</button>-->
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="ocr" role="tabpane2" aria-labelledby="ocr-tab">
+                            <video #videoTab width="320" height="240" autoplay></video>
+                            <canvas #canvasTab width="320" height="240"></canvas>
+                            <button (click)="takePhoto(videoTab, canvasTab)">Tomar foto</button>
+                            <button (click)="iniciarCamara(videoTab, canvasTab)">Iniciar cámara</button>
+                            <button (click)="detenerCamara()">Detener cámara</button>
+                        </div>
+                    </div>
+                </ng-container>
+                    
+                <br />
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <span class="text-primary">Pendientes</span> {{inventariofisicoconteo.pendientes}}
+                    </div>
+                    <div>
+                        <span class="text-primary">Encontrados</span> {{inventariofisicoconteo.encontrados}}
+                    </div>
+                    <div>
+                        <span class="text-primary">Sobrantes</span> {{inventariofisicoconteo.sobrantes}}
+                    </div>
+                </div>
+                <hr />
+                <div class="pagetitle"><h1>ITEMS CONTADOS</h1></div>
+                <ul class="list-group">
+                    <li *ngFor="let detalle of inventariofisicoconteo.detalle; let indice = index" class="list-group-item">
+                        <div class="row">
+                            <div class="col-1">{{indice+1}}</div>
+                            <div class="col-7">
+                                    <div class="fw-bold">{{detalle.serie}}</div>
+                                    <div>{{detalle.codigo}}, {{detalle.categoria}}</div>
+                                    <div>{{detalle.descripcion}}</div>
+                                    <span *ngIf="detalle.estado==1" class="badge rounded-pill bg-success">ENCONTRADO</span>
+                                    <span *ngIf="detalle.estado==2" class="badge rounded-pill bg-primary" role="button" (click)="!procesando ? editarDatos(indice) : null">REPORTADO <i class="bi bi-pencil-square"></i></span>
+                                    
+                                    <!--<div class="text-primary">{{detalle.estado}}</div>-->
+                            </div>
+                            <div class="col-2">
+                                <button type="button" class="btn btn-outline-primary" pBadge [value]="detalle.imagenes.length" (click)="prepararImagenes(indice)" [disabled]="procesando">
+                                    <i class="bi bi-images"></i>
+                                </button>
+                            </div>
+
+                            <div class="col-1" *ngIf="!inventariofisicoconteo.fecha_fin_conteo && editar_inventario_fisico_conteo">
+                                <i class="bi bi-x-circle-fill" role="button" (click)="!procesando ? prepararEliminarItem(indice) : null"></i>
+                            </div>
+                        </div>
+                            
+                    </li>
+                </ul>
+                <hr />
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <!--<button *ngIf="!inventariofisicoconteo.fecha_fin_conteo && editar_inventario_fisico_conteo" type="button" class="btn btn-primary col-12" (click)="guardar()" [disabled]="procesando">Guardar</button>-->
+                    </div>
+                    <div class="col-md-4 mb-3"></div>
+                    <div class="col-md-4 mb-3">
+                        <button *ngIf="!inventariofisicoconteo.fecha_fin_conteo && finalizar_inventario_fisico_conteo" type="button" class="btn btn-success col-12"  data-bs-toggle="modal" data-bs-target="#confirmarFinalizarConteo" [disabled]="procesando">Finalizar Conteo</button>
+                    </div>
+                </div>
+                
+                <p-dialog 
+                    header="Editar" 
+                    [modal]="true" 
+                    [(visible)]="edicion_visible" 
+                    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+                    [style]="{ width: '50vw' }" 
+                    >
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="serie_editar" class="form-label">Chasis</label>
+                            <input type="text" class="form-control" id="serie_editar" [(ngModel)]="datos_editar.serie" [disabled]="true">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="codigo_editar" class="form-label">Marca</label>
+                            <input type="text" class="form-control" id="codigo_editar" [(ngModel)]="datos_editar.codigo">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="categoria_editar" class="form-label">Color</label>
+                            <input type="text" class="form-control" id="categoria_editar" [(ngModel)]="datos_editar.categoria">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="descripcion_editar" class="form-label">Modelo</label>
+                            <input type="text" class="form-control" id="descripcion_editar" [(ngModel)]="datos_editar.descripcion">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lote_editar" class="form-label">Categoria</label>
+                            <input type="text" class="form-control" id="lote_editar" [(ngModel)]="datos_editar.lote">
+                        </div>
+                    </div>
+                        
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary" (click)="edicion_visible=false">Close</button>
+                        <button *ngIf="!inventariofisicoconteo.fecha_fin_conteo && (editar_inventario_fisico_conteo)" type="button" class="btn btn-primary" (click)="guardarDatos()">Guardar</button>
+                    </div>
+            </p-dialog>
+                
+                <p-dialog 
+                    header="Imagenes" 
+                    [modal]="true" 
+                    [(visible)]="fotos_visible" 
+                    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+                    [style]="{ width: '50vw' }" 
+                    >
+                    <p-tabView>
+                        <p-tabPanel header="Camara">
+                            <div>
+                                <select id="cameraSelect" class="form-select" [(ngModel)]="selectedDeviceId" (change)="cambiarCamara(videoModal, canvasModal)">
+                                    <option *ngFor="let device of videoDevices" [value]="device.deviceId">
+                                        {{ device.label || 'Cámara ' + device.deviceId }}
+                                    </option>
+                                </select>
+                                <br />
+                                <div class="d-flex justify-content-center" [ngClass]="{ 'd-none': !mostrarVideo }">
+
+                                    <video #videoModal 
+                                        autoplay 
+                                        muted
+                                        playsinline
+                                        webkit-playsinline
+                                        class="video-fullscreen"></video>
+                                </div>
+                                <div class="d-flex justify-content-center" [ngClass]="{ 'd-none': !mostrarCanvas }">
+                                    <canvas #canvasModal class="canvas-preview"></canvas>
+                                </div>
+                                <br />
+                                <div class="d-flex justify-content-between" *ngIf="!mostrarGuardarCancelar">
+                                    <button *ngIf="!inventariofisicoconteo.fecha_fin_conteo && (editar_inventario_fisico_conteo)" type="button" class="btn btn-outline-primary" (click)="iniciarCamara(videoModal, canvasModal)" [disabled]="!botonIniciarHabilitado"><i class="bi bi-play-fill" style="font-size: 2rem;"></i></button>
+                                    <button *ngIf="!inventariofisicoconteo.fecha_fin_conteo && (editar_inventario_fisico_conteo)" type="button" class="btn btn-outline-success" (click)="takePhoto(videoModal, canvasModal)" [disabled]="!botonFotoHabilitado"><i class="bi bi-camera" style="font-size: 2rem;"></i></button>
+                                    <button *ngIf="!inventariofisicoconteo.fecha_fin_conteo && (editar_inventario_fisico_conteo)" type="button" class="btn btn-outline-success" (click)="toggleTorch()" [disabled]="!botonFotoHabilitado || !isTorchSupported"><i class="bi" [ngClass]="torchOn ? 'bi-lightbulb-fill' : 'bi-lightbulb'" style="font-size: 2rem;"></i></button>
+                                    <button *ngIf="!inventariofisicoconteo.fecha_fin_conteo && (editar_inventario_fisico_conteo)" type="button" class="btn btn-outline-danger" (click)="detenerCamara()" [disabled]="!botonDetenerHabilitado"><i class="bi bi-stop-fill" style="font-size: 2rem;"></i></button>
+                                </div>
+                                <div class="d-flex justify-content-between" *ngIf="mostrarGuardarCancelar">
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-outline-secondary" 
+                                        (click)="cancelarFoto()">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-outline-success" 
+                                        (click)="guardarImagen()">
+                                        <i class="bi bi-check"></i>
+                                    </button>
+                                </div>       
+                            </div>
+
+                        </p-tabPanel>
+                        <p-tabPanel header="Galeria">
+                            <p>
+                                <p-galleria 
+                                    [value]="images" 
+                                    [showItemNavigators]="true" 
+                                    [showThumbnails]="false" 
+                                    [showIndicators]="true" 
+                                    [showIndicatorsOnItem]="true" 
+                                    [responsiveOptions]="responsiveOptions" 
+                                    [containerStyle]="{ 'max-width': '640px' }"
+                                    >
+                                        <ng-template pTemplate="item" let-item>
+                                            <img [src]="item.itemImageSrc" style="width: 100%;" />
+                                        </ng-template>
+                                    <!--
+                                        <ng-template pTemplate="thumbnail" let-item>
+                                            <div class="grid grid-nogutter justify-content-center">
+                                                <img [src]="item.thumbnailImageSrc" />
+                                            </div>
+                                        </ng-template>
+                                    -->
+                                </p-galleria>
+                            </p>
+                        </p-tabPanel>
+                    </p-tabView>
+
+                    <hr />
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary" (click)="detenerCamara(); fotos_visible=false">Close</button>
+                        <button *ngIf="!inventariofisicoconteo.fecha_fin_conteo && (editar_inventario_fisico_conteo)" type="button" class="btn btn-primary" (click)="guardarImagenes()">Guardar</button>
+                    </div>
+                </p-dialog>
+                
+            </div>
+
+        </div>
+    </main>
+</div>
+
+                
+
+<div class="modal" id="confirmarFinalizarConteo" tabindex="-1" aria-labelledby="confirmarFinalizarConteoLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+                <br />
+                <h4>¿Est&aacute; seguro que desea finalizar el conteo?</h4>
+                <p>Ya no ser&aacute; posible hacer mas modificaciones</p>
+                <p>Asegurese de guardar los datos antes de realizar esta acci&oacute;n</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="finalizar()">Finalizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarEliminarConteo" tabindex="-1" aria-labelledby="confirmarEliminarConteoLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar el item?</h4>
+                <p>Luego es necesario hacer clic en Guardar para que se apliquen los cambios</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarItem()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ventanaLoading" tabindex="-1" aria-labelledby="ventanaLoadingLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: none !important;">
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

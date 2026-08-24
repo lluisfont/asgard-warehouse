@@ -1,0 +1,121 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="11.4"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <!--<h1>Cotizaciones</h1>-->
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Bancos/Cuentas</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_bancos" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-9"><button *ngIf="editar_bancos" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ventanaCuenta" (click)="prepararDatos(0)">Nuevo Banco/Cuenta</button></div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="filtro" [(ngModel)]="filtro" placeholder="Buscar" (keyup)="p=1">
+                    </div>
+                </div>
+                <br />
+                
+                
+                <div class="list-group">
+                    <ng-container *ngFor="let cuenta of cuentas | appFilter: filtro: '' | paginate: { itemsPerPage: items, currentPage: p, id: 'page' }">
+                        <a role="button" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#ventanaCuenta" (click)="prepararDatos(cuenta.idcuenta)">
+                            <div class="row">
+                                <div class="col-lg-5 col-sm-5">
+                                    {{cuenta.banco}}
+                                </div>
+                                <div class="col-lg-5 col-sm-5">
+                                    {{cuenta.cuenta}}
+                                </div>
+                                <div class="col-lg-2 col-sm-2">
+                                    {{cuenta.moneda}}
+                                </div>
+                            </div>
+                        </a>
+                    </ng-container>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-10">
+                        <pagination-controls 
+                            (pageChange)="p = $event"  
+                            id="page"
+                            nextLabel="Sig"
+                            previousLabel="Ant"
+                            >
+                        </pagination-controls>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" [(ngModel)]="items" name="items" (change)="p=1">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal" id="ventanaCuenta" tabindex="-1" aria-labelledby="ventanaCuentaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaCuentaLabel">{{cabecera_modal}} Banco/Cuenta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <br />
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="banco" class="form-label text-secondary small">Banco</label>
+                        <input type="text" class="form-control" id="banco" name="banco" [(ngModel)]="banco" (change)="error_banco=false" [disabled]="!editar_bancos" />
+                        <small *ngIf="error_banco" class="text-danger">Campo Obligatorio</small>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="cuenta" class="form-label text-secondary small">Cuenta</label>
+                        <input type="text" class="form-control" id="cuenta" name="cuenta" [(ngModel)]="cuenta" [disabled]="!editar_bancos" />
+                        <!--<small *ngIf="errorcodigo" class="text-danger">{{mensajeerrorcodigo}}</small>-->
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="moneda" class="form-label text-secondary small">Moneda</label>
+                        <ng-select name="moneda" id="moneda" [items]="monedas" 
+                            bindLabel="codigo" 
+                            bindValue="codigo"
+                            placeholder="Seleccione"
+                            (change)="error_moneda=false"
+                             [disabled]="!editar_bancos"
+                        [(ngModel)]="moneda">
+                        </ng-select>
+                        <small *ngIf="error_moneda" class="text-danger">Campo Obligatorio</small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button *ngIf="editar_bancos" type="button" class="btn btn-primary" (click)="guardarDatos();">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,155 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="11.1"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <!--<h1>Cotizaciones</h1>-->
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Conceptos</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_conceptos" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-9"><button *ngIf="editar_conceptos" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ventanaConcepto" (click)="prepararDatos(0)">Nuevo Concepto</button></div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="filtro" [(ngModel)]="filtro" placeholder="Buscar" (keyup)="p=1">
+                    </div>
+                </div>
+                <br />
+                
+                
+                <div class="list-group">
+                    <ng-container *ngFor="let concepto of conceptos | appFilter: filtro: '' | paginate: { itemsPerPage: items, currentPage: p, id: 'page' }">
+                        <a role="button" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#ventanaConcepto" (click)="prepararDatos(concepto.idconcepto)">
+                            <div [ngClass]="concepto.activo ? 'row' : 'row text-decoration-line-through'">
+                                <div class="col-lg-1 col-sm-3">
+                                    {{concepto.codigo}}
+                                </div>
+                                <div class="col-lg-4 col-sm-9">
+                                    {{concepto.concepto}}
+                                </div>
+                                <div class="col-lg-3 col-sm-8">
+                                    {{concepto.concepto_en}}
+                                </div>
+                                <div class="col-lg-2 col-sm-2">
+                                    {{concepto.id_OVP}}
+                                </div>
+                                <div class="col-lg-2 col-sm-2">
+                                    {{concepto.id_OVPRef}}
+                                </div>
+                            </div>
+                        </a>
+                    </ng-container>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-10">
+                        <pagination-controls 
+                            (pageChange)="p = $event"  
+                            id="page"
+                            nextLabel="Sig"
+                            previousLabel="Ant"
+                            >
+                        </pagination-controls>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" [(ngModel)]="items" name="items" (change)="p=1">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal" id="ventanaConcepto" tabindex="-1" aria-labelledby="ventanaConceptoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaConceptoLabel">{{cabecera_modal}} Concepto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <br />
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="flexCheckDefault" [checked]="activo" (change)="activo=!activo" [disabled]="!editar_conceptos" />
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Activo
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-10">
+                        <label for="concepto" class="form-label text-secondary small">Concepto</label>
+                        <input type="text" class="form-control" id="concepto" name="concepto" [(ngModel)]="concepto" (change)="errorconcepto=false" (keyup)="conceptocosto='COSTO '+concepto" (ngModelChange)="concepto = $event.toUpperCase()" [disabled]="!activo || !editar_conceptos" />
+                        <small *ngIf="errorconcepto" class="text-danger">Campo Obligatorio</small>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="codigo" class="form-label text-secondary small">Codigo</label>
+                        <input type="text" class="form-control" id="codigo" name="codigo" [(ngModel)]="codigo" (change)="errorcodigo=false" (keyup)="codigocosto='C'+codigo" (ngModelChange)="codigo = $event.toUpperCase()" [disabled]="!activo || !editar_conceptos" />
+                        <small *ngIf="errorcodigo" class="text-danger">{{mensajeerrorcodigo}}</small>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-9">
+                        <label for="concepto_en" class="form-label text-secondary small">Concepto Ingl&eacute;s</label>
+                        <input type="text" class="form-control" id="concepto_en" name="concepto_en" [(ngModel)]="concepto_en" (keyup)="concepto_encosto=concepto_en+' COST'" (ngModelChange)="concepto_en = $event.toUpperCase()" [disabled]="!activo || !editar_conceptos" />
+                    </div>
+                    <div *ngIf="tokenDetalle.contabilidad" class="col-md-3">
+                        <label for="id_OVP" class="form-label text-secondary small">Cod OVP</label>
+                        <input type="text" class="form-control" id="id_OVP" name="id_OVP" [(ngModel)]="id_OVP" [disabled]="!activo || !editar_conceptos" />
+                    </div>
+                    
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-10">
+                        <label for="conceptocosto" class="form-label text-secondary small">Concepto Costo</label>
+                        <input type="text" class="form-control" id="conceptocosto" name="conceptocosto" [(ngModel)]="conceptocosto" disabled />
+                    </div>
+                    <div class="col-md-2">
+                        <label for="codigocosto" class="form-label text-secondary small">Codigo Costo</label>
+                        <input type="text" class="form-control" id="codigocosto" name="codigocosto" [(ngModel)]="codigocosto" disabled />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-9">
+                        <label for="concepto_encosto" class="form-label text-secondary small">Concepto Ingl&eacute;s Costo</label>
+                        <input type="text" class="form-control" id="concepto_encosto" name="concepto_encosto" [(ngModel)]="concepto_encosto" disabled />
+                    </div>
+                    <div *ngIf="tokenDetalle.contabilidad" class="col-md-3">
+                        <label for="id_OVPRef" class="form-label text-secondary small">Cod OVP RGI</label>
+                        <input type="text" class="form-control" id="id_OVPRef" name="id_OVPRef" [(ngModel)]="id_OVPRef" [disabled]="!activo || !editar_conceptos" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button *ngIf="editar_conceptos" type="button" class="btn btn-primary" (click)="guardarDatos();">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

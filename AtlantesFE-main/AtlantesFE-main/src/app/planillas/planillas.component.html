@@ -1,0 +1,98 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="3.5"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Planillas</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_planillas" class="card-body">
+                <br />
+                <p-table [value]="planillas" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-striped"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    [globalFilterFields]="['numero','fecha','embarque','cliente','monto','estadonotadebito']"
+                    >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>
+                                
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Numero
+                                    <p-columnFilter type="text" field="numero" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha
+                                    <p-columnFilter type="date" field="fecha" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Embarque
+                                    <p-columnFilter type="text" field="embarque" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Monto (USD)
+                                    <p-columnFilter type="numeric" field="monto" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Estado
+                                    <p-columnFilter type="text" field="estadonotadebito" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-planilla>
+                        <tr>
+                            <td class="text-center"><i class="bi bi-file-earmark" role='button' (click)="downloadPlanilla(planilla.idplanilla)"></i></td>
+                            <td>{{planilla.numero}}</td>
+                            <td>{{planilla.fecha  | date:'dd/MM/yyyy'}}</td>
+                            <td>{{planilla.embarque}}</td>
+                            <td>{{planilla.cliente}}</td>
+                            <td>{{planilla.monto | number:'0.2-2'}}</td>
+                            <td>{{planilla.estadonotadebito}}</td>
+                            
+                            
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="10">No existen registros</td>
+                        </tr>
+                    </ng-template>
+                    
+                </p-table>
+                
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

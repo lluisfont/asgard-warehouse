@@ -1,0 +1,116 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="5.13"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Reporte de Posiciones por d&iacute;a</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_reporte_almacen_posicion_por_dia" class="card-body">
+                <br />
+
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <ng-select name="idcliente" id="idcliente" [items]="entidades"
+                            bindLabel="entidad"
+                            bindValue="id"
+                            placeholder="Todos"
+                            (change)="error_idcliente=false"
+                        [(ngModel)]="idcliente">
+                        </ng-select>
+                        <small class="text-danger" *ngIf="error_idcliente">Campo Obligatorio</small>
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <label for="rangeDates" class="form-label text-secondary small">Rango de Fechas</label><br />
+                        <p-calendar [(ngModel)]="rangeDates" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" id="rangeDates" class="rango_fechas" name="rangeDates" selectionMode="range" [readonlyInput]="true" (onSelect)="onSelect($event)" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    
+                    <!--
+                    <div class="col-md-3 mb-3">
+                        <label for="fechainicial" class="form-label text-secondary small">Desde</label>
+                        <input type="date" class="form-control" id="fechainicial" name="fechainicial" max="{{fechafinal}}" min="{{fechainicial_min}}" [(ngModel)]="fechainicial" (change)="obtenerLimitesFechas()" >
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechafinal" class="form-label text-secondary small">Hasta</label>
+                        <input type="date" class="form-control" id="fechafinal" name="fechafinal" min="{{fechainicial}}" max="{{fechafinal_max}}" [(ngModel)]="fechafinal" (change)="obtenerLimitesFechas()" >
+                    </div>
+                    -->
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+                <p-table *ngIf="reporte.length>0 "[columns]="columnas"  [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                            <!--<button type="button" (click)="exportPdf()" class="btn btn-danger mb-3"><i class="bi bi-file-earmark-pdf"></i></button>-->
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <ng-container  *ngFor="let col of columns">
+                                <th pResizableColumn>
+                                    <div class="flex justify-content-center align-items-center">
+                                        {{ col.header }}
+                                        <p-columnFilter type="{{col.type}}" field="{{col.field}}" display="menu"></p-columnFilter>
+                                    </div>
+                                </th>
+                            </ng-container>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr>
+                            <ng-container *ngFor="let col of columns">
+                                <ng-container [ngSwitch]="col.type">
+                                    <td *ngSwitchCase="'date'">
+                                        {{ rowData[col.field] | date:'dd/MM/yyyy' }}
+                                    </td>
+                                    <td *ngSwitchCase="'numeric'">
+                                        {{ rowData[col.field] | number:'0.2-2' }}
+                                    </td>
+                                    <td *ngSwitchDefault>
+                                        {{ rowData[col.field] }}
+                                    </td>
+                                </ng-container>
+                            </ng-container>
+                                    
+                        </tr>
+                        <!--
+                        <tr style='background-color: {{posiciones.color}}'>
+                            <td>{{posiciones.cliente}}</td>
+                            <td>{{posiciones.numeroingreso}}</td>
+                            <td>{{ (posiciones.fechaingreso !== null && posiciones.fechaingreso !== '' && posiciones.fechaingreso !== 'VARIOS') ? (posiciones.fechaingreso | date: 'dd/MM/yyyy') : posiciones.fechaingreso}}</td>
+                            <td>{{posiciones.ubicacion}}</td>
+                            <td>{{posiciones.codigo}}</td>
+                            <td>{{posiciones.descripcion}}</td>
+                            <td>{{posiciones.categoria}}</td>
+                            <td>{{posiciones.centro_distribucion}}</td>
+                            <td>{{posiciones.saldo}}</td>
+                            <td>{{posiciones.codigoembalaje}}</td>
+                            <td>{{posiciones.lote}}</td>
+                        </tr>
+                        -->
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="11">No existen registros</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+                
+            </div>
+        </div>
+    </main>
+</div>

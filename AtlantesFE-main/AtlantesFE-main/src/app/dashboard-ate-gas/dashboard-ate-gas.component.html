@@ -1,0 +1,24 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="8.4"></app-menulateral>
+    
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Dashboard ATE Gas</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_dashboard_ate_gas" class="card-body">
+                <br />
+                <div class="iframe-container" style="overflow: hidden;padding-top: 56.25%;position: relative;">
+                    <iframe style="border: 0;height: 80%;left: 0;position: absolute;top: 0;width: 100%;" src="https://app.powerbi.com/view?r=eyJrIjoiZDg3ZWU5MmYtNmNmMS00NDFiLWEyMTYtMWMwNmNiMGVhODVmIiwidCI6ImRmNGY4MTY1LWNkNjUtNGNlNS1iYjdhLTdlNDhhOTA0ZDljZSIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,299 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="1.4"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Pedidos</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_pedidos" class="card-body">
+                <br />
+                <div *ngIf="editar_pedidos" class="row">
+                    <div class="col-6 mb-3">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoPedido" (click)="preperarAgregar()">Nuevo Pedido</button>
+                    </div>
+                    <div class="col-6 mb-3 text-end">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#nuevoPedidoAgrupado" (click)="preperarAgrupado()">Crear Pedido Agrupado</button>
+                    </div>
+                </div>
+                
+                <hr />
+                <p-table [columns]="selectedColumns" [value]="pedidos" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    [globalFilterFields]="['numeropedido','no_pedido','cliente','fecha_entrega','fecha','nombre','tiendas','salida']"
+                    >
+                    <ng-template pTemplate="caption">
+                        <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+                            selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" placeholder="Choose Columns"></p-multiSelect>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th style="flex-basis:30px" pResizableColumn></th>
+                            <th *ngFor="let col of columns" pResizableColumn pReorderableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    {{col.header}}
+                                    <p-columnFilter type="{{col.type}}" field="{{col.field}}" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-pedido let-columns="columns">
+                        <tr>
+                            <td class="text-center">
+                                <i class="bi bi-folder2-open" role='button' (click)="abrirDetalle(pedido.idpedido)"></i>&nbsp;<i class="bi bi-box-arrow-up-right" role='button' (click)="abrirDetalleNuevo(pedido.idpedido)"></i>&nbsp;<i *ngIf="pedido.tipo_pedido==2 && editar_pedidos" class="bi bi-trash3" role='button' data-bs-toggle="modal" data-bs-target="#confirmarEliminarPedido" (click)="idpedido_eliminar=pedido.idpedido"></i>
+                            </td>
+                            <td *ngFor="let col of columns">
+                                <ng-container *ngIf="col.type=='date'; else noesfecha">
+                                    {{pedido[col.field] | date:'dd/MM/yy'}}
+                                </ng-container>
+                                <ng-template #noesfecha>
+                                    {{pedido[col.field]}}
+                                </ng-template>
+                                    
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <!--
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>
+                                
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Numero de pedido
+                                    <p-columnFilter type="text" field="numeropedido" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Documento Compra
+                                    <p-columnFilter type="text" field="no_pedido" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    F. Entrega
+                                    <p-columnFilter type="date" field="fecha_entrega" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    F. Creacion
+                                    <p-columnFilter type="date" field="fecha" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Creado por
+                                    <p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tiendas
+                                    <p-columnFilter type="text" field="tiendas" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Egreso Asignado
+                                    <p-columnFilter type="text" field="salida" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    
+                    <ng-template pTemplate="body" let-pedido>
+                        <tr>
+                            <td class="text-center">
+                                <i class="bi bi-folder2-open" role='button' (click)="abrirDetalle(pedido.idpedido)"></i>&nbsp;<i class="bi bi-box-arrow-up-right" role='button' (click)="abrirDetalleNuevo(pedido.idpedido)"></i>&nbsp;<i *ngIf="pedido.tipo_pedido==2" class="bi bi-trash3" role='button' data-bs-toggle="modal" data-bs-target="#confirmarEliminarPedido" (click)="idpedido_eliminar=pedido.idpedido"></i>
+                            </td>
+                            <td>{{pedido.numeropedido}}</td>
+                            <td>{{pedido.no_pedido}}</td>
+                            <td>{{pedido.cliente}}</td>
+                            <td>{{pedido.fecha_entrega  | date:'dd/MM/yyyy'}}</td>
+                            <td>{{pedido.fecha  | date:'dd/MM/yyyy h:mm a'}}</td>
+                            <td>{{pedido.nombre}}</td>
+                            <td>{{pedido.tiendas}}</td>
+                            <td>{{pedido.salida}} <i *ngIf="pedido.finalizado && pedido.finalizado.indexOf('0')>=0" style="color: #dc3545" class="bi bi-exclamation-diamond"></i></td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="10">No existen registros</td>
+                        </tr>
+                    </ng-template>
+                    -->
+                </p-table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal fade" id="nuevoPedido" tabindex="-1" aria-labelledby="nuevoPedidoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoPedidoLabel">Nuevo Pedido</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <p-dropdown [options]="entidades" [filter]="true" [(ngModel)]="idcliente" name="idcliente" id="idcliente" placeholder="Seleccione" optionLabel="entidad" optionValue="id" (onChange)="erroridcliente=false" [style]="{'width':'100%'}"  [disabled]="tokenDetalle.idcliente_almacen!='cfcd208495d565ef66e7dff9f98764da'"></p-dropdown>
+                        <!--
+                        <ng-select name="idcliente" id="idcliente" [(ngModel)]="idcliente" placeholder="Seleccione" (change)="erroridcliente=false">
+                            <ng-container *ngFor="let entidad of entidades">
+                                <ng-option [value]="entidad.id">{{entidad.entidad}}</ng-option>
+                            </ng-container>
+                        </ng-select>
+                        -->
+                        <small *ngIf="erroridcliente" class="text-danger">Campo Requerido</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 mb-3">
+                        <label for="no_pedido" class="form-label text-secondary small">No Pedido</label>
+                        <input type="text" class="form-control" id="no_pedido" name="no_pedido" [(ngModel)]="no_pedido" />
+                    </div>
+                    <div class="col-4 mb-3">
+                        <label for="fecha_entrega" class="form-label text-secondary small">Fecha de entrega</label>
+                        <input type="date" class="form-control" id="fecha_entrega" name="fecha_entrega" [(ngModel)]="fecha_entrega" />
+                    </div>
+                </div>
+                <!--
+                <div class="row mb-3">
+                    <div class="col-12">
+                        Para cargar multiples salidas directamente desde un archivo xlsx llene el formato que se muestra <a target="_blank" href="{{urlFormatoSalida}}">aqui</a> y cargelo a continuaci&oacute;n
+                        <br /><br />
+                        <input class="form-control" type="file" name="fileUpload" id="fileUpload" #UploadFileInput (change)="fileChangeEvent($event)" >
+                    </div>
+                </div>
+                -->
+                <!--
+                <div class="row mb-3" *ngIf="mensajes_error.length>0">
+                    <div class="col-12 mb-3">
+                        <span class="text-danger">Errores encontrados:</span>
+                        <ul>
+                            <li *ngFor="let mensaje_error of mensajes_error"><strong>{{mensaje_error.codigo}}:</strong> {{mensaje_error.mensaje}}</li>
+                        </ul>
+                    </div>
+                </div>
+                -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="crearPedido()">Crear Pedido</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="nuevoPedidoAgrupado" tabindex="-1" aria-labelledby="nuevoPedidoAgrupadoLabel" aria-hidden="true" #newPedidoAgrupado >
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoPedidoAgrupadoLabel">Nuevo Pedido Agrupado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <p-dropdown [options]="entidades" [appendTo]="newPedidoAgrupado" [filter]="true" [(ngModel)]="idcliente" name="idcliente_ag" id="idcliente_ag" placeholder="Seleccione" optionLabel="entidad" optionValue="id" (onChange)="verPedidosCliente()" [style]="{'width':'100%'}" [disabled]="tokenDetalle.idcliente_almacen!='cfcd208495d565ef66e7dff9f98764da'"></p-dropdown>
+                        <!--
+                        <ng-select name="idcliente" appendTo="newPedidoAgrupado" id="idcliente" [(ngModel)]="idcliente" placeholder="Seleccione" (change)="verPedidosCliente()">
+                            <ng-container *ngFor="let entidad of entidades">
+                                <ng-option [value]="entidad.id">{{entidad.entidad}}</ng-option>
+                            </ng-container>
+                        </ng-select>
+                        -->
+                        <small *ngIf="erroridcliente" class="text-danger">Campo Requerido</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="fecha_entrega_ag" class="form-label text-secondary small">Fecha de entrega</label>
+                        <input type="date" class="form-control" id="fecha_entrega_ag" name="fecha_entrega_ag" [(ngModel)]="fecha_entrega" />
+                    </div>
+                </div>
+                <small *ngIf="error_pedidos_agrupar" class="text-danger">Debe seleccionar al menos un pedido</small>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Pedido</th>
+                            <th scope="col">Referencia</th>
+                            <th scope="col">Tiendas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let pedido_agrupar of pedidos_agrupar; let indice = index">
+                            <th><input class="form-check-input" type="checkbox" id="pedido_{{pedido_agrupar.idpedido}}" [checked]="pedido_agrupar.marcado" (click)="marcarPedido(indice)" /></th>
+                            <td><label class="form-check-label" for="pedido_{{pedido_agrupar.idpedido}}">{{pedido_agrupar.numeropedido}}</label></td>
+                            <td><label class="form-check-label" for="pedido_{{pedido_agrupar.idpedido}}">{{pedido_agrupar.no_pedido}}</label></td>
+                            <td><label class="form-check-label text-truncate" for="pedido_{{pedido_agrupar.idpedido}}">{{pedido_agrupar.tiendas}}</label></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!--
+                <div class="form-check" *ngFor="let pedido_agrupar of pedidos_agrupar; let indice = index">
+                    <input class="form-check-input" type="checkbox" id="pedido_{{pedido_agrupar.idpedido}}" [checked]="pedido_agrupar.marcado" (click)="marcarPedido(indice)" />
+                    <label class="form-check-label" for="pedido_{{pedido_agrupar.idpedido}}">
+                        {{pedido_agrupar.numeropedido}} | {{pedido_agrupar.no_pedido}} | {{pedido_agrupar.tiendas}}
+                    </label>
+                </div>
+                -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="agruparPedido()">Agrupar Pedidos</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarEliminarPedido" tabindex="-1" aria-labelledby="confirmarEliminarPedidoLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar el pedido?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarPedido()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="8.1"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Dashboard Interno Almac&eacute;n</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_dashboard_interno_almacen" class="card-body">
+                <br />
+                <div class="iframe-container" style="overflow: hidden;padding-top: 56.25%;position: relative;">
+                    <iframe style="border: 0;height: 80%;left: 0;position: absolute;top: 0;width: 100%;" src="https://app.powerbi.com/reportEmbed?reportId=9f9376c5-5384-4d06-9aba-834d4fa99f5d&autoAuth=true&ctid=df4f8165-cd65-4ce5-bb7a-7e48a904d9ce" frameborder="0" allowFullScreen="true"></iframe>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+</div>

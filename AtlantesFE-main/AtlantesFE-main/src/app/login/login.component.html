@@ -1,0 +1,150 @@
+<!--
+<main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+    <div class="container">
+        <div class="card login-card">
+            <div class="row no-gutters">
+                <div class="col-md-5">
+                    <img src="../../assets/logistica.jpg" alt="login" class="login-card-img-fix" >
+                </div>
+                <div class="col-md-7">
+                    <div class="card-body">
+                        <div class="brand-wrapper">
+                            <img src="../../assets/logoA.svg" alt="" width="280">
+                        </div>
+-->
+                        <!--<p class="login-card-description">Acceda a su cuenta</p>-->
+<!--                        <form  #formLogin="ngForm" (ngSubmit)="onSubmit();">
+                            <div class="form-group form-floating mb-2">
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Username" required [(ngModel)]="username" [readonly]="datosenviados">
+                                <label for="username">Username</label>
+                            </div>
+                            <div class="form-group form-floating mb-4">
+                                <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contrase&ntilde;a" required [(ngModel)]="contrasena" [readonly]="datosenviados">
+                                <label for="contrasena">Contrase&ntilde;a</label>
+                            </div>
+                            <button type="submit" class="btn btn-block login-btn mb-4" [disabled]="datosenviados">
+                                <span *ngIf="!datosenviados">Ingresar <i class="bi bi-box-arrow-in-right"></i></span>
+                                <span *ngIf="datosenviados">Ingresando <i class="bi bi-box-arrow-in-right"></i></span>
+                                
+                            </button>
+                        </form>
+                        <a href="#!" class="forgot-password-link">Olvid&oacute; su contrase&ntilde;a?</a>
+                        <p class="login-card-footer-text">-->
+                            <!--Don't have an account? <a href="#!" class="text-reset">Register here</a>-->
+                        <!--</p>
+                        
+                        <nav class="login-card-footer-nav">
+                            <a href="#!">Terms of use.</a>
+                            <a href="#!">Privacy policy</a>
+                        </nav>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+-->
+<main id="ventanalogin">
+    <div class="container">
+
+        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                        <!--
+                        <div class="d-flex justify-content-center py-4">
+                            <a class="logo d-flex align-items-center w-auto">
+                                <img src="assets/img/logo_banner.png" alt="">
+                            </a>
+                        </div>
+                        -->
+                        <div class="card mb-3">
+
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center py-4">
+                                    <a class="d-flex align-items-center w-auto">
+                                        <img src="assets/img/login_asgard_v1.png" alt="" height="120px">
+                                    </a>
+                                </div>
+
+                                <div class="pb-2">
+                                    <h5 class="text-center pb-0 fs-4">Acceda a su cuenta</h5>
+                                    <!--<p class="text-center small">Ingrese su usuario y contrase&ntilde;a</p>-->
+                                </div>
+
+                                <form *ngIf="!doble_factor" class="row g-3 needs-validation" #formLogin="ngForm" (ngSubmit)="onSubmit();">
+                                    <div class="col-12">
+                                        <label for="yourUsername" class="form-label">Username</label>
+                                        <input type="text" name="username" class="form-control" id="username" required [(ngModel)]="username" [disabled]="datosenviados">
+
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="yourPassword" class="form-label">Contrase&ntilde;a</label>
+                                        <input type="password" name="password" class="form-control" id="contrasena" required [(ngModel)]="contrasena" [disabled]="datosenviados">
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-primary w-100" type="submit" [disabled]="datosenviados">Acceder</button>
+                                    </div>
+                                    <div class="col-12">
+                                        <p class="small mb-0"><a  [routerLink]="['/recuperar-contrasena']">Recuperar Contrase&ntilde;a</a></p>
+                                    </div>
+                                </form>
+                                <div *ngIf="doble_factor" class="row g-3 needs-validation">
+                                    <div class="col-12">
+                                        <p class="text-primary fw-bold">Se envio el c&oacute;digo de verificacion a {{email}}</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="codigo_verificacion" class="form-label">C&oacute;digo de Verificaci&oacute;n</label>
+                                        <input type="text" name="codigo_verificacion" class="form-control" id="codigo_verificacion" [(ngModel)]="codigo_verificacion" (change)="error_codigo_verificacion=false" [disabled]="datosenviados">
+                                        <small *ngIf="error_codigo_verificacion" class="text-danger">{{mensaje_error_codigo_verificacion}}</small>
+                                    </div>
+                                    
+                                    <div class="col-6">
+                                        <button class="btn btn-light w-100" (click)="doble_factor=false;" [disabled]="datosenviados">Cancelar</button>
+                                    </div>
+                                    
+                                    <div class="col-6">
+                                        <button class="btn btn-primary w-100" (click)="verificarCodigo()" [disabled]="datosenviados">Verificar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div class="modal" id="ventanaUsuario" tabindex="-1" aria-labelledby="ventanaUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaUsuarioLabel">Cambiar Contrase&ntilde;a</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                La constrase&ntilde;a caduc&oacute;, es necesario modificarla
+                <hr />
+                <app-cambio-contrasena (exitoCambioContrasena)="cambiarContrasena($event)"></app-cambio-contrasena>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

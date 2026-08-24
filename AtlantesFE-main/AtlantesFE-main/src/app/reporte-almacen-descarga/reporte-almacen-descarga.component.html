@@ -1,0 +1,155 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="5.6"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Reporte de Descarga</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_reporte_almacen_descarga" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <ng-select name="idcliente" id="idcliente" [items]="entidades" 
+                            bindLabel="entidad" 
+                            bindValue="id"
+                            placeholder="Todos"
+                        [(ngModel)]="idcliente">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechainicial" class="form-label text-secondary small">Desde</label>
+                        <input type="date" class="form-control" id="fechainicial" name="fechainicial" max="{{fechafinal}}" [(ngModel)]="fechainicial" >
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechafinal" class="form-label text-secondary small">Hasta</label>
+                        <input type="date" class="form-control" id="fechafinal" name="fechafinal" min="{{fechainicial}}" [(ngModel)]="fechafinal" >
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+                
+                
+                <p-table *ngIf="reporte.length>0" [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    [globalFilterFields]="['cliente','numeroingreso','fecha','piezas_manifestadas','peso_total','cantidad_pallet','cantidad_cajas','hora_inicio','hora_fin','tipocamion','tipocontenedor','proveedor']"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                            <!--<button type="button" (click)="exportPdf()" class="btn btn-danger mb-3"><i class="bi bi-file-earmark-pdf"></i></button>-->
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ingreso
+                                    <p-columnFilter type="text" field="numeroingreso" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha ingreso
+                                    <p-columnFilter type="date" field="fecha" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cant. Manifestada
+                                    <p-columnFilter type="text" field="piezas_manifestadas" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Peso Total (KG)
+                                    <p-columnFilter type="numeric" field="peso_total" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cantidad Pallet
+                                    <p-columnFilter type="numeric" field="cantidad_pallet" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cantidad de Cajas
+                                    <p-columnFilter type="numeric" field="cantidad_cajas" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Hora inicio Maq
+                                    <p-columnFilter type="text" field="hora_inicio" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Hora Fin Maq
+                                    <p-columnFilter type="text" field="hora_fin" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tipo Medio Transporte
+                                    <p-columnFilter type="text" field="tipocamion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tipo Contenedor
+                                    <p-columnFilter type="text" field="tipocontenedor" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Proveedor
+                                    <p-columnFilter type="text" field="proveedor" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-descarga>
+                        <tr>
+                            <td>{{descarga.cliente}}</td>
+                            <td>{{descarga.numeroingreso}}</td>
+                            <td>{{descarga.fecha | date:'dd/MM/yyyy'}}</td>
+                            <td>{{descarga.piezas_manifestadas}}</td>
+                            <td>{{descarga.peso_total}}</td>
+                            <td>{{descarga.cantidad_pallet}}</td>
+                            <td>{{descarga.cantidad_cajas}}</td>
+                            <td>{{descarga.hora_inicio}}</td>
+                            <td>{{descarga.hora_fin}}</td>
+                            <td>{{descarga.tipocamion}}</td>
+                            <td>{{descarga.tipocontenedor}}</td>
+                            <td>{{descarga.proveedor}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="12">No existen registros</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+            </div>
+        </div>
+    </main>
+</div>

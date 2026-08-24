@@ -1,0 +1,462 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="1.2"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Mover, Dividir</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_mover_dividir" class="card-body">
+                <br />
+                <p-table [columns]="selectedColumns" [value]="inventario" [paginator]="true" [reorderableColumns]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" [scrollable]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    [globalFilterFields]="['cliente','numeroingreso','fechaingreso','categoria','ubicacionalmacen','codigo','serie','descripcion','cantidad','codigoembalaje','lote','no_conf','merma','fechavencimiento','costo_un','peso','relacion_caja','observaciones']"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="d-flex justify-content-between">
+                            <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+                                    selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" placeholder="Choose Columns"></p-multiSelect>
+                            <button *ngIf="editar_mover_dividir" type="button" class="btn btn-primary" (click)="prepararActualizar()">Actualizar Informaci&oacute;n</button>
+                        </div>
+                        <!--
+                        <div class="row">
+                            <div class="col-6">
+                                <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+                                    selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" placeholder="Choose Columns"></p-multiSelect>
+                            </div>
+                            <div class="col-6">
+                                Boton
+                            </div>
+                        </div>
+                        -->
+                        
+                        
+                        
+                        <!--
+                        <p-button 
+                        icon="pi pi-external-link" 
+                        label="Export" 
+                        (onClick)="exportExcel()" />
+                        -->
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th style="flex-basis:30px" pResizableColumn></th>
+                            <th *ngFor="let col of columns" pResizableColumn pReorderableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    {{col.header}}
+                                    <p-columnFilter *ngIf="col.field!='no_conf'" type="{{col.type}}" field="{{col.field}}" display="menu"></p-columnFilter>
+                                    <p-columnFilter 
+                                        *ngIf="col.field=='no_conf'"
+                                        field="idno_conf" 
+                                        matchMode="in" 
+                                        display="menu" 
+                                        [showMatchModes]="false" 
+                                        [showOperator]="false" 
+                                        [showAddButton]="false"
+                                        >
+                                        <ng-template pTemplate="header">
+                                            <div class="px-3 pt-3 pb-0">
+                                                <span class="font-bold">Seleccionar No Conf</span>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                            <p-multiSelect 
+                                                [ngModel]="value" 
+                                                [options]="no_confs" 
+                                                placeholder="Cualquiera" 
+                                                (onChange)="filter($event.value)" 
+                                                optionLabel="no_conf"
+                                                optionValue="idno_conf"
+                                                >
+                                                <!--
+                                                <ng-template let-option pTemplate="item">
+                                                    <div class="inline-block vertical-align-middle">
+                                                        <span class="ml-1 mt-1">{{ option.no_conf }}</span>
+                                                    </div>
+                                                </ng-template>
+                                                -->
+                                            </p-multiSelect>
+                                        </ng-template>
+                                    </p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-inventarios let-columns="columns">
+                        <tr>
+                            <td  style="flex-basis:30px" class="text-center">
+                                <i class="bi bi-folder2-open" role='button' (click)="prepararVentana(inventarios.idingresodetalle)"></i>
+                            </td>
+                            <td *ngFor="let col of columns"  [ngClass]="{'vencido': (inventarios.diasavencer < 0 && col.field=='fechavencimiento'),'vigente':(inventarios.diasavencer==null && col.field=='fechavencimiento'), 'por_vencer': (inventarios.diasavencer >= 0 && inventarios.diasavencer <= 15 && col.field=='fechavencimiento')}" >
+                                <ng-container *ngIf="col.type=='date'; else noesfecha">
+                                    {{inventarios[col.field] | date:'dd/MM/yy'}}
+                                </ng-container>
+                                <ng-template #noesfecha>
+                                    {{inventarios[col.field]}}
+                                </ng-template>
+                                    
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="15">No existen registros</td>
+                        </tr>
+                    </ng-template>
+                    
+                </p-table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<p-dialog header="Mover/Dividir item" [modal]="true" [(visible)]="visible_mover_dividir" [style]="{ width: '80rem' }">
+    <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="dividir-tab" data-bs-toggle="tab" data-bs-target="#dividir" type="button" role="tab" aria-controls="dividir" aria-selected="true">Dividir</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="mover-tab" data-bs-toggle="tab" data-bs-target="#mover" type="button" role="tab" aria-controls="mover" aria-selected="false">Mover</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="historial-tab" data-bs-toggle="tab" data-bs-target="#historial" type="button" role="tab" aria-controls="historial" aria-selected="false">Historial</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="dividir" role="tabpanel" aria-labelledby="dividir-tab">
+            <br />
+            <div *ngIf="bloqueado" class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">Error!</h4>
+                <p>El &iacute;tem no puede ser dividio debido a que tiene salidas pendientes de finalizar</p>
+                <hr>
+                <p class="mb-0">Las salidas pendientes se muestran a continuaci&oacute;n</p>
+                <ul>
+                    <li *ngFor="let salidapendiente of salidaspendientes; let det= index">{{salidapendiente.fecha | date:'dd/MM/yyyy'}}: {{salidapendiente.numero}}/{{salidapendiente.gestion}}</li>
+                </ul>
+            </div>
+            <button *ngIf="!bloqueado && !bloqueado_es_vehiculo && editar_mover_dividir" class="btn btn-outline-secondary" type="button" (click)="crearDivision()"  [disabled]="cargando">Crear Division</button>
+            <hr />
+            <p-table [value]="division" [resizableColumns]="true" columnResizeMode="expand" styleClass="p-datatable-gridlines p-datatable-sm" responsiveLayout="scroll">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pResizableColumn>Ubicacion</th>
+                        <th pResizableColumn>Codigo</th>
+                        <th pResizableColumn>Serie</th>
+                        <th pResizableColumn>Descripci&oacute;n</th>
+                        <th pResizableColumn>Categor&iacute;a</th>
+                        <th pResizableColumn>Centro Distribuci&oacute;n</th>
+                        <th pResizableColumn>Cantidad</th>
+                        <th>Embalaje</th>
+                        <th pResizableColumn>Lote</th>
+                        <th pResizableColumn>Costo Un (USD)</th>
+                        <!--<th pResizableColumn>CT no conf</th>-->
+                        <th pResizableColumn>No Conf.</th>
+                        <th pResizableColumn>Clasificaci&oacute;n</th>
+                        <th pResizableColumn>MERMA</th>
+                        <!--<th>Fec. Prod.</th>-->
+                        <th>Fec. Venc.</th>
+                        <th>PPT</th>
+                        <!--<th>Volumen</th>-->
+                        <th>Peso</th>
+                        <th>Pallet</th>
+                        <th>Temperatura</th>
+                        <th pResizableColumn>Observaciones</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-divisiones let-det="rowIndex">
+                    <tr>
+                        <td>
+                            {{divisiones.ubicacionalmacen}}
+                        </td>
+                        <td>{{divisiones.codigo}}</td>
+                        <td>{{divisiones.serie}}</td>
+                        <td>{{divisiones.descripcion}}</td>
+                        <td>{{divisiones.categoria}}</td>
+                        <td>{{divisiones.centro_distribucion}}</td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="number" step="0.01" class="form-control no-border" name="cantidad{{det}}" id="cantidad{{det}}" [(ngModel)]="divisiones.cantidad" [disabled]="bloqueado || !editar_mover_dividir || bloqueado_es_vehiculo" (change)="calcularTotal()"  />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{divisiones.cantidad | number:'0.2-2'}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td>
+                            {{divisiones.codigoembalaje}}
+                        </td>
+                        <td>{{divisiones.lote}}</td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="number" step="0.01" class="form-control no-border" id="costo_un{{det}}" name="costo_un{{det}}" [(ngModel)]="divisiones.costo_un" [disabled]="bloqueado || !editar_mover_dividir || bloqueado_es_vehiculo"  />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{divisiones.costo_un}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td>
+                            <select class="form-select form-select-sm no-border" id="idno_conf{{det}}" name="idno_conf{{det}}" [(ngModel)]="divisiones.idno_conf" [disabled]="bloqueado || !editar_mover_dividir || bloqueado_es_vehiculo" >
+                                <option value=""></option>
+                                <option *ngFor="let no_conf of no_confs" [ngValue]="no_conf.idno_conf">{{no_conf.no_conf}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-select form-select-sm no-border" id="idclasificacion{{det}}" name="idclasificacion{{det}}" [(ngModel)]="divisiones.idclasificacion" [disabled]="bloqueado || !editar_mover_dividir || bloqueado_es_vehiculo" >
+                                <option value=""></option>
+                                <option *ngFor="let clasificacion of clasificaciones" [ngValue]="clasificacion.idclasificacion">{{clasificacion.clasificacion}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-select form-select-sm no-border" id="idmerma{{det}}" name="idmerma{{det}}" [(ngModel)]="divisiones.idmerma" [disabled]="bloqueado || !editar_mover_dividir || bloqueado_es_vehiculo" >
+                                <option value=""></option>
+                                <option *ngFor="let merma of mermas" [ngValue]="merma.idmerma">{{merma.merma}}</option>
+                            </select>
+                        </td>
+                        <td>{{divisiones.fechavencimiento | date:'dd/MM/yyyy'}}</td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" class="form-control no-border" id="relacion_caja{{det}}" name="relacion_caja{{det}}" [(ngModel)]="divisiones.relacion_caja" [disabled]="bloqueado || !editar_mover_dividir || bloqueado_es_vehiculo"  />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{divisiones.relacion_caja}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="number" step="0.01" class="form-control no-border" id="peso{{det}}" name="peso{{det}}" [(ngModel)]="divisiones.peso" [disabled]="bloqueado || !editar_mover_dividir || bloqueado_es_vehiculo"  (change)="calcularTotal()" />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{divisiones.peso | number:'0.2-2'}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" class="form-control no-border" id="pallet{{det}}" name="pallet{{det}}" [(ngModel)]="divisiones.pallet" [disabled]="bloqueado || !editar_mover_dividir"  />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{divisiones.pallet}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-control-sm no-border" id="temperatura{{det}}" name="temperatura{{det}}" [(ngModel)]="divisiones.temperatura" [disabled]="bloqueado || !editar_mover_dividir || bloqueado_es_vehiculo">
+                                        <span class="input-group-text">&deg;C</span>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{divisiones.temperatura}} <span *ngIf="divisiones.temperatura">&deg;C</span>
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+
+
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input type="text" class="form-control no-border" id="observaciones{{det}}" name="observaciones{{det}}" [(ngModel)]="divisiones.observaciones" [disabled]="bloqueado || !editar_mover_dividir"  />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{divisiones.observaciones}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td>
+                            <i *ngIf="det>0" class="bi bi-x-circle-fill" role="button" (click)="eliminarDivision(det)"></i>
+                        </td>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr>
+                        <td colspan="6">Totales</td>
+                        <td>{{cantidad_total | number:'0.2-2'}}/{{cantidad_inicial | number:'0.2-2'}}</td>
+                        <td colspan="7"></td>
+                        <td>{{peso_total | number:'0.2-2'}}/{{peso_inicial | number:'0.2-2'}}</td>
+                        <td colspan="3"></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div class="text-danger" *ngIf="error_cantidad">La cantidad total ({{cantidad_total | number:'0.2-2'}}) no cuadra con la cantidiad inicial ({{cantidad_inicial | number:'0.2-2'}})</div>
+            <div class="text-danger" *ngIf="error_peso">El peso total ({{peso_total | number:'0.2-2'}}) no cuadra con el peso inicial ({{peso_inicial | number:'0.2-2'}})</div>
+        </div>
+        <div class="tab-pane fade" id="mover" role="tabpane2" aria-labelledby="mover-tab">
+            <br />
+            <div class="row mb-3 container-fluid vh-70">
+                <div class="col-6 overflow-auto" style="height:100%">
+                    <div *ngIf="almacen" class="table-responsive">
+                        <table border="1">
+                            <ng-container *ngFor="let fila of almacen.detalle; let f = index">
+                                <tr>
+                                    <ng-container *ngFor="let columna of fila; let c = index">
+                                        <td [ngClass]="columna.tipo == '1' ? (columna.lineasuperior ? 'sectoralmacenlineasuperior cursor_pointer' : 'sectoralmacen cursor_pointer' ) : 'sectoralmacenvarios'" style="background-color: {{columna.color}};" (click)="columna.habilitado && columna.tipo == '1' && ubicarEnAlmacen(columna.idalmacendetalle,columna.nombre)">{{columna.texto}}{{columna.columna}}</td>
+                                    </ng-container>
+                                </tr>
+                            </ng-container>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-6 overflow-auto" style="height:100%;">
+
+                    <p-table [value]="division" [resizableColumns]="true" columnResizeMode="expand" styleClass="p-datatable-gridlines p-datatable-sm" [scrollable]="true"  scrollHeight="60vh" scrollDirection="both">
+                        <ng-template pTemplate="caption">
+                            <p-button *ngIf="editar_mover_dividir" label="Guardar" icon="pi pi-check" size="small" [disabled]="cargando" (click)="guardarUbicacion()"></p-button>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width:130px" pResizableColumn>Ubicaci&oacute;n <i *ngIf="editar_mover_dividir" class="bi bi-clipboard" role="button" (click)="pegarUbicacion()"></i></th>
+                                <th style="width:35px">
+                                    <input *ngIf="editar_mover_dividir" class="form-check-input" type="checkbox" id="marcarTodosAlmacen" name="marcarTodosAlmacen" [checked]="marcarTodosAlmacen" (change)="marcarTodos()" >
+                                </th>
+                                <th style="width:100px" pResizableColumn>Codigo</th>
+                                <th style="width:200px" pResizableColumn>Descripci&oacute;n</th>
+                                <th style="width:120px" pResizableColumn>Cantidad</th>
+                                <th style="width:100px" pResizableColumn>Lote</th>
+                                <th style="width:100px" pResizableColumn>Fec. Venc.</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-divisiones let-rowIndex="rowIndex">
+                            <tr>
+                                <td style="width:130px">{{divisiones.ubicacionalmacen}}</td>
+                                <td style="width:35px">
+                                    <input class="form-check-input" type="checkbox" id="ubicarenalmacen{{rowIndex}}" name="ubicarenalmacen{{rowIndex}}" [checked]="marcadoAlmacen[rowIndex].ubicarenalmacen" (change)="marcadoAlmacen[rowIndex].ubicarenalmacen=!marcadoAlmacen[rowIndex].ubicarenalmacen" >
+                                </td>
+                                <td style="width:100px">
+                                    <label class="form-check-label" for="ubicarenalmacen{{rowIndex}}">{{divisiones.codigo}}</label>
+                                    </td>
+                                <td style="width:200px">{{divisiones.descripcion}}</td>
+                                <td style="width:120px">{{divisiones.cantidad | number:'0.2-2'}} <!--{{divisiones.codigoembalaje}}--></td>
+                                <td style="width:100px">{{divisiones.lote}}</td>
+                                <td style="width:100px">{{divisiones.fechavencimiento | date:'dd/MM/yyyy'}}</td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="5">No existen registros</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
+            <br />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Movimiento</th>
+                        <th scope="col">Numero</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Saldo</th>
+                        <th scope="col">Precio UN (USD)</th>
+                        <!--<th scope="col">CT no conf</th>-->
+                        <th scope="col">No Conf</th>
+                        <th scope="col">MERMA</th>
+                        <th scope="col">PPT</th>
+                        <th scope="col">Peso</th>
+                        <th scope="col">Saldo</th>
+                        <th scope="col">Temperatura</th>
+                        <th scope="col">Observaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let historia of historial">
+                        <th scope="row">{{historia.fechamovimiento | date:'dd/MM/yy'}}</th>
+                        <td>{{historia.tipomovimiento}}</td>
+                        <td>{{historia.numero}}</td>
+                        <td>{{historia.cantidad | number:'0.2-2'}}<small class="text-primary" *ngIf="historia.idtipomovimiento==2"> (+{{historia.cantidadotros}})</small></td>
+                        <td>{{historia.saldo | number:'0.2-2'}}</td>
+                        <td>{{historia.costo_un | number:'0.2-2'}}</td>
+                        <!--<td>{{historia.cantidad_no_conf | number:'0.2-2'}}</td>-->
+                        <td>{{historia.no_conf}}</td>
+                        <td>{{historia.merma}}</td>
+                        <td>{{historia.relacion_caja}}</td>
+                        <td>{{historia.peso | number:'0.2-2'}}<small class="text-primary" *ngIf="historia.idtipomovimiento==2"> (+{{historia.pesootros}})</small></td>
+                        <td>{{historia.saldopeso | number:'0.2-2'}}</td>
+                        <td>{{historia.temperatura}}</td>
+                        <td>{{historia.observaciones}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" (click)="visible_mover_dividir = false" [disabled]="cargando">Cerrar</button>&nbsp;
+        <button *ngIf="!bloqueado && !bloqueado_es_vehiculo && editar_mover_dividir" type="button" class="btn btn-primary" [disabled]="cargando" (click)="guardarCambios()">Guardar</button>
+    </div>
+          
+          
+</p-dialog>
+
+<p-dialog header="Actualizar Información" [modal]="true" [(visible)]="visible_actualizar" [style]="{ width: '50rem' }">
+    <div class="col-12 mb-3">
+        Para actualizar informaci&oacute;n de Items directamente desde un archivo xlsx llene el formato que se muestra <a target="_blank" href="{{urlFormatoActualziacion}}">aqui</a> y cargelo a continuaci&oacute;n
+        <br /><br />
+        <input class="form-control" type="file" name="fileUpload" id="fileUpload" [disabled]="cargando" #UploadFileInput (change)="fileChangeEvent($event)" >
+        <small *ngIf="errorarchivo" class="text-danger">Campo requerido</small>
+    </div>
+    <div *ngIf="mensajes_error.length>0" class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Error!</h4>
+        <p>Se encontraron los siguientes errores.</p>
+        <hr>
+        <ul>
+            <li *ngFor="let mensaje_error of mensajes_error">Fila {{mensaje_error.fila}}: {{mensaje_error.mensaje}}</li>
+        </ul>
+    </div>
+    
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" (click)="visible_actualizar = false" [disabled]="cargando">Cerrar</button>&nbsp;
+        <button *ngIf="editar_mover_dividir" type="button" class="btn btn-primary" [disabled]="cargando" (click)="actualizarInformacion()">Guardar</button>
+    </div>
+          
+          
+</p-dialog>
+
+<!--
+<div class="modal" id="ventanaDetalleItem" tabindex="-1" aria-labelledby="ventanaDetalleItemLabel">
+    <div class="modal-dialog modal-fullscreen modal-dialog-scrollable modal_90">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaDetalleItemLabel">Mover/Dividir item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button *ngIf="!bloqueado && !bloqueado_es_vehiculo && editar_mover_dividir" type="button" class="btn btn-primary" (click)="guardarCambios()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

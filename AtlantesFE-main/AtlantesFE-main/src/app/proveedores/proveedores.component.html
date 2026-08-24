@@ -1,0 +1,249 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="4.4"></app-menulateral>
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <!--<h1>Embarques</h1>-->
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Proveedores</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <div class="card">
+            <div *ngIf="ver_entidades_proveedores" class="card-body">
+                <br />
+                <div class="row">
+                        <div class="col-md-9"><button *ngIf="editar_entidades_proveedores" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ventanaProveedor" (click)="prepararDatos(0)">Nuevo Proveedor</button></div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="filtro" [(ngModel)]="filtro" placeholder="Buscar" (keyup)="p=1">
+                    </div>
+                </div>
+                <br />
+                
+                <div class="list-group">
+                    <ng-container *ngFor="let proveedor of proveedores | appFilter: filtro: '' | paginate: { itemsPerPage: items, currentPage: p, id: 'page' }">
+                        <a role="button" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#ventanaProveedor" (click)="prepararDatos(proveedor.idproveedor)">
+                            <div class="row">
+                                <div class="col-lg-5 col-sm-6">
+                                    <strong><i class="bi bi-building"></i> {{proveedor.proveedor}}</strong>
+                                </div>
+                                <div class="col-lg-2 col-sm-3">
+                                    <i class="bi bi-card-heading"></i> {{proveedor.numeroidentificacion}}
+                                </div>
+                                <div class="col-lg-2 col-sm-6">
+                                    <i class="bi bi-telephone"></i> {{proveedor.telefono}}
+                                </div>
+                                <div class="col-lg-3 col-sm-6">
+                                    <i class="bi bi-person"></i> {{proveedor.nombrecontacto}}
+                                </div>
+                            </div>
+                        </a>
+                    </ng-container>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-10">
+                        <pagination-controls 
+                            (pageChange)="p = $event"  
+                            id="page"
+                            nextLabel="Sig"
+                            previousLabel="Ant"
+                            >
+                        </pagination-controls>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" [(ngModel)]="items" name="items" (change)="p=1">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal" id="ventanaProveedor" tabindex="-1" aria-labelledby="ventanaProveedorLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaProveedorLabel">{{cabecera_modal}} Proveedor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">General</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="direcciones-tab" data-bs-toggle="tab" data-bs-target="#direcciones" type="button" role="tab" aria-controls="direcciones" aria-selected="false">Direcciones</button>
+                        </li>
+                        <li *ngIf="tokenDetalle.contabilidad" class="nav-item" role="presentation">
+                            <button class="nav-link" id="facturacion-tab" data-bs-toggle="tab" data-bs-target="#facturacion" type="button" role="tab" aria-controls="facturacion" aria-selected="false">Facturaci&oacute;n</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="proveedor" class="form-label text-secondary small">Proveedor</label>
+                                    <input type="text" class="form-control" id="proveedor" name="proveedor" [(ngModel)]="proveedor" (change)="errorproveedor=false" [disabled]="!editar_entidades_proveedores" />
+                                    <small *ngIf="errorproveedor" class="text-danger">Campo Obligatorio</small>
+                                </div>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="numeroidentificacion" class="form-label text-secondary small">No. Identificaci&oacute;n</label>
+                                    <input type="text" class="form-control" id="numeroidentificacion" name="numeroidentificacion" [(ngModel)]="numeroidentificacion" [disabled]="!editar_entidades_proveedores" />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="telefono" class="form-label text-secondary small">Tel&eacute;fono</label>
+                                    <input type="text" class="form-control" id="telefono" name="telefono" [(ngModel)]="telefono" [disabled]="!editar_entidades_proveedores" />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="fax" class="form-label text-secondary small">FAX</label>
+                                    <input type="text" class="form-control" id="fax" name="fax" [(ngModel)]="fax" [disabled]="!editar_entidades_proveedores" />
+                                </div>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="email" class="form-label text-secondary small">Correo electr&oacute;nico</label>
+                                    <input type="text" class="form-control" id="email" name="email" [(ngModel)]="email" [disabled]="!editar_entidades_proveedores" />
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    <label for="nombrecontacto" class="form-label text-secondary small">Contacto</label>
+                                    <input type="text" class="form-control" id="nombrecontacto" name="nombrecontacto" [(ngModel)]="nombrecontacto" [disabled]="!editar_entidades_proveedores" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="numerocuenta" class="form-label text-secondary small">No de Cuenta</label>
+                                    <input type="text" class="form-control" id="numerocuenta" name="numerocuenta" [(ngModel)]="numerocuenta" [disabled]="!editar_entidades_proveedores" />
+                                </div>
+                                <div *ngIf="tokenDetalle.contabilidad" class="col-3 mb-3">
+                                    <label for="plazo" class="form-label text-secondary small">Plazo</label>
+                                    <input type="number" step="1" class="form-control" id="plazo" name="plazo" [(ngModel)]="plazo" [disabled]="!editar_entidades_proveedores" />
+                                </div>
+                                <div *ngIf="tokenDetalle.contabilidad" class="col-3 mb-3">
+                                    <label for="idOVP" class="form-label text-secondary small">idOVP</label>
+                                    <input type="number" step="1" class="form-control" id="id_OVPProv" name="id_OVPProv" [(ngModel)]="id_OVPProv" [disabled]="!editar_entidades_proveedores" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="direcciones" role="tabpanel" aria-labelledby="direcciones-tab">
+                            <br />
+                            <ng-container *ngFor="let direcciond of direcciones; let indice = index; trackBy: trackByFn">
+                                <div class="row">
+                                    <div class="col-lg-12 mb-3">
+                                        <label for="direccion{{indice}}" class="form-label text-secondary small"><strong>{{indice+1}}. Direcci&oacute;n</strong></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="direccion{{indice}}" name="direccion{{indice}}" [(ngModel)]="direcciond.direccion" [disabled]="!editar_entidades_proveedores" />
+                                            <div class="dropdown bottom-0">
+                                                <button *ngIf="editar_entidades_proveedores" class="btn btn-outline-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="bi bi-three-dots-vertical"></i>
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                  <!--<li><a class="dropdown-item" href="#">Establecer como predeterminado</a></li>-->
+                                                  <li><a class="dropdown-item" role="button" (click)="eliminarDireccion(direcciond.idproveedordireccion)">Eliminar</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 mb-3">
+                                        <label for="ciudad{{indice}}" class="form-label text-secondary small">Ciudad</label>
+                                        <input type="text" class="form-control" id="ciudad{{indice}}" name="ciudad{{indice}}" [(ngModel)]="direcciond.ciudad" [disabled]="!editar_entidades_proveedores" />
+                                    </div>
+                                    <div class="col-lg-6 mb-3">
+                                        <label for="pais{{indice}}" class="form-label text-secondary small">Pa&iacute;s</label>
+                                        <input type="text" class="form-control" id="pais{{indice}}" name="pais{{indice}}" [(ngModel)]="direcciond.pais" [disabled]="!editar_entidades_proveedores" />
+                                    </div>
+                                </div>
+                                <hr />
+                            </ng-container>
+                            <button *ngIf="editar_entidades_proveedores" type="button" class="btn btn-secondary" (click)="agregarDireccion()">Agregar Direcci&oacute;n</button>
+                        </div>
+                        <div *ngIf="tokenDetalle.contabilidad" class="tab-pane fade" id="facturacion" role="tabpanel" aria-labelledby="facturacion-tab">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-2 mb-3">
+                                    <label for="idtipodocumento" class="form-label text-secondary small">Tipo Documento</label>
+                                    <ng-select name="idtipodocumento" id="idtipodocumento" [items]="tiposdocumento"
+                                        bindLabel="tipodocumento" 
+                                        bindValue="idtipodocumento" 
+                                        placeholder="Seleccione"
+                                        [clearable]="false"
+                                        [disabled]="!editar_entidades_proveedores"
+                                    [(ngModel)]="idtipodocumento">
+                                    </ng-select>
+                                </div>
+                                <div class="col-md-5 mb-3">
+                                    <label for="numerofacturacion" class="form-label text-secondary small">NIT/CI/PAS</label>
+                                    <input type="number" class="form-control" name="numerofacturacion" id="numerofacturacion" [(ngModel)]="numerofacturacion" [disabled]="!editar_entidades_proveedores" />
+                                    <!--<small *ngIf="errornitf" class="text-danger">debe ser mayor o igual a 0</small>-->
+                                </div>
+                                <div class="col-md-5 mb-3">
+                                    <label for="razonsocial" class="form-label text-secondary small">Raz&oacute;n Social</label>
+                                    <input type="text" class="form-control" name="razonsocial" id="razonsocial" [(ngModel)]="razonsocial" [disabled]="!editar_entidades_proveedores" />
+                                    <!--<small *ngIf="errornombref" class="text-danger">Campo Requerido</small>-->
+                                </div>
+                            </div>
+                            <hr />
+                            <h5>Correos para env&iacute;o de factura</h5>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <div class="row" *ngFor="let correofacturacion of correosfacturacion; let indice = index; trackBy: trackByFn;">
+                                        <div class="col-10 mb-1">
+                                            <input type="text" class="form-control form-control-sm col-12" name="correofactura-{{indice}}" [(ngModel)]="correofacturacion.correo" (change)="correofacturacion.error=false" [disabled]="!editar_entidades_proveedores" >
+                                            <small *ngIf="correofacturacion.error" class="text-danger">Correo invalido</small>
+                                        </div>
+                                        <div class="col-2 mb-1">
+                                            <i *ngIf="editar_entidades_proveedores" class="bi bi-x-circle-fill" role="button" (click)="eliminarCorreoFactura(indice)"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2 mb-3">
+
+                                </div>
+                                <div class="col-4 mb-3">
+                                    <button *ngIf="editar_entidades_proveedores" type="button" class="btn btn-outline-secondary" (click)="agregarCorreoFactura()">Agregar Correo</button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                            
+                    
+                </form>    
+            </div>
+            <div class="modal-footer">
+                <!--{{errorusername}} - {{errorusernameexistente}} - {{errorcontrasena}}-->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button *ngIf="editar_entidades_proveedores" type="button" class="btn btn-primary" (click)="guardarDatos();">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

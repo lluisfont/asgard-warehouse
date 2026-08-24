@@ -1,0 +1,388 @@
+<div id="principal">
+    <app-menusuperior [permite_cambio_almacen]="true"></app-menusuperior>
+    <app-menulateral [menu_item]="12.6"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Salidas</li>
+                </ol>
+            </nav>
+        </div>
+        <br />
+        <div class="card">
+            <div *ngIf="ver_ate_gas_salidas" class="card-body">
+                <br />
+                <div *ngIf="editar_ate_gas_salidas" class="row">
+                    <div class="col-6 mb-3">
+                        <button type="button" class="btn btn-primary" (click)="preperarCarga()">Carga Masiva</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="filtro_chasis" class="form-label text-secondary small">Buscar VIN</label>
+                        <input type="text" class="form-control" id="filtro_chasis" name="filtro_chasis" (input)="filtrarAteGas()" [(ngModel)]="filtro_chasis" >
+                    </div>
+                </div>
+                
+                
+                <p-table [value]="ategas_salidas_filtrado" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th></th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Chasis
+                                    <p-columnFilter type="text" field="chasis" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Marca
+                                    <p-columnFilter type="text" field="marca" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Modelo
+                                    <p-columnFilter type="text" field="modelo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Color
+                                    <p-columnFilter type="text" field="color" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Config
+                                    <p-columnFilter type="text" field="configuracion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tipo de Tanque
+                                    <p-columnFilter type="text" field="tipo_tanque" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha Programaci&oacute;n
+                                    <p-columnFilter type="date" field="fecha_programacion_salida" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Estado
+                                    <p-columnFilter type="text" field="estado_salida" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha Salida
+                                    <p-columnFilter type="date" field="fecha_salida" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Destino
+                                    <p-columnFilter type="text" field="destino_salida" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Transportista
+                                    <p-columnFilter type="text" field="transportista_salida" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Guía de Remisión
+                                    <p-columnFilter type="text" field="nombre_original_salida" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-ate_gas>
+                        <tr>
+                            <td>
+                                <button *ngIf="!ate_gas.fecha_salida && editar_ate_gas_salidas" type="button" class="btn btn-success" (click)="abrirDespachar(ate_gas.idate_gas)">Registrar Salida</button>
+                                <!--
+                                <div class="btn-group" role="group">
+                                    <button [disabled]="!ate_gas.fecha_recepcion" type="button" class="btn btn-outline-primary" (click)="abrirUbicacion(ate_gas.idate_gas)"><i class="bi bi-pin-map-fill"></i></button>
+                                    <button type="button" class="btn btn-outline-secondary" (click)="prepararEditar(ate_gas.idate_gas)"><i class="bi bi-pencil-square"></i></button>
+                                    <button type="button" class="btn btn-outline-danger" (click)="prepararEliminarItem(ate_gas.idate_gas)"><i class="bi bi-trash"></i></button>
+                                </div>
+                                -->
+                            </td>
+                            <!--
+                            <td class="d-flex justify-content-between">
+                                <button *ngIf="!ate_gas.fecha_recepcion && editar_ate_gas" type="button" class="btn btn-success" (click)="abrirRecepcion(ate_gas.idate_gas)">Registrar Recepcion</button>
+                                <p-tag *ngIf="ate_gas.fecha_recepcion" severity="success" icon="pi pi-check" value="Recepcionado" />
+                            </td>
+                            -->
+                            <td>{{ate_gas.cliente}}</td>
+                            <td>{{ate_gas.chasis}}</td>
+                            <td>{{ate_gas.marca}}</td>
+                            <td>{{ate_gas.modelo}}</td>
+                            <td>{{ate_gas.color}}</td>
+                            <td>{{ate_gas.configuracion}}</td>
+                            <td>{{ate_gas.tipo_tanque}}</td>
+                            <td>{{ate_gas.fecha_programacion_salida | date:'dd/MM/yyyy'}}</td>
+                            <td>
+                                {{ate_gas.estado_salida}}
+                                <!--
+                                <p-tag *ngIf="ate_gas.fecha_recepcion" severity="success" icon="pi pi-check" [value]="ate_gas.estado_recepcion" />
+                                <p-tag *ngIf="!ate_gas.fecha_recepcion" severity="warning" [value]="ate_gas.estado_recepcion" />
+                                -->
+                            </td>
+                            <td>{{ate_gas.fecha_salida | date:'dd/MM/yyyy'}}</td>
+                            <td>{{ate_gas.destino_salida}}</td>
+                            <td>{{ate_gas.transportista_salida}}</td>
+                            <td>
+                                <button *ngIf="ate_gas.nombre_original_salida" type="button"
+                                    class="btn btn-link guia-remision-link p-0"
+                                    (click)="abrirGuiaRemision(ate_gas)"
+                                    [title]="ate_gas.nombre_original_salida">
+                                    {{ate_gas.nombre_original_salida}}
+                                </button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="14">No existen registros</td>
+                        </tr>
+                    </ng-template>
+                    
+                </p-table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<p-dialog #nueva_carga header="Carga Masiva" [modal]="true" [(visible)]="visible_carga" [style]="{ width: '50rem' }">
+    <div class="row">
+        <div class="col-12 mb-3">
+            <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+            <p-dropdown 
+                [options]="entidades" 
+                [filter]="true" 
+                [(ngModel)]="idcliente" 
+                name="idcliente" 
+                id="idcliente" 
+                placeholder="Seleccione" 
+                optionLabel="entidad" 
+                optionValue="id" 
+                (onChange)="erroridcliente=false" 
+                [style]="{'width':'100%'}"
+                [appendTo]="nueva_carga"
+                [disabled]="cargando"
+                ></p-dropdown>
+            <small *ngIf="erroridcliente" class="text-danger">Campo Requerido</small>
+        </div>
+    </div>
+    
+    <ng-container>
+        <div class="row">
+            <div class="col-12 mb-3">
+                Para cargar Items directamente desde un archivo xlsx llene el formato que se muestra <a target="_blank" href="{{urlFormatoAteGasSalida}}">aqui</a> y cargelo a continuaci&oacute;n
+                <br /><br />
+                <input [disabled]="cargando" class="form-control" type="file" name="fileUpload" id="fileUpload" #UploadFileInput (change)="fileChangeEvent($event)" >
+                <small *ngIf="errorarchivo" class="text-danger">Campo requerido</small>
+            </div>
+        </div>
+        <div *ngIf="mensajes_error.length>0" class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Error!</h4>
+            <p>Se encontraron los siguientes errores.</p>
+            <hr>
+            <ul>
+                <li *ngFor="let mensaje_error of mensajes_error">Fila {{mensaje_error.fila}}: {{mensaje_error.mensaje}}</li>
+            </ul>
+        </div>
+    </ng-container>
+        
+    <hr />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" [disabled]="cargando" (click)="visible_carga = false">Cerrar</button>&nbsp;
+        <button type="button" class="btn btn-primary" [disabled]="cargando" (click)="cargarAteGasSalida()">Crear Recuento</button>
+        <!--
+        <p-button label="Cancel" severity="secondary" (onClick)="visible_nuevo_recuento = false" />
+        <p-button label="Save" (onClick)="crearInventarioFisico()" />
+        -->
+    </div>
+</p-dialog>
+
+<p-dialog #modal_despacho header="Registrar Salida" [modal]="true" [(visible)]="visible_salida"
+    [closable]="!procesando_salida" [dismissableMask]="!procesando_salida"
+    [style]="{ width: '50rem' }" (onHide)="alCerrarDialogoSalida()">
+    <p-card header="Información del Vehiculo">
+        <div class="row">
+            <div class="col-md-6 p-2">
+                <label for="chasis" class="form-label">VIN/Chasis</label>
+                <input type="text" class="form-control" id="chasis" [(ngModel)]="chasis" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" id="marca" [(ngModel)]="marca" disabled>
+            </div>
+            <div class="col-12 p-2">
+                <label for="modelo" class="form-label">Modelo</label>
+                <input type="text" class="form-control" id="modelo" [(ngModel)]="modelo" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="color" class="form-label">Color</label>
+                <input type="text" class="form-control" id="color" [(ngModel)]="color" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="configuracion" class="form-label">Configuracion</label>
+                <input type="text" class="form-control" id="configuracion" [(ngModel)]="configuracion" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="color" class="form-label">Fecha de Programacion</label>
+                <input type="text" class="form-control" id="color" value="{{fecha_programacion_salida | date:'dd/MM/yyyy'}}" disabled>
+            </div>
+        </div>
+    </p-card>
+    <br />
+    <p-card header="Registro de Inventario de Recepción">
+        <div class="row">
+            <div class="col-12 p-2">
+                <label for="destino_salida" class="form-label">Destino</label>
+                <input type="text" class="form-control" id="destino_salida" [(ngModel)]="destino_salida" (input)="error_destino_salida=false" placeholder="Cliente o Ubicación de destino" [disabled]="procesando_salida">
+                <small *ngIf="error_destino_salida" class="text-danger">Campo Requerido</small>
+            </div>
+            <div class="col-12 p-2">
+                <label for="transportista_salida" class="form-label">Transportista</label>
+                <input type="text" class="form-control" id="transportista_salida" [(ngModel)]="transportista_salida" (input)="error_transportista_salida=false" placeholder="Nombre de la empresa de transporte" [disabled]="procesando_salida">
+                <small *ngIf="error_transportista_salida" class="text-danger">Campo Requerido</small>
+            </div>
+        </div>
+    </p-card>
+    <br />
+    <p-card header="Documento: Guía de remisión">
+        <div class="guia-selector-grid">
+            <button type="button" class="guia-selector" [disabled]="procesando_salida" (click)="abrirCamaraSalida()">
+                <i class="bi bi-camera-fill" aria-hidden="true"></i>
+                <span>Tomar foto</span>
+            </button>
+            <button type="button" class="guia-selector" [disabled]="procesando_salida" (click)="fileInput.click()">
+                <i class="bi bi-folder2-open" aria-hidden="true"></i>
+                <span>Elegir archivo</span>
+            </button>
+        </div>
+        <input #fileInput type="file"
+            accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif,.pdf,.xls,.xlsx,.doc,.docx" hidden
+            [disabled]="procesando_salida" (change)="seleccionarArchivoSalida($event)">
+
+        <div class="camara-salida-panel mt-3" [class.d-none]="!mostrar_camara_salida">
+            <label *ngIf="camaras_salida.length>1" for="camara_salida_select" class="form-label">Cámara</label>
+            <select *ngIf="camaras_salida.length>1" id="camara_salida_select" class="form-select mb-3"
+                [(ngModel)]="id_camara_salida" [disabled]="procesando_salida"
+                (change)="cambiarCamaraSalida()">
+                <option *ngFor="let camara of camaras_salida; let indice=index" [value]="camara.deviceId">
+                    {{camara.label || 'Cámara '+(indice+1)}}
+                </option>
+            </select>
+
+            <video #videoCamaraSalida autoplay muted playsinline webkit-playsinline
+                class="camara-salida-video"
+                [class.d-none]="!camara_salida_activa || foto_camara_salida_capturada"></video>
+            <canvas #canvasCamaraSalida class="camara-salida-canvas"
+                [class.d-none]="!foto_camara_salida_capturada"></canvas>
+
+            <small *ngIf="error_camara_salida" class="text-danger d-block mt-2">{{error_camara_salida}}</small>
+
+            <div *ngIf="!foto_camara_salida_capturada" class="camara-salida-controles mt-3">
+                <button type="button" class="btn btn-outline-primary" title="Iniciar cámara"
+                    [disabled]="iniciando_camara_salida || camara_salida_activa || procesando_salida" (click)="iniciarCamaraSalida()">
+                    <i class="bi bi-play-fill" aria-hidden="true"></i>
+                    <span class="visually-hidden">Iniciar cámara</span>
+                </button>
+                <button type="button" class="btn btn-outline-success" title="Tomar fotografía"
+                    [disabled]="!camara_salida_activa || procesando_salida" (click)="capturarFotoSalida()">
+                    <i class="bi bi-camera" aria-hidden="true"></i>
+                    <span class="visually-hidden">Tomar fotografía</span>
+                </button>
+                <button type="button" class="btn btn-outline-warning" title="Encender o apagar linterna"
+                    [disabled]="!camara_salida_activa || !linterna_salida_soportada || procesando_salida"
+                    (click)="alternarLinternaSalida()">
+                    <i class="bi" [ngClass]="linterna_salida_encendida ? 'bi-lightbulb-fill' : 'bi-lightbulb'" aria-hidden="true"></i>
+                    <span class="visually-hidden">Encender o apagar linterna</span>
+                </button>
+                <button type="button" class="btn btn-outline-danger" title="Detener cámara"
+                    [disabled]="!camara_salida_activa || procesando_salida" (click)="detenerCamaraSalida(false)">
+                    <i class="bi bi-stop-fill" aria-hidden="true"></i>
+                    <span class="visually-hidden">Detener cámara</span>
+                </button>
+            </div>
+
+            <div *ngIf="foto_camara_salida_capturada" class="camara-salida-revision mt-3">
+                <button type="button" class="btn btn-outline-secondary" [disabled]="procesando_salida" (click)="repetirFotoSalida()">
+                    Repetir
+                </button>
+                <button type="button" class="btn btn-success" [disabled]="procesando_salida" (click)="usarFotoCapturadaSalida()">
+                    Usar foto
+                </button>
+            </div>
+        </div>
+
+        <small class="text-secondary d-block mt-2">Un archivo de hasta 10 MB. Formatos: JPG, PNG, WebP, HEIC, HEIF, PDF, Excel y Word.</small>
+        <small *ngIf="error_archivo_salida" class="text-danger d-block mt-2">{{error_archivo_salida}}</small>
+
+        <div *ngIf="archivo_salida" class="guia-seleccion mt-3">
+            <img *ngIf="preview_archivo_salida" class="guia-preview" [src]="preview_archivo_salida"
+                [alt]="nombre_archivo_salida" (error)="previewArchivoNoDisponible()">
+            <div class="guia-datos">
+                <strong class="guia-nombre" [title]="nombre_archivo_salida">{{nombre_archivo_salida}}</strong>
+                <span>{{tipoDocumentoSalida()}} · {{formatoTamanoArchivo(archivo_salida.size)}}</span>
+            </div>
+            <button type="button" class="btn btn-outline-danger btn-sm" [disabled]="procesando_salida" (click)="limpiarArchivoSalida()">Quitar</button>
+        </div>
+    </p-card>
+
+    <br />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" [disabled]="procesando_salida" (click)="cerrarDespacho()">Cerrar</button>&nbsp;
+        <button type="button" class="btn btn-primary" [disabled]="procesando_salida" (click)="despacharVehiculo()">
+            <span *ngIf="procesando_salida" class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+            Despachar
+        </button>
+    </div>
+</p-dialog>
+
+<div class="modal" id="ventanaLoading" tabindex="-1" aria-labelledby="ventanaLoadingLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: none !important;">
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

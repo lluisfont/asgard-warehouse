@@ -1,0 +1,241 @@
+<div id="principal">
+    <app-menusuperior [permite_cambio_almacen]="true"></app-menusuperior>
+    <app-menulateral [menu_item]="12.4"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Trazabilidad del Proceso</li>
+                </ol>
+            </nav>
+        </div>
+        <ng-container *ngIf="ver_estado_pedidos">
+            <div class="card">
+                <div class="card-body">
+                    <br />
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="filtro_chasis" class="form-label text-secondary small">VIN</label>
+                            <input type="text" class="form-control" id="filtro_chasis" name="filtro_chasis" [(ngModel)]="filtro_chasis" >
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="filtro_tecnico" class="form-label text-secondary small">T&eacute;cnico</label>
+                            <ng-select name="filtro_tecnico" id="filtro_tecnico" [items]="tecnicos" 
+                                bindLabel="nombre" 
+                                bindValue="idusuario"
+                                placeholder="Todos"
+                            [(ngModel)]="filtro_tecnico">
+                            </ng-select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="filtro_etapa" class="form-label text-secondary small">Etapa</label>
+                            <ng-select name="filtro_etapa" id="filtro_etapa" [items]="etapas" 
+                                bindLabel="etapa" 
+                                bindValue="idetapa"
+                                placeholder="Todos"
+                            [(ngModel)]="filtro_etapa">
+                            </ng-select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="filtro_marca" class="form-label text-secondary small">Marca</label>
+                            <input type="text" class="form-control" id="filtro_marca" name="filtro_marca" [(ngModel)]="filtro_marca" >
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                        <div class="col-md-3 mb-3">
+                            <button type="button" class="btn btn-primary col-12" (click)="getEstadoPedidos();">Generar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="card" *ngFor="let estadopedido of estadopedidos; let rowIndex = index">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item p-3 bg-warning">
+                        <div class="row">
+                            <div class="col-md-3 mb-2">
+                                <small>VIN</small>
+                                <div class="fw-bold">{{estadopedido.chasis}}</div>
+                            </div>
+                            <div class="col-md-2 mb-2">
+                                <small>Marca</small>
+                                <div class="fw-bold">{{estadopedido.marca}}</div>
+                            </div>
+                            <div class="col-md-5 mb-2">
+                                <small>Modelo</small>
+                                <div class="fw-bold">{{estadopedido.modelo}}</div>
+                            </div>
+                            <div class="col-md-2 mb-2">
+                                <small>Color</small>
+                                <div class="fw-bold">{{estadopedido.color}}</div>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <small>Configuracion</small>
+                                <div class="fw-bold">{{estadopedido.configuracion}}</div>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <small>Tipo de Tanque</small>
+                                <div class="fw-bold">{{estadopedido.tipo_tanque}}</div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item p-3">
+                        <div class="row">
+                            <div class="col-md-2 mb-2">
+                                <small>Etapa Actual</small>
+                                <div><p-tag [severity]="estadopedido.severity" value="{{estadopedido.etapa}}"/></div>
+                            </div>
+                            <div class="col-md-2 mb-2">
+                                <small>Estado</small>
+                                <div><p-tag [value]="estadopedido.estado_etapa"/></div>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <small>Tiempo en Etapa</small>
+                                <div class="fw-bold">{{tiempoFormateado(estadopedido.tiempo)}}</div>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <small>Tiempo Total</small>
+                                <div class="fw-bold">{{estadopedido.tiempo_total}} d&iacute;as H&aacute;biles</div>
+                            </div>
+                            <div class="col-md-2 mb-2">
+                                <small>Ubicaci&oacute;n</small>
+                                <div class="fw-bold">{{estadopedido.ubicacion}}</div>
+                            </div>
+                            <div class="col-md-9 mb-2">
+                                <small>T&eacute;cnicos Asignados</small>
+                                <div>
+                                    <ng-container *ngFor="let tecnico of estadopedido.tecnicos; let rowIndexTecnico = index">
+                                        <p-tag severity="info" [value]="tecnico.nombre"/>&nbsp;
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <small>fecha de Ingreso</small>
+                                <div class="fw-bold">{{estadopedido.created_at | date:'dd/MM/yy hh:mm'}}</div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="p-3 d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary" (click)="verDetalle(estadopedido.idate_gas)">Ver hist&oacute;rico de Inventario</button>
+                        </div>
+                    </li>
+                </ul>
+                 
+                <!-- 
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-md-3 mb-2">
+                            <small>VIN</small>
+                            <div class="fw-bold">{{estadopedido.chasis}}</div>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <small>Marca</small>
+                            <div class="fw-bold">{{estadopedido.marca}}</div>
+                        </div>
+                        <div class="col-md-5 mb-2">
+                            <small>Modelo</small>
+                            <div class="fw-bold">{{estadopedido.modelo}}</div>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <small>Color</small>
+                            <div class="fw-bold">{{estadopedido.color}}</div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <small>Configuracion</small>
+                            <div class="fw-bold">{{estadopedido.configuracion}}</div>
+                        </div>
+                    </div>
+                </div>
+                -->
+            </div>
+        </ng-container>
+    </main>
+</div>
+
+<p-dialog #modal_historial header="Detalle" [modal]="true" [(visible)]="visible_historial" [style]="{ width: '50rem' }">
+    <p-card header="Información del Vehiculo">
+        
+        <div class="row">
+            <div class="col-md-6 p-2">
+                <label for="chasis" class="form-label">VIN/Chasis</label>
+                <input type="text" class="form-control" id="chasis" [(ngModel)]="chasis" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" id="marca" [(ngModel)]="marca" disabled>
+            </div>
+            <div class="col-12 p-2">
+                <label for="modelo" class="form-label">Modelo</label>
+                <input type="text" class="form-control" id="modelo" [(ngModel)]="modelo" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="color" class="form-label">Color</label>
+                <input type="text" class="form-control" id="color" [(ngModel)]="color" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="configuracion" class="form-label">Configuracion</label>
+                <input type="text" class="form-control" id="configuracion" [(ngModel)]="configuracion" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="color" class="form-label">Ubicaci&oacute;n Actual</label>
+                <input type="text" class="form-control" id="color" value="{{ubicacion}}" disabled>
+            </div>
+        </div>
+        
+    </p-card>
+    <br />
+    <p-timeline [value]="estadopedido" align="alternate" styleClass="customized-timeline">
+        <!--
+        <ng-template pTemplate="marker" let-event>
+            <span 
+                class="flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle z-1 shadow-1" 
+                [style]="{ 'background-color': event.color }">
+                    <i [class]="event.icon"></i>
+            </span>
+        </ng-template>
+        -->
+        <ng-template pTemplate="content" let-edp>
+            <p-tag [severity]="edp.severity" value="{{edp.etapa}}"/>
+            
+            <div>Ingreso: {{edp.inicio | date:'dd/MM/yy hh:mm'}}</div>
+            <div>Salida: {{edp.fin | date:'dd/MM/yy hh:mm'}}</div>
+            <div>
+                Ubicaciones:
+                <ul>
+                    <li *ngFor="let ubicacion of edp.ubicaciones; let rowIndex = index">{{ubicacion.ubicacion}}</li>
+                </ul>
+            </div>
+            <div>Tiempo: {{tiempoFormateado(edp.tiempo)}}</div>
+            <div>Responsable: {{edp.responsable}}</div>
+            
+            <!--
+            <p-card [header]="edp.etapa" [subheader]="tiempoFormateado(edp.tiempo)">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate
+                    neque quas!
+                </p>
+            </p-card>
+            -->
+        </ng-template>
+    </p-timeline>
+    <br />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" (click)="visible_historial = false">Cerrar</button>&nbsp;
+        <!--<button type="button" class="btn btn-primary" (click)="finalizar()">Confirmar</button>-->
+    </div>
+</p-dialog>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

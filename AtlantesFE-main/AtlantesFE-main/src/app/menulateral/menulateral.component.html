@@ -1,0 +1,580 @@
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a [ngClass]="parte_entera == 0 ? 'nav-link' : 'nav-link collapsed'" [routerLink]="['/inicio']">
+                <i class="bi bi-house"></i>
+                <span>Inicio</span>
+            </a>
+        </li>
+
+        <li *ngIf="tokenDetalle.almacen" class="nav-item">
+            <a  [ngClass]="parte_entera == 1 ? 'nav-link' : 'nav-link collapsed'" data-bs-target="#almacen-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-building"></i><span>Almacen</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="almacen-nav" [ngClass]="parte_entera == 1 ? 'nav-content collapse show' : 'nav-content collapse'" data-bs-parent="#sidebar-nav">
+                <li *ngIf="ver_ingresos">
+                    <a [routerLink]="['/ingresos']" [ngClass]="menu_item == 1.1 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Ingresos</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_mover_dividir">
+                    <a [routerLink]="['/mover-dividir']" [ngClass]="menu_item == 1.2 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Mover/Dividir</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_pedidos">
+                    <a [routerLink]="['/pedidos']" [ngClass]="menu_item == 1.4 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Pedidos</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_salidas">
+                    <a [routerLink]="['/salidas']" [ngClass]="menu_item == 1.3 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Salidas</span>
+                    </a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li *ngIf="ver_cambio_cliente">
+                    <a [routerLink]="['/cambiar-cliente-almacen']" [ngClass]="menu_item == 1.5 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Cambiar Cliente</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_inventario_fisico">
+                    <a [routerLink]="['/inventario-fisico']" [ngClass]="menu_item == 1.6 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Inventario F&iacute;sico</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_timbrado">
+                    <a [routerLink]="['/timbrado']" [ngClass]="menu_item == 1.7 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Timbrado</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_bitacora && tokenDetalle.asgard_almacen">
+                    <a [routerLink]="['/bitacora']" [ngClass]="menu_item == 1.8 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Bit&aacute;cora</span>
+                    </a>
+                </li>
+                
+            </ul>
+        </li>
+        
+        
+        <li *ngIf="tokenDetalle.almacen && ver_ate_gas" class="nav-item">
+            <a  [ngClass]="parte_entera == 12 ? 'nav-link' : 'nav-link collapsed'" data-bs-target="#ate-gas-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-building"></i><span>Conversi&oacute;n a GAS</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="ate-gas-nav" [ngClass]="parte_entera == 12 ? 'nav-content collapse show' : 'nav-content collapse'" data-bs-parent="#sidebar-nav">
+                <li *ngIf="ver_prevision_vin">
+                    <a [routerLink]="['/ate-gas']" [ngClass]="menu_item == 12.1 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Previsi&oacute;n VIN</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_asignacion_trabajo">
+                    <a [routerLink]="['/asignacion-trabajo']" [ngClass]="menu_item == 12.2 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Asignaci&oacute;n de Trabajo</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_gestion_movimiento">
+                    <a [routerLink]="['/gestion-movimiento']" [ngClass]="menu_item == 12.3 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Control de Producci&oacute;n</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_inventario_vin">
+                    <a [routerLink]="['/inventario-vin']" [ngClass]="menu_item == 12.5 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Inventario VIN</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_estado_pedidos">
+                    <a [routerLink]="['/estado-pedidos']" [ngClass]="menu_item == 12.4 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Trazabilidad del Proceso</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_ate_gas_salidas">
+                    <a [routerLink]="['/ate-gas-salidas']" [ngClass]="menu_item == 12.6 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Salidas</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        
+
+        <li *ngIf="tokenDetalle.operaciones" class="nav-item">
+            <a [ngClass]="parte_entera == 2 ? 'nav-link' : 'nav-link collapsed'" data-bs-target="#operaciones-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-box-seam"></i><span>Operaciones</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="operaciones-nav" [ngClass]="parte_entera == 2 ? 'nav-content collapse show' : 'nav-content collapse'" data-bs-parent="#sidebar-nav">
+                <li *ngIf="ver_cotizaciones">
+                    <a [routerLink]="['/cotizaciones']" [ngClass]="menu_item == 2.1 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Cotizaciones</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_embarques">
+                    <a [routerLink]="['/embarques']" [ngClass]="menu_item == 2.2 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Embarques</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li *ngIf="tokenDetalle.contabilidad" class="nav-item">
+            <a [ngClass]="parte_entera == 3 ? 'nav-link' : 'nav-link collapsed'" data-bs-target="#contabilidad-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-calculator"></i><span>Contabilidad</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="contabilidad-nav" [ngClass]="parte_entera == 3 ? 'nav-content collapse show' : 'nav-content collapse'" data-bs-parent="#sidebar-nav">
+                <li *ngIf="ver_facturas">
+                    <a [routerLink]="['/facturas']" [ngClass]="menu_item == 3.1 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Facturas</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_notas_cobranza">
+                    <a [routerLink]="['/notas-cobranza']" [ngClass]="menu_item == 3.2 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Notas de Cobranza</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_ordenes_pago">
+                    <a [routerLink]="['/ordenes-pago']" [ngClass]="menu_item == 3.3 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Ordenes de Pago</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_pagos_agentes_exterior">
+                    <a [routerLink]="['/pagos-agente-exterior']" [ngClass]="menu_item == 3.4 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Pagos Agente Exterior</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_planillas">
+                    <a [routerLink]="['/planillas']" [ngClass]="menu_item == 3.5 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Planillas</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_invoices">
+                    <a [routerLink]="['/invoices']" [ngClass]="menu_item == 3.6 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Invoices</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_devoluciones">
+                    <a [routerLink]="['/devoluciones']" [ngClass]="menu_item == 3.7 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Devoluciones</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_cobros">
+                    <a [routerLink]="['/cobros']" [ngClass]="menu_item == 3.8 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Cobros</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_pagos">
+                    <a [routerLink]="['/pagos']" [ngClass]="menu_item == 3.9 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Pagos</span>
+                    </a>
+                </li>
+                <li *ngIf="ver_devolucion_saldos">
+                    <a [routerLink]="['/devolucion-saldos']" [ngClass]="menu_item == 3.11 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Devoluci&oacute;n de Saldos</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="nav-item">
+            <a [ngClass]="(parte_entera == 4 || parte_entera == 9 || parte_entera == 10 || parte_entera == 11) ? 'nav-link' : 'nav-link collapsed'" data-bs-target="#paramteros-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-gear"></i><span>Par&aacute;metros</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="paramteros-nav" [ngClass]="(parte_entera == 4 || parte_entera == 9 || parte_entera == 10 || parte_entera == 11) ? 'nav-content collapse show' : 'nav-content collapse'" data-bs-parent="#sidebar-nav">
+                <a href="#parametrosEntidadesSubmenu" data-bs-toggle="collapse" [attr.aria-expanded]="(parte_entera == 4)" [ngClass]="(parte_entera == 4) ? 'dropdown-toggle' : 'dropdown-toggle collapsed'">Entidades</a>
+                <ul [ngClass]="(parte_entera == 4) ? 'collapse list-unstyled show' : 'collapse list-unstyled'" id="parametrosEntidadesSubmenu">
+                    <li *ngIf="ver_entidades_clientes">
+                        <a [routerLink]="['/clientes']" [ngClass]="menu_item == 4.1 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Clientes</span>
+                        </a>
+                    </li>
+                    <li *ngIf="(tokenDetalle.contabilidad || tokenDetalle.operaciones) && ver_entidades_transportistas">
+                        <a [routerLink]="['/transportistas']" [ngClass]="menu_item == 4.2 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Transportistas</span>
+                        </a>
+                    </li>
+                    <li *ngIf="(tokenDetalle.contabilidad || tokenDetalle.operaciones) && ver_entidades_agentes_carga">
+                        <a [routerLink]="['/agentes-carga']" [ngClass]="menu_item == 4.3 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Agentes de Carga</span>
+                        </a>
+                    </li>
+                    <li *ngIf="(tokenDetalle.contabilidad || tokenDetalle.operaciones) && ver_entidades_proveedores">
+                        <a [routerLink]="['/proveedores']" [ngClass]="menu_item == 4.4 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Proveedores</span>
+                        </a>
+                    </li>
+                    <li *ngIf="(tokenDetalle.contabilidad || tokenDetalle.operaciones) && ver_entidades_prestadores">
+                        <a [routerLink]="['/prestadores-servicio']" [ngClass]="menu_item == 4.5 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Prestadores de Servicio</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <a href="#parametrosDivisas" data-bs-toggle="collapse" [attr.aria-expanded]="(parte_entera == 9)" [ngClass]="(parte_entera == 9) ? 'dropdown-toggle' : 'dropdown-toggle collapsed'">Divisas</a>
+                <ul [ngClass]="(parte_entera == 9) ? 'collapse list-unstyled show' : 'collapse list-unstyled'" id="parametrosDivisas">
+                    <li>
+                        <a *ngIf="ver_divisas" [routerLink]="['/divisas']" [ngClass]="menu_item == 9.1 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Divisas</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a *ngIf="ver_tipo_cambio" [routerLink]="['/tipo-cambio']" [ngClass]="menu_item == 9.2 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Tipo de Cambio</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <a *ngIf="tokenDetalle.almacen" href="#parametrosAlmacen" data-bs-toggle="collapse" [attr.aria-expanded]="(parte_entera == 10)" [ngClass]="(parte_entera == 10) ? 'dropdown-toggle' : 'dropdown-toggle collapsed'">Almacen</a>
+                <ul [ngClass]="(parte_entera == 10) ? 'collapse list-unstyled show' : 'collapse list-unstyled'" id="parametrosAlmacen">
+                    <li>
+                        <a *ngIf="ver_almacenes" [routerLink]="['/almacenes']" [ngClass]="menu_item == 10.1 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Almacenes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a *ngIf="ver_productos_cliente" [routerLink]="['/productos-cliente']" [ngClass]="menu_item == 10.2 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Productos por Cliente</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <a href="#parametrosOtros" data-bs-toggle="collapse" [attr.aria-expanded]="(parte_entera == 11)" [ngClass]="(parte_entera == 11) ? 'dropdown-toggle' : 'dropdown-toggle collapsed'">Otros</a>
+                <ul [ngClass]="(parte_entera == 11) ? 'collapse list-unstyled show' : 'collapse list-unstyled'" id="parametrosOtros">
+                    <li>
+                        <a *ngIf="ver_empresa" [routerLink]="['/empresa']" [ngClass]="menu_item == 11.7 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Empresa</span>
+                        </a>
+                    </li>
+                    <li *ngIf="(tokenDetalle.contabilidad || tokenDetalle.operaciones) && ver_conceptos">
+                        <a [routerLink]="['/conceptos']" [ngClass]="menu_item == 11.1 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Conceptos</span>
+                        </a>
+                    </li>
+                    <li *ngIf="ver_usuarios">
+                        <a [routerLink]="['/usuarios']" [ngClass]="menu_item == 11.2 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Usuarios</span>
+                        </a>
+                    </li>
+                    <li *ngIf="ver_ciudades">
+                        <a [routerLink]="['/ciudades']" [ngClass]="menu_item == 11.3 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Ciudades</span>
+                        </a>
+                    </li>
+                    <li *ngIf="(tokenDetalle.contabilidad || tokenDetalle.operaciones) && ver_bancos">
+                        <a *ngIf="tokenDetalle.contabilidad" [routerLink]="['/bancos-cuentas']" [ngClass]="menu_item == 11.4 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Bancos/Cuentas</span>
+                        </a>
+                    </li>
+                    <li *ngIf="(tokenDetalle.contabilidad || tokenDetalle.operaciones) && ver_contemplaciones">
+                        <a [routerLink]="['/contemplaciones']" [ngClass]="menu_item == 11.5 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Contemplaciones</span>
+                        </a>
+                    </li>
+                    <li *ngIf="(tokenDetalle.contabilidad || tokenDetalle.operaciones) && ver_consideraciones">
+                        <a [routerLink]="['/consideraciones']" [ngClass]="menu_item == 11.6 ? 'active' : ''">
+                            <i class="bi bi-circle"></i><span>Consideraciones</span>
+                        </a>
+                    </li>
+                </ul>
+                    
+            </ul>
+        </li>
+
+        <li class="nav-item">
+            <a [ngClass]="(parte_entera == 5 || parte_entera == 6 || parte_entera == 7 || parte_entera == 13) ? 'nav-link' : 'nav-link collapsed'" data-bs-target="#reportes-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-file-earmark-text"></i><span>Reportes</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="reportes-nav" [ngClass]="(parte_entera == 5 || parte_entera == 6 || parte_entera == 7 || parte_entera == 13) ? 'nav-content collapse show' : 'nav-content collapse'" data-bs-parent="#sidebar-nav">
+                <li *ngIf="tokenDetalle.almacen">
+                    <a href="#reportesAlmacenSubmenu" data-bs-toggle="collapse" [attr.aria-expanded]="(menu_item == 5.1 || menu_item == 5.2 || menu_item == 5.3 || menu_item == 5.4 || menu_item == 5.5 || menu_item == 5.6 || menu_item == 5.7 || menu_item == 5.8 || menu_item == 5.9 || menu_item == 5.11 || menu_item == 5.12 || menu_item == 5.13 || menu_item == 5.14 || menu_item == 5.15 || menu_item == 5.16 || menu_item == 5.17 || menu_item == 5.18 || menu_item == 5.19)" [ngClass]="(menu_item == 5.1 || menu_item == 5.2 || menu_item == 5.3 || menu_item == 5.4 || menu_item == 5.5 || menu_item == 5.6 || menu_item == 5.7 || menu_item == 5.8 || menu_item == 5.9 || menu_item == 5.11 || menu_item == 5.12 || menu_item == 5.13 || menu_item == 5.14 || menu_item == 5.15 || menu_item == 5.16 || menu_item == 5.17 || menu_item == 5.18 || menu_item == 5.19 || menu_item == 5.21) ? 'dropdown-toggle' : 'dropdown-toggle collapsed'">Almacen</a>
+                    <ul [ngClass]="(menu_item == 5.1 || menu_item == 5.2 || menu_item == 5.3 || menu_item == 5.4 || menu_item == 5.5 || menu_item == 5.6 || menu_item == 5.7 || menu_item == 5.8 || menu_item == 5.9 || menu_item == 5.11 || menu_item == 5.12 || menu_item == 5.13 || menu_item == 5.14 || menu_item == 5.15 || menu_item == 5.16 || menu_item == 5.17 || menu_item == 5.18 || menu_item == 5.19 || menu_item == 5.21) ? 'collapse list-unstyled show' : 'collapse list-unstyled'" id="reportesAlmacenSubmenu">
+                        <li *ngIf="ver_reporte_almacen_inventario">
+                            <a [routerLink]="['/reporte-almacen-inventario']" [ngClass]="menu_item == 5.1 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Inventario</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_almacen_ingresos">
+                            <a [routerLink]="['/reporte-almacen-ingresos']" [ngClass]="menu_item == 5.2 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Ingresos</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_almacen_salidas">
+                            <a [routerLink]="['/reporte-almacen-salidas']" [ngClass]="menu_item == 5.3 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Salidas</span>
+                            </a>
+                        </li>
+
+                        <li *ngIf="ver_reporte_almacen_movimiento">
+                            <a [routerLink]="['/reporte-almacen-movimiento']" [ngClass]="menu_item == 5.4 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Movimiento</span>
+                            </a>
+                        </li>
+                        
+                        <li *ngIf="ver_reporte_almacen_movimiento_detalle">
+                            <a [routerLink]="['/reporte-almacen-movimiento-detalle']" [ngClass]="menu_item == 5.18 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Movimiento Detalle</span>
+                            </a>
+                        </li>
+                        
+                        <li *ngIf="ver_reporte_almacen_posiciones">
+                            <a [routerLink]="['/reporte-almacen-posiciones']" [ngClass]="menu_item == 5.5 ? 'active' : ''">
+                              <i class="bi bi-circle"></i><span>Posiciones</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_almacen_descarga">
+                            <a [routerLink]="['/reporte-almacen-descarga']" [ngClass]="menu_item == 5.6 ? 'active' : ''">
+                              <i class="bi bi-circle"></i><span>Descarga</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_almacen_vencimiento">
+                            <a [routerLink]="['/reporte-almacen-vencimiento']" [ngClass]="menu_item == 5.7 ? 'active' : ''">
+                              <i class="bi bi-circle"></i><span>Vencimiento</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_almacen_no_conforme">
+                            <a [routerLink]="['/reporte-almacen-noconforme']" [ngClass]="menu_item == 5.8 ? 'active' : ''">
+                              <i class="bi bi-circle"></i><span>No Conforme</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_almacen_egreso_por_tiendas">
+                            <a [routerLink]="['/reporte-almacen-egreso-tienda']" [ngClass]="menu_item == 5.9 ? 'active' : ''">
+                              <i class="bi bi-circle"></i><span>Egreso por Tienda</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_almacen_productos">
+                            <a [routerLink]="['/reporte-almacen-productos']" [ngClass]="menu_item == 5.11 ? 'active' : ''">
+                              <i class="bi bi-circle"></i><span>Productos</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_almacen_liquidacion">
+                            <a [routerLink]="['/reporte-almacen-liquidacion']" [ngClass]="menu_item == 5.12 ? 'active' : ''">
+                              <i class="bi bi-circle"></i><span>Liquidacion</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_almacen_posicion_por_dia">
+                            <a [routerLink]="['/reporte-almacen-posiciones-dia']" [ngClass]="menu_item == 5.13 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Posiciones por d&iacute;a</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_almacen_inventario_vencimiento">
+                            <a [routerLink]="['/reporte-almacen-inventario-vencimiento']" [ngClass]="menu_item == 5.14 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Inventario y Vencimiento</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_almacen_pedidos">
+                            <a [routerLink]="['/reporte-almacen-pedidos']" [ngClass]="menu_item == 5.15 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Pedidos</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_almacen_capacidad">
+                            <a [routerLink]="['/reporte-almacen-capacidad']" [ngClass]="menu_item == 5.16 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Capacidad</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_almacen_inventario_fisico">
+                            <a [routerLink]="['/reporte-almacen-inventario-fisico']" [ngClass]="menu_item == 5.17 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Inventario Fisico</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_almacen_total_conteo">
+                            <a [routerLink]="['/reporte-almacen-total-conteo']" [ngClass]="menu_item == 5.19 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Total de Conteo</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_control_general_inventario_fisico">
+                            <a [routerLink]="['/reporte-almacen-control-inventario-fisico']" [ngClass]="menu_item == 5.21 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Control General de Inventario Fisico</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li *ngIf="tokenDetalle.almacen">
+                    <a href="#reportesAteGasSubmenu" data-bs-toggle="collapse" [attr.aria-expanded]="(parte_entera == 13)" [ngClass]="(parte_entera == 13) ? 'dropdown-toggle' : 'dropdown-toggle collapsed'">Conversi&oacute;n a GAS</a>
+                    <ul [ngClass]="(parte_entera == 13) ? 'collapse list-unstyled show' : 'collapse list-unstyled'" id="reportesAteGasSubmenu">
+                        <li *ngIf="ver_reporte_tiempos_proceso">
+                            <a [routerLink]="['/reporte-tiempos-proceso']" [ngClass]="menu_item == 13.1 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Tiempos de Proceso</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_ate_gas_demanda">
+                            <a [routerLink]="['/reporte-ate-gas-demanda']" [ngClass]="menu_item == 13.3 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Reporte Demanda</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_ate_gas_status">
+                            <a [routerLink]="['/reporte-ate-gas-status']" [ngClass]="menu_item == 13.4 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Reporte de Status</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_ate_gas_ingresos">
+                            <a [routerLink]="['/reporte-ate-gas-ingresos']" [ngClass]="menu_item == 13.5 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Reporte de Ingresos</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_ate_gas_salidas">
+                            <a [routerLink]="['/reporte-ate-gas-salidas']" [ngClass]="menu_item == 13.6 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Reporte de Salidas</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_ate_gas_produccion">
+                            <a [routerLink]="['/reporte-ate-gas-produccion']" [ngClass]="menu_item == 13.7 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Reporte de Producci&oacute;n</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li *ngIf="tokenDetalle.operaciones">
+                    <a href="#reportesOperacionesSubmenu" data-bs-toggle="collapse" [attr.aria-expanded]="(parte_entera == 6)" [ngClass]="(parte_entera == 6) ? 'dropdown-toggle' : 'dropdown-toggle collapsed'">Embarques</a>
+                    <ul [ngClass]="(parte_entera == 6) ? 'collapse list-unstyled show' : 'collapse list-unstyled'" id="reportesOperacionesSubmenu">
+                        <li *ngIf="ver_reporte_embarques_listado">
+                            <a [routerLink]="['/reporte-embarques-listado']" [ngClass]="menu_item == 6.1 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Listado</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li *ngIf="tokenDetalle.contabilidad">
+                    <a href="#reportesContabilidadSubmenu" data-bs-toggle="collapse" [attr.aria-expanded]="(parte_entera == 7)" [ngClass]="(parte_entera == 7) ? 'dropdown-toggle' : 'dropdown-toggle collapsed'">Contabilidad</a>
+                    <ul [ngClass]="(parte_entera == 7) ? 'collapse list-unstyled show' : 'collapse list-unstyled'" id="reportesContabilidadSubmenu">
+                        <li *ngIf="ver_reporte_contabilidad_facturas_notas_cobranza">
+                            <a [routerLink]="['/reporte-contabilidad-facturas-notascobranza']" [ngClass]="menu_item == 7.1 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Facturas/Notas Cobranza</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_contabilidad_list_trans">
+                            <a [routerLink]="['/reporte-contabilidad-transaccionesfnc']" [ngClass]="menu_item == 7.2 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>List Trans. Fact./NC</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_contabilidad_facturas_concepto">
+                            <a [routerLink]="['/reporte-contabilidad-facturas-concepto']" [ngClass]="menu_item == 7.12 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Facturas por Concepto</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_contabilidad_ordenes_pago_concepto">
+                            <a [routerLink]="['/reporte-contabilidad-ordenes-pago-concepto']" [ngClass]="menu_item == 7.13 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Ordenes de Pago por Concepto</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_contabilidad_montos_concepto">
+                            <a [routerLink]="['/reporte-contabilidad-conceptos']" [ngClass]="menu_item == 7.14 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Montos por Concepto</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_contabilidad_ordenes_pago">
+                            <a [routerLink]="['/reporte-contabilidad-ordenes-pago']" [ngClass]="menu_item == 7.3 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Ordenes de Pago</span>
+                            </a>
+                        </li>
+                        <!--
+                        <li>
+                            <a href="#">
+                                <i class="bi bi-circle"></i><span>Pagos Agente Exterior</span>
+                            </a>
+                        </li>
+                        -->
+                        <li *ngIf="ver_reporte_contabilidad_invoices">
+                            <a [routerLink]="['/reporte-contabilidad-invoices']" [ngClass]="menu_item == 7.11 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Invoices</span>
+                            </a>
+                        </li>
+                        <!--
+                        <li>
+                            <a href="#">
+                                <i class="bi bi-circle"></i><span>Informe Completo</span>
+                            </a>
+                        </li>
+                        -->
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li *ngIf="ver_reporte_contabilidad_estado_cuentas">
+                            <a [routerLink]="['/reporte-contabilidad-estadocuentas']" [ngClass]="menu_item == 7.6 ? 'active' : ''">
+
+                                <i class="bi bi-circle"></i><span>Estado de Cuentas</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_contabilidad_saldos">
+                            <a [routerLink]="['/reporte-contabilidad-saldos']" [ngClass]="menu_item == 7.7 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Saldos</span>
+                            </a>
+                        </li>
+                        <li *ngIf="ver_reporte_contabilidad_cobranza">
+                            <a [routerLink]="['/reporte-contabilidad-cobranzas']" [ngClass]="menu_item == 7.8 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Cobranzas</span>
+                            </a>
+                        </li>
+
+                        <li *ngIf="ver_reporte_contabilidad_anticipos">
+                            <a [routerLink]="['/reporte-contabilidad-anticipos']" [ngClass]="menu_item == 7.10 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Anticipos</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <!--
+                        <li>
+                            <a href="#">
+                                <i class="bi bi-circle"></i><span>Trans. Facturas de pago</span>
+                            </a>
+                        </li>
+                        -->
+                        <li *ngIf="ver_reporte_contabilidad_libro_ventas">
+                            <a [routerLink]="['/reporte-contabilidad-libroventas']" [ngClass]="menu_item == 7.9 ? 'active' : ''">
+                                <i class="bi bi-circle"></i><span>Libro de Ventas</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+        </li>
+        <li class="nav-item">
+            <a [ngClass]="(parte_entera == 8) ? 'nav-link' : 'nav-link collapsed'" data-bs-target="#dashboard-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-bar-chart"></i><span>Dashboard</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="dashboard-nav" [ngClass]="(parte_entera == 8) ? 'nav-content collapse show' : 'nav-content collapse'" data-bs-parent="#sidebar-nav">
+                <li *ngIf="tokenDetalle.almacen && ver_dashboard_interno_almacen">
+                    <a [routerLink]="['/dashboard-almacen']" [ngClass]="menu_item == 8.1 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Interno Almac&eacute;n</span>
+                    </a>
+                </li>
+                <li *ngIf="tokenDetalle.almacen && ver_dashboard_interno_almacen">
+                    <a [routerLink]="['/dashboard-monitoreo-centros']" [ngClass]="menu_item == 8.2 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Monitoreo de Centros</span>
+                    </a>
+                </li>
+                <li *ngIf="tokenDetalle.almacen && ver_dashboard_grafico_centros">
+                    <a [routerLink]="['/dashboard-grafico-centros']" [ngClass]="menu_item == 8.3 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>Gr&aacute;fico por Centros</span>
+                    </a>
+                </li>
+                <li *ngIf="tokenDetalle.almacen && ver_dashboard_ate_gas">
+                    <a [routerLink]="['/dashboard-ate-gas']" [ngClass]="menu_item == 8.4 ? 'active' : ''">
+                        <i class="bi bi-circle"></i><span>ATE Gas</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+      <!--<li class="nav-heading">Pages</li>-->
+
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Salir</span>
+            </a>
+        </li><!-- End Profile Page Nav -->
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+
+<app-chatbot></app-chatbot>
+

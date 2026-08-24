@@ -1,0 +1,543 @@
+<div id="principal">
+    <app-menusuperior [permite_cambio_almacen]="false"></app-menusuperior>
+    <app-menulateral [menu_item]="1.7"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/timbrado']">Timbrado</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">No. {{idtimbrado}}</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div class="card-body" *ngIf="timbrado && ver_timbrado">
+                <br />
+                <div class="pagetitle"><h1>INFORMACI&Oacute;N GENERAL</h1></div>
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label for="cliente" class="form-label text-secondary small">Cliente</label>
+                        <input type="text" class="form-control" id="cliente" name="cliente" value="{{timbrado.cliente}}" disabled >
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="fecha" class="form-label text-secondary small">Fecha Creaci&oacute;n</label>
+                        <input type="text" class="form-control" id="created_at" created_at="created_at" value="{{timbrado.created_at | date:'dd/MM/yyyy HH:mm'}}" disabled >
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-5 mb-3 pagetitle">
+                        <h1>DETALLE TIMBRADO</h1>
+                    </div>
+                </div>
+                <div class="alert alert-danger" role="alert" *ngIf="mensajes_error.length>0">
+                    <h4 class="alert-heading">Error!</h4>
+                    <p>Se encontraron los siguientes errores en el archivo cargado.</p>
+                    <hr>
+                    
+                        <ul>
+                            <li *ngFor="let errores of mensajes_error">
+                                <strong>Fila {{errores.fila}}:</strong> {{errores.mensaje}}
+                            </li>
+                        </ul>
+                    
+                </div>
+                <div *ngIf="editar_timbrado" class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-outline-primary col-12" data-bs-toggle="modal" data-bs-target="#ventanaCargaMasiva" (click)="prepararCarga()">Carga Masiva</button>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-outline-success col-12" data-bs-toggle="modal" data-bs-target="#ventanaActualizacionMasiva" (click)="prepararCargaUpdate()">Actualizacion Masiva</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="fecha_inicial" class="form-label text-secondary small">Desde</label>
+                        <input type="date" class="form-control" id="fecha_inicial" name="fecha_inicial" max="{{fecha_final}}" [(ngModel)]="fecha_inicial" >
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fecha_final" class="form-label text-secondary small">Hasta</label>
+                        <input type="date" class="form-control" id="fecha_final" name="fecha_final" min="{{fecha_inicial}}" [(ngModel)]="fecha_final" >
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="cargarTimbrado();">Filtrar</button>
+                    </div>
+                </div>
+                
+                <p-table [value]="timbrado.detalle" [resizableColumns]="true" columnResizeMode="expand" responsiveLayout="scroll" styleClass="p-datatable-gridlines" scrollDirection="both" [scrollable]="true" scrollHeight="570px">
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                            <!--<button type="button" (click)="exportPdf()" class="btn btn-danger mb-3"><i class="bi bi-file-earmark-pdf"></i></button>-->
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width:100px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Turno
+                                    <p-columnFilter type="text" field="timbradoturno" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:100px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    D&iacute;a
+                                    <p-columnFilter type="text" field="diasemana" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:100px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha
+                                    <p-columnFilter type="date" field="fecha" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    C&oacute;digo Producto
+                                    <p-columnFilter type="text" field="codigo_producto" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    SKU
+                                    <p-columnFilter type="text" field="sku" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:100px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Nro TCF
+                                    <p-columnFilter type="text" field="nro_tcf" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Factura Timbrada
+                                    <p-columnFilter type="text" field="factura_timbrada" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Q PX Timbrado
+                                    <p-columnFilter type="numeric" field="cantidad_timbrado" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Q paquetes Timbrado
+                                    <p-columnFilter type="numeric" field="cantidad_paquetes_timbrado" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px">
+                                <div class="flex justify-content-center align-items-center">
+                                    Objetivo timbrado por turno
+                                    <p-columnFilter type="numeric" field="meta_timbrado" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cumplimiento
+                                    <p-columnFilter type="numeric" field="cumplimiento" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:100px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    U/PX
+                                    <p-columnFilter type="numeric" field="umcompra" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:100px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    U/PQT
+                                    <p-columnFilter type="numeric" field="umalterna" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:120px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Total Unidades
+                                    <p-columnFilter type="numeric" field="total_unidades" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    PRECIO TIMBRADO Y ETIQUETADO X PAQUETE
+                                    <p-columnFilter type="numeric" field="precio_timbrado" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    PRECIO X TIMBRE
+                                    <p-columnFilter type="numeric" field="precio_por_timbre" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:100px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Metodo
+                                    <p-columnFilter type="text" field="metodo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    PRECIO DEL MÉTODO X TIMBRE
+                                    <p-columnFilter type="numeric" field="precio_metodo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    PRECIO TOTAL POR TIMBRADO + ETIQUETADO + MÉTODO
+                                    <p-columnFilter type="numeric" field="precio_total" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:100px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    PRECIO (BOB)
+                                    <p-columnFilter type="numeric" field="precio" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Observaciones
+                                    <p-columnFilter type="text" field="observaciones" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:100px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Personal
+                                    <p-columnFilter type="numeric" field="personal" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    LOTES DEL PERMISO DE SENASAG
+                                    <p-columnFilter type="text" field="lotes_permiso_senasag" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    FALTANTE SENASAG
+                                    <p-columnFilter type="numeric" field="faltantes_senasag" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    LOTE SENASAG
+                                    <p-columnFilter type="text" field="lote_senasag" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    FALTANTE
+                                    <p-columnFilter type="numeric" field="faltante" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style='width:150px' pResizableColumn>
+                                <div class='flex justify-content-center align-items-center'>
+                                    LOTE FALTANTE
+                                    <p-columnFilter type='text' field='lote_faltante' display='menu'></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    DA&Nacute;ADOS
+                                    <p-columnFilter type="numeric" field="danados" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    LOTE DA&Nacute;ADOS
+                                    <p-columnFilter type="text" field="lote_danados" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    QUEBRADOS
+                                    <p-columnFilter type="numeric" field="quebrados" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    LOTE QUEBRADOS
+                                    <p-columnFilter type="text" field="lote_quebrados" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    SIN TAPA
+                                    <p-columnFilter type="numeric" field="sin_tapa" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    LOTE SIN TAPA
+                                    <p-columnFilter type="text" field="lote_sin_tapa" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    BORROSOS
+                                    <p-columnFilter type="numeric" field="borrosos" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    LOTE BORROSO
+                                    <p-columnFilter type="text" field="lote_borrosos" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    FILM
+                                    <p-columnFilter type="numeric" field="film" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    CINTA
+                                    <p-columnFilter type="numeric" field="cinta" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    SILICONA
+                                    <p-columnFilter type="numeric" field="silicona" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:100px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Hora Inicio
+                                    <!--<p-columnFilter type="numeric" field="silicona" display="menu"></p-columnFilter>-->
+                                </div>
+                            </th>
+                            <th style="width:100px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Hora Fin
+                                    <!--<p-columnFilter type="numeric" field="silicona" display="menu"></p-columnFilter>-->
+                                </div>
+                            </th>
+                            <th style="width:100px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Horas Trabajadas
+                                    <!--<p-columnFilter type="numeric" field="silicona" display="menu"></p-columnFilter>-->
+                                </div>
+                            </th>
+                            <th style="width:100px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    TIMBRES SOBRANTES
+                                    <p-columnFilter type="numeric" field="timbres_sobrantes" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>NO SE CUMPLIO POR<p-columnFilter type='text' field='no_se_cumplio_por' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>LOTES VALIDADOS<p-columnFilter type='text' field='lotes_validos' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>LOTES ADICIONALES<p-columnFilter type='text' field='lotes_adicionales' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>TRANSPORTADORA<p-columnFilter type='text' field='transportadora' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'> TOTAL UNIDADES TIMBRADAS <p-columnFilter type='text' field='total_unidades_timbradas' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'> TOTAL U FACTURA <p-columnFilter type='text' field='total_u_factura' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>CARPICOLA DE BALDE DE 20 L<p-columnFilter type='text' field='carpicola_de_balde_20' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>CLASIFICACIÓN<p-columnFilter type='text' field='clasificacion' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>ABOLLADAS<p-columnFilter type='text' field='abolladas' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>LOTE ABOLLADAS<p-columnFilter type='text' field='lote_abolladas' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>MOJADAS<p-columnFilter type='text' field='mojadas' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>LOTE MOJADAS<p-columnFilter type='text' field='lote_mojadas' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>MERMADAS<p-columnFilter type='text' field='mermadas' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>LOTE MERMADAS<p-columnFilter type='text' field='lote_mermadas' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>TAPA EXTRA<p-columnFilter type='text' field='tapa_extra' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>LOTE TAPA EXTRA<p-columnFilter type='text' field='lote_tapa_extra' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>LEGALES EXTRA O EN PORTUGUES<p-columnFilter type='text' field='legales_extra_portugues' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>LOTE LEGALES EXTRA<p-columnFilter type='text' field='lote_legales_extra' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>CAJA EXTRA<p-columnFilter type='text' field='caja_extra' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>LOTE CAJA EXTRA<p-columnFilter type='text' field='lote_caja_extra' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>SARRO LEVE<p-columnFilter type='text' field='sarro_leve' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>LOTE SARRO LEVE<p-columnFilter type='text' field='lote_sarro_leve' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'> SARRO SEVERO<p-columnFilter type='text' field='sarro_severo' display='menu'></p-columnFilter></div></th>
+                            <th style='width:150px' pResizableColumn><div class='flex justify-content-center align-items-center'>LOTE SARRO SEVERO<p-columnFilter type='text' field='lote_sarro_severo' display='menu'></p-columnFilter></div></th>
+                            <th *ngIf="editar_timbrado"></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-detalle let-rowIndex="rowIndex">
+                        <tr>
+                            <td>{{detalle.timbradoturno}}</td>
+                            <td>{{detalle.diasemana}}</td>
+                            <td>{{detalle.fecha | date:'dd/MM/yyyy'}}</td>
+                            <td>{{detalle.codigo_producto}}</td>
+                            <td>{{detalle.sku}}</td>
+                            <td>{{detalle.nro_tcf}}</td>
+                            <td>{{detalle.factura_timbrada}}</td>
+                            <td>{{detalle.cantidad_timbrado}}</td>
+                            <td>{{detalle.cantidad_paquetes_timbrado}}</td>
+                            <td>{{detalle.meta_timbrado}}</td>
+                            <td>{{detalle.cumplimiento}}</td>
+                            <td>{{detalle.umcompra}}</td>
+                            <td>{{detalle.umalterna}}</td>
+                            <td>{{detalle.total_unidades}}</td>
+                            <td>{{detalle.precio_timbrado}}</td>
+                            <td>{{detalle.precio_por_timbre}}</td>
+                            <td>{{detalle.metodo}}</td>
+                            <td>{{detalle.precio_metodo}}</td>
+                            <td>{{detalle.precio_total}}</td>
+                            <td>{{detalle.precio}}</td>
+                            <td>{{detalle.observaciones}}</td>
+                            <td>{{detalle.personal}}</td>
+                            <td>{{detalle.lotes_permiso_senasag}}</td>
+                            <td>{{detalle.faltantes_senasag}}</td>
+                            <td>{{detalle.lote_senasag}}</td>
+                            <td>{{detalle.faltante}}</td>
+                            <td>{{detalle.lote_faltante}}</td>
+                            <td>{{detalle.danados}}</td>
+                            <td>{{detalle.lote_danados}}</td>
+                            <td>{{detalle.quebrados}}</td>
+                            <td>{{detalle.lote_quebrados}}</td>
+                            <td>{{detalle.sin_tapa}}</td>
+                            <td>{{detalle.lote_sin_tapa}}</td>
+                            <td>{{detalle.borrosos}}</td>
+                            <td>{{detalle.lote_borrosos}}</td>
+                            <td>{{detalle.film}}</td>
+                            <td>{{detalle.cinta}}</td>
+                            <td>{{detalle.silicona}}</td>
+                            <td>{{detalle.hora_hinicio}}</td>
+                            <td>{{detalle.hora_fin}}</td>
+                            <td>{{detalle.horas_trabajadas}}</td>
+                            <td>{{detalle.timbres_sobrantes}}</td>
+                            <td>{{detalle.no_se_cumplio_por}}</td>
+                            <td>{{detalle.lotes_validos}}</td>
+                            <td>{{detalle.lotes_adicionales}}</td>
+                            <td>{{detalle.transportadora}}</td>
+                            <td>{{detalle.total_unidades_timbradas}}</td>
+                            <td>{{detalle.total_u_factura}}</td>
+                            <td>{{detalle.carpicola_de_balde_20}}</td>
+                            <td>{{detalle.clasificacion}}</td>
+                            <td>{{detalle.abolladas}}</td>
+                            <td>{{detalle.lote_abolladas}}</td>
+                            <td>{{detalle.mojadas}}</td>
+                            <td>{{detalle.lote_mojadas}}</td>
+                            <td>{{detalle.mermadas}}</td>
+                            <td>{{detalle.lote_mermadas}}</td>
+                            <td>{{detalle.tapa_extra}}</td>
+                            <td>{{detalle.lote_tapa_extra}}</td>
+                            <td>{{detalle.legales_extra_portugues}}</td>
+                            <td>{{detalle.lote_legales_extra}}</td>
+                            <td>{{detalle.caja_extra}}</td>
+                            <td>{{detalle.lote_caja_extra}}</td>
+                            <td>{{detalle.sarro_leve}}</td>
+                            <td>{{detalle.lote_sarro_leve}}</td>
+                            <td>{{detalle.sarro_severo}}</td>
+                            <td>{{detalle.lote_sarro_severo}}</td>
+                            <td *ngIf="editar_timbrado">
+                                <i class="bi bi-x-circle-fill" role="button" data-bs-toggle="modal" data-bs-target="#confirmarEliminarDetalle" (click)="idtimbradodetalleeliminar=detalle.idtimbradodetalle"></i>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal" id="ventanaCargaMasiva" tabindex="-1" aria-labelledby="ventanaCargaMasivaLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaCargaMasivaLabel">Carga Masiva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Para cargar Items directamente desde un archivo xlsx llene el formato que se muestra <a target="_blank" href="{{urlFormatoIngreso}}">aqui</a> y cargelo a continuaci&oacute;n
+                <br /><br />
+                <input class="form-control" type="file" name="fileUpload" id="fileUpload" #UploadFileInput (change)="fileChangeEvent($event)" >
+                <small *ngIf="errorarchivo" class="text-danger">Campo requerido</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="cargarMasivamente()">Cargar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ventanaActualizacionMasiva" tabindex="-1" aria-labelledby="ventanaActualizacionMasivaLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaActualizacionMasivaLabel">Actualizaci&oacute;n Masiva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        Rango de fechas para actualizar:
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <input type="date" class="form-control" id="fecha_inicial_update" name="fecha_inicial_update" max="{{fecha_final_update}}" [(ngModel)]="fecha_inicial_update" >
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <input type="date" class="form-control" id="fecha_final_update" name="fecha_final_update" min="{{fecha_inicial_update}}" [(ngModel)]="fecha_final_update" >
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <button type="button" class="btn btn-link" (click)="descargarExcelUpdate()">Descargar Excel para actualizar</button>
+                    </div>
+                </div>
+                
+                
+                Una vez actualizado el Excel descargado, c&aacute;rgelo a continuaci&oacute;n
+                <br /><br />
+                <input class="form-control" type="file" name="fileUploadUpdate" id="fileUploadUpdate" #UploadFileInputUpdate (change)="fileChangeEventUpdate($event)" >
+                <small *ngIf="errorarchivoUpdate" class="text-danger">Campo requerido</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-success" (click)="actualizarMasivamente()">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal" id="confirmarEliminarDetalle" tabindex="-1" aria-labelledby="confirmarEliminarDetalleLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar este registro?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarDetalle()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ventanaLoading" tabindex="-1" aria-labelledby="ventanaLoadingLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: none !important;">
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

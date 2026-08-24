@@ -1,0 +1,116 @@
+.guia-selector-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.guia-selector {
+    align-items: center;
+    background: #fff;
+    border: 1px dashed #6c757d;
+    border-radius: .5rem;
+    color: #495057;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    justify-content: center;
+    min-height: 5.5rem;
+    padding: 1rem;
+}
+
+.guia-selector:hover:not(:disabled),
+.guia-selector:focus-visible {
+    background: #f8f9fa;
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.guia-selector:disabled {
+    cursor: not-allowed;
+    opacity: .65;
+}
+
+.guia-selector i {
+    font-size: 1.5rem;
+}
+
+.camara-salida-panel {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: .5rem;
+    padding: 1rem;
+}
+
+.camara-salida-video,
+.camara-salida-canvas {
+    background: #000;
+    border-radius: .5rem;
+    display: block;
+    max-height: 55vh;
+    object-fit: contain;
+    width: 100%;
+}
+
+.camara-salida-controles,
+.camara-salida-revision {
+    display: flex;
+    gap: .75rem;
+    justify-content: center;
+}
+
+.camara-salida-controles .btn {
+    align-items: center;
+    display: inline-flex;
+    font-size: 1.4rem;
+    height: 3rem;
+    justify-content: center;
+    width: 3rem;
+}
+
+.guia-seleccion {
+    align-items: center;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: .5rem;
+    display: flex;
+    gap: 1rem;
+    padding: .75rem;
+}
+
+.guia-preview {
+    border-radius: .35rem;
+    max-height: 8rem;
+    max-width: 10rem;
+    object-fit: contain;
+}
+
+.guia-datos {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.guia-nombre,
+.guia-remision-link {
+    max-width: 18rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (max-width: 576px) {
+    .guia-selector-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .guia-seleccion {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .guia-preview {
+        max-width: 100%;
+    }
+}

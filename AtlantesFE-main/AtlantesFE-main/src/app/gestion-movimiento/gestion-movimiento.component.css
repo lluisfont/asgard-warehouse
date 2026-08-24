@@ -1,0 +1,166 @@
+.image-upload-section {
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.image-source-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.image-source-action {
+    min-height: 7rem;
+    padding: 1rem;
+    border: 2px solid;
+    border-radius: 0.75rem;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    font-weight: 600;
+}
+
+.image-source-action:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.image-source-action i {
+    font-size: 1.8rem;
+}
+
+.image-source-action small {
+    color: #6c757d;
+    font-weight: 400;
+    text-align: center;
+}
+
+.image-source-camera {
+    border-color: #198754;
+    color: #146c43;
+}
+
+.image-source-gallery {
+    border-color: #0d6efd;
+    color: #0a58ca;
+}
+
+.pending-files {
+    margin-top: 1rem;
+    border-top: 1px solid #dee2e6;
+    padding-top: 0.75rem;
+}
+
+.pending-files-title {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.pending-file {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+}
+
+.pending-file > i {
+    color: #0d6efd;
+    font-size: 1.4rem;
+}
+
+.pending-file-info {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.pending-file-info span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pending-file-info small {
+    color: #6c757d;
+}
+
+.camera-dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.camera-stage {
+    min-height: 16rem;
+    max-height: 60vh;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.camera-video,
+.camera-canvas {
+    width: 100%;
+    height: auto;
+    max-height: 60vh;
+    object-fit: contain;
+    display: block;
+}
+
+.camera-loading {
+    min-height: 16rem;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.camera-counter {
+    color: #6c757d;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.camera-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.camera-confirm-controls {
+    justify-content: space-between;
+}
+
+.camera-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media (max-width: 575.98px) {
+    .image-source-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .image-source-action {
+        min-height: 5.5rem;
+    }
+
+    .camera-stage,
+    .camera-loading {
+        min-height: 12rem;
+    }
+
+    .camera-controls .btn {
+        flex: 1 1 calc(50% - 0.5rem);
+    }
+}

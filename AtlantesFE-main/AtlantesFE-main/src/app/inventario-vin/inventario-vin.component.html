@@ -1,0 +1,212 @@
+<div id="principal">
+    <app-menusuperior [permite_cambio_almacen]="true"></app-menusuperior>
+    <app-menulateral [menu_item]="12.5"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Inventario VIN</li>
+                </ol>
+            </nav>
+        </div>
+        <ng-container *ngIf="ver_inventario_vin">
+            <div class="card">
+                <div class="card-body">
+                    <br />
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="filtro_chasis" class="form-label text-secondary small">VIN</label>
+                            <input type="text" class="form-control" id="filtro_chasis" name="filtro_chasis" [(ngModel)]="filtro_chasis" (input)="error_filtro_chasis=false; error_filtro=false;" [disabled]="cargando" >
+                            <small *ngIf="error_filtro_chasis" class="text-danger">
+                                Debe ser de almenos 5 caracteres
+                            </small>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="filtro_marca" class="form-label text-secondary small">Marca</label>
+                            <input type="text" class="form-control" id="filtro_marca" name="filtro_marca" [(ngModel)]="filtro_marca" (input)="error_filtro_marca=false; error_filtro=false;" [disabled]="cargando" >
+                            <small *ngIf="error_filtro_marca" class="text-danger">
+                                Debe ser de almenos 3 caracteres
+                            </small>
+                        </div>
+                        <div class="col-md-3 mb-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary col-12" (click)="getInventarioVIN();" [disabled]="cargando">Buscar</button>
+                            
+                        </div>
+                    </div>
+                    <div>
+                        <small *ngIf="error_filtro" class="text-danger">
+                            Debe especificar al menos un filtro
+                        </small>
+                    </div>
+                    <br />
+                    <ng-container *ngIf="inventario_vin.length>0">
+                        <p class="text-muted">VINs Disponibles:</p>
+                        <p-selectButton 
+                            [options]="inventario_vin" 
+                            [(ngModel)]="idate_gas" 
+                            optionLabel="chasis" 
+                            optionValue="idate_gas"
+                            (onChange)="verInventarioVIN()"
+                             [disabled]="cargando"
+                            />
+                    </ng-container>
+                    
+                </div>
+            </div>
+            <ng-container *ngIf="inventario_vin_generado">
+                <div class="card">
+                    <div class="card-header">
+                        Informaci&oacute;n del Veh&iacute;culo
+                    </div>
+                    <div class="card-body">
+                        <div class="row p-3">
+                            <div class="col-md-4">
+                                <label class="text-muted">VIN</label>
+                                <div>{{datos_generales.chasis ?? ''}}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="text-muted">Marca</label>
+                                <div>{{datos_generales.marca ?? ''}}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="text-muted">Total Movimientos</label>
+                                <div>{{estadopedido.length ?? 0}}</div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div></div>
+                            <div>
+                                <button type="button" class="btn btn-success" (click)="generarInventario();" [disabled]="cargando">Todos Los Inventarios (PDF)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        Historial de Movimientos e Inventarios
+                    </div>
+                    <div class="card-body">
+                        <br />
+                        <ng-container *ngFor="let estadopedidos of estadopedido; let rowIndex = index">
+                            <div class="card p-2">
+                                <div class="card-header d-flex flex-column flex-md-row justify-content-between gap-2">
+                                    <div class="d-flex flex-column flex-md-row justify-content-start flex-wrap gap-2">
+                                        <div class="p-2">
+                                            <span class="badge bg-primary">Movimiento {{rowIndex+1}}</span>
+                                        </div>
+                                        <div class="p-2"><i class="bi bi-calendar"></i> {{estadopedidos.fin | date:'dd/MM/yy HH:mm'}}</div>
+                                        <div class="p-2"><i class="bi bi-person"></i> {{estadopedidos.responsable}}</div>
+                                    </div>
+                                    <div class="d-flex flex-column flex-md-row justify-content-end align-items-start align-items-md-center gap-2">
+                                        <div class="p-2"><p-tag *ngIf="estadopedidos.fecha_inventario" severity="success" value="Inventario Completo"/></div>
+                                        <div class="p-2"><button type="button" class="btn btn-outline-dark" (click)="generarInventarioEtapa(estadopedidos.idate_gas_etapa);">Check List PDF</button></div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="card-body">
+                                    <br />
+
+                                    <h4><span class="badge bg-{{estadopedidos.severity}}"><i class="bi bi-geo-alt"></i>  {{estadopedidos.etapa}}</span></h4>
+                                    <p-tabView>
+                                        <p-tabPanel header="Registro de Daños">
+                                            <ng-container>
+                                                <p-accordion [multiple]="true">
+                                                    <p-accordionTab *ngFor="let inventario of estadopedidos.inventario; let indexInventario = index" [header]="inventario.danios_vehiculos">
+                                                        <div class="p-2">
+                                                            <label>Descripci&oacute;n:</label>
+                                                            <div class="fw-bold">{{inventario.descripcion}}</div>
+                                                        </div>
+                                                        <div *ngIf="inventario.imagenes" class="row">
+                                                            <div *ngFor="let image of inventario.imagenes; let index = index" class="col-6 col-md-4 col-lg-2" key="index">
+                                                                <div class="thumb">
+                                                                    <p-image 
+                                                                        [src]="image.itemImageSrc" 
+                                                                        [previewImageSrc]="image.previewSrc ?? image.itemImageSrc"
+                                                                        (onShow)="loadPreview(image)"
+                                                                        (onHide)="releasePreview(image)"
+                                                                        loading="lazy"
+                                                                        alt="Image" 
+                                                                        [style]="{ width: '100%', height: '100%', display: 'block' }"
+                                                                        [imageStyle]="{
+                                                                            width: '100%',
+                                                                            height: '100%',
+                                                                            objectFit: 'contain',
+                                                                            objectPosition: 'center',
+                                                                            backgroundColor: '#000'
+                                                                        }"
+                                                                        [preview]="true" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </p-accordionTab>
+                                                </p-accordion>
+                                            </ng-container>
+                                        </p-tabPanel>
+                                        <p-tabPanel header="Detalle">
+                                            
+                                                <div class="p-2">
+                                                    <label>Observaciones Adicionales:</label>
+                                                    <div class="fw-bold">{{estadopedidos.observaciones_inventario}}</div>
+                                                </div>
+                                                <div class="p-2 d-flex justify-content-between">
+                                                    <div>
+                                                        <label>Responsable T&eacute;cnico:</label>
+                                                        <div class="fw-bold">{{estadopedidos.responsable}}</div>
+                                                    </div>
+                                                    <div>
+                                                        <label>Fecha de Registro:</label>
+                                                        <div class="fw-bold">{{estadopedidos.inicio | date:'dd/MM/yy HH:mm'}}</div>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div *ngIf="estadopedidos.imagenes" class="row">
+                                                    <div *ngFor="let image of estadopedidos.imagenes; let index = index" class="col-6 col-md-4 col-lg-2" key="index">
+                                                        <div class="thumb">
+                                                            <p-image 
+                                                                [src]="image.itemImageSrc" 
+                                                                [previewImageSrc]="image.previewSrc ?? image.itemImageSrc"
+                                                                (onShow)="loadPreview(image)"
+                                                                (onHide)="releasePreview(image)"
+                                                                loading="lazy"
+                                                                alt="Image" 
+                                                                [style]="{ width: '100%', height: '100%', display: 'block' }"
+                                                                [imageStyle]="{
+                                                                    width: '100%',
+                                                                    height: '100%',
+                                                                    objectFit: 'contain',
+                                                                    objectPosition: 'center',
+                                                                    backgroundColor: '#000'
+                                                                }"
+                                                                [preview]="true" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                        </p-tabPanel>
+                                    </p-tabView>
+                                </div>
+                            </div>
+                        </ng-container>
+                        
+                    </div>
+                </div>
+            </ng-container>
+            
+
+        </ng-container>
+
+    </main>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,331 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="5.4"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Reporte de Movimientos</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_reporte_almacen_movimiento" class="card-body">
+                <br />
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <ng-select name="idcliente" id="idcliente" [items]="entidades" 
+                            bindLabel="entidad" 
+                            bindValue="id"
+                            placeholder="Todos"
+                        [(ngModel)]="idcliente">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechainicial" class="form-label text-secondary small">Desde</label>
+                        <input type="date" class="form-control" id="fechainicial" name="fechainicial" max="{{fechafinal}}" [(ngModel)]="fechainicial" >
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechafinal" class="form-label text-secondary small">Hasta</label>
+                        <input type="date" class="form-control" id="fechafinal" name="fechafinal" min="{{fechainicial}}" [(ngModel)]="fechafinal" >
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+                
+                <p-table *ngIf="reporte.length>0" [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    [globalFilterFields]="['cliente','tipomovimiento','codigoingreso','codigosalida','fechamovimiento','codigo','descripcion','inicial','ingreso','salida','inventariofinal','codigoembalaje','diaspermanencia','diasliquidacion','inicialmq','ingresomq','salidamq','inventariofinalmq','acumulado','adicional','posiciones_adicionales','max_posiciones','posiciones_adicionales_real','inbound','outbound','fee_adicional','ad_inbound','ad_outbound','total_adicional']"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                            <!--<button type="button" (click)="exportPdf()" class="btn btn-danger mb-3"><i class="bi bi-file-earmark-pdf"></i></button>-->
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tipo
+                                    <p-columnFilter type="text" field="tipomovimiento" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    No. Ingreso
+                                    <p-columnFilter type="text" field="codigoingreso" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    No. Salida
+                                    <p-columnFilter type="text" field="codigosalida" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha Movimiento
+                                    <p-columnFilter type="date" field="fechamovimiento" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <!--
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ubicaci&oacute;n
+                                    <p-columnFilter type="text" field="ubicacionalmacen" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            -->
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Codigo
+                                    <p-columnFilter type="text" field="codigo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <!--
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Serie
+                                    <p-columnFilter type="text" field="serie" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            -->
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Descripci&oacute;n
+                                    <p-columnFilter type="text" field="descripcion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <!--
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Lote
+                                    <p-columnFilter type="text" field="lote" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha Venc.
+                                    <p-columnFilter type="date" field="fechavencimiento" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Categor&iacute;a
+                                    <p-columnFilter type="text" field="categoria" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            -->
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Inv. Inicial
+                                    <p-columnFilter type="numeric" field="inicial" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ingreso
+                                    <p-columnFilter type="numeric" field="ingreso" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Salida
+                                    <p-columnFilter type="numeric" field="salida" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Inv. Final
+                                    <p-columnFilter type="numeric" field="inventariofinal" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Embalaje
+                                    <p-columnFilter type="text" field="codigoembalaje" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    D&iacute;as permanencia
+                                    <p-columnFilter type="numeric" field="diaspermanencia" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    m<sup>3</sup>
+                                    <!--<p-columnFilter type="numeric" field="diaspermanencia" display="menu"></p-columnFilter>-->
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    D&iacute;as liquidacion
+                                    <p-columnFilter type="numeric" field="diasliquidacion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Inv. Inicial m<sup>3</sup>
+                                    <p-columnFilter type="numeric" field="inicialmq" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ingreso m<sup>3</sup>
+                                    <p-columnFilter type="numeric" field="ingresomq" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Salida m<sup>3</sup>
+                                    <p-columnFilter type="numeric" field="salidamq" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Inv. Final m<sup>3</sup>
+                                    <p-columnFilter type="numeric" field="inventariofinalmq" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Acumulado
+                                    <p-columnFilter type="numeric" field="acumulado" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Adicional
+                                    <p-columnFilter type="text" field="adicional" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Posiciones Adicionales
+                                    <p-columnFilter type="numeric" field="posiciones_adicionales" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    max posiciones por m3
+                                    <p-columnFilter type="numeric" field="max_posiciones" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    adicional real posiciones por m3
+                                    <p-columnFilter type="numeric" field="posiciones_adicionales_real" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            
+                            
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Inbound ad (cant)
+                                    <p-columnFilter type="numeric" field="inbound" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Outbound ad (cant)
+                                    <p-columnFilter type="numeric" field="outbound" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fee adicional
+                                    <p-columnFilter type="numeric" field="fee_adicional" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ad inbound
+                                    <p-columnFilter type="numeric" field="ad_inbound" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ad outbound
+                                    <p-columnFilter type="numeric" field="ad_outbound" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Total adicional
+                                    <p-columnFilter type="numeric" field="total_adicional" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-movimiento>
+                        <tr>
+                            <td>{{movimiento.cliente}}</td>
+                            <td>{{movimiento.tipomovimiento}}</td>
+                            <td>{{movimiento.codigoingreso}}</td>
+                            <td>{{movimiento.codigosalida}}</td>
+                            <td>{{movimiento.fechamovimiento | date:'dd/MM/yyyy'}}</td>
+                            <!--<td>{{movimiento.ubicacionalmacen}}</td>-->
+                            <td>{{movimiento.codigo}}</td>
+                            <!--<td>{{movimiento.serie}}</td>-->
+                            <td>{{movimiento.descripcion}}</td>
+                            <!--<td>{{movimiento.lote}}</td>
+                            <td>{{ (movimiento.fechavencimiento !== null && movimiento.fechavencimiento !== '') ? (movimiento.fechavencimiento | date: 'dd/MM/yyyy') : ""}}</td>
+                            <td>{{movimiento.categoria}}</td>
+                            -->
+                            <td>{{movimiento.inicial | number:'0.2-2'}}</td>
+                            <td>{{movimiento.ingreso | number:'0.2-2'}}</td>
+                            <td>{{movimiento.salida | number:'0.2-2'}}</td>
+                            <td>{{movimiento.inventariofinal | number:'0.2-2'}}</td>
+                            <td>{{movimiento.codigoembalaje}}</td>
+                            <td>{{movimiento.diaspermanencia}}</td>
+                            <td></td>
+                            <td>{{movimiento.diasliquidacion}}</td>
+                            <td>{{movimiento.inicialmq | number:'0.2-2'}}</td>
+                            <td>{{movimiento.ingresomq | number:'0.2-2'}}</td>
+                            <td>{{movimiento.salidamq | number:'0.2-2'}}</td>
+                            <td>{{movimiento.inventariofinalmq | number:'0.2-2'}}</td>
+                            <td>{{movimiento.acumulado | number:'0.2-2'}}</td>
+                            <td>{{movimiento.adicional}}</td>
+                            <td>{{movimiento.posiciones_adicionales | number:'0.2-2'}}</td>
+                            <td>{{movimiento.max_posiciones | number:'0.2-2'}}</td>
+                            <td>{{movimiento.posiciones_adicionales_real | number:'0.2-2'}}</td>
+                            <td>{{movimiento.inbound | number:'0.2-2'}}</td>
+                            <td>{{movimiento.outbound | number:'0.2-2'}}</td>
+                            <td>{{movimiento.fee_adicional | number:'0.2-2'}}</td>
+                            <td>{{movimiento.ad_inbound | number:'0.2-2'}}</td>
+                            <td>{{movimiento.ad_outbound | number:'0.2-2'}}</td>
+                            <td>{{movimiento.total_adicional | number:'0.2-2'}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="15">No existen registros</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+                
+                
+            </div>
+        </div>
+    </main>
+</div>

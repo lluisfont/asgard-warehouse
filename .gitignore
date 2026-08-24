@@ -1,0 +1,31 @@
+# Node / Angular
+node_modules/
+dist/
+build/
+.angular/
+coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# PHP / Composer
+vendor/
+composer.lock~
+
+# Local environment and editor files
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs and caches
+*.log
+*.cache
+*.orig
+*.bak
+*-errors.txt
+tmp/
+temp/

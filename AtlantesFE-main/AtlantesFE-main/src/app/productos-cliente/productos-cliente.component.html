@@ -1,0 +1,380 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="10.2"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Productos por Cliente</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_productos_cliente" class="card-body">
+                <br />
+                <div *ngIf="editar_productos_cliente" class="row">
+                    <div class="col-6 mb-3">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoProducto" (click)="verDetalle(0)">Nuevo Producto</button>
+                    </div>
+                    <div class="col-6 mb-3 text-end">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#nuevoProductoMasivo" (click)="prepararCargaMasiva()">Carga Masiva</button>
+                    </div>
+                </div>
+                
+                <hr />
+                <p-table [value]="productos_cliente" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines p-datatable-sm" [rowHover]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    [globalFilterFields]="['cliente','rubro','codigo','serie','descripcion','codigoembalaje','umcompra','umalterna']"
+                    >
+                    <!--
+                    <ng-template pTemplate="caption">
+                        Salidas
+                    </ng-template>
+                    -->
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Rubro
+                                    <p-columnFilter type="text" field="rubro" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Codigo
+                                    <p-columnFilter type="text" field="codigo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Serie
+                                    <p-columnFilter type="text" field="serie" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Descripci&oacute;n
+                                    <p-columnFilter type="text" field="descripcion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    U/M Inv
+                                    <p-columnFilter type="text" field="codigoembalaje" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    U/M Compra
+                                    <p-columnFilter type="text" field="umcompra" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    U/M Compra Alterna
+                                    <p-columnFilter type="text" field="umalterna" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-productoscliente>
+                        <tr>
+                            <td role="button" data-bs-toggle="modal" data-bs-target="#nuevoProducto" (click)="verDetalle(productoscliente.idbaseproductos)">{{productoscliente.cliente}}</td>
+                            <td role="button" data-bs-toggle="modal" data-bs-target="#nuevoProducto" (click)="verDetalle(productoscliente.idbaseproductos)">{{productoscliente.rubro}}</td>
+                            <td role="button" data-bs-toggle="modal" data-bs-target="#nuevoProducto" (click)="verDetalle(productoscliente.idbaseproductos)">{{productoscliente.codigo}}</td>
+                            <td role="button" data-bs-toggle="modal" data-bs-target="#nuevoProducto" (click)="verDetalle(productoscliente.idbaseproductos)">{{productoscliente.serie}}</td>
+                            <td role="button" data-bs-toggle="modal" data-bs-target="#nuevoProducto" (click)="verDetalle(productoscliente.idbaseproductos)">{{productoscliente.descripcion}}</td>
+                            <td role="button" data-bs-toggle="modal" data-bs-target="#nuevoProducto" (click)="verDetalle(productoscliente.idbaseproductos)">{{productoscliente.codigoembalaje}}</td>
+                            <td role="button" data-bs-toggle="modal" data-bs-target="#nuevoProducto" (click)="verDetalle(productoscliente.idbaseproductos)">{{productoscliente.umcompra}}</td>
+                            <td role="button" data-bs-toggle="modal" data-bs-target="#nuevoProducto" (click)="verDetalle(productoscliente.idbaseproductos)">{{productoscliente.umalterna}}</td>
+                            <td class="text-center"><i  *ngIf="editar_productos_cliente" class="bi bi-x-circle-fill" role='button' data-bs-toggle="modal" data-bs-target="#confirmarEliminar" (click)="prepararEliminar(productoscliente.idbaseproductos)"></i></td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="9">No existen registros</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal fade" id="nuevoProducto" tabindex="-1" aria-labelledby="nuevoProductoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoProductoLabel">{{textomodal}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">General</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="timbrado-tab" data-bs-toggle="tab" data-bs-target="#timbrado" type="button" role="tab" aria-controls="timbrado" aria-selected="false">Timbrado</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                        <br />
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                                <ng-select name="idcliente" id="idcliente" [(ngModel)]="idcliente" placeholder="Seleccione" (change)="erroridcliente=false; prepararColores()"  [disabled]="!editar_productos_cliente">
+                                    <ng-container *ngFor="let entidad of entidades">
+                                        <ng-option style="background-color: #0c4128 !important;" [value]="entidad.id">{{entidad.entidad}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                                <small *ngIf="erroridcliente" class="text-danger">Campo Requerido</small>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="rubro" class="form-label text-secondary small">Rubro</label>
+                                <input type="text" class="form-control" id="rubro" name="rubro" [(ngModel)]="rubro" [disabled]="!editar_productos_cliente" />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="codigo" class="form-label text-secondary small">Codigo</label>
+                                <input type="text" class="form-control" id="codigo" name="codigo" [(ngModel)]="codigo" (change)="errorcodigo=false" [disabled]="!editar_productos_cliente" />
+                                <small *ngIf="errorcodigo" class="text-danger">{{textoerrorcodigo}}</small>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="rubro" class="form-label text-secondary small">Serie</label>
+                                <input type="text" class="form-control" id="serie" name="serie" [(ngModel)]="serie" [disabled]="!editar_productos_cliente" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-8">
+                                <label for="descripcion" class="form-label text-secondary small">Descripci&oacute;n</label>
+                                <input type="text" class="form-control" id="descripcion" name="descripcion" [(ngModel)]="descripcion" [disabled]="!editar_productos_cliente" />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="idembalaje" class="form-label text-secondary small">U/M Inventario</label>
+                                <ng-select name="idembalaje" id="idembalaje" [(ngModel)]="idembalaje" placeholder="Seleccione" (change)="cambioEmbalaje()" [disabled]="!editar_productos_cliente">
+                                    <ng-option *ngFor="let embalaje of embalajes" [value]="embalaje.idembalaje">{{embalaje.codigoembalaje}}</ng-option>
+                                </ng-select>
+                                <small *ngIf="erroridembalaje" class="text-danger">Campo Requerido</small>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="umcompra" class="form-label text-secondary small">U/M compra</label>
+                                <input type="text" class="form-control" id="umcompra" name="umcompra" [(ngModel)]="umcompra" [disabled]="!editar_productos_cliente" />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="umalterna" class="form-label text-secondary small">U/M alterna</label>
+                                <input type="text" class="form-control" id="umalterna" name="umalterna" [(ngModel)]="umalterna" [disabled]="!editar_productos_cliente" />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="categoria" class="form-label text-secondary small">Categor&iacute;a</label>
+                                <input type="text" class="form-control" id="categoria" name="categoria" [(ngModel)]="categoria" [disabled]="!editar_productos_cliente" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="alto" class="form-label text-secondary small">Alto (m)</label>
+                                <input type="number" step="2" class="form-control" id="alto" name="alto" [(ngModel)]="alto" [disabled]="!editar_productos_cliente" />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="ancho" class="form-label text-secondary small">Ancho (m)</label>
+                                <input type="number" step="2" class="form-control" id="ancho" name="ancho" [(ngModel)]="ancho" [disabled]="!editar_productos_cliente" />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="largo" class="form-label text-secondary small">Largo (m)</label>
+                                <input type="number" step="2" class="form-control" id="largo" name="largo" [(ngModel)]="largo" [disabled]="!editar_productos_cliente" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="volumen" class="form-label text-secondary small">Volumen (m<sup>3</sup>)</label>
+                                <input type="text"  class="form-control" id="volumen" name="volumen" value="{{alto*ancho*largo | number:'0.2-2'}}" disabled />
+                            </div>
+                          <div class="col-md-4">
+                            <label for="centro_distribucion" class="form-label text-secondary small">Centro de Distribuci&oacute;n</label>
+                            <input type="text"  class="form-control" id="centro_distribucion" name="centro_distribucion" [(ngModel)]="centro_distribucion" [disabled]="!editar_productos_cliente" />
+                          </div>
+                            <div class="col-md-4">
+                                <label for="color" class="form-label text-secondary small">Color</label><br />
+                                <p-dropdown id="color" [options]="colores" [(ngModel)]="color" placeholder="Seleccione" optionLabel="color" optionValue="valor" [style]="{'width':'100%'}" [disabled]="!editar_productos_cliente">
+                                    <ng-template pTemplate="selectedItem">
+                                        <div class="color-item color-item-value" style="background-color: {{color}}">
+                                            <div>{{color}}</div>
+                                            <!--<div></div>-->
+                                        </div>
+                                    </ng-template>
+                                    <ng-template let-color pTemplate="item">
+                                        <div class="color" style="background-color: {{color.color}}">
+                                            <div>{{color.color}}</div>
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="factor_conversion" class="form-label text-secondary small">Factor de Conversi&oacute;n</label>
+                                <input type="number" step="0" class="form-control" id="factor_conversion" name="factor_conversion" [(ngModel)]="factor_conversion" [disabled]="!editar_productos_cliente" />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="idembalaje_salida" class="form-label text-secondary small">U/M Salida</label>
+                                <ng-select name="idembalaje_salida" id="idembalaje_salida" [(ngModel)]="idembalaje_salida" placeholder="Seleccione" (change)="cambioEmbalajeSalida()" [disabled]="!editar_productos_cliente">
+                                    <ng-option *ngFor="let embalaje of embalajes" [value]="embalaje.idembalaje">{{embalaje.codigoembalaje}}</ng-option>
+                                </ng-select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="factor_conversion" class="form-label text-secondary small">Formula de Conversi&oacute;n</label>
+                                <div>{{factor_conversion}} {{codigoembalaje}} = 1 {{codigoembalaje_salida}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="timbrado" role="tabpanel" aria-labelledby="timbrado-tab">
+                        <br />
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="meta_timbrado" class="form-label text-secondary small">Meta timbrado y etiquetado (PX)</label>
+                                <input type="number" step="0" class="form-control" id="meta_timbrado" name="meta_timbrado" [(ngModel)]="meta_timbrado" [disabled]="!editar_productos_cliente" />
+                            </div>
+                        </div>
+                        <div class="container">
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-secondary">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            Turno
+                                        </div>
+                                        <div class="col-5">
+                                            Precio BOB
+                                        </div>
+                                        <div class="col-1"></div>
+                                    </div>
+                                </li>
+                                <ng-container *ngFor="let precio_timbrado of preciotimbrado; let indice = index; trackBy: trackByFn">
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <ng-select [items]="timbrados_turno" 
+                                                    bindLabel="timbradoturno" 
+                                                    bindValue="idtimbradoturno" 
+                                                    [disabled]="!editar_productos_cliente"
+                                                    (change)="precio_timbrado.erroridtimbradoturno=false"
+                                                    [(ngModel)]="precio_timbrado.idtimbradoturno">
+                                                </ng-select>
+                                                <small *ngIf="precio_timbrado.erroridtimbradoturno" class="text-danger">Campo Requerido</small>
+                                            </div>
+                                            <div class="col-5">
+                                                <input type="number" class="form-control" step='1' name="precio{{indice}}" id='precio{{indice}}' [(ngModel)]="precio_timbrado.precio" [disabled]="!editar_productos_cliente" />
+                                            </div>
+                                            <div class="col-1">
+                                                <i *ngIf="editar_productos_cliente" class="bi bi-trash" role='button' (click)="eliminarPrecioTimbrado(indice)"></i>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                            <br />
+                            <button *ngIf="editar_productos_cliente" type="button" class="btn btn-secondary" (click)="agregarPrecioTimbrado()">Agregar Registro</button>
+                        </div>
+                    </div>
+                </div>
+                        
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button *ngIf="editar_productos_cliente" type="button" class="btn btn-primary" (click)="guardarDatos()">Guardar Datos</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="nuevoProductoMasivo" tabindex="-1" aria-labelledby="nuevoProductoMasivoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoProductoMasivoLabel">Cargar Prodcutos Masivamente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <ng-select name="idcliente" id="idcliente" [(ngModel)]="idcliente" placeholder="Seleccione" (change)="erroridcliente=false" [disabled]="carga_archivo">
+                            <ng-container *ngFor="let entidad of entidades">
+                                <ng-option [value]="entidad.id">{{entidad.entidad}}</ng-option>
+                            </ng-container>
+                        </ng-select>
+                        <small *ngIf="erroridcliente" class="text-danger">Campo Requerido</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        Para cargar multiples productos desde un archivo xlsx llene el formato que se muestra <a target="_blank" href="{{urlFormatoProductos}}">aqui</a> y cargelo a continuaci&oacute;n
+                        <br /><br />
+                        <input class="form-control" type="file" name="fileUpload" id="fileUpload" #UploadFileInput (change)="fileChangeEvent($event)" [disabled]="carga_archivo" >
+                        <small *ngIf="errorarchivo" class="text-danger">Campo requerido</small>
+                    </div>
+                </div>
+                <div class="row" *ngIf="mensajes_error.length>0">
+                    <div class="col-12 mb-3">
+                        <div class="alert alert-danger" role="alert">
+                            <h4 class="alert-heading">Error!</h4>
+                            <p>Se encontraron los siguientes errores.</p>
+                            <hr>
+                            <ul>
+                                <li *ngFor="let mensaje_error of mensajes_error"><strong>{{mensaje_error.fila}}:</strong> {{mensaje_error.mensaje}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="cargarDatos()" [disabled]="carga_archivo">Cargar Datos</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="confirmarEliminar" tabindex="-1" aria-labelledby="confirmarEliminarLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar este registro?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarDatos()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

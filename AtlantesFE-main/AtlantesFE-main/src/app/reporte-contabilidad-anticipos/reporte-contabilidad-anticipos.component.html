@@ -1,0 +1,131 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="7.10"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Anticipos</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_reporte_contabilidad_anticipos" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label for="identidad" class="form-label text-secondary small">Cliente</label>
+                        <ng-select [(ngModel)]="identidad" placeholder="Todos" [disabled]="generado">
+                            <ng-container *ngFor="let entidad of entidades">
+                                <ng-option [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                            </ng-container>
+                        </ng-select>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label for="fechainicial" class="form-label text-secondary small">Desde</label>
+                        <input type="date" class="form-control" id="fechainicial" max="{{fechafinal}}" name="fechainicial" [(ngModel)]="fechainicial" [disabled]="generado" />
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label for="fechafinal" class="form-label text-secondary small">Hasta</label>
+                        <input type="date" class="form-control" id="fechafinal" min="{{fechainicial}}" name="fechafinal" [(ngModel)]="fechafinal" [disabled]="generado" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+                
+                <p-table *ngIf="reporte.length>0" [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                            <!--<button type="button" (click)="exportPdf()" class="btn btn-danger mb-3"><i class="bi bi-file-earmark-pdf"></i></button>-->
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha
+                                    <p-columnFilter type="date" field="fecha" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="entidad" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Recibo
+                                    <p-columnFilter type="text" field="recibo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Banco
+                                    <p-columnFilter type="text" field="banco_cuenta" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Monto
+                                    <p-columnFilter type="numeric" field="monto" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Embarque
+                                    <p-columnFilter type="text" field="embarque" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Aplicado
+                                    <p-columnFilter type="numeric" field="aplicado" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Devuelto
+                                    <p-columnFilter type="numeric" field="desvuelto" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Saldo
+                                    <p-columnFilter type="numeric" field="saldo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-cobranzas>
+                        <tr>
+                            <td>{{cobranzas.fecha | date:'dd/MM/yyyy'}}</td>
+                            <td>{{cobranzas.entidad}}</td>
+                            <td>{{cobranzas.recibo}}</td>
+                            <td>{{cobranzas.banco_cuenta}}</td>
+                            <td>{{cobranzas.monto | number:'0.2-2'}}</td>
+                            <td>{{cobranzas.embarque}}</td>
+                            <td>{{cobranzas.aplicado | number:'0.2-2'}}</td>
+                            <td>{{cobranzas.devuelto | number:'0.2-2'}}</td>
+                            <td>{{cobranzas.saldo | number:'0.2-2'}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="9">No existen registros</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+                
+            </div>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,641 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="1.1"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Ingresos</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_ingresos" class="card-body">
+                <br />
+                <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="ingresos-tab" data-bs-toggle="tab" data-bs-target="#ingresos" type="button" role="tab" aria-controls="ingresos" aria-selected="true">Ingresos</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pendientes-tab" data-bs-toggle="tab" data-bs-target="#pendientes" type="button" role="tab" aria-controls="pendientes" aria-selected="false">Pendientes</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="rechazados-tab" data-bs-toggle="tab" data-bs-target="#rechazados" type="button" role="tab" aria-controls="rechazados" aria-selected="false">Rechazados</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="ingresos" role="tabpanel" aria-labelledby="ingresos-tab">
+                        <br />
+                        <button *ngIf="editar_ingresos" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoIngreso" (click)="preperarAgregar()">Nuevo Ingreso</button>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-9 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="filtrarubicacion" id="filtrarubicacion0" checked (click)="veringresos(0)">
+                                    <label class="form-check-label" for="filtrarubicacion0">
+                                        Todos
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="filtrarubicacion" id="filtrarubicacion1" (click)="veringresos(1)">
+                                    <label class="form-check-label" for="filtrarubicacion1">
+                                        Con Ubicacion
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="filtrarubicacion" id="filtrarubicacion2" (click)="veringresos(2)">
+                                    <label class="form-check-label" for="filtrarubicacion2">
+                                        Sin Ubicacion
+                                    </label>
+                                </div>
+                            </div>
+                            <!--<div class="col-md-3"></div>-->
+                            <!--
+                            <div class="col-md-3 mb-3">
+                                <input type="text" class="form-control" name="filtro" [(ngModel)]="filtro" placeholder="Buscar" (keyup)="p=1">
+                            </div>
+                            -->
+                        </div>
+                        <br />
+                        <p-table [value]="ingresos" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                            [globalFilterFields]="['numeroingreso','fecha','cliente','rubro_producto','no_contrato','piezas_manifestadas','proveedor','dui']"
+                            >
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>
+
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Numero
+                                            <p-columnFilter type="text" field="numeroingreso" display="menu"></p-columnFilter>
+                                        </div>
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Fecha
+                                            <p-columnFilter type="date" field="fecha" display="menu"></p-columnFilter>
+                                        </div>
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Cliente
+                                            <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                        </div>
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Rubro
+                                            <p-columnFilter type="text" field="rubro_producto" display="menu"></p-columnFilter>
+                                        </div>
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Referencia
+                                            <p-columnFilter type="text" field="no_contrato" display="menu"></p-columnFilter>
+                                        </div>
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Cant. Manif.
+                                            <p-columnFilter type="text" field="piezas_manifestadas" display="menu"></p-columnFilter>
+                                        </div>
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Proveedor
+                                            <p-columnFilter type="text" field="proveedor" display="menu"></p-columnFilter>
+                                        </div>
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Invoice
+                                            <p-columnFilter type="text" field="invoice" display="menu"></p-columnFilter>
+                                        </div>
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            DUI
+                                            <p-columnFilter type="text" field="dui" display="menu"></p-columnFilter>
+                                        </div>
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Tipo Ingreso
+                                            <p-columnFilter 
+                                                field="idtipoingreso" 
+                                                matchMode="in" 
+                                                display="menu" 
+                                                [showMatchModes]="false" 
+                                                [showOperator]="false" 
+                                                [showAddButton]="false"
+                                                >
+                                                <ng-template pTemplate="header">
+                                                    <div class="px-3 pt-3 pb-0">
+                                                        <span class="font-bold">Seleccionar Tipo</span>
+                                                    </div>
+                                                </ng-template>
+                                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                                    <p-multiSelect 
+                                                        [ngModel]="value" 
+                                                        [options]="tiposingreso" 
+                                                        placeholder="Cualquiera" 
+                                                        (onChange)="filter($event.value)" 
+                                                        optionLabel="tipoingreso"
+                                                        optionValue="idtipoingreso"
+                                                        >
+                                                        <ng-template let-option pTemplate="item">
+                                                            <div class="inline-block vertical-align-middle">
+                                                                <span class="ml-1 mt-1">{{ option.tipoingreso }}</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </p-multiSelect>
+                                                </ng-template>
+                                            </p-columnFilter>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-ingreso>
+                                <tr>
+                                    <td class="text-center"><i class="bi bi-folder2-open" role='button' (click)="abrirDetalle(ingreso.idingreso)"></i>&nbsp;<i class="bi bi-box-arrow-up-right" role='button' (click)="abrirDetalleNuevo(ingreso.idingreso)"></i></td>
+                                    <td>{{ingreso.numeroingreso}} <i *ngIf="!ingreso.acomodado" style="color: #dc3545" class="bi bi-exclamation-diamond"></i></td>
+                                    <td>{{ingreso.fecha  | date:'dd/MM/yyyy'}}</td>
+                                    <td>{{ingreso.cliente}}</td>
+                                    <td>{{ingreso.rubro_producto}}</td>
+                                    <td>{{ingreso.no_contrato}}</td>
+                                    <td>{{ingreso.piezas_manifestadas}}</td>
+                                    <td>{{ingreso.proveedor}}</td>
+                                    <td>{{ingreso.invoice}}</td>
+                                    <td>{{ingreso.dui}}</td>
+                                    <td>{{ingreso.tipoingreso}}</td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="11">No existen registros</td>
+                                </tr>
+                            </ng-template>
+
+                        </p-table>
+                    </div>
+                    <div class="tab-pane fade" id="pendientes" role="tabpane2" aria-labelledby="pendientes-tab">
+                        <br />
+                        <p-table [value]="ingresos_pendientes" dataKey="idsalida" [tableStyle]="{ 'min-width': '60rem' }" [expandedRowKeys]="expandedRows">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Numero
+                                            <p-columnFilter type="text" field="numerosalida" display="menu"></p-columnFilter>
+                                        </div>
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Fecha
+                                            <p-columnFilter type="date" field="fecha" display="menu"></p-columnFilter>
+                                        </div>
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Cliente
+                                            <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                        </div>
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Origen
+                                            <p-columnFilter type="text" field="codigo_almacen" display="menu"></p-columnFilter>
+                                        </div>
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Movilizador
+                                            <p-columnFilter type="text" field="movilizador" display="menu"></p-columnFilter>
+                                        </div>
+                                    </th>
+                                    <th pResizableColumn>
+                                        <div class="flex justify-content-center align-items-center">
+                                            Constancia
+                                        </div>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-ingresopendiente let-expanded="expanded">
+                                <tr>
+                                    <td>
+                                        <i class="bi bi-folder2-open" role='button' (click)="verIngresoPendiente(ingresopendiente.idsalida)"></i>
+                                    </td>
+                                    <td>
+                                        <p-button type="button" pRipple [pRowToggler]="ingresopendiente" [text]="true" [rounded]="true" [plain]="true" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
+                                    </td>
+                                    <td>{{ ingresopendiente.numerosalida }}</td>
+                                    <td>{{ingresopendiente.fecha | date:'dd/MM/yyyy'}}</td>
+                                    <td>{{ingresopendiente.cliente}}</td>
+                                    <td>{{ingresopendiente.codigo_almacen}}</td>
+                                    <td>{{ingresopendiente.movilizador}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-warning" (click)="verConstancia(ingresopendiente.codigo_salida)">Constancia</button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="rowexpansion" let-ingresopendiente>
+                                <tr>
+                                    <td colspan="7">
+                                        <div class="p-3">
+                                            <p-table [value]="ingresopendiente.chasis" dataKey="idsalida">
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+                                                        <th>Chasis</th>
+                                                        <th>Marca</th>
+                                                        <th>Modelo</th>
+                                                        <th>Color</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="body" let-chasis let-det="rowIndex">
+                                                    <tr>
+                                                        <td>{{ chasis.chasis }}</td>
+                                                        <td>{{ chasis.marca }}</td>
+                                                        <td>{{ chasis.modelo }}</td>
+                                                        <td>{{ chasis.color }}</td>
+                                                        <td>
+                                                            <button type="button" [ngClass]="{
+                                                                'btn-secondary': !verificarAccesorios(ingresopendiente.idsalida,det),
+                                                                'btn-success': verificarAccesorios(ingresopendiente.idsalida,det)
+                                                                }"
+                                                                class="btn" 
+                                                                (click)="prepararAccesoriosVehciulos(ingresopendiente.idsalida,det)">
+                                                                    <i *ngIf="verificarAccesorios(ingresopendiente.idsalida,det)" class="bi bi-hand-thumbs-up"></i>Acesorios
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="emptymessage">
+                                                    <tr>
+                                                        <td colspan="5">There are no order for this product yet.</td>
+                                                    </tr>
+                                                </ng-template>
+                                            </p-table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        
+                        
+                    </div>
+                    <div class="tab-pane fade" id="rechazados" role="tabpane2" aria-labelledby="rechazados-tab">
+                        rechazados
+                    </div>
+                </div>
+                
+                
+                <!--
+                <div class="list-group">
+                    <div class="list-group-item  list-group-item-dark">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                Numero/Cliente
+                            </div>
+                            <div class="col-lg-2">
+                                Fecha
+                            </div>
+                            <div class="col-lg-2">
+                                Rubro
+                            </div>
+                            <div class="col-lg-3">
+                                Referencia
+                            </div>
+                            <div class="col-lg-1">
+                                Cant. Manif.
+                            </div>
+                            <div class="col-lg-1">
+                                DUI
+                            </div>
+                        </div>
+                    </div>
+                    <ng-container *ngFor="let ingreso of ingresos | appFilter: filtro: '' | paginate: { itemsPerPage: items, currentPage: p, id: 'page' }">
+                        <a role="button" class="list-group-item list-group-item-action" (click)="abrirDetalle(ingreso.idingreso)">
+                            <div class="fw-bold">{{ingreso.numeroingreso}} <i *ngIf="!ingreso.acomodado" style="color: #dc3545" class="bi bi-exclamation-diamond"></i></div>
+                            <div class="row">
+                                <div class="col-lg-3 text-truncate">
+                                    <strong>{{ingreso.cliente}}</strong>
+                                </div>
+                                <div class="col-lg-2">
+                                    {{ingreso.fecha  | date:'dd/MM/yyyy'}}
+                                </div>
+                                <div class="col-lg-2 text-truncate">
+                                    {{ingreso.rubro_producto}}
+                                </div>
+                                <div class="col-lg-3 text-truncate">
+                                    {{ingreso.no_contrato}}
+                                </div>
+                                <div class="col-lg-1">
+                                    {{ingreso.piezas_manifestadas}}
+                                </div>
+                                <div class="col-lg-1">
+                                    {{ingreso.dui}}
+                                </div>
+                            </div>
+                        </a>
+                    </ng-container>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-10">
+                        <pagination-controls 
+                            (pageChange)="p = $event"  
+                            id="page"
+                            nextLabel="Sig"
+                            previousLabel="Ant"
+                            >
+                        </pagination-controls>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" [(ngModel)]="items" name="items" (change)="p=1">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+    </main>
+</div>
+
+<p-dialog 
+    header="Recepción de Ingreso" 
+    [modal]="true" 
+    [(visible)]="pendientes_visible" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '80vw' }" 
+    [closeOnEscape]="!procesando"
+    [closable]="!procesando"
+    >
+    
+    <div class="row" *ngIf="ingreso_pendiente">
+        <div class="col-md-3 mb-3">
+            <small class="text-primary">Numero</small>
+            <div>{{ingreso_pendiente.numerosalida}}</div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <small class="text-primary">Fecha</small>
+            <div>{{ingreso_pendiente.fecha | date:'dd/MM/yyyy'}}</div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <small class="text-primary">Cliente</small>
+            <div>{{ingreso_pendiente.cliente}}</div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <small class="text-primary">Origen</small>
+            <div>{{ingreso_pendiente.codigo_almacen}} {{ingreso_pendiente.almacen}}</div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <small class="text-primary">Movilizador</small>
+            <div>{{ingreso_pendiente.movilizador}}</div>
+        </div>
+    </div>
+    <hr />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" [disabled]="procesando" (click)="pendientes_visible=false">Close</button>
+        <button *ngIf="editar_ingresos" type="button" class="btn btn-danger" [disabled]="procesando" (click)="rechazarPendiente()">Rechazar</button>
+        <button *ngIf="editar_ingresos" type="button" class="btn btn-primary" [disabled]="procesando" (click)="aceptarPendiente()">Aceptar Recepción</button>
+    </div>
+</p-dialog>
+
+<div class="modal fade" id="nuevoIngreso" tabindex="-1" aria-labelledby="nuevoIngresoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoIngresoLabel">Nuevo Ingreso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <ng-select name="idcliente" id="idcliente" [(ngModel)]="idcliente" placeholder="Seleccione" (change)="verificarInerCompany()" [disabled]="tokenDetalle.idcliente_almacen!='cfcd208495d565ef66e7dff9f98764da'">
+                                <ng-container *ngFor="let entidad of entidades">
+                                    <ng-option *ngIf="entidad.idtipoentidad=='1'" [value]="entidad.id">{{entidad.entidad}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroridcliente" class="text-danger">Campo Requerido</small>
+                        </div>
+                    </div>
+		    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="flexCheckDefault" [checked]="es_vehiculo" (change)="es_vehiculo=!es_vehiculo">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Para veh&iacute;culos
+                        </label>
+                    </div>
+                    
+                    <div class="row" *ngIf="tiene_inter_company">
+                        <div class="col-12">
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="inter_company" [checked]="inter_company" (change)="inter_company = !inter_company; idcliente_destino=null">
+                                <label class="form-check-label" for="inter_company">Inter Company</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="inter_company">
+                        <div class="col-12 mb-3">
+                            <label for="idcliente_destino">Cliente Origen</label>
+                            <ng-select name="idcliente_destino" id="idcliente_destino" [(ngModel)]="idcliente_destino" placeholder="Seleccione" (change)="erroridcliente_destino=false;">
+                                <ng-container *ngFor="let entidad of entidades">
+                                    <ng-option *ngIf="entidad.idtipoentidad=='1' && entidades_destino.includes(entidad.id)" [value]="entidad.id">{{entidad.entidad}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroridcliente_destino" class="text-danger">Campo Requerido</small>
+                        </div>
+                    </div>
+                    
+                    
+                </form>  
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="crearIngreso()">Crear Ingreso</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-dialog 
+    header="Accesorios" 
+    [modal]="true" 
+    [(visible)]="accesorios_visible" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '80vw' }" 
+    >
+    <div>
+        <div class="row">
+            <div class="col-md-6">
+                <h3><strong>Chasis: </strong>{{chasis}}</h3>
+            </div>
+            <div class="col-md-6">
+                <h3><strong>Modelo: </strong>{{modelo}}</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h3><strong>Marca: </strong>{{marca}}</h3>
+            </div>
+            <div class="col-md-6">
+                <h3><strong>Color: </strong>{{color}}</h3>
+            </div>
+        </div>
+        <p-tabView>
+            <p-tabPanel header="Inventario">
+                <div class="row p-3">
+                    <div class="col-12">
+                        <label for="kilometraje">Kilometraje</label>
+                        <input type="text" class="form-control" id="kilometraje" name="kilometraje" [(ngModel)]="kilometraje" [disabled]="procesando || !editar_ingresos" >
+                    </div>
+                </div>
+                <hr />
+                <h4>Marque los elementos presentes en el veh&iacute;culo e indique la cantidad cuando aplique:</h4>
+                <div class="row p-3 g-3">
+                    <div *ngFor="let accesorio_vehiculo of accesorios_vehiculos" class="col-md-4">
+                        <div class="border rounded-3 p-3 d-flex justify-content-between">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="accesorio_vehiculo_{{accesorio_vehiculo.idaccesorios_vehiculos}}" [checked]="accesorio_vehiculo.marcado" (change)="accesorio_vehiculo.marcado=!accesorio_vehiculo.marcado" [disabled]="procesando || !editar_ingresos">
+                                <label class="form-check-label" for="accesorio_vehiculo_{{accesorio_vehiculo.idaccesorios_vehiculos}}">
+                                    {{accesorio_vehiculo.accesorios_vehiculos}}
+                                </label>
+                            </div>
+                            <div *ngIf="accesorio_vehiculo.marcado && accesorio_vehiculo.requiere_texto" class="form-floating">
+                                <input type="text" class="form-control" id="texto_accesorio_vehiculo_{{accesorio_vehiculo.idaccesorios_vehiculos}}" [(ngModel)]="accesorio_vehiculo.texto" placeholder="Especifique" [disabled]="procesando || !editar_ingresos">
+                                <label for="texto_accesorio_vehiculo_texto_{{accesorio_vehiculo.idaccesorios_vehiculos}}">Especifcique</label>
+                            </div>
+                            <input *ngIf="accesorio_vehiculo.marcado && accesorio_vehiculo.requiere_cantidad" class="form-control form-control-sm" [(ngModel)]="accesorio_vehiculo.cantidad" style="width: 100px" type="number" step="1" placeholder="Cantidad" id="cantidad_accesorio_vehiculo_{{accesorio_vehiculo.idaccesorios_vehiculos}}" [disabled]="procesando || !editar_ingresos">
+                        </div>
+
+                    </div>
+                </div>
+                <hr />
+                <div class="row p-3">
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="tiene_danios" [checked]="tiene_danios" (change)="tiene_danios=!tiene_danios" [disabled]="procesando || !editar_ingresos">
+                            <label class="form-check-label" for="tiene_danios">
+                                Da&ntilde;os
+                            </label>
+                        </div>
+                        <textarea autosize class="form-control" id="danios" name="danios" rows="3" placeholder="Describa los daños encontrados..." [(ngModel)]="danios" [disabled]="procesando || !editar_ingresos || !tiene_danios"></textarea>
+                    </div>
+                </div>
+                <div class="row p-3">
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="tiene_faltante" [checked]="tiene_faltante" (change)="tiene_faltante=!tiene_faltante" [disabled]="procesando || !editar_ingresos">
+                            <label class="form-check-label" for="tiene_faltante">
+                                Faltante
+                            </label>
+                        </div>
+                        <textarea autosize class="form-control" id="faltante" name="faltante" rows="3" placeholder="Describa los elementos faltantes..." [(ngModel)]="faltante" [disabled]="procesando || !editar_ingresos || !tiene_faltante"></textarea>
+                    </div>
+                </div>
+                
+                
+                
+            </p-tabPanel>
+            <p-tabPanel header="Camara">
+                <div>
+                    <select id="cameraSelect" class="form-select" [(ngModel)]="selectedDeviceId" (change)="cambiarCamara(videoModal, canvasModal)">
+                        <option *ngFor="let device of videoDevices" [value]="device.deviceId">
+                            {{ device.label || 'Cámara ' + device.deviceId }}
+                        </option>
+                    </select>
+                    <br />
+                    <div class="d-flex justify-content-center" [ngClass]="{ 'd-none': !mostrarVideo }">
+
+                        <video #videoModal 
+                            autoplay 
+                            muted
+                            playsinline
+                            webkit-playsinline
+                            class="video-fullscreen"></video>
+                    </div>
+                    <div class="d-flex justify-content-center" [ngClass]="{ 'd-none': !mostrarCanvas }">
+                        <canvas #canvasModal class="canvas-preview"></canvas>
+                    </div>
+                    <br />
+                    <div class="d-flex justify-content-between" *ngIf="!mostrarGuardarCancelar">
+                        <button type="button" class="btn btn-outline-primary" (click)="iniciarCamara(videoModal, canvasModal)" [disabled]="!botonIniciarHabilitado"><i class="bi bi-play-fill" style="font-size: 2rem;"></i></button>
+                        <button type="button" class="btn btn-outline-success" (click)="takePhoto(videoModal, canvasModal)" [disabled]="!botonFotoHabilitado"><i class="bi bi-camera" style="font-size: 2rem;"></i></button>
+                        <button type="button" class="btn btn-outline-success" (click)="toggleTorch()" [disabled]="!botonFotoHabilitado || !isTorchSupported"><i class="bi" [ngClass]="torchOn ? 'bi-lightbulb-fill' : 'bi-lightbulb'" style="font-size: 2rem;"></i></button>
+                        <button type="button" class="btn btn-outline-danger" (click)="detenerCamara()" [disabled]="!botonDetenerHabilitado"><i class="bi bi-stop-fill" style="font-size: 2rem;"></i></button>
+                    </div>
+                    <div class="d-flex justify-content-between" *ngIf="mostrarGuardarCancelar">
+                        <button 
+                            type="button" 
+                            class="btn btn-outline-secondary" 
+                            (click)="cancelarFoto()">
+                            <i class="bi bi-x"></i>
+                        </button>
+
+                        <button 
+                            type="button" 
+                            class="btn btn-outline-success" 
+                            (click)="guardarImagen()">
+                            <i class="bi bi-check"></i>
+                        </button>
+                    </div>       
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Galeria">
+                <p>
+                    <p-galleria 
+                        [value]="images" 
+                        [showItemNavigators]="true" 
+                        [showThumbnails]="false" 
+                        [showIndicators]="true" 
+                        [showIndicatorsOnItem]="true" 
+                        [responsiveOptions]="responsiveOptions" 
+                        [containerStyle]="{ 'max-width': '640px' }"
+                        >
+                            <ng-template pTemplate="item" let-item>
+                                <img [src]="item.itemImageSrc" style="width: 100%;" />
+                            </ng-template>
+                        <!--
+                            <ng-template pTemplate="thumbnail" let-item>
+                                <div class="grid grid-nogutter justify-content-center">
+                                    <img [src]="item.thumbnailImageSrc" />
+                                </div>
+                            </ng-template>
+                        -->
+                    </p-galleria>
+                </p>
+            </p-tabPanel>
+        </p-tabView>
+        
+                
+
+    </div>
+    
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" [disabled]="procesando" (click)="accesorios_visible=false">Close</button>
+        <button type="button" *ngIf="editar_ingresos" [disabled]="procesando" class="btn btn-primary" (click)="aceptarAccesorios()">Guardar</button>
+    </div>
+</p-dialog>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

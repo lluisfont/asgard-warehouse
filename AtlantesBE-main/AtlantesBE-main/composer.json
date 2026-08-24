@@ -1,0 +1,26 @@
+{
+    "require": {
+        "slim/slim": "^4.0",
+        "slim/psr7": "^1.0",
+        "firebase/php-jwt": "^6.0",
+        "mpdf/mpdf": "^8.0",
+        "phpoffice/phpspreadsheet": "^1.8",
+        "sendgrid/sendgrid": "~7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6"
+    },
+    "autoload": {
+        "classmap": ["lib/piramide-uploader"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "php scripts/strip-phpunit-eager-load.php"
+        ]
+    }
+}

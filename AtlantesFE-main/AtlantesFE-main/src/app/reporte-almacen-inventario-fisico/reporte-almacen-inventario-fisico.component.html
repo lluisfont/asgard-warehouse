@@ -1,0 +1,223 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="5.17"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Inventario F&iacute;sico</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_reporte_almacen_inventario_fisico" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <ng-select name="idcliente" id="idcliente" [items]="entidades" 
+                            bindLabel="entidad" 
+                            bindValue="id"
+                            placeholder="Todos"
+                        [(ngModel)]="idcliente">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechainicial" class="form-label text-secondary small">Desde</label>
+                        <input type="date" class="form-control" id="fechainicial" name="fechainicial" max="{{fechafinal}}" [(ngModel)]="fechainicial" >
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechafinal" class="form-label text-secondary small">Hasta</label>
+                        <input type="date" class="form-control" id="fechafinal" name="fechafinal" min="{{fechainicial}}" [(ngModel)]="fechafinal" >
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+                
+                <p-table *ngIf="reporte.length>0" [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Nro
+                                    <p-columnFilter type="text" field="numero" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha de Inventario
+                                    <p-columnFilter type="date" field="fecha" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Diferencia Items
+                                    <p-columnFilter type="text" field="diferencia" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Total items
+                                    <p-columnFilter type="numeric" field="total_items" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Total Cantidad
+                                    <p-columnFilter type="numeric" field="total_cantidad" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Codigo
+                                    <p-columnFilter type="text" field="codigo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Serie
+                                    <p-columnFilter type="text" field="serie" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Descripci&oacute;n
+                                    <p-columnFilter type="text" field="descripcion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ubicacion
+                                    <p-columnFilter type="text" field="ubicacion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    UM
+                                    <p-columnFilter type="text" field="embalaje" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cantidad Sistema
+                                    <p-columnFilter type="numeric" field="cantidad" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cantidad Real
+                                    <p-columnFilter type="numeric" field="cantidad_real" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Dif Cant
+                                    <p-columnFilter type="numeric" field="diferencia_cantidad" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    ERI
+                                    <p-columnFilter type="numeric" field="diferencia_porcentaje" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Asignado
+                                    <p-columnFilter type="text" field="asignado" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Apoya
+                                    <p-columnFilter type="text" field="apoyo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha y hora de inicio
+                                    <p-columnFilter type="date" field="fecha_inicio" display="menu">
+                                        <!--
+                                        <ng-template pTemplate="filter" let-filter>
+                                            <p-calendar [(ngModel)]="filter.value" (onSelect)="filter.filter($event)"
+                                                        dateFormat="yy-mm-dd" [showIcon]="true"></p-calendar>
+                                        </ng-template>
+                                        -->
+                                    </p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha y hora de fin
+                                    <p-columnFilter type="date" field="fecha_fin" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Status
+                                    <p-columnFilter type="text" field="status" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Categor&iacute;a
+                                    <p-columnFilter type="text" field="categoria" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-inventario>
+                        <tr>
+                            <td>{{inventario.numero}}</td>
+                            <td>{{inventario.fecha | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{inventario.cliente}}</td>
+                            <td>{{inventario.diferencia}}</td>
+                            <td>{{inventario.total_items}}</td>
+                            <td>{{inventario.total_cantidad}}</td>
+                            <td>{{inventario.codigo}}</td>
+                            <td>{{inventario.serie}}</td>
+                            <td>{{inventario.descripcion}}</td>
+                            <td>{{inventario.ubicacion}}</td>
+                            <td>{{inventario.embalaje}}</td>
+                            <td>{{inventario.cantidad}}</td>
+                            <td>{{inventario.cantidad_real}}</td>
+                            <td>{{inventario.diferencia_cantidad}}</td>
+                            <td>{{inventario.diferencia_porcentaje}}</td>
+                            <td>{{inventario.asignado}}</td>
+                            <td>{{inventario.apoyo}}</td>
+                            <td>{{inventario.fecha_inicio | date: 'dd/MM/yyyy HH:mm'}}</td>
+                            <td>{{inventario.fecha_fin | date: 'dd/MM/yyyy HH:mm'}}</td>
+                            <td>{{inventario.status}}</td>
+                            <td>{{inventario.categoria}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="21">No existen registros</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+                
+                
+            </div>
+        </div>
+    </main>
+</div>

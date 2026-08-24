@@ -1,0 +1,183 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="8.2"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Dashboard Monitoreo de Centros</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_dashboard_monitoreo_centros" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <ng-select name="idcliente" id="idcliente" [items]="entidades" 
+                            bindLabel="entidad" 
+                            bindValue="id_num"
+                            placeholder="Seleccione"
+                            (change)="error_idcliente=false"
+                            [(ngModel)]="idcliente">
+                        </ng-select>
+                        <small *ngIf="error_idcliente" class="text-danger">Campo Requerido</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <p-selectButton 
+                            [options]="tiposFiltro" 
+                            [(ngModel)]="tipo_filtro" 
+                            optionLabel="label" 
+                            optionValue="value" />
+                    </div>
+                </div>
+                        
+                <div class="row" *ngIf="tipo_filtro==1">
+                    <div class="col-md-4 mb-3">
+                        <label for="idinventariofisico" class="form-label text-secondary small">No de Inventario</label>
+                        <input type="number" step="1" class="form-control" id="idinventariofisico" name="idinventariofisico" [(ngModel)]="idinventariofisico" (change)="error_idinventariofisico=false;" >
+                        <small *ngIf="error_idinventariofisico" class="text-danger">Campo Requerido</small>
+                    </div>
+                </div>
+                <ng-container *ngIf="tipo_filtro==2">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="fechainicial" class="form-label text-secondary small">Desde</label>
+                            <input type="date" class="form-control" id="fechainicial" name="fechainicial" max="{{fechafinal}}" [(ngModel)]="fechainicial" (change)="error_fechainicial=false" >
+                            <small *ngIf="error_fechainicial" class="text-danger">Campo Requerido</small>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="fechafinal" class="form-label text-secondary small">Hasta</label>
+                            <input type="date" class="form-control" id="fechafinal" name="fechafinal" min="{{fechainicial}}" [(ngModel)]="fechafinal" (change)="error_fechafinal=false;" >
+                            <small *ngIf="error_fechafinal" class="text-danger">Campo Requerido</small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="idciudad" class="form-label text-secondary small">Ciudad</label>
+                            <p-multiSelect 
+                                styleClass="w-100"
+                                [options]="ciudades" 
+                                [(ngModel)]="idciudad" 
+                                optionLabel="ciudad" 
+                                optionValue="idciudad" 
+                                placeholder="Todas"
+                                (onChange)="setAlmacenes()"
+                                />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="idalmacen" class="form-label text-secondary small">Almacen</label>
+                            <p-multiSelect 
+                                styleClass="w-100"
+                                [options]="almacenes_mostrar" 
+                                [(ngModel)]="idalmacen" 
+                                optionLabel="codigo_y_almacen" 
+                                optionValue="idalmacen" 
+                                placeholder="Todas"
+                                
+                                />
+                        </div>
+                            
+                    </div>
+                </ng-container>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarDashBoard();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <ng-container *ngFor="let cuadro of cuadros">
+                        <div class="col-md-3 card ms-3 me-3" [class]="cuadro.colores">
+                            <div class="card-body mt-3" role="button" (click)="verDetalle(cuadro.id)">
+                                <div class="d-flex justify-content-center"><i class="bi {{cuadro.icono}}" style="font-size: 2rem;"></i></div>
+                                <div class="d-flex justify-content-center">{{cuadro.nombre}}</div>
+                                <div class="d-flex justify-content-center fw-bold">{{cuadro.cantidad}}</div>
+                            </div>
+                        </div>
+                    </ng-container>
+                        
+                </div>
+            </div>
+        </div>
+        
+        <p-dialog header="{{detalle_cabecera}}" [modal]="true" [(visible)]="detalle_visible" [style]="{ width: '75rem' }">
+            
+            <p-table [value]="detalle" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                >
+                <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                        <!--<button type="button" (click)="exportPdf()" class="btn btn-danger mb-3"><i class="bi bi-file-earmark-pdf"></i></button>-->
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pResizableColumn>
+                            <div class="flex justify-content-center align-items-center">
+                                Almacen
+                                <p-columnFilter type="text" field="almacen" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th pResizableColumn>
+                            <div class="flex justify-content-center align-items-center">
+                                Almacen Conteo
+                                <p-columnFilter type="text" field="almacen_conteo" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th pResizableColumn>
+                            <div class="flex justify-content-center align-items-center">
+                                Usuario Conteo
+                                <p-columnFilter type="text" field="usuario_conteo" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th pResizableColumn>
+                            <div class="flex justify-content-center align-items-center">
+                                Chasis
+                                <p-columnFilter type="text" field="serie" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th pResizableColumn>
+                            <div class="flex justify-content-center align-items-center">
+                                Descripci&oacute;n
+                                <p-columnFilter type="text" field="descripcion" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th pResizableColumn>
+                            <div class="flex justify-content-center align-items-center">
+                                No Inventario
+                                <p-columnFilter type="numeric" field="idinventariofisico" display="menu"></p-columnFilter>
+                            </div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-detalles>
+                    <tr>
+                        <td>{{detalles.almacen}}</td>
+                        <td>{{detalles.almacen_conteo}}</td>
+                        <td>{{detalles.usuario_conteo}}</td>
+                        <td>{{detalles.serie}}</td>
+                        <td>{{detalles.descripcion}}</td>
+                        <td>{{detalles.idinventariofisico}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="6">No existen registros</td>
+                    </tr>
+                </ng-template>
+
+            </p-table>
+            
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary" (click)="detalle_visible=false">Close</button>
+            </div>
+        </p-dialog>
+        
+    </main>
+</div>

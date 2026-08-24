@@ -1,0 +1,19 @@
+.no-border {
+    border: 0;
+    box-shadow: none; /* You may want to include this as bootstrap applies these styles too */
+}
+
+.modal_90 {
+    width: 90% !important;
+    height: 90% !important;
+    margin: 0 auto;
+}
+
+.vh-70 {
+    height: 60vh !important;
+}
+
+.cursor_pointer{
+    cursor: pointer;
+}
+

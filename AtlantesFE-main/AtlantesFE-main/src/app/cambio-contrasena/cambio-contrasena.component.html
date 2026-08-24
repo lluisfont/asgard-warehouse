@@ -1,0 +1,22 @@
+<div class="row mb-3">
+    <div class="col-md-12">
+        <label for="contrasenaactual" class="form-label text-secondary small">Contrase&ntilde;a Actual</label>
+        <input type="password" class="form-control" id="contrasenaactual" name="contrasenaactual" [(ngModel)]="contrasenaactual" (change)="errorcontrasenaactual=false" [disabled]="bloqueoProceso" />
+        <small *ngIf="errorcontrasenaactual" class="text-danger">{{mensajecontrasenaactual}}</small>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-12">
+        <label for="contrasena1" class="form-label text-secondary small">Nueva Contrase&ntilde;a</label>
+        <input type="password" class="form-control" id="contrasena1" name="contrasena1" [(ngModel)]="contrasena1" (input)="validarContrasena()" [disabled]="bloqueoProceso" />
+        <small *ngIf="errorcontrasena1" class="text-danger" [innerHTML]="mensajeerrorcontrasena1"></small>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-12">
+        <label for="contrasena2" class="form-label text-secondary small">Repita Nueva Contrase&ntilde;a</label>
+        <input type="password" class="form-control" id="contrasena2" name="contrasena2" [(ngModel)]="contrasena2" (input)="validarContrasena()" [disabled]="bloqueoProceso" />
+        <small *ngIf="errorcontrasena2" class="text-danger">No coincide</small>
+    </div>
+</div>
+<button type="button" class="btn btn-primary" [disabled]="!contrasena_valida || bloqueoProceso" (click)="cambiarContrasena();">Actualizar Contrase&ntilde;a</button>

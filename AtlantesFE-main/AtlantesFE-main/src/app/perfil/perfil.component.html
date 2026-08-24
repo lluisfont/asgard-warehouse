@@ -1,0 +1,104 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Perfil de Usuario</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div class="card-body" *ngIf="usuario">
+                <br />
+                <div class="row mb-3">
+                    <div class="col-md-7">
+                        <label for="nombre" class="form-label text-secondary small">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="usuario.nombre" (change)="errornombre=false" />
+                        <small *ngIf="errornombre" class="text-danger">Campo Obligatorio</small>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="tipousuario" class="form-label text-secondary small">Tipo de Usuario</label>
+                        <input type="text" class="form-control" id="tipousuario" name="tipousuario" [(ngModel)]="usuario.tipousuario" disabled />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="email" class="form-label text-secondary small">Correo Electr&oacute;nico</label>
+                        <input type="text" class="form-control" id="email" name="email" [(ngModel)]="usuario.email" (change)="erroremail=false" />
+                        <small *ngIf="erroremail" class="text-danger">{{mensajeerroremail}}</small>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="ci" class="form-label text-secondary small">Documento de Identidad</label>
+                        <input type="text" class="form-control" id="ci" name="ci" [(ngModel)]="usuario.ci" />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="telefono" class="form-label text-secondary small">Tel&eacute;fono</label>
+                        <input type="text" class="form-control" id="telefono" name="telefono" [(ngModel)]="usuario.telefono" />
+                    </div>                            
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="empresa" class="form-label text-secondary small">Empresa</label>
+                        <input type="text" class="form-control" id="empresa" name="empresa" [(ngModel)]="usuario.empresa" disabled />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="ciudad" class="form-label text-secondary small">Ciudad</label>
+                        <input type="text" class="form-control" id="ciudad" name="ciudad" [(ngModel)]="usuario.ciudad" disabled />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="almacen" class="form-label text-secondary small">Almacen</label>
+                        <input type="text" class="form-control" id="almacen" name="almacen" [(ngModel)]="usuario.almacen" disabled />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="username" class="form-label text-secondary small">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" [(ngModel)]="usuario.username" disabled />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-primary" (click)="saveUsuario()">Guardar</button>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ventanaUsuario">Cambiar Contrase&ntilde;a</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+</div>
+
+
+<div class="modal" id="ventanaUsuario" tabindex="-1" aria-labelledby="ventanaUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaUsuarioLabel">Cambiar Contrase&ntilde;a</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <app-cambio-contrasena (exitoCambioContrasena)="cambiarContrasena($event)"></app-cambio-contrasena>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

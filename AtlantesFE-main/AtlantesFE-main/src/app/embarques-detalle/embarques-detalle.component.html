@@ -1,0 +1,2277 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="2.2"></app-menulateral>
+    <main id="main" class="main" *ngIf="embarque">
+        <div class="pagetitle">
+            <!--<h1>Embarques</h1>-->
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/embarques']">Embarques</a></li>
+                    <li claass="breadcrumb-item active" aria-current="page">{{embarque.embarque}} - {{embarque.cliente}}</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_embarques" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <button type="button" class="btn btn-outline-success col-10 col-xl-6" (click)="generarCaratula();"><span class="iconoboton">Caratula</span><span class="textoboton">Generar Caratula</span></button>
+                    </div>
+                    <div class="col-md-4 mb-3 text-center">
+                        <button *ngIf="editar_embarques" type="button" class="btn btn-outline-primary col-10 col-xl-6" (click)="duplicarEmbarque()">Duplicar</button>
+                    </div>
+                    <div class="col-md-4 mb-3 text-end" *ngIf="!embarque.finalizado && editar_embarques">
+                        <button type="button" class="btn btn-warning col-10 col-xl-6" data-bs-toggle="modal" data-bs-target="#confirmarFanilizar">Finalizar</button>
+                    </div>
+                </div>
+            
+                <hr />
+                <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">General</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="entidades-tab" data-bs-toggle="tab" data-bs-target="#entidades" type="button" role="tab" aria-controls="entidades" aria-selected="false">Entidades</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="ruta-tab" data-bs-toggle="tab" data-bs-target="#ruta" type="button" role="tab" aria-controls="ruta" aria-selected="false">Ruta</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="cargos-tab" data-bs-toggle="tab" data-bs-target="#cargos" type="button" role="tab" aria-controls="cargos" aria-selected="false">Cargos</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="costos-tab" data-bs-toggle="tab" data-bs-target="#costos" type="button" role="tab" aria-controls="costos" aria-selected="false">Costos</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="agente-tab" data-bs-toggle="tab" data-bs-target="#agente" type="button" role="tab" aria-controls="agente" aria-selected="false">Agente</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="balance-tab" data-bs-toggle="tab" data-bs-target="#balance" type="button" role="tab" aria-controls="balance" aria-selected="false">Balance</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="eventos-tab" data-bs-toggle="tab" data-bs-target="#eventos" type="button" role="tab" aria-controls="eventos" aria-selected="false">Eventos</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="adjuntos-tab" data-bs-toggle="tab" data-bs-target="#adjuntos" type="button" role="tab" aria-controls="adjuntos" aria-selected="false">Adjuntos</button>
+                    </li>
+                    <li *ngIf="tokenDetalle.contabilidad" class="nav-item" role="presentation">
+                        <button class="nav-link" id="documentos-tab" data-bs-toggle="tab" data-bs-target="#documentos" type="button" role="tab" aria-controls="documentos" aria-selected="false">Documentos</button>
+                    </li>
+                    <li *ngIf="tokenDetalle.contabilidad" class="nav-item" role="presentation">
+                        <button class="nav-link" id="contabilidad-tab" data-bs-toggle="tab" data-bs-target="#contabilidad" type="button" role="tab" aria-controls="contabilidad" aria-selected="false">Contabilidad</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <!--
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="numeroguia" name="numeroguia" [(ngModel)]="embarque.numeroguia" placeholder="No de Guia">
+                                    <label for="numeroguia">No de Guia</label>
+                                </div>
+                                -->
+                                <label for="numeroguia" class="form-label text-secondary small">No de Guia</label>
+                                <input type="text" class="form-control" id="numeroguia" name="numeroguia" [(ngModel)]="embarque.numeroguia" (input)="embarque.numeroguia = embarque.numeroguia.toUpperCase()" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_numeroguia=false" />
+                                <small *ngIf="error_numeroguia" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <!--
+                                <div class="form-floating  mb-3">
+                                    <ng-select name="idciudad" id="idciudad" [items]="ciudades" 
+                                        bindLabel="ciudad" 
+                                        bindValue="idciudad" 
+                                    [(ngModel)]="embarque.idciudad">
+                                    </ng-select>
+                                    <label for="idciudad">Lugar de realizaci&oacute;n</label>
+                                </div>
+                                -->
+                                <label for="idciudad" class="form-label text-secondary small">Lugar de realizaci&oacute;n</label>
+                                <ng-select name="idciudad" id="idciudad" [items]="ciudades" 
+                                    bindLabel="ciudad" 
+                                    bindValue="idciudad"
+                                    placeholder="Seleccione"
+                                    [disabled]="true"
+                                [(ngModel)]="embarque.idciudad">
+                                </ng-select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="usuario" class="form-label text-secondary small">Realizado por</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="embarque.nombre" disabled>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="fecharealizacion" class="form-label text-secondary small">Fecha de Realizaci&oacute;n</label>
+                                <input type="date" class="form-control" id="fecharealizacion" name="fecharealizacion" [(ngModel)]="embarque.fecharealizacion" disabled>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="noidentificacion" class="form-label text-secondary small">No de Identificaci&oacute;n/Ref.</label>
+                                <input type="text" class="form-control" id="noidentificacion" name="noidentificacion" [(ngModel)]="embarque.noidentificacion" (input)="embarque.noidentificacion = embarque.noidentificacion.toUpperCase()" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_noidentificacion=false" >
+                                <small *ngIf="error_noidentificacion" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                            <!--
+                            <div class="col-md-4 mb-3">
+                                <label for="valordeclarado" class="form-label text-secondary small">Valor Declarado</label>
+                                <input type="text" class="form-control" id="valordeclarado" name="valordeclarado" [(ngModel)]="embarque.valordeclarado" [readonly]="embarque.finalizado">
+                            </div>
+                            -->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="descripcioncarga" class="form-label text-secondary small">Descripci&oacute;n de la Carga</label>
+                                <!--<div class="form-control" contentEditable [textContent]="embarque.descripcioncarga" (input)="embarque.descripcioncarga=$event.target.textContent">{{embarque.descripcioncarga}}</div>-->
+                                <textarea autosize class="form-control" id="descripcioncarga" name="descripcioncarga" rows="3" [(ngModel)]="embarque.descripcioncarga" (input)="embarque.descripcioncarga = embarque.descripcioncarga.toUpperCase()" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_descripcioncarga=false"></textarea>
+                                <small *ngIf="error_descripcioncarga" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="peso" class="form-label text-secondary small">Peso (Kg)</label>
+                                <input type="number" class="form-control" id="peso" name="peso" [(ngModel)]="embarque.peso" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_peso=false">
+                                <small *ngIf="error_peso" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="volumen" class="form-label text-secondary small">Volumen</label>
+                                <input type="text" class="form-control" id="volumen" name="volumen" [(ngModel)]="embarque.volumen" [disabled]="embarque.finalizado || !editar_embarques">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="piezas" class="form-label text-secondary small">Piezas</label>
+                                <input type="number" class="form-control" id="piezas" name="piezas" [(ngModel)]="embarque.piezas" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_piezas=false">
+                                <small *ngIf="error_piezas" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="idtipobulto" class="form-label text-secondary small">Unidad</label>
+                                <ng-select name="idtipobulto" id="idtipobulto" [items]="tipos_bulto" 
+                                    bindLabel="tipobulto" 
+                                    bindValue="idtipobulto" 
+                                    placeholder="Seleccione"
+                                    [disabled]="embarque.finalizado || !editar_embarques"
+                                    (change)="error_idtipobulto=false"
+                                [(ngModel)]="embarque.idtipobulto">
+                                </ng-select>
+                                <small *ngIf="error_idtipobulto" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div *ngIf="tokenDetalle.asgard_operaciones" class="col-md-4 mb-3">
+                                <label for="carpetapacena" class="form-label text-secondary small">Carpeta Pace&ntilde;a</label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="carpetapacena" name="carpetapacena" [(ngModel)]="embarque.carpetapacena" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_carpetapacena=false">
+                                    <button *ngIf="!embarque.finalizado && editar_embarques" class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="buscarAsgard()"><i class="bi bi-search"></i></button>
+                                </div>
+                                <small *ngIf="error_carpetapacena" class="text-danger">Debe tener al menos 10 caracteres</small>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="nodui" class="form-label text-secondary small">No DIM</label>
+                                <input type="text" class="form-control" id="nodui" name="nodui" [(ngModel)]="embarque.nodui" [disabled]="embarque.finalizado || !editar_embarques">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="idincoterms" class="form-label text-secondary small">Incoterms</label>
+                                <ng-select name="idincoterms" id="idincoterms" [items]="incoterms" 
+                                    bindLabel="incoterms" 
+                                    bindValue="idincoterms" 
+                                    placeholder="Seleccione"
+                                    [disabled]="embarque.finalizado || !editar_embarques"
+                                    (change)="error_idincoterms=false"
+                                [(ngModel)]="embarque.idincoterms">
+                                </ng-select>
+                                <small *ngIf="error_idincoterms" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8"></div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="servicio_logistico" [checked]="embarque.servicio_logistico" (change)="embarque.servicio_logistico=!embarque.servicio_logistico" [disabled]="embarque.finalizado || !editar_embarques">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Servicio Log&iacute;stico
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <button *ngIf="!embarque.finalizado && editar_embarques" type="button" class="btn btn-primary" (click)="saveGeneral()">Guardar</button>
+                    </div>
+                    <div class="tab-pane fade" id="entidades" role="tabpane2" aria-labelledby="entidades-tab">
+                        <br />
+                        
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label for="idexpedidor" class="form-label text-secondary small"><strong>Expedidor</strong></label>
+                                <ng-select [(ngModel)]="embarque.idexpedidor" (change)="getDireccionesExpedidor();" placeholder="[Ninguno]" [disabled]="embarque.finalizado || !editar_embarques">
+                                    <ng-container *ngFor="let entidad of entidades">
+                                        <ng-option *ngIf="entidad.idtipoentidad!='4'" [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                                <small *ngIf="error_idexpedidor" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                            <div class="col-md-7" *ngIf="entidades && embarque.idexpedidor!=null && embarque.idexpedidor!='0-0'">
+                                <label for="idexpedidordireccion" class="form-label text-secondary small">Direccion</label>
+                                <ng-select [(ngModel)]="embarque.idexpedidordireccion" placeholder="[Ninguno]" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_idexpedidordireccion=false">
+                                    <ng-container *ngFor="let direccion of entidades[indiceexpedidor].direcciones">
+                                        <ng-option [value]="direccion.identidaddireccion">{{direccion.direccion}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                                <small *ngIf="error_idexpedidordireccion" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label for="idultimoconsignatario" class="form-label text-secondary small"><strong>Ultimo Consignatario</strong></label>
+                                <ng-select [(ngModel)]="embarque.idultimoconsignatario" (change)="getDireccionesUltimoConsignatario();" placeholder="[Ninguno]" [disabled]="embarque.finalizado || !editar_embarques">
+                                    <ng-container *ngFor="let entidad of entidades">
+                                        <ng-option *ngIf="entidad.idtipoentidad!='4'" [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                                <small *ngIf="error_idultimoconsignatario" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                            <div class="col-md-7" *ngIf="entidades && embarque.idultimoconsignatario!=null && embarque.idultimoconsignatario!='0-0'">
+                                <label for="idultimoconsignatariodireccion" class="form-label text-secondary small">Direccion</label>
+                                <ng-select [(ngModel)]="embarque.idultimoconsignatariodireccion" placeholder="[Ninguno]" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_idultimoconsignatariodireccion=false">
+                                    <ng-container *ngFor="let direccion of entidades[indiceultimoconsignatario].direcciones">
+                                        <ng-option [value]="direccion.identidaddireccion">{{direccion.direccion}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                                <small *ngIf="error_idultimoconsignatariodireccion" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                        </div>
+                        <br />
+                        <!--
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label for="idultimoconsignatario" class="form-label text-secondary small"><strong>Entidad a Notificar</strong></label>
+                                <ng-select [(ngModel)]="embarque.identidadnotificar" (change)="getDireccionesEntidadNotificar();" placeholder="[Ninguno]" [readonly]="embarque.finalizado">
+                                    <ng-container *ngFor="let entidad of entidades">
+                                        <ng-option *ngIf="entidad.idtipoentidad!='4'" [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                            </div>
+                            <div class="col-md-7" *ngIf="entidades && embarque.identidadnotificar!=null && embarque.identidadnotificar!='0-0'">
+                                <label for="identidadnotificardireccion" class="form-label text-secondary small">Direccion</label>
+                                <ng-select [(ngModel)]="embarque.identidadnotificardireccion" placeholder="[Ninguno]" [readonly]="embarque.finalizado">
+                                    <ng-container *ngFor="let direccion of entidades[indiceentidadnotificar].direcciones">
+                                        <ng-option [value]="direccion.identidaddireccion">{{direccion.direccion}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label for="idagentecarga" class="form-label text-secondary small"><strong>Agente de Carga</strong></label>
+                                <ng-select [(ngModel)]="embarque.idagentecarga" (change)="getDireccionesAgenteCarga();" placeholder="[Ninguno]" [readonly]="embarque.finalizado">
+                                    <ng-container *ngFor="let entidad of entidades">
+                                        <ng-option *ngIf="entidad.idtipoentidad=='5' || entidad.idtipoentidad=='0'" [value]="entidad.id">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                            </div>
+                            <div class="col-md-7" *ngIf="entidades && embarque.idagentecarga!=null && embarque.idagentecarga!=0">
+                                <label for="idagentecargadireccion" class="form-label text-secondary small">Direccion</label>
+                                <ng-select [(ngModel)]="embarque.idagentecargadireccion" placeholder="[Ninguno]" [readonly]="embarque.finalizado">
+                                    <ng-container *ngFor="let direccion of entidades[indiceagentecarga].direcciones">
+                                        <ng-option [value]="direccion.identidaddireccion">{{direccion.direccion}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label for="idagentedestino" class="form-label text-secondary small"><strong>Agente de Destino</strong></label>
+                                <ng-select [(ngModel)]="embarque.idagentedestino" (change)="getDireccionesAgenteDestino();" placeholder="[Ninguno]" [readonly]="embarque.finalizado">
+                                    <ng-container *ngFor="let entidad of entidades">
+                                        <ng-option *ngIf="entidad.idtipoentidad=='5' || entidad.idtipoentidad=='0'" [value]="entidad.id">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                            </div>
+                            <div class="col-md-7" *ngIf="entidades && embarque.idagentedestino!=null && embarque.idagentedestino!=0">
+                                <label for="idagentedestinodireccion" class="form-label text-secondary small">Direccion</label>
+                                <ng-select [(ngModel)]="embarque.idagentedestinodireccion" placeholder="[Ninguno]" [readonly]="embarque.finalizado">
+                                    <ng-container *ngFor="let direccion of entidades[indiceagentedestino].direcciones">
+                                        <ng-option [value]="direccion.identidaddireccion">{{direccion.direccion}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                            </div>
+                        </div>
+                        -->
+                        <br />
+                        <!--
+                        <div class="accordion" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                        Expedidor
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <label for="idexpedidor" class="form-label text-secondary small">Nombre</label>
+                                                <ng-select [(ngModel)]="embarque.idexpedidor" (change)="getDireccionesExpedidor();" placeholder="[Ninguno]">
+                                                    <ng-container *ngFor="let entidad of entidades">
+                                                        <ng-option *ngIf="entidad.idtipoentidad!='4'" [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                                    </ng-container>
+                                                </ng-select>
+                                            </div>
+                                            <div class="col-md-7" *ngIf="entidades && embarque.idexpedidor!=null && embarque.idexpedidor!='0-0'">
+                                                <label for="idexpedidordireccion" class="form-label text-secondary small">Direccion</label>
+                                                <ng-select [(ngModel)]="embarque.idexpedidordireccion" placeholder="[Ninguno]">
+                                                    <ng-container *ngFor="let direccion of entidades[indiceexpedidor].direcciones">
+                                                        <ng-option [value]="direccion.identidaddireccion">{{direccion.direccion}}</ng-option>
+                                                    </ng-container>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                                  Accordion Item #2
+                                </button>
+                              </h2>
+                              <div id="panelsStayOpen-collapseTwo" class="accordion-collapse" aria-labelledby="panelsStayOpen-headingTwo">
+                                <div class="accordion-body">
+                                  <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                </div>
+                              </div>
+                            </div>
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                                  Accordion Item #3
+                                </button>
+                              </h2>
+                              <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
+                                <div class="accordion-body">
+                                  <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          -->
+                        <!--       
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <h5 class="card-header">Expedidor</h5>
+                                    <div class="card-body">
+                                        <label for="idexpedidor" class="form-label">Nombre</label>
+                                        <ng-select [(ngModel)]="embarque.idexpedidor" (change)="getDireccionesExpedidor();">
+                                            <ng-container *ngFor="let entidad of entidades">
+                                                <ng-option *ngIf="entidad.idtipoentidad!='4'" [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                            </ng-container>
+                                        </ng-select>
+                                        <span *ngIf="entidades && embarque.idexpedidor!=null && embarque.idexpedidor!='0-0'">
+                                            <label for="idexpedidordireccion" class="form-label">Direccion</label>
+                                            <ng-select [(ngModel)]="embarque.idexpedidordireccion">
+                                                <ng-container *ngFor="let direccion of entidades[indiceexpedidor].direcciones">
+                                                    <ng-option [value]="direccion.identidaddireccion">{{direccion.direccion}}</ng-option>
+                                                </ng-container>
+                                            </ng-select>
+                                        </span>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <h5 class="card-header">Ultimo Consignatario</h5>
+                                    <div class="card-body">
+                                        <label for="idultimoconsignatario" class="form-label">Nombre</label>
+                                        <ng-select [(ngModel)]="embarque.idultimoconsignatario" (change)="getDireccionesUltimoConsignatario();">
+                                            <ng-container *ngFor="let entidad of entidades">
+                                                <ng-option *ngIf="entidad.idtipoentidad!='4'" [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                            </ng-container>
+                                        </ng-select>
+                                        <span *ngIf="entidades && embarque.idultimoconsignatario!=null && embarque.idultimoconsignatario!='0-0'">
+                                            <label for="idultimoconsignatariodireccion" class="form-label">Direccion</label>
+                                            <ng-select [(ngModel)]="embarque.idultimoconsignatariodireccion">
+                                                <ng-container *ngFor="let direccion of entidades[indiceultimoconsignatario].direcciones">
+                                                    <ng-option [value]="direccion.identidaddireccion">{{direccion.direccion}}</ng-option>
+                                                </ng-container>
+                                            </ng-select>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <h5 class="card-header">Entidad a Notificar</h5>
+                                    <div class="card-body">
+                                        <label for="idultimoconsignatario" class="form-label">Nombre</label>
+                                        <ng-select [(ngModel)]="embarque.identidadnotificar" (change)="getDireccionesEntidadNotificar();">
+                                            <ng-container *ngFor="let entidad of entidades">
+                                                <ng-option *ngIf="entidad.idtipoentidad!='4'" [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                            </ng-container>
+                                        </ng-select>
+                                        <span *ngIf="entidades && embarque.identidadnotificar!=null && embarque.identidadnotificar!='0-0'">
+                                            <label for="identidadnotificardireccion" class="form-label">Direccion</label>
+                                            <ng-select [(ngModel)]="embarque.identidadnotificardireccion">
+                                                <ng-container *ngFor="let direccion of entidades[indiceentidadnotificar].direcciones">
+                                                    <ng-option [value]="direccion.identidaddireccion">{{direccion.direccion}}</ng-option>
+                                                </ng-container>
+                                            </ng-select>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <h5 class="card-header">Agente de Carga</h5>
+                                    <div class="card-body">
+                                        <label for="idagentecarga" class="form-label">Nombre</label>
+                                        <ng-select [(ngModel)]="embarque.idagentecarga" (change)="getDireccionesAgenteCarga();">
+                                            <ng-container *ngFor="let entidad of entidades">
+                                                <ng-option *ngIf="entidad.idtipoentidad=='5' || entidad.idtipoentidad=='0'" [value]="entidad.id">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                            </ng-container>
+                                        </ng-select>
+                                        <span *ngIf="entidades && embarque.idagentecarga!=null && embarque.idagentecarga!=0">
+                                            <label for="idagentecargadireccion" class="form-label">Direccion</label>
+                                            <ng-select [(ngModel)]="embarque.idagentecargadireccion">
+                                                <ng-container *ngFor="let direccion of entidades[indiceagentecarga].direcciones">
+                                                    <ng-option [value]="direccion.identidaddireccion">{{direccion.direccion}}</ng-option>
+                                                </ng-container>
+                                            </ng-select>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <h5 class="card-header">Agente de Destino</h5>
+                                    <div class="card-body">
+                                        <label for="idagentedestino" class="form-label">Agente de Destino</label>
+                                        <ng-select [(ngModel)]="embarque.idagentedestino" (change)="getDireccionesAgenteDestino();">
+                                            <ng-container *ngFor="let entidad of entidades">
+                                                <ng-option *ngIf="entidad.idtipoentidad=='5' || entidad.idtipoentidad=='0'" [value]="entidad.id">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                            </ng-container>
+                                        </ng-select>
+                                        <span *ngIf="entidades && embarque.idagentedestino!=null && embarque.idagentedestino!=0">
+                                            <label for="idagentedestinodireccion" class="form-label">Direccion</label>
+                                            <ng-select [(ngModel)]="embarque.idagentedestinodireccion">
+                                                <ng-container *ngFor="let direccion of entidades[indiceagentedestino].direcciones">
+                                                    <ng-option [value]="direccion.identidaddireccion">{{direccion.direccion}}</ng-option>
+                                                </ng-container>
+                                            </ng-select>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        <button *ngIf="!embarque.finalizado && editar_embarques" type="button" class="btn btn-primary" (click)="saveEntidades()">Guardar</button>
+                    </div>
+                    <div class="tab-pane fade" id="ruta" role="tabpane3" aria-labelledby="ruta-tab">
+                        <br />
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="idmediotransporte" class="form-label text-secondary small">Tipo de Transporte</label>
+                                <ng-select [(ngModel)]="embarque.idmediotransporte" placeholder="Seleccione" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_idmediotransporte=false">
+                                    <ng-container *ngFor="let mediotransporte of mediostransporte">
+                                        <ng-option *ngIf="mediotransporte.parametrizacion || mediotransporte.idmediotransporte==embarque.idmediotransporte" [value]="mediotransporte.idmediotransporte">{{mediotransporte.mediotransporte}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                                <small *ngIf="error_idmediotransporte" class="text-danger">Campo Obligatorio</small>
+                                <!--
+                                
+                                <ng-select name="idmediotransporte" id="idmediotransporte" [items]="mediostransporte" 
+                                    bindLabel="mediotransporte" 
+                                    bindValue="idmediotransporte" 
+                                    placeholder="Seleccione"
+                                    [readonly]="embarque.finalizado"
+                                [(ngModel)]="embarque.idmediotransporte">
+                                </ng-select>
+                                -->
+                                <!--<input type="text" class="form-control" id="idmediotransporte">-->
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="idtipocarga" class="form-label text-secondary small">Tipo de Carga</label>
+                                <ng-select [(ngModel)]="embarque.idtipocarga" name="idtipocarga" id="idtipocarga" placeholder="Seleccione" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_idtipocarga=false">
+                                    <ng-container *ngFor="let tipocarga of tiposcarga">
+                                        <ng-option *ngIf="tipocarga.activo==1 || tipocarga.idtipocarga==embarque.idtipocarga" [value]="tipocarga.idtipocarga">{{tipocarga.tipocarga}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                                <small *ngIf="error_idtipocarga" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                            <div class="col-md-5 mb-3">
+                                <label for="idtransportista" class="form-label text-secondary small">Transportista</label>
+                                <ng-select [(ngModel)]="embarque.idtransportista" placeholder="Seleccione" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_idtransportista=false">
+                                    <ng-container *ngFor="let entidad of entidades">
+                                        <ng-option *ngIf="entidad.idtipoentidad=='4' || entidad.idtipoentidad=='0'" [value]="entidad.id">{{entidad.entidad}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                                <small *ngIf="error_idtransportista" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="numerovehiculo" class="form-label text-secondary small">N&uacute;mero de veh&iacute;culo</label>
+                                <input type="text" class="form-control" id="numerovehiculo" name="numerovehiculo" [(ngModel)]="embarque.numerovehiculo" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_numerovehiculo=false">
+                                <small *ngIf="error_numerovehiculo" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="idsalida" class="form-label text-secondary small">Lugar Origen</label>
+                                <ng-select name="idsalida" id="idsalida" [items]="ciudades" 
+                                    bindLabel="ciudad" 
+                                    bindValue="idciudad" 
+                                    placeholder="Seleccione"
+                                    [disabled]="embarque.finalizado || !editar_embarques"
+                                    (change)="error_idsalida=false"
+                                [(ngModel)]="embarque.idsalida">
+                                </ng-select>
+                                <small *ngIf="error_idsalida" class="text-danger">Campo Obligatorio</small>
+                                <!--<input type="text" class="form-control" id="idsalida">-->
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="fechasalida" class="form-label text-secondary small">Fecha de Cargu&iacute;o</label>
+                                <input type="date" class="form-control" id="fechasalida" name="fechasalida" [(ngModel)]="embarque.fechasalida" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_fechasalida=false">
+                                <small *ngIf="error_fechasalida" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="idarribo" class="form-label text-secondary small">Lugar Destino</label>
+                                <ng-select name="idarribo" id="idarribo" [items]="ciudades" 
+                                    bindLabel="ciudad" 
+                                    bindValue="idciudad" 
+                                    placeholder="Seleccione"
+                                    [disabled]="embarque.finalizado || !editar_embarques"
+                                    (change)="error_idarribo=false"
+                                [(ngModel)]="embarque.idarribo">
+                                </ng-select>
+                                <small *ngIf="error_idarribo" class="text-danger">Campo Obligatorio</small>
+                                <!--<input type="text" class="form-control" id="idarribo">-->
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="fechaarribo" class="form-label text-secondary small">Fecha de Descargu&iacute;o</label>
+                                <input type="date" class="form-control" id="fechaarribo" name="fechaarribo" [(ngModel)]="embarque.fechaarribo" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_fechaarribo=false">
+                                <small *ngIf="error_fechaarribo" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                        </div>
+                        <!--
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="idorigen" class="form-label text-secondary small">Origen</label>
+                                <ng-select name="idorigen" id="idorigen" [items]="ciudades" 
+                                    bindLabel="ciudad" 
+                                    bindValue="idciudad" 
+                                    placeholder="Seleccione"
+                                    [readonly]="embarque.finalizado"
+                                [(ngModel)]="embarque.idorigen">
+                                </ng-select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="iddestino" class="form-label text-secondary small">Destino</label>
+                                <ng-select name="iddestino" id="iddestino" [items]="ciudades" 
+                                    bindLabel="ciudad" 
+                                    bindValue="idciudad" 
+                                    placeholder="Seleccione"
+                                    [readonly]="embarque.finalizado"
+                                [(ngModel)]="embarque.iddestino">
+                                </ng-select>
+                            </div>
+                        </div>
+                        -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="idhorario" class="form-label text-secondary small">Horario de Atenci&oacute;n</label>
+                                <ng-select name="idhorario" id="idhorario" [items]="horarios" 
+                                    bindLabel="horario" 
+                                    bindValue="idhorario" 
+                                    placeholder="Seleccione"
+                                    [disabled]="embarque.finalizado || !editar_embarques"
+                                    (change)="error_idhorario=false"
+                                [(ngModel)]="embarque.idhorario">
+                                </ng-select>
+                                <small *ngIf="error_idhorario" class="text-danger">Campo Obligatorio</small>
+                                <!--<input type="text" class="form-control" id="idorigen">-->
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="idtemperatura" class="form-label text-secondary small">Temperatura</label>
+                                <!--
+                                <ng-select name="idtemperatura" id="idtemperatura" [items]="temperaturas" 
+                                    bindLabel="temperatura" 
+                                    bindValue="idtemperatura" 
+                                    placeholder="Seleccione"
+                                    [readonly]="embarque.finalizado"
+                                    (change)="error_idtemperatura=false"
+                                [(ngModel)]="embarque.idtemperatura">
+                                </ng-select>
+                                -->
+                                <ng-select [(ngModel)]="embarque.idtemperatura" name="idtemperatura" id="idtemperatura" placeholder="Seleccione" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_idtemperatura=false">
+                                    <ng-container *ngFor="let temperatura of temperaturas">
+                                        <ng-option *ngIf="temperatura.activo==1 || temperatura.idtemperatura==embarque.idtemperatura" [value]="temperatura.idtemperatura">{{temperatura.temperatura}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                                <small *ngIf="error_idtemperatura" class="text-danger">Campo Obligatorio</small>
+                                <!--<input type="text" class="form-control" id="iddestino">-->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="numero_precinto" class="form-label text-secondary small">N&uacute;mero de precinto</label>
+                                <input type="text" class="form-control" id="numero_precinto" name="numero_precinto" [(ngModel)]="embarque.numero_precinto" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_numero_precinto=false">
+                                <small *ngIf="error_numero_precinto" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="estibadoresSLG" class="form-label text-secondary small">Solo Estibadores SLG</label>
+                                <input type="number" step="1" class="form-control" id="estibadoresSLG" name="estibadoresSLG" [(ngModel)]="embarque.estibadoresSLG" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_estibadoresSLG=false">
+                                <small *ngIf="error_estibadoresSLG" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="estibadores" class="form-label text-secondary small">Estibadores con Transporte SLG</label>
+                                <input type="number" step="1" class="form-control" id="estibadores" name="estibadores" [(ngModel)]="embarque.estibadores" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_estibadores=false">
+                                <small *ngIf="error_estibadores" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="costo_operador_transporte" class="form-label text-secondary small">Costo Operador Transporte</label>
+                                <input type="number" class="form-control" id="costo_operador_transporte" name="costo_operador_transporte" [(ngModel)]="embarque.costo_operador_transporte" [disabled]="embarque.finalizado || !editar_embarques" (change)="error_costo_operador_transporte=false">
+                                <small *ngIf="error_costo_operador_transporte" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                        </div>
+                        <button *ngIf="!embarque.finalizado && editar_embarques" type="button" class="btn btn-primary" (click)="saveRuta()">Guardar</button>
+                    </div>
+                    <div class="tab-pane fade" id="cargos" role="tabpane4" aria-labelledby="cargos-tab">
+                        <br />
+                        <div class="row" *ngIf="!embarque.finalizado && editar_embarques">
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-outline-success col-12" (click)="obtenerCargosParametrizados()">Cargos Parametrizados</button>
+                            </div>
+                            <div class="col-md-6">&nbsp;</div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-outline-primary col-12" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',0,false)">Agregar Cargo</button>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm table-hover">
+                                <thead>
+                                    <tr class="table-light">
+                                        <th scope="col">Concepto</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">Precio</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Divisa</th>
+                                        <th scope="col">Destinatario</th>
+                                        <th scope="col">Glosa</th>
+                                        <th scope="col" *ngIf="tokenDetalle.contabilidad">Factura Proveedor/Agente</th>
+                                        <th scope="col" *ngIf="tokenDetalle.contabilidad">Tipo de documento para el cobro</th>
+                                        <th scope="col">Usuario que registro el cobro</th>
+                                        <th scope="col">Fecha de registro</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let cargo of embarque.cargos; let indice = index">
+                                        <tr [class.table-warning] = "cargo.idcargo < 0" role="button" *ngIf="!cargo.esagente">
+                                            <th scope="row" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.concepto_ovp}}</th>
+                                            <td class="text-end" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.cantidad | number:'0.2-2'}}</td>
+                                            <td class="text-end" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.monto | number:'0.2-2'}}</td>
+                                            <td class="text-end" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.cantidad*cargo.monto | number:'0.2-2'}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.codigodivisa}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.destinatario}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.notas}}</td>
+                                            <td *ngIf="tokenDetalle.contabilidad" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.factura}}</td>
+                                            <td *ngIf="tokenDetalle.contabilidad" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.destinocargo}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.usuario}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.created_at | date:'dd/MM/yy HH:mm'}}</td>
+                                            <!--<td><i class="bi bi-pencil-square" role="button" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto"></i></td>-->
+                                            <td><i *ngIf="!cargo.tienedocumento && !embarque.finalizado && editar_embarques" class="bi bi-x-circle-fill" role="button" data-bs-toggle="modal" data-bs-target="#confirmarEliminarCargoCosto" (click)="prepararEliminar('0',cargo.idcargo)"></i></td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--<button *ngIf="!embarque.finalizado" type="button" class="btn btn-primary" (click)="saveCargos()">Guardar</button>-->
+                    </div>
+                    <div class="tab-pane fade" id="costos" role="tabpane5" aria-labelledby="costos-tab">
+                        <br />
+                        <div class="row" *ngIf="!embarque.finalizado && editar_embarques">
+                            <div class="col-md-9"></div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-outline-primary col-12" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',0,false)">Agregar Costo</button>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm table-hover">
+                                <thead>
+                                    <tr class="table-light">
+                                        <th scope="col">Concepto</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">Precio</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Divisa</th>
+                                        <th scope="col">Destinatario</th>
+                                        <th scope="col">Glosa</th>
+                                        <th *ngIf="tokenDetalle.contabilidad" scope="col">Factura Proveedor/Agente</th>
+                                        <th *ngIf="tokenDetalle.contabilidad" scope="col">Nota de Entrega</th>
+                                        <th scope="col">Usuario que registro el pago</th>
+                                        <th scope="col">Fecha de registro</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let costo of embarque.costos">
+                                        <tr [class.table-warning] = "costo.idcosto < 0" role="button" *ngIf="!costo.esagente">
+                                            <th scope="row" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.concepto_ovp}}</th>
+                                            <td class="text-end" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.cantidad | number:'0.2-2'}}</td>
+                                            <td class="text-end" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.monto | number:'0.2-2'}}</td>
+                                            <td class="text-end" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.cantidad*costo.monto | number:'0.2-2'}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.codigodivisa}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.destinatario}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.notas}}</td>
+                                            <td *ngIf="tokenDetalle.contabilidad" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.factura}}</td>
+                                            <td *ngIf="tokenDetalle.contabilidad" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.nota_entrega}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.usuario}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.created_at | date:'dd/MM/yy HH:mm'}}</td>
+                                            <td><i *ngIf="!costo.tienedocumento && !embarque.finalizado && editar_embarques" class="bi bi-x-circle-fill" role="button" data-bs-toggle="modal" data-bs-target="#confirmarEliminarCargoCosto" (click)="prepararEliminar('1',costo.idcosto)"></i></td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--<button *ngIf="!embarque.finalizado" type="button" class="btn btn-primary" (click)="saveCostos()">Guardar</button>-->
+                    </div>
+                    <div class="tab-pane fade" id="agente" role="tabpane6" aria-labelledby="agente-tab">
+                        <br />
+                        <div class="row">
+                            <div class="col-md-9 text-primary pagetitle"><h1>1. CARGOS</h1></div>
+                            <div class="col-md-3" *ngIf="!embarque.finalizado && editar_embarques">
+                                <button type="button" class="btn btn-outline-primary col-12" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',0,true)">Agregar Cargo</button>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-sm">
+                                <thead>
+                                    <tr class="table-light">
+                                        <th scope="col">Concepto</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">Precio</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Divisa</th>
+                                        <th scope="col">Destinatario</th>
+                                        <th scope="col">Glosa</th>
+                                        <th *ngIf="tokenDetalle.contabilidad" scope="col">Factura Proveedor/Agente</th>
+                                        <th *ngIf="tokenDetalle.contabilidad" scope="col">Tipo de documento para el cobro</th>
+                                        <th scope="col">Usuario que registro el cobro</th>
+                                        <th scope="col">Fecha de registro</th>
+                                        <!--<th scope="col"></th>-->
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let cargo of embarque.cargos">
+                                        <tr [class.table-warning] = "cargo.idcargo < 0" role="button" *ngIf="cargo.esagente">
+                                            <th scope="row" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.concepto_ovp}}</th>
+                                            <td class="text-end" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.cantidad | number:'0.2-2'}}</td>
+                                            <td class="text-end" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.monto | number:'0.2-2'}}</td>
+                                            <td class="text-end" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.cantidad*cargo.monto | number:'0.2-2'}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.codigodivisa}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.destinatario}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.notas}}</td>
+                                            <td *ngIf="tokenDetalle.contabilidad" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.factura}}</td>
+                                            <td *ngIf="tokenDetalle.contabilidad" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.destinocargo}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.usuario}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('0',cargo.idcargo,cargo.esagente)">{{cargo.created_at | date:'dd/MM/yy HH:mm'}}</td>
+                                            <!--<td><i class="bi bi-pencil-square" role="button" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto"></i></td>-->
+                                            <td><i *ngIf="!cargo.tienedocumento && !embarque.finalizado && editar_embarques" class="bi bi-x-circle-fill" role="button" data-bs-toggle="modal" data-bs-target="#confirmarEliminarCargoCosto" (click)="prepararEliminar('0',cargo.idcargo)"></i></td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-9 text-primary pagetitle"><h1>2. COSTOS</h1></div>
+                            <div class="col-md-3" *ngIf="!embarque.finalizado && editar_embarques">
+                                <button type="button" class="btn btn-outline-primary col-12" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',0,true)">Agregar Costo</button>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-sm">
+                                <thead>
+                                    <tr class="table-light">
+                                        <th scope="col">Concepto</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">Precio</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Divisa</th>
+                                        <th scope="col">Destinatario</th>
+                                        <th scope="col">Glosa</th>
+                                        <th *ngIf="tokenDetalle.contabilidad" scope="col">Factura Proveedor/Agente</th>
+                                        <th *ngIf="tokenDetalle.contabilidad" scope="col">Nota de Entrega</th>
+                                        <th scope="col">Usurio que registro el pago</th>
+                                        <th scope="col">Fecha de registro</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let costo of embarque.costos">
+                                        <tr [class.table-warning] = "costo.idcosto < 0" role="button" *ngIf="costo.esagente">
+                                            <th scope="row" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.concepto_ovp}}</th>
+                                            <td class="text-end" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.cantidad | number:'0.2-2'}}</td>
+                                            <td class="text-end" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.monto | number:'0.2-2'}}</td>
+                                            <td class="text-end" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.cantidad*costo.monto | number:'0.2-2'}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.codigodivisa}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.destinatario}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.notas}}</td>
+                                            <td *ngIf="tokenDetalle.contabilidad" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.factura}}</td>
+                                            <td *ngIf="tokenDetalle.contabilidad" data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.nota_entrega}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.usuario}}</td>
+                                            <td data-bs-toggle="modal" data-bs-target="#ventanaCargoCosto" (click)="prepararDatos('1',costo.idcosto,costo.esagente)">{{costo.created_at | date:'dd/MM/yy HH:mm'}}</td>
+                                            <td><i *ngIf="!costo.tienedocumento && !embarque.finalizado && editar_embarques" class="bi bi-x-circle-fill" role="button" data-bs-toggle="modal" data-bs-target="#confirmarEliminarCargoCosto" (click)="prepararEliminar('1',costo.idcosto)"></i></td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--<button *ngIf="!embarque.finalizado" type="button" class="btn btn-primary" (click)="saveCargosCostosAgente()">Guardar</button>-->
+                    </div>
+                    <div class="tab-pane fade" id="balance" role="tabpane7" aria-labelledby="balance-tab">
+                        <br />
+                        <div class="pagetitle"><h1>CARGOS</h1></div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm table-hover">
+                                <thead>
+                                    <tr class="table-light">
+                                        <th scope="col">Concepto</th>
+                                        <th scope="col">Monto (BOB)</th>
+                                        <th scope="col">Monto (USD)</th>
+                                        <th scope="col">Documento</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let cargo of embarque.cargos">
+                                        <tr *ngIf="!cargo.esagente && (cargo.idestadofacturanotadebito==1 || !tokenDetalle.contabilidad)">
+                                            <th scope="row">{{cargo.concepto}}</th>
+                                            <td class="text-end">{{cargo.cantidad*cargo.monto*cargo.tipocambio | number:'0.2-2'}}</td>
+                                            <td class="text-end">{{cargo.cantidad*cargo.monto*cargo.tipocambious | number:'0.2-2'}}</td>
+                                            <td>{{cargo.documento}} {{cargo.facturanotadebito}}</td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row">TOTAL</th>
+                                        <td class="text-end fw-bold">{{ getSumContabilidad('cargos', false, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambio') | number:'0.2-2' }}</td>
+                                        <td class="text-end fw-bold">{{ getSumContabilidad('cargos', false, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambious') | number:'0.2-2' }}</td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <br />
+                        <div class="pagetitle"><h1>COSTOS</h1></div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm table-hover">
+                                <thead>
+                                    <tr class="table-light">
+                                        <th scope="col">Concepto</th>
+                                        <th scope="col">Monto (BOB)</th>
+                                        <th scope="col">Monto (USD)</th>
+                                        <th scope="col">Documento</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let costo of embarque.costos">
+                                        <tr *ngIf="!costo.esagente && (costo.idestadofacturanotadebito==1 || !tokenDetalle.contabilidad)">
+                                            <th scope="row">{{costo.concepto}}</th>
+                                            <td class="text-end">{{costo.cantidad*costo.monto*costo.tipocambio | number:'0.2-2'}}</td>
+                                            <td class="text-end">{{costo.cantidad*costo.monto*costo.tipocambious | number:'0.2-2'}}</td>
+                                            <td>{{costo.documento}} {{costo.facturanotadebito}}</td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row">TOTAL</th>
+                                        <td class="text-end fw-bold">{{ getSumContabilidad('costos', false, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambio') | number:'0.2-2' }}</td>
+                                        <td class="text-end fw-bold">{{ getSumContabilidad('costos', false, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambious') | number:'0.2-2' }}</td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <br />
+                        <div class="pagetitle"><h1>BALANCE</h1></div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm table-hover">
+                                <thead>
+                                    <tr class="table-secondary">
+                                        <th scope="row" class="fs-4">TOTAL</th>
+                                        <td class="fs-4 text-end fw-bold">BOB {{ getSumContabilidad('cargos', false, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambio')-getSumContabilidad('costos', false, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambio') | number:'0.2-2' }}</td>
+                                        <td class="fs-4 text-end fw-bold">USD {{ getSumContabilidad('cargos', false, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambious')-getSumContabilidad('costos', false, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambious') | number:'0.2-2' }}</td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <hr />
+                        <br />
+                        <div class="pagetitle"><h1>CARGOS AGENTE</h1></div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm table-hover">
+                                <thead>
+                                    <tr class="table-light">
+                                        <th scope="col">Concepto</th>
+                                        <th scope="col">Monto (BOB)</th>
+                                        <th scope="col">Monto (USD)</th>
+                                        <th scope="col">Documento</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let cargo of embarque.cargos">
+                                        <tr *ngIf="cargo.esagente && (cargo.idestadofacturanotadebito==1 || !tokenDetalle.contabilidad)">
+                                            <th scope="row">{{cargo.concepto}}</th>
+                                            <td class="text-end">{{cargo.cantidad*cargo.monto*cargo.tipocambio | number:'0.2-2'}}</td>
+                                            <td class="text-end">{{cargo.cantidad*cargo.monto*cargo.tipocambious | number:'0.2-2'}}</td>
+                                            <td>{{cargo.documento}} {{cargo.facturanotadebito}}</td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row">TOTAL</th>
+                                        <td class="text-end fw-bold">{{ getSumContabilidad('cargos', true, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambio') | number:'0.2-2' }}</td>
+                                        <td class="text-end fw-bold">{{ getSumContabilidad('cargos', true, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambious') | number:'0.2-2' }}</td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <br />
+                        <div class="pagetitle"><h1>COSTOS AGENTE</h1></div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm table-hover">
+                                <thead>
+                                    <tr class="table-light">
+                                        <th scope="col">Concepto</th>
+                                        <th scope="col">Monto (BOB)</th>
+                                        <th scope="col">Monto (USD)</th>
+                                        <th scope="col">Documento</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let costo of embarque.costos">
+                                        <tr *ngIf="costo.esagente && (costo.idestadofacturanotadebito==1 || !tokenDetalle.contabilidad)">
+                                            <th scope="row">{{costo.concepto}}</th>
+                                            <td class="text-end">{{costo.cantidad*costo.monto*costo.tipocambio | number:'0.2-2'}}</td>
+                                            <td class="text-end">{{costo.cantidad*costo.monto*costo.tipocambious | number:'0.2-2'}}</td>
+                                            <td>{{costo.documento}} {{costo.facturanotadebito}}</td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row">TOTAL</th>
+                                        <td class="text-end fw-bold">{{ getSumContabilidad('costos', true, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambio') | number:'0.2-2' }}</td>
+                                        <td class="text-end fw-bold">{{ getSumContabilidad('costos', true, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambious') | number:'0.2-2' }}</td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <br />
+                        <div class="pagetitle"><h1>BALANCE AGENTE</h1></div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm table-hover">
+                                <thead>
+                                    <tr class="table-secondary">
+                                        <th scope="row" class="fs-4">TOTAL</th>
+                                        <td class="fs-4 text-end fw-bold">BOB {{ getSumContabilidad('cargos', true, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambio')-getSumContabilidad('costos', true, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambio') | number:'0.2-2' }}</td>
+                                        <td class="fs-4 text-end fw-bold">USD {{ getSumContabilidad('cargos', true, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambious')-getSumContabilidad('costos', true, null, null, (tokenDetalle.contabilidad ? 1 : null), 'tipocambious') | number:'0.2-2' }}</td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="eventos" role="tabpane8" aria-labelledby="eventos-tab">
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-8 col-md-6">
+                                <button *ngIf="!embarque.finalizado && editar_embarques" type="button" class="btn btn-outline-primary col-lg-3 col-md-12" data-bs-toggle="modal" data-bs-target="#ventanaEvento" (click)="ventanaAgregarEvento()">Agregar Evento</button>
+                                <br />
+                                <br />
+                                <small *ngIf="errorenviarmaileventos" class="text-danger">No hay eventos nuevos para ser enviados</small>
+                                <div class="list-group mb-3">
+                                    <li [class.input-new] = "evento.idevento < 0" *ngFor="let evento of embarque.eventos" class="list-group-item list-group-item-action" role="button" (click)="ventanaEditarEvento(evento.idevento)">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">{{evento.tipoevento}} <i *ngIf="evento.enviado" class="bi bi-send-check-fill"></i></h5>
+                                            <small class="text-muted">{{evento.fechaplanificada | date:'dd/MM/yyyy'}}</small>
+                                        </div>
+                                        <p [ngClass]="evento.con_observacion ? 'mb-1 text-danger' : 'mb-1'"><span *ngIf="evento.con_observacion">{{evento.eventodescripcion}} </span>{{evento.evento}}</p>
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <small class="text-muted">{{evento.nombre}}</small>
+                                            <i *ngIf="!evento.enviado && !embarque.finalizado && editar_embarques" class="bi bi-x-circle-fill" role="button" (click)="ventanaEliminarEvento(evento.idevento,$event)"></i>
+                                        </div>
+                                    </li>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="pagetitle"><h1>Correos</h1></div>
+                                <small *ngIf="errorenviarmaileventoscorreos" class="text-danger">Debe haber al menos un correo</small>
+                                <div class="row" *ngFor="let correoembarque of embarque.correosembarque; let indice = index">
+                                    <div class="col-10 mb-1">
+                                        <input type="text" class="form-control form-control-sm col-12" [class.input-new] = "correoembarque.idcorreosembarque < 0" name="correo-{{correoembarque.idcorreosembarque}}" [(ngModel)]="correoembarque.correo" [disabled]="embarque.finalizado || !editar_embarques" >
+                                        <small *ngIf="correosconerror.indexOf(indice) > -1" class="text-danger">Correo invalido</small>
+                                    </div>
+                                    <div class="col-2 mb-1">
+                                        <i *ngIf="!embarque.finalizado && editar_embarques" class="bi bi-x-circle-fill" role="button" (click)="eliminarCorreo(correoembarque.idcorreosembarque)"></i>
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="!embarque.finalizado && editar_embarques">
+                                    <div class="col-8 mb-1">
+                                        <button type="button" class="btn btn-outline-secondary" (click)="agregarCorreo()">Agregar Correo</button>
+                                    </div>
+                                    <div class="col-4 mb-1">
+
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row" *ngIf="!embarque.finalizado && editar_embarques">
+                                    <div class="col-12 mb-1">
+                                        <button type="button" class="btn btn-outline-info col-12" (click)="enviarMailEventos()">Enviar Correo</button>
+                                    </div>
+                                </div>
+                                <hr />
+                            </div>
+                        </div>
+                        <button *ngIf="!embarque.finalizado && editar_embarques" type="button" class="btn btn-primary" (click)="saveEventos()">Guardar</button>
+                    </div>
+                    <div class="tab-pane fade" id="adjuntos" role="tabpane9" aria-labelledby="adjuntos-tab">
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="pagetitle"><h1>Documentos Adjuntos:</h1></div>
+                                <div class="list-group">
+                                    <li role="button" *ngFor="let documento of embarque.documentosembarque; let indice = index" class="list-group-item list-group-item-action d-flex" (click)="downloadDocumento(indice)">
+                                        {{documento.documento}}
+                                        <div role="button" class="ms-auto bd-highlight">
+                                            <i *ngIf="!embarque.finalizado && editar_embarques" class="bi bi-x-circle-fill" role="button" (click)="ventanaEliminarDocumento(indice,$event)"></i>
+                                        </div>
+                                    </li>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-6" *ngIf="!embarque.finalizado && editar_embarques">
+                                <div class="pagetitle"><h1>Subir Documento:</h1></div>
+                                <input class="form-control" type="file" name="fileUpload" id="fileUpload" #UploadFileInput (change)="fileChangeEvent($event)" multiple >
+                                <small *ngIf="errorarchivo" class="text-danger">Campo requerido</small>
+                                <br />
+                                <br />
+                                <button type="button" class="btn btn-outline-primary col-md-6" (click)="validarDocumento()">Cargar documento</button>
+                            </div>
+
+                        </div>
+                        <div *ngIf="erroresdocumento.length>0" class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <h4 class="alert-heading">Advertencia</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <p>No se pudieron cargar todos los documentos.</p>
+                            <hr>
+                            <ul>
+                                <li *ngFor="let errordocumento of erroresdocumento"><strong>{{errordocumento.name}}:</strong> {{errordocumento.mensaje}}</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div *ngIf="tokenDetalle.contabilidad" class="tab-pane fade" id="documentos" role="tabpane10" aria-labelledby="documentos-tab">
+                        <br />
+                        <div class="row" *ngIf="!embarque.finalizado && editar_embarques">
+                            <div class="col-lg-9 col-md-6"></div>
+                            <div class="col-lg-3 col-md-6">
+                                <!--
+                                <p-splitButton 
+                                    label="Nuevo Documento" 
+                                    outlined 
+                                    size="sm"
+                                    [model]="items_documentos" />
+                                -->
+                                
+                                
+                                
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-primary dropdown-toggle col-12" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Nuevo Documento
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li role="button" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#ventanaNuevaFactura" (click)="prepararFactura(0)">Factura</li>
+                                        <li role="button" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#ventanaNuevaNotaCobranza" (click)="prepararNC()">Nota de Cobranza</li>
+                                        <li role="button" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#ventanaNuevaInvoice" (click)="prepararInvoice(0)">Invoice</li>
+                                        <li role="button" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#ventanaNuevaPlanilla" (click)="prepararPlanilla()">Planilla</li>
+                                        <li role="button" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#ventanaNuevaOrdenPago" (click)="prepararOP()">Orden de Pago</li>
+                                        <li role="button" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#ventanaNuevoPagoAgente" (click)="prepararPA()">Pago Agente</li>
+                                        <li role="button" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#ventanaNuevaOrdenServicio" (click)="prepararOS('i')">Orden de Servicio Ingreso</li>
+                                        <li role="button" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#ventanaNuevaOrdenServicio" (click)="prepararOS('e')">Orden de Servicio Egreso</li>
+                                    </ul>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="list-group mb-3">
+                            <ng-container *ngFor="let factura of embarque.facturas">
+                                <li *ngIf="factura.idestado!=3" role="button" class="list-group-item list-group-item-action" (click)="downloadFactura(factura.idfactura)">
+                                    <div class="row">
+                                        <div class="col-md-4"><strong>Factura {{factura.numero}}</strong></div>
+                                        <div class="col-md-3">{{factura.fecha | date:'dd.MM.yyyy'}}</div>
+                                        <div class="col-md-3">BOB {{factura.monto | number:'0.2-2'}}</div>
+                                        <div class="col-md-2 d-flex">
+                                            {{factura.estado}}
+                                            <div role="button" class="ms-auto bd-highlight" (click)="downloadFacturaMembretada(factura.idfactura,$event)"><i class="bi bi-file-earmark-ruled"></i></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li *ngIf="factura.idestado==3" role="button" class="list-group-item list-group-item-action bg-warning" data-bs-toggle="modal" data-bs-target="#ventanaNuevaFactura" (click)="prepararFactura(factura.idfactura)">
+                                    <div class="row">
+                                        <div class="col-md-4"><strong>Factura {{factura.numero}}</strong></div>
+                                        <div class="col-md-3">{{factura.fecha | date:'dd.MM.yyyy'}}</div>
+                                        <div class="col-md-3">BOB {{factura.monto | number:'0.2-2'}}</div>
+                                        <div class="col-md-2 d-flex">{{factura.estado}}</div>
+                                    </div>
+                                </li>
+                            </ng-container>
+                                
+                            <li role="button" *ngFor="let notacobranza of embarque.notascobranza" class="list-group-item list-group-item-action" (click)="downloadNC(notacobranza.idnotadebito)">
+                                <div class="row">
+                                    <div class="col-md-4"><strong>Nota de Cobranza {{notacobranza.numero}}</strong></div>
+                                    <div class="col-md-3">{{notacobranza.fecha | date:'dd.MM.yyyy'}}</div>
+                                    <div class="col-md-3">BOB {{notacobranza.monto | number:'0.2-2'}}</div>
+                                    <div class="col-md-2 d-flex">
+                                        {{notacobranza.estado}}
+                                        <div role="button" class="ms-auto bd-highlight" (click)="downloadNCMembretada(notacobranza.idnotadebito,$event)"><i class="bi bi-file-earmark-ruled"></i></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li role="button" *ngFor="let facturapago of embarque.facturaspago" class="list-group-item list-group-item-action" (click)="downloadOrdenPago(facturapago.idfacturapago)">
+                                <div class="row">
+                                    <div class="col-md-4"><strong>{{facturapago.tipodocumento}} {{facturapago.numero}}</strong></div>
+                                    <div class="col-md-3">{{facturapago.fecha | date:'dd.MM.yyyy'}}</div>
+                                    <div class="col-md-3">BOB {{facturapago.monto | number:'0.2-2'}}</div>
+                                    <div class="col-md-2">{{facturapago.estado}}</div>
+                                </div>
+                            </li>
+                            <li role="button" *ngFor="let planilla of embarque.planillas" class="list-group-item list-group-item-action" (click)="downloadPlanilla(planilla.idplanilla)">
+                                <div class="row">
+                                    <div class="col-md-4"><strong>Planilla {{planilla.numero}}</strong></div>
+                                    <div class="col-md-3">{{planilla.fecha | date:'dd.MM.yyyy'}}</div>
+                                    <div class="col-md-3">BOB {{planilla.monto | number:'0.2-2'}}</div>
+                                    <div class="col-md-2">{{planilla.estado}}</div>
+                                </div>
+                            </li>
+                            <ng-container *ngFor="let invoice of embarque.invoices">
+                                <li *ngIf="invoice.idestado!=3" role="button" class="list-group-item list-group-item-action" (click)="downloadInvoice(invoice.idinvoice)">
+                                    <div class="row">
+                                        <div class="col-md-4"><strong>Invoice {{invoice.numero}}</strong></div>
+                                        <div class="col-md-3">{{invoice.fecha | date:'dd.MM.yyyy'}}</div>
+                                        <div class="col-md-3">BOB {{invoice.monto | number:'0.2-2'}}</div>
+                                        <div class="col-md-2 d-flex">
+                                            {{invoice.estado}}
+                                            <div role="button" class="ms-auto bd-highlight" (click)="downloadInvoiceMembretada(invoice.idinvoice,$event)"><i class="bi bi-file-earmark-ruled"></i></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li *ngIf="invoice.idestado==3" role="button" class="list-group-item list-group-item-action bg-warning" data-bs-toggle="modal" data-bs-target="#ventanaNuevaInvoice" (click)="prepararInvoice(invoice.idinvoice)">
+                                    <div class="row">
+                                        <div class="col-md-4"><strong>Invoice {{invoice.numero}}</strong></div>
+                                        <div class="col-md-3">{{invoice.fecha | date:'dd.MM.yyyy'}}</div>
+                                        <div class="col-md-3">BOB {{invoice.monto | number:'0.2-2'}}</div>
+                                        <div class="col-md-2 d-flex">{{invoice.estado}}</div>
+                                    </div>
+                                </li>
+                            </ng-container>
+                            
+                            
+                            <li role="button"  class="list-group-item list-group-item-action" >
+                                <div class="row">
+                                    
+                                </div>
+                            </li>
+                            <li role="button" *ngFor="let ordenservicioi of embarque.ordenserviciosi" class="list-group-item list-group-item-action" (click)="downloadOrdenServicio(ordenservicioi.idordenservicioi, 'i')">
+                                <div class="row">
+                                    <div class="col-md-4"><strong>Orden Servicio ING {{ordenservicioi.numero}}</strong></div>
+                                    <div class="col-md-3">{{ordenservicioi.fecha | date:'dd.MM.yyyy'}}</div>
+                                    <div class="col-md-3">BOB {{ordenservicioi.monto | number:'0.2-2'}}</div>
+                                    <div class="col-md-2">{{ordenservicioi.estado}}</div>
+                                </div>
+                            </li>
+                            <li role="button" *ngFor="let ordenservicioe of embarque.ordenserviciose" class="list-group-item list-group-item-action" (click)="downloadOrdenServicio(ordenservicioe.idordenservicioe, 'e')">
+                                <div class="row">
+                                    <div class="col-md-4"><strong>Orden Servicio EGR {{ordenservicioe.numero}}</strong></div>
+                                    <div class="col-md-3">{{ordenservicioe.fecha | date:'dd.MM.yyyy'}}</div>
+                                    <div class="col-md-3">BOB {{ordenservicioe.monto | number:'0.2-2'}}</div>
+                                    <div class="col-md-2">{{ordenservicioe.estado}}</div>
+                                </div>
+                            </li>
+                            <li role="button" *ngIf="embarque.finalizado" class="list-group-item list-group-item-action" (click)="downloadDocumentoFin()">
+                                <div class="row">
+                                    <div class="col-md-4"><strong>Documento Cierre {{embarque.embarque}}</strong></div>
+                                    <div class="col-md-3">{{embarque.fechafinalizacion | date:'dd.MM.yyyy'}}</div>
+                                    <div class="col-md-3">BOB {{ getSumContabilidad('cargos', false, null, null, 1, 'tipocambio')-getSumContabilidad('costos', false, null, null, 1, 'tipocambio') | number:'0.2-2' }}</div>
+                                    <div class="col-md-2">Generado</div>
+                                </div>
+                            </li>
+                        </div>
+                    </div>
+                    <div *ngIf="tokenDetalle.contabilidad" class="tab-pane fade" id="contabilidad" role="tabpane11" aria-labelledby="contabilidad-tab">
+                        <br />
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm table-hover">
+                                <thead>
+                                    <tr class="table-light">
+                                        <th scope="col">Concepto</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">Monto (BOB)</th>
+                                        <th scope="col">Total (BOB)</th>
+                                        <th scope="col">Documento</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let cargo of embarque.cargos">
+                                        <tr *ngIf="cargo.idfacturanotadebito>0">
+                                            <th scope="row">{{cargo.concepto}}</th>
+                                            <td class="text-end">{{cargo.cantidad | number:'0.2-2'}}</td>
+                                            <td class="text-end">{{cargo.monto*cargo.tipocambio | number:'0.2-2'}}</td>
+                                            <td class="text-end">{{cargo.cantidad*cargo.monto*cargo.tipocambio | number:'0.2-2'}}</td>
+                                            <td>{{cargo.documento}} {{cargo.facturanotadebito}}</td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row" colspan="3">TOTAL</th>
+                                        <td class="text-end fw-bold">{{ getSumContabilidad('cargos', null, null, true, 1, 'tipocambio') | number:'0.2-2' }}</td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    
+    <div class="modal" id="ventanaCargoCosto" tabindex="-1" aria-labelledby="ventanaCargoCostoLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ventanaCargoCostoLabel">{{accionventanaDatos}} {{cabeceraventanaDatos}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="idconcepto" class="form-label text-secondary small">Concepto</label>
+                                <ng-select name="idconcepto" id="idconcepto" [(ngModel)]="idconcepto" (change)="erroridconcepto=false" [disabled]="tienedocumento || embarque.finalizado || !editar_embarques" placeholder="Seleccione">
+                                    <ng-container *ngFor="let concepto of conceptos">
+                                        <ng-option *ngIf="(concepto.activo && concepto.tipo==tipo) || concepto.idconcepto==idconcepto" [value]="concepto.idconcepto">{{concepto.concepto_ovp}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                                <small *ngIf="erroridconcepto" class="text-danger">Campo requerido</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label for="cantidad" class="form-label text-secondary small">Cantidad</label>
+                                <input type="number" class="form-control" id="cantidad" name="cantidad" [(ngModel)]="cantidad" (change)="errorcantidad=false" [disabled]="tienedocumento || embarque.finalizado || !editar_embarques">
+                                <small *ngIf="errorcantidad" class="text-danger">Campo requerido</small>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="precio" class="form-label text-secondary small">Precio</label>
+                                <input type="number" class="form-control" id="monto" name="monto" [(ngModel)]="monto" (change)="errormonto=false" [disabled]="tienedocumento || embarque.finalizado || !editar_embarques">
+                                <small *ngIf="errormonto" class="text-danger">Campo requerido</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label for="iddivisa" class="form-label text-secondary small">Divisa</label>
+                                <ng-select name="iddivisa" id="iddivisa" [(ngModel)]="iddivisa" (change)="erroriddivisa=false" [disabled]="tienedocumento || embarque.finalizado || !editar_embarques" placeholder="Seleccione">
+                                    <ng-option *ngFor="let divisa of divisas" [value]="divisa.iddivisa">{{divisa.codigo}}</ng-option>
+                                </ng-select>
+                                <small *ngIf="erroriddivisa" class="text-danger">Campo requerido</small>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="total" class="form-label text-secondary small">Total</label>
+                                <input type="text" class="form-control" id="total" name="total" value="{{cantidad*monto | number:'0.2-2'}}" disabled>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="iddestinatario" class="form-label text-secondary small">Destinatario</label>
+                                <ng-select [items]="entidades"
+                                    bindLabel="entidad"
+                                    bindValue="identidad"
+                                    name="identidad" 
+                                    id="identidad" 
+                                    [(ngModel)]="identidad" 
+                                    [disabled]="tienedocumento || embarque.finalizado || !editar_embarques" 
+                                    placeholder="Seleccione" 
+                                    groupBy="tipoentidad">
+                                    <ng-template ng-optgroup-tmp let-item="item">
+                                        {{item.tipoentidad || 'Unnamed group'}}
+                                    </ng-template>
+                                    <!--<ng-option *ngFor="let entidad of entidades" [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>-->
+                                </ng-select>
+
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="tipo=='1' && tokenDetalle.contabilidad">
+                            <div class="col-12 mb-3">
+                                <label for="factura" class="form-label text-secondary small">Factura</label>
+                                <input type="text" class="form-control" id="factura" name="factura" [(ngModel)]="factura" (input)="factura = factura.toUpperCase()" (change)="errorfactura=false" [disabled]="tienedocumento || embarque.finalizado || !editar_embarques" >
+                                <small *ngIf="errorfactura" class="text-danger">Campo requerido</small>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="tipo=='1' && tokenDetalle.contabilidad">
+                            <div class="col-12 mb-3">
+                                <label for="nota_entrega" class="form-label text-secondary small">Nota de Entrega</label>
+                                <input type="text" class="form-control" id="nota_entrega" name="nota_entrega" [(ngModel)]="nota_entrega" (input)="nota_entrega = nota_entrega.toUpperCase()" (change)="errornota_entrega=false" [disabled]="tienedocumento || embarque.finalizado || !editar_embarques" >
+                                <small *ngIf="errornota_entrega" class="text-danger">Campo requerido</small>
+                            </div>
+                        </div>
+
+
+                        <div class="row" *ngIf="tipo=='0' && tokenDetalle.contabilidad">
+                            <div class="col-12 mb-3">
+                                <label for="factura_cargo" class="form-label text-secondary small">Factura Proveedor/Agente</label>
+                                <input type="text" class="form-control" id="factura_cargo" name="factura_cargo" [(ngModel)]="factura_cargo" (input)="factura_cargo = factura_cargo.toUpperCase()" (change)="errorfactura_cargo=false" [disabled]="tienedocumento || embarque.finalizado || !editar_embarques" >
+                                <small *ngIf="errorfactura_cargo" class="text-danger">Campo requerido</small>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="tipo=='0' && tokenDetalle.contabilidad">
+                            <div class="col-12 mb-3">
+                                <label for="iddestinocargo" class="form-label text-secondary small">Tipo de documento para el cobro</label>
+                                <ng-select name="iddestinocargo" id="iddivisa" [(ngModel)]="iddestinocargo" (change)="erroriddestinocargo=false" [disabled]="tienedocumento || embarque.finalizado || !editar_embarques" placeholder="Seleccione">
+                                    <ng-option *ngFor="let destino_cargo of destinos_cargo" [value]="destino_cargo.iddestinocargo">{{destino_cargo.destinocargo}}</ng-option>
+                                </ng-select>
+                                <small *ngIf="erroriddestinocargo" class="text-danger">Campo requerido</small>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="glosa" class="form-label text-secondary small">Glosa</label>
+
+
+                                <textarea autosize class="form-control" id="notas" name="notas" rows="2" [(ngModel)]="notas" [disabled]="tienedocumento || embarque.finalizado || !editar_embarques"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button *ngIf="!tienedocumento && !embarque.finalizado && editar_embarques" type="button" class="btn btn-primary" (click)="guardarCargoCosto()">{{accionventanaDatos}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <div class="modal" id="ventanaEvento" tabindex="-1" aria-labelledby="ventanaEventoLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ventanaEventoLabel">{{cabeceraventanaEventos}} Evento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label for="fecharegistroe" class="form-label text-secondary small">Fecha Registro</label>
+                                <input type="date" class="form-control" name="fecharegistro" id="fecharegistro" value="{{fecharegistro}}" disabled>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="fechaplanificadae" class="form-label text-secondary small">Fecha Planificada</label>
+                                <input type="date" class="form-control" id="fechaplanificada" name="fechaplanificada" [(ngModel)]="fechaplanificada" (change)="errorfechaplanificada=false" [disabled]="enviado || embarque.finalizado || !editar_embarques">
+                                <small *ngIf="errorfechaplanificada" class="text-danger">Campo requerido</small>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="idtipoevento" class="form-label text-secondary small">Tipo de Evento</label>
+                                <ng-select name="idtipoevento" id="idtipoevento" [items]="tiposevento"  (change)="erroridtipoevento=false"
+                                    bindLabel="tipoevento" 
+                                    bindValue="idtipoevento" 
+                                    placeholder="Seleccione"
+                                    [disabled]="enviado || embarque.finalizado || !editar_embarques"
+                                [(ngModel)]="idtipoevento">
+                                </ng-select>
+                                <small *ngIf="erroridtipoevento" class="text-danger">Campo requerido</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="con_observacion" [checked]="con_observacion" (change)="con_observacion=!con_observacion" [disabled]="enviado || embarque.finalizado || !editar_embarques">
+                                    <label class="form-check-label" for="con_observacion">Con Observaci&oacute;n</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="con_observacion">
+                            <div class="col-12 mb-3">
+                                <label for="ideventodescripcion" class="form-label text-secondary small">Observaci&oacute;n</label>
+                                <ng-select name="ideventodescripcion" id="ideventodescripcion" [items]="eventodescripcion"
+                                    bindLabel="eventodescripcion" 
+                                    bindValue="ideventodescripcion" 
+                                    placeholder="Seleccione"
+                                    [disabled]="enviado || embarque.finalizado || !editar_embarques"
+                                [(ngModel)]="ideventodescripcion">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="observacionese" class="form-label text-secondary small">Descripci&oacute;n</label>
+                                <textarea autosize class="form-control" id="evento" rows="2" name="evento" [(ngModel)]="evento" [disabled]="enviado || embarque.finalizado || !editar_embarques"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="usuarioe" class="form-label text-secondary small">Registrado por</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" value="{{nombre}}" disabled>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button *ngIf="!enviado && !embarque.finalizado && editar_embarques" type="button" class="btn btn-primary" (click)="guardarEvento()">{{cabeceraventanaEventos}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    </main>
+</div>
+<!--
+<div class="wrapper">
+    <app-menulateral style="background-color: #7386D5"></app-menulateral>
+    <div id="content" class="position-relative">
+        <app-menusuperior></app-menusuperior>
+        
+        
+        <div class="container-fluid">
+            
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/embarques']">Embarques</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{embarque.embarque}} - {{embarque.cliente}}</li>
+                </ol>
+            </nav>
+            <hr />
+            
+        </div>
+        
+    </div>
+</div>
+-->
+        
+
+<div class="modal" id="confirmarEliminarCargoCosto" tabindex="-1" aria-labelledby="confirmarEliminarCargoCostoLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+                
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar este registro?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarCargoCosto()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarEliminarEvento" tabindex="-1" aria-labelledby="confirmarEliminarEventoLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+                
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar el evento?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarEvento()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarEliminarDocumento" tabindex="-1" aria-labelledby="confirmarEliminarDocumentoLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+                
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar el archivo?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarDocumento()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarSobreescribirDocumento" tabindex="-1" aria-labelledby="confirmarSobreescribirDocumentoLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+                
+                <br />
+                <h4>Los siguientes archivos ya existen:</h4>
+                <ul>
+                    <li *ngFor="let nombredocumentoscargar of nombredocumentocargar">{{nombredocumentoscargar}}</li>
+                </ul>
+                <!--<h4>El archivo <span class="fst-italic fw-bold">{{nombredocumentocargar}}</span> ya existe-->
+                <br />¿Desea sobreescribirlo?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="cargarDocumento()">Sobreescribir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+<div class="modal" id="ventanaNuevaFactura" tabindex="-1" aria-labelledby="ventanaNuevaFacturaLabel">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaNuevaFacturaLabel">{{titulomodalfactura}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="fechaf" class="form-label text-secondary small">Fecha</label>
+                            <input type="date" class="form-control" id="fechaf" disabled value="{{fechafactura}}">
+                        </div>
+                        <div class="col-md-9 mb-3">
+                            <label for="idcobrarafactura" class="form-label text-secondary small">Cobrar a</label>
+                            <ng-select name="idcobrarafactura" id="idcobrarafactura" [(ngModel)]="idcobrarafactura" (change)="getDataFacturacion();" placeholder="Seleccione" [readonly]="facturando">
+                                <ng-container *ngFor="let entidad of entidades">
+                                    <ng-option *ngIf="entidad.idtipoentidad=='1' || entidad.idtipoentidad=='2' || entidad.idtipoentidad=='5'" [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroridcobrarafactura" class="text-danger">Campo Requerido</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2 mb-3">
+                            <label for="idtipodocumento" class="form-label text-secondary small">Tipo Documento</label>
+                            <ng-select name="idtipodocumento" id="idtipodocumento" [items]="tiposdocumento"
+                                bindLabel="tipodocumento" 
+                                bindValue="idtipodocumento" 
+                                placeholder="Seleccione"
+                                [clearable]="false"
+                                [readonly]="facturando"
+                                
+                            [(ngModel)]="idtipodocumento">
+                            </ng-select>
+                        </div>
+                        <div class="col-5 mb-3">
+                            <label for="nitf" class="form-label text-secondary small">NIT/CI/PAS</label>
+                            <input type="number" class="form-control" name="nitf" id="nitf" [(ngModel)]="nitf"  [readonly]="facturando" />
+                            <small *ngIf="errornitf" class="text-danger">debe ser mayor o igual a 0</small>
+                        </div>
+                        <div class="col-5 mb-3">
+                            <label for="nombref" class="form-label text-secondary small">Raz&oacute;n Social</label>
+                            <input type="text" class="form-control" name="nombref" id="nombref" [(ngModel)]="nombref" (change)="errornombref=false"  [readonly]="facturando" />
+                            <small *ngIf="errornombref" class="text-danger">Campo Requerido</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <div class="row" *ngFor="let correo_factura of correos_factura; let indice = index; trackBy: trackByFn;">
+                                <div class="col-10 mb-1">
+                                    <input type="text" class="form-control form-control-sm col-12" name="correofactura-{{indice}}" [(ngModel)]="correo_factura.correo" (change)="correo_factura.error=false"  [readonly]="facturando || correo_factura.idcorreofacturacion>0" >
+                                    <small *ngIf="correo_factura.error" class="text-danger">Correo invalido</small>
+                                </div>
+                                <div class="col-2 mb-1">
+                                    <i *ngIf="!facturando && correo_factura.idcorreofacturacion==0" class="bi bi-x-circle-fill" role="button" (click)="eliminarCorreoFactura(indice)"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2 mb-3">
+                            
+                        </div>
+                        <div class="col-4 mb-3">
+                            <button *ngIf="!facturando" type="button" class="btn btn-outline-secondary" (click)="agregarCorreoFactura()">Agregar Correo</button>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="embarque && embarque.importacion_exportacion==4">
+                        <div class="col-6 mb-3">
+                            <label for="palletsfactura" class="form-label text-secondary small">Pallets</label>
+                            <input type="text" class="form-control" name="palletsfactura" id="palletsfactura" [(ngModel)]="palletsfactura" [readonly]="facturando" />
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="nombref" class="form-label text-secondary small">Rotaci&oacute;n</label>
+                            <input type="text" class="form-control" name="rotacionfactura" id="rotacionfactura" [(ngModel)]="rotacionfactura" [readonly]="facturando" />
+                        </div>
+                    </div>
+                    <label for="conceptosfactura" class="form-label text-secondary small">Detalle</label> 
+                    <div id="conceptosfactura" class="list-group" *ngIf="embarque">
+                        <label class="list-group-item list-group-item-action" *ngFor="let conceptofacturardebitar of conceptosfacturardebitar" role="button">
+                            <div class="row">
+                                <div class="col-lg-1"><input class="form-check-input me-1" type="checkbox" name="marcado{{conceptofacturardebitar.idcargo}}" [(ngModel)]="conceptofacturardebitar.marcado" (change)="getSumaFactura()"  [disabled]="facturando"></div>
+                                <div class="col-lg-5">
+                                    {{conceptofacturardebitar.concepto}}<br />
+                                    <small class="text-muted">{{conceptofacturardebitar.destinatario}}</small>
+                                </div>
+                                <div class="col-lg-3 col-sm-6 text-end">{{conceptofacturardebitar.montobs | number:'0.2-2'}} BOB</div>
+                                <div class="col-lg-3 col-sm-6 text-end">{{conceptofacturardebitar.montous | number:'0.2-2'}} USD</div>
+                            </div>
+                        </label>
+                        <label class="list-group-item">
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-5"><strong>TOTAL</strong></div>
+                                <div class="col-lg-3 col-sm-6 text-end"><strong>{{totalfacturabs | number:'0.2-2'}} BOB</strong></div>
+                                <div class="col-lg-3 col-sm-6 text-end"><strong>{{totalfacturaus | number:'0.2-2'}} USD</strong></div>
+                            </div>
+                        </label>
+                    </div>
+                    <small *ngIf="errortotalfacturabs" class="text-danger">Debe seleccionar al menos un concepto</small>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" [disabled]="facturando">Cerrar</button>
+                <!--<button *ngIf="idfactura_pendiente==0" type="button" class="btn btn-success" (click)="reservarFactura()">Reservar</button>-->
+                <button type="button" class="btn btn-primary" (click)="facturar()" [disabled]="facturando">Facturar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ventanaNuevaNotaCobranza" tabindex="-1" aria-labelledby="ventanaNuevaNotaCobranzaLabel">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaNuevaNotaCobranzaLabel">Nueva Nota de Cobranza</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="fechanc" class="form-label text-secondary small">Fecha</label>
+                            <input type="date" class="form-control" id="fechnc" disabled value="{{fechaactual}}">
+                        </div>
+                        <div class="col-md-9 mb-3">
+                            <label for="idcobraranc" class="form-label text-secondary small">Cobrar a</label>
+                            <ng-select name="idcobrarnc" id="idcobrarnc" [(ngModel)]="idcobrarnc" (change)="erroridcobrarnc=false" placeholder="Seleccione">
+                                <ng-container *ngFor="let entidad of entidades">
+                                    <ng-option [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroridcobrarnc" class="text-danger">Campo Requerido</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9 mb-3">
+                            <label for="idcuentanc" class="form-label text-secondary small">No de Cuenta</label>
+                            <ng-select name="idcuentanc" id="idcuentanc" [(ngModel)]="idcuentanc" (change)="erroridcuentanc=false" placeholder="Seleccione">
+                                <ng-container *ngFor="let cuenta of cuentas">
+                                    <ng-option [value]="cuenta.idcuenta">{{cuenta.banco}} {{cuenta.cuenta}} {{cuenta.moneda}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroridcuentanc" class="text-danger">Campo Requerido</small>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="iddivisanc" class="form-label text-secondary small">Divisa</label>
+                            <ng-select name="iddivisanc" id="iddivisanc" [(ngModel)]="iddivisanc" (change)="erroriddivisanc=false" placeholder="Seleccione">
+                                <ng-container *ngFor="let divisa of divisas">
+                                    <ng-option [value]="divisa.iddivisa">{{divisa.codigo}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroriddivisanc" class="text-danger">Campo Requerido</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="observacionesnc" class="form-label text-secondary small">Observaciones</label>
+                            <textarea autosize class="form-control" name="observacionesnc" id="observacionesnc" rows="3" [(ngModel)]="observacionesnc"></textarea>
+                        </div>
+                    </div>
+                    <label for="conceptosnc" class="form-label text-secondary small">Detalle</label>
+                    <div id="conceptosnc" class="list-group" *ngIf="embarque">
+                        <label class="list-group-item list-group-item-action" *ngFor="let conceptofacturardebitar of conceptosfacturardebitar" role="button">
+                            <div class="row">
+                                <div class="col-lg-6"><input class="form-check-input me-1" type="checkbox" name="marcado{{conceptofacturardebitar.idcargo}}" [(ngModel)]="conceptofacturardebitar.marcado" (change)="getSumaNC()"> {{conceptofacturardebitar.concepto}}</div>
+                                <div class="col-lg-3 col-sm-6 text-end">{{conceptofacturardebitar.montobs | number:'0.2-2'}} BOB</div>
+                                <div class="col-lg-3 col-sm-6 text-end">{{conceptofacturardebitar.montous | number:'0.2-2'}} USD</div>
+                            </div>
+                        </label>
+                        <label class="list-group-item">
+                            <div class="row">
+                                <div class="col-lg-6"><strong>TOTAL</strong></div>
+                                <div class="col-lg-3 col-sm-6 text-end"><strong>{{totalNCbs | number:'0.2-2'}} BOB</strong></div>
+                                <div class="col-lg-3 col-sm-6 text-end"><strong>{{totalNCus | number:'0.2-2'}} USD</strong></div>
+                            </div>
+                        </label>
+                    </div>
+                    <small *ngIf="errortotalNCbs" class="text-danger">Debe seleccionar al menos un concepto</small>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <!--<button type="button" class="btn btn-success">Reservar</button>-->
+                <button type="button" class="btn btn-primary" (click)="generarNC()">Generar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ventanaNuevaInvoice" tabindex="-1" aria-labelledby="ventanaNuevaInvoiceLabel">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaNuevaInvoiceLabel">{{titulomodalinvoice}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="fechaf" class="form-label text-secondary small">Fecha</label>
+                            <input type="date" class="form-control" id="fechaf" disabled value="{{fechainvoice}}">
+                        </div>
+                        <div class="col-md-9 mb-3">
+                            <label for="idagentei" class="form-label text-secondary small">Agente</label>
+                            <ng-select name="idagentei" id="idagentei" [(ngModel)]="idagentei" (change)="getDireccionesAgenteInvoice();" placeholder="Seleccione">
+                                <ng-container *ngFor="let entidad of entidades">
+                                    <ng-option *ngIf="entidad.idtipoentidad=='5'" [value]="entidad.id">{{entidad.entidad}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroridagentei" class="text-danger">Campo Requerido</small>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="entidades && idagentei!=null && idagentei!=0">
+                        <div class="col-12 mb-3">
+                            <label for="iddireccionagentei" class="form-label text-secondary small">Direcci&oacute;n</label>
+                            <ng-select name="iddireccionagentei" id="iddireccionagentei" [(ngModel)]="iddireccionagentei" placeholder="Seleccione">
+                                <ng-container *ngFor="let direccion of entidades[indiceagentei].direcciones">
+                                    <ng-option [value]="direccion.identidaddireccion">{{direccion.direccion}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <label for="conceptosinvoice" class="form-label text-secondary small">Detalle</label>
+                    <div id="conceptosinvoice" class="list-group" *ngIf="embarque">
+                        <label class="list-group-item list-group-item-action" *ngFor="let conceptoinvoice of conceptosinvoice" role="button">
+                            <div class="row">
+                                <div class="col-lg-6"><input class="form-check-input me-1" type="checkbox" name="marcado{{conceptoinvoice.idcargo}}" [(ngModel)]="conceptoinvoice.marcado" (change)="getSumaInvoice()"> {{conceptoinvoice.concepto}}</div>
+                                <div class="col-lg-3 col-sm-6 text-end">{{conceptoinvoice.montobs | number:'0.2-2'}} BOB</div>
+                                <div class="col-lg-3 col-sm-6 text-end">{{conceptoinvoice.montous | number:'0.2-2'}} USD</div>
+                            </div>
+                        </label>
+                        <label class="list-group-item">
+                            <div class="row">
+                                <div class="col-lg-6"><strong>TOTAL</strong></div>
+                                <div class="col-lg-3 col-sm-6 text-end"><strong>{{totalinvoicebs | number:'0.2-2'}} BOB</strong></div>
+                                <div class="col-lg-3 col-sm-6 text-end"><strong>{{totalinvoiceus | number:'0.2-2'}} USD</strong></div>
+                            </div>
+                        </label>
+                    </div>
+                    <small *ngIf="errortotalinvoicebs" class="text-danger">Debe seleccionar al menos un concepto</small>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button *ngIf="idinvoice_pendiente==0" type="button" class="btn btn-success" (click)="reservarInvoice()">Reservar</button>
+                <button type="button" class="btn btn-primary" (click)="generarInvoice()">Generar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ventanaNuevaPlanilla" tabindex="-1" aria-labelledby="ventanaNuevaPlanillaLabel">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaNuevaPlanillaLabel">Nueva Planilla</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="fechap" class="form-label text-secondary small">Fecha</label>
+                            <input type="date" class="form-control" id="fechap" disabled value="{{fechaactual}}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="pacenainvoice" class="form-label text-secondary small">Pace&ntilde;a Invoice No</label>
+                            <input type="text" class="form-control" id="pacenainvoice" name="pacenainvoice" [(ngModel)]="pacenainvoice">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="slginvoice" class="form-label text-secondary small">SLG Invoice No</label>
+                            <input type="text" class="form-control" id="slginvoice" name="slginvoice" [(ngModel)]="slginvoice">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="alloginvoice" class="form-label text-secondary small">ALLOG Invoice No</label>
+                            <input type="text" class="form-control" id="alloginvoice" name="alloginvoice" [(ngModel)]="alloginvoice">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="textoadicional" class="form-label text-secondary small">Aditional Information</label>
+                            <textarea autosize class="form-control" id="textoadicional" name="textoadicional" [(ngModel)]="textoadicional" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <label for="conceptosplanilla" class="form-label text-secondary small">Detalle</label>
+                    <div id="conceptosplanilla" class="list-group" *ngIf="embarque">
+                        <div class="list-group-item list-group-item-action" role="button" *ngFor="let conceptoplanilla of conceptosplanilla">
+                            <div class="row">
+                                <label class="col-lg-5"><input class="form-check-input me-1" type="checkbox" name="marcado{{conceptoplanilla.idcargo}}" [(ngModel)]="conceptoplanilla.marcado" (change)="getSumaPlanilla()"> {{conceptoplanilla.concepto}}</label>
+                                <div class="col-lg-3 col-sm-6 text-end">{{conceptoplanilla.montous | number:'0.2-2'}} USD</div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <ng-select name="idtipoplanilla{{conceptoplanilla.idcargo}}" id="conceptoplanilla.idcargo" [(ngModel)]="conceptoplanilla.idtipoplanilla" (change)="conceptoplanilla.erroridtipoplanilla=false" placeholder="Seleccione">
+                                        <ng-container *ngFor="let tipoplanilla of tiposplanilla">
+                                            <ng-option [value]="tipoplanilla.idtipoplanilla">{{tipoplanilla.tipoplanilla}}</ng-option>
+                                        </ng-container>
+                                    </ng-select>
+                                    <small *ngIf="conceptoplanilla.erroridtipoplanilla" class="text-danger">Campo Requerido</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-lg-5"><strong>TOTAL</strong></div>
+                                <div class="col-lg-3 col-sm-6 text-end"><strong>{{totalplanillaus | number:'0.2-2'}} USD</strong></div>
+                                <div class="col-lg-4 col-sm-6"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <small *ngIf="errortotalplanillaus" class="text-danger">Debe seleccionar al menos un concepto</small>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="generarPlanilla()">Generar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ventanaNuevaOrdenPago" tabindex="-1" aria-labelledby="ventanaNuevaOrdenPagoLabel">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaNuevaOrdenPagoLabel">Nueva Orden de Pago</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="fechaop" class="form-label text-secondary small">Fecha</label>
+                            <input type="date" class="form-control" id="fechaop" disabled value="{{fechaactual}}">
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-6 mb-3">
+                            <label for="fechadocop" class="form-label text-secondary small">Fecha Documento</label>
+                            <input type="date" class="form-control" id="fechadocop" name="fechadocop" [(ngModel)]="fechadocop" (chnage)="errorfechadocop=false">
+                            <small *ngIf="errorfechadocop" class="text-danger">Campo Requerido</small>
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-6 mb-3">
+                            <label for="tipoop" class="form-label text-secondary small">Tipo</label><br />
+                            <div class="btn-group" role="group">
+                                <input type="radio" class="btn-check" name="tipoop" id="tipoop1" [value]='1' [(ngModel)]="tipoop" (click)="cambiarTipoOP(1)">
+                                <label class="btn btn-outline-dark" for="tipoop1">Costo</label>
+                                <input type="radio" class="btn-check" name="tipoop" id="tipoop2" [value]='2' [(ngModel)]="tipoop" (click)="cambiarTipoOP(2)">
+                                <label class="btn btn-outline-dark" for="tipoop2">Cargo</label>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="idpagaraop" class="form-label text-secondary small">Pagar a</label>
+                            <ng-select name="idpagaraop" id="idpagaraop" [(ngModel)]="idpagaraop" (change)="getDireccionesPagarOP();" placeholder="Seleccione" [readonly]="true">
+                                <ng-container *ngFor="let entidad of entidades">
+                                    <ng-option *ngIf="entidad.idtipoentidad=='2' || entidad.idtipoentidad=='3' || entidad.idtipoentidad=='4'" [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroridpagaraop" class="text-danger">Campo Requerido</small>
+                        </div>
+                        <div class="col-md-6 mb-3"  *ngIf="entidades && idpagaraop!=null && idpagaraop!='0-0'">
+                            <label for="idpagaradireccionop" class="form-label text-secondary small">Direcci&oacute;n</label>
+                            <ng-select name="idpagaradireccionop" id="idpagaradireccionop" [(ngModel)]="idpagaradireccionop" placeholder="Seleccione" [readonly]="true">
+                                <ng-container *ngFor="let direccion of entidades[indiceidpagaraop].direcciones">
+                                    <ng-option [value]="direccion.identidaddireccion">{{direccion.direccion}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="idtransportistaop" class="form-label text-secondary small">Transportista</label>
+                            <ng-select name="idtransportistaop" id="idtransportistaop" [(ngModel)]="idtransportistaop" placeholder="Seleccione">
+                                <ng-container *ngFor="let entidad of entidades">
+                                    <ng-option *ngIf="entidad.idtipoentidad=='4'" [value]="entidad.id">{{entidad.entidad}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="idcobraraop" class="form-label text-secondary small">Cobrar a</label>
+                            <ng-select name="idcobraraop" id="idcobraraop" [(ngModel)]="idcobraraop" (change)="erroridcobraraop=false" placeholder="Seleccione">
+                                <ng-container *ngFor="let entidad of entidades">
+                                    <ng-option [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroridcobraraop" class="text-danger">Campo Requerido</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="iddivisaop" class="form-label text-secondary small">Divisa</label>
+                            <ng-select name="iddivisaop" id="iddivisaop" [(ngModel)]="iddivisaop" (change)="erroriddivisaop=false" placeholder="Seleccione">
+                                <ng-container *ngFor="let divisa of divisas">
+                                    <ng-option [value]="divisa.iddivisa">{{divisa.codigo}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroriddivisaop" class="text-danger">Campo Requerido</small>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="observacionesop" class="form-label text-secondary small">Observaciones</label>
+                            <textarea autosize class="form-control" id="observacionesop" name="observacionesop" [(ngModel)]="observacionesop" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <label for="conceptosop" class="form-label text-secondary small">Detalle</label>
+                    <div id="conceptosop" class="list-group" *ngIf="embarque">
+                        <label class="list-group-item">
+                            <div class="row">
+                                <div class="col-lg-4"><strong>Detalle</strong></div>
+                                <div class="col-lg-2 col-sm-6 text-end"><strong>Monto BOB</strong></div>
+                                <div class="col-lg-2 col-sm-6 text-end"><strong>Monto USD</strong></div>
+                                <div class="col-lg-2 col-sm-6"><strong>Factura Proveedor/Agente</strong></div>
+                                <div class="col-lg-2 col-sm-6"><strong>Nota de Entrega</strong></div>
+                            </div>
+                        </label>
+                        <label class="list-group-item list-group-item-action" *ngFor="let conceptoordenpago of conceptosordenpago" role="button">
+                            <div class="row">
+                                <div class="col-lg-4"><input class="form-check-input me-1" type="checkbox" [disabled]="conceptoordenpago.bloqueado" name="marcado{{conceptoordenpago.idcosto}}" [(ngModel)]="conceptoordenpago.marcado" (change)="getSumaOP()"> {{conceptoordenpago.concepto}}</div>
+                                <div class="col-lg-2 col-sm-6 text-end">{{conceptoordenpago.montobs | number:'0.2-2'}} BOB</div>
+                                <div class="col-lg-2 col-sm-6 text-end">{{conceptoordenpago.montous | number:'0.2-2'}} USD</div>
+                                <div class="col-lg-2 col-sm-6">{{conceptoordenpago.factura}}</div>
+                                <div class="col-lg-2 col-sm-6">{{conceptoordenpago.nota_entrega}}</div>
+                            </div>
+                        </label>
+                        <label class="list-group-item">
+                            <div class="row">
+                                <div class="col-lg-4"><strong>TOTAL</strong></div>
+                                <div class="col-lg-2 col-sm-6 text-end"><strong>{{totalopbs | number:'0.2-2'}} BOB</strong></div>
+                                <div class="col-lg-2 col-sm-6 text-end"><strong>{{totalopus | number:'0.2-2'}} USD</strong></div>
+                                <div class="col-lg-2 col-sm-6"></div>
+                                <div class="col-lg-2 col-sm-6"></div>
+                            </div>
+                        </label>
+                    </div>
+                    <small *ngIf="errortotalopbs" class="text-danger">Debe seleccionar al menos un concepto</small>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="generarOrdenPago()">Generar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ventanaNuevoPagoAgente" tabindex="-1" aria-labelledby="ventanaNuevoPagoAgenteLabel">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaNuevoPagoAgenteLabel">Nuevo Pago a Agente Exterior</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="fechapa" class="form-label text-secondary small">Fecha</label>
+                            <input type="date" class="form-control" id="fechapa" disabled value="{{fechaactual}}">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="fechadocopa" class="form-label text-secondary small">Fecha Documento</label>
+                            <input type="date" class="form-control" id="fechadocpa" name="fechadocpa" [(ngModel)]="fechadocpa" (change)="errorfechadocpa=false">
+                            <small *ngIf="errorfechadocpa" class="text-danger">Campo Requerido</small>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="idpagarapa" class="form-label text-secondary small">Pagar a</label>
+                            <ng-select name="idpagarapa" id="idpagarapa" [(ngModel)]="idpagarapa" (change)="getDireccionesPagarPA();" placeholder="Seleccione">
+                                <ng-container *ngFor="let entidad of entidades">
+                                    <ng-option *ngIf="entidad.idtipoentidad=='5'" [value]="entidad.id">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroridpagarapa" class="text-danger">Campo Requerido</small>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3"  *ngIf="entidades && idpagarapa!=null && idpagarapa!=0">
+                            <label for="idpagaradireccionpa" class="form-label text-secondary small">Direcci&oacute;n</label>
+                            <ng-select name="idpagaradireccionpa" id="idpagaradireccionpa" [(ngModel)]="idpagaradireccionpa" placeholder="Seleccione">
+                                <ng-container *ngFor="let direccion of entidades[indiceidpagarapa].direcciones">
+                                    <ng-option [value]="direccion.identidaddireccion">{{direccion.direccion}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="idtransportistapa" class="form-label text-secondary small">Transportista</label>
+                            <ng-select name="idtransportistapa" id="idtransportistapa" [(ngModel)]="idtransportistapa" placeholder="Seleccione">
+                                <ng-container *ngFor="let entidad of entidades">
+                                    <ng-option *ngIf="entidad.idtipoentidad=='4'" [value]="entidad.id">{{entidad.entidad}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="idcobrarapa" class="form-label text-secondary small">Cobrar a</label>
+                            <ng-select name="idcobrarapa" id="idcobrarapa" [(ngModel)]="idcobrarapa" (change)="erroridcobrarapa=false" placeholder="Seleccione">
+                                <ng-container *ngFor="let entidad of entidades">
+                                    <ng-option [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroridcobrarapa" class="text-danger">Campo Requerido</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="iddivisapa" class="form-label text-secondary small">Divisa</label>
+                            <ng-select name="iddivisapa" id="iddivisapa" [(ngModel)]="iddivisapa" (change)="erroriddivisapa=false" placeholder="Seleccione">
+                                <ng-container *ngFor="let divisa of divisas">
+                                    <ng-option [value]="divisa.iddivisa">{{divisa.codigo}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroriddivisapa" class="text-danger">Campo Requerido</small>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="tipocambiopa" class="form-label text-secondary small">Tipo Cambio</label>
+                            <input type="number" class="form-control" id="tipocambiopa" name="tipocambiopa" [(ngModel)]="tipocambiopa" (change)="errortipocambiopa=false" />
+                            <small *ngIf="errortipocambiopa" class="text-danger">Debe ser mayor a cero</small>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="observacionespa" class="form-label text-secondary small">Observaciones</label>
+                            <textarea autosize class="form-control" id="observacionespa" name="observacionespa" rows="3" [(ngModel)]="observacionespa"></textarea>
+                        </div>
+                    </div>
+                    <label for="conceptospa" class="form-label text-secondary small">Detalle</label>
+                    <div id="conceptospa" class="list-group" *ngIf="embarque">
+                        <label class="list-group-item list-group-item-action" *ngFor="let conceptopagoagente of conceptospagoagente" role="button">
+                            <div class="row">
+                                <div class="col-lg-6"><input class="form-check-input me-1" type="checkbox" name="marcado{{conceptopagoagente.idcosto}}" [(ngModel)]="conceptopagoagente.marcado" (change)="getSumaPA()"> {{conceptopagoagente.concepto}}</div>
+                                <div class="col-lg-3 col-sm-6 text-end">{{conceptopagoagente.montobs | number:'0.2-2'}} BOB</div>
+                                <div class="col-lg-3 col-sm-6 text-end">{{conceptopagoagente.montous | number:'0.2-2'}} USD</div>
+                            </div>
+                        </label>
+                        <label class="list-group-item">
+                            <div class="row">
+                                <div class="col-lg-6"><strong>TOTAL</strong></div>
+                                <div class="col-lg-3 col-sm-6 text-end"><strong>{{totalpabs | number:'0.2-2'}} BOB</strong></div>
+                                <div class="col-lg-3 col-sm-6 text-end"><strong>{{totalpaus | number:'0.2-2'}} USD</strong></div>
+                            </div>
+                        </label>
+                    </div>
+                    <small *ngIf="errortotalpabs" class="text-danger">Debe seleccionar al menos un concepto</small>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="generarPagoAgente()">Generar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ventanaNuevaOrdenServicio" tabindex="-1" aria-labelledby="ventanaNuevaOrdenServicioLabel">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaNuevaOrdenServicioLabel">Nueva Orden de Servicio {{tituloordenservicio}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="fechaos" class="form-label text-secondary small">Fecha</label>
+                            <input type="date" class="form-control" id="fechaos" disabled value="{{fechaactual}}">
+                        </div>
+                        <div class="col-md-9 mb-3">
+                            <label for="idsolicitadopor" class="form-label text-secondary small">Solicitado por</label>
+                            <ng-select name="idsolicitadopor" id="idsolicitadopor" [(ngModel)]="idsolicitadopor" (change)="erroridsolicitadopor=false;" placeholder="Seleccione">
+                                <ng-container *ngFor="let entidad of entidades">
+                                    <ng-option *ngIf="entidad.idtipoentidad=='5'" [value]="entidad.id">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroridsolicitadopor" class="text-danger">Campo Requerido</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="iddivisaos" class="form-label text-secondary small">Divisa</label>
+                            <ng-select name="iddivisaos" id="iddivisaos" [(ngModel)]="iddivisaos" (change)="erroriddivisaos=false" placeholder="Seleccione">
+                                <ng-container *ngFor="let divisaordenservicio of divisasordenservicio">
+                                    <ng-option [value]="divisaordenservicio.iddivisaordenservicio">{{divisaordenservicio.divisaordenservicio}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroriddivisaos" class="text-danger">Campo Requerido</small>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="tipocambioos" class="form-label text-secondary small">Tipo Cambio</label>
+                            <input type="number" class="form-control" id="tipocambioos" name="tipocambioos" [(ngModel)]="tipocambioos" (change)="errortipocambioos=false" />
+                            <small *ngIf="errortipocambioos" class="text-danger">Debe ser mayor a cero</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="creditnot" class="form-label text-secondary small">{{texto_cred_deb}} NOT No</label>
+                            <input type="text" class="form-control" id="creditnot" name="creditnot" [(ngModel)]="creditnot" />
+                        </div>
+                    </div>
+                    <label for="conceptosos" class="form-label text-secondary small">Detalle</label>
+                    <div id="conceptosos" class="list-group" *ngIf="embarque">
+                        <label class="list-group-item list-group-item-action" *ngFor="let conceptoordenservicio of conceptosordenservicio" role="button">
+                            <div class="row">
+                                <div class="col-lg-6"><input class="form-check-input me-1" type="checkbox" name="marcado{{conceptoordenservicio.id}}" [(ngModel)]="conceptoordenservicio.marcado" (change)="getSumaOS()"> {{conceptoordenservicio.concepto}}</div>
+                                <div class="col-lg-3 col-sm-6 text-end">{{conceptoordenservicio.montobs | number:'0.2-2'}} BOB</div>
+                                <div class="col-lg-3 col-sm-6 text-end">{{conceptoordenservicio.montous | number:'0.2-2'}} USD</div>
+                            </div>
+                        </label>
+                        <label class="list-group-item">
+                            <div class="row">
+                                <div class="col-lg-6"><strong>TOTAL</strong></div>
+                                <div class="col-lg-3 col-sm-6 text-end"><strong>{{totalosbs | number:'0.2-2'}} BOB</strong></div>
+                                <div class="col-lg-3 col-sm-6 text-end"><strong>{{totalosus | number:'0.2-2'}} USD</strong></div>
+                            </div>
+                        </label>
+                    </div>
+                    <small *ngIf="errortotalosbs" class="text-danger">Debe seleccionar al menos un concepto</small>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="generarOrdenServicio()">Generar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarFanilizar" tabindex="-1" aria-labelledby="confirmarFanilizarLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #ffca2c"></i>
+                </div>
+                
+                <br />
+                <h4>¿Est&aacute; seguro que desea finalizar el embarque?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-warning" (click)="finalizarEmbarque()">Finalizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ventanaLoading" tabindex="-1" aria-labelledby="ventanaLoadingLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: none !important;">
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<!--
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 15">
+    <div id="liveToastError" class="toast align-items-center text-white bg-danger text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>Error</strong><br />{{mensajeerror}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+-->
+
+    
+    

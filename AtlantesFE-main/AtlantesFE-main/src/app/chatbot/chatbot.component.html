@@ -1,0 +1,38 @@
+<!-- Burbuja flotante -->
+<div id="chat-bubble" (click)="toggleChat()" aria-label="Abrir chat de soporte">
+  <span>💬</span>
+</div>
+
+<!-- Widget de chat flotante -->
+<div id="chat-widget" [style.display]="isOpen ? 'flex' : 'none'">
+  <div id="chat-header">
+    <h1>Hola! 👋 <span>Asgard Support Bot</span></h1>
+    <small>Inicia la conversación. Estoy para ayudarte 24/7.</small>
+  </div>
+
+  <div id="chat-messages"></div>
+
+  <form id="chat-form" (submit)="sendMessage($event)">
+    <div id="chat-file-row">
+      <label id="chat-file-label">
+        📎 Adjuntar archivo
+        <input type="file" id="chat-file" multiple (change)="onFileChange($event)" />
+      </label>
+      <div id="chat-file-name">{{ fileLabel }}</div>
+    </div>
+
+    <div id="chat-bottom-row">
+      <input
+        type="text"
+        id="chat-input"
+        [(ngModel)]="message"
+        name="message"
+        placeholder="Escribe tu mensaje..."
+        autocomplete="off"
+      />
+      <button id="chat-send" type="submit" [disabled]="sending">
+        Enviar
+      </button>
+    </div>
+  </form>
+</div>

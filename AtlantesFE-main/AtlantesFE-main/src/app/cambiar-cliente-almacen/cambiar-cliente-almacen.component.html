@@ -1,0 +1,49 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="1.5"></app-menulateral>
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <!--<h1>Embarques</h1>-->
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Cambiar Cliente de sesi&oacute;n</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <div class="card">
+            <div *ngIf="ver_cambio_cliente" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-10 mb-3">
+                        <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                        <ng-select name="idcliente" id="idcliente" [items]="clientes" 
+                            bindLabel="entidad" 
+                            bindValue="id"
+                            placeholder="Todos"
+                            [disabled]="!editar_cambio_cliente"
+                        [(ngModel)]="idcliente">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="row" *ngIf="editar_cambio_cliente">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="cambiarCliente();">Cambiar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

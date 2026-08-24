@@ -1,0 +1,20 @@
+.d-none {
+  display: none !important;
+}
+
+.video-fullscreen {
+  width: 100%;        /* ocupa todo el ancho del contenedor/pantalla */
+  height: auto;       /* ajusta altura para mantener proporción */
+  max-width: 100vw;   /* no salga de la pantalla */
+  object-fit: contain;  /* o 'contain' si prefieres que no recorte nada */
+  background: black;  /* evita bordes blancos mientras arranca */
+  display: block;     /* elimina posibles gaps debajo del vídeo */
+  max-height: 60vh;
+}
+
+.canvas-preview {
+  width: 100%;
+  height: auto;
+  max-height: 70vh;   /* evita que pase de la pantalla */
+  display: block;
+}

@@ -1,0 +1,126 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="11.7"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Datos de la Empresa</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div class="card-body" *ngIf="ver_empresa && empresa">
+                <br />
+                <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">General</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="imagenes-tab" data-bs-toggle="tab" data-bs-target="#imagenes" type="button" role="tab" aria-controls="imagenes" aria-selected="false">Logos</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                        <br />
+                        <div class="row mb-3">
+                            <div class="col-md-7">
+                                <label for="empresa" class="form-label text-secondary small">Empresa</label>
+                                <input type="text" class="form-control" id="empresa" name="empresa" [(ngModel)]="empresa.empresa" (change)="errorempresa=false" [disabled]="!editar_empresa" />
+                                <small *ngIf="errorempresa" class="text-danger">Campo Obligatorio</small>
+                            </div>
+                            <div class="col-md-5">
+                                <label for="titulo" class="form-label text-secondary small">Titulo</label>
+                                <input type="text" class="form-control" id="titulo" name="titulo" [(ngModel)]="empresa.titulo" [disabled]="!editar_empresa" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" [checked]="empresa.operaciones" disabled>
+                                    <label class="form-check-label" for="flexCheckDisabled">
+                                        Modulo de Operaciones
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" [checked]="empresa.contabilidad" disabled>
+                                    <label class="form-check-label" for="flexCheckCheckedDisabled">
+                                        Modulo de Contabilidad
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" [checked]="empresa.almacen" disabled>
+                                    <label class="form-check-label" for="flexCheckCheckedDisabled">
+                                        Modulo de Almacenes
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="editar_empresa" class="row mb-3">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-primary" (click)="saveEmpresa()">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="imagenes" role="tabpanel" aria-labelledby="imagenes-tab">
+                        <br />
+                        <div class="accordion" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+                                        Logo
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <div class="row mb-3">
+                                            <div class="col-md-5">
+
+                                            </div>
+                                            <div *ngIf="editar_empresa" class="col-md-7">
+                                                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
+                                                    <div class="accordion-body">
+                                                        <input class="form-control" type="file" name="fileLogoUpload" id="fileLogoUpload" #UploadFileLogoInput (change)="logoFileChangeEvent($event)" >
+                                                        <small *ngIf="errorlogo" class="text-danger">Campo requerido</small>
+                                                        <br />
+                                                        <button type="button" class="btn btn-outline-primary col-md-6" (click)="cargarLogo()">Cargar documento</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                                        Membretado Factura
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+                                    <div class="accordion-body">
+                                        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                        
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1224 @@
+<div id="principal">
+    <app-menusuperior [permite_cambio_almacen]="false"></app-menusuperior>
+    <app-menulateral [menu_item]="1.1"></app-menulateral>
+    <main id="main" class="main" *ngIf="ingreso">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/ingresos']">Ingresos</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ingreso.numeroingreso}} - {{ingreso.cliente}}</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_ingresos" class="card-body">
+                <br />
+                <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="ingreso-tab" data-bs-toggle="tab" data-bs-target="#ingreso" type="button" role="tab" aria-controls="ingreso" aria-selected="true">Ingreso</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="adjuntos-tab" data-bs-toggle="tab" data-bs-target="#adjuntos" type="button" role="tab" aria-controls="adjuntos" aria-selected="false">Adjuntos</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="ubicacion-tab" data-bs-toggle="tab" data-bs-target="#ubicacion" type="button" role="tab" aria-controls="ubicacion" aria-selected="false">Ubicaci&oacute;n</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="ingreso" role="tabpanel" aria-labelledby="ingreso-tab">
+                        <br />
+                        <div class="pagetitle"><h1>INFORMACI&Oacute;N GENERAL</h1></div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+                                <ng-select name="idcliente" id="idcliente" [items]="entidades"
+                                    bindLabel="entidad"
+                                    bindValue="id_num"
+                                    placeholder="Seleccione"
+                                    (change)="cambioCliente()"
+                                    [readonly]="clientebloqueado || ingreso.detalle.length>0 || !editar_ingresos"
+                                    
+                                [(ngModel)]="ingreso.idcliente">
+                                </ng-select>
+                                <small *ngIf="erroridcliente" class="text-danger">Campo Requerido</small>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="tiene_inter_company">
+                            <div class="col-12">
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="inter_company" [checked]="inter_company" (change)="inter_company = !inter_company; ingreso.idcliente_destino=null" [disabled]="!editar_ingresos">
+                                    <label class="form-check-label" for="inter_company">Inter Company</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        <div class="row" *ngIf="inter_company">
+                            <div class="col-md-12 mb-3">
+                                <!--
+                                <label for="cliente_destino" class="form-label text-secondary small">Cliente Origen</label>
+                                <input type="text" class="form-control" id="cliente_destino" name="cliente_destino" [(ngModel)]="ingreso.cliente_destino" [disabled]="true" >
+                                -->
+                                <label for="idcliente_destino">Cliente Origen</label>
+                                <ng-select name="idcliente_destino" id="idcliente_destino" [(ngModel)]="ingreso.idcliente_destino" placeholder="Seleccione" (change)="erroridcliente_destino=false;" [disabled]="!editar_ingresos">
+                                    <ng-container *ngFor="let entidad of entidades">
+                                        <ng-option *ngIf="entidades_destino.includes(entidad.id)" [value]="entidad.id_num">{{entidad.entidad}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                                <small *ngIf="erroridcliente_destino" class="text-danger">Campo Requerido</small>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="fecha" class="form-label text-secondary small">Fecha de Ingreso</label>
+                                <input type="datetime-local" class="form-control" id="fecha" name="fecha" [(ngModel)]="ingreso.fecha" (change)="errorfecha=false" [disabled]="!editar_ingresos" >
+                                <small *ngIf="errorfecha" class="text-danger">Campo Requerido</small>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="placa" class="form-label text-secondary small">No Placa Medio de Transporte</label>
+                                <input type="text" class="form-control" id="placa" name="placa" [(ngModel)]="ingreso.placa" [disabled]="!editar_ingresos" >
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="idtipoingreso" class="form-label text-secondary small">Tipo Ingreso</label>
+                                <ng-select name="idtipoingreso" id="idtipoingreso" [items]="tiposingreso"
+                                    bindLabel="tipoingreso"
+                                    bindValue="idtipoingreso"
+                                    placeholder="Seleccione"
+                                    [disabled]="!editar_ingresos"
+                                [(ngModel)]="ingreso.idtipoingreso">
+                                </ng-select>
+                                <!--
+                                <label for="contenedor" class="form-label text-secondary small">No Contenedor</label>
+                                <input type="text" class="form-control" id="contenedor" name="contenedor" [(ngModel)]="ingreso.contenedor" >
+                                -->
+                            </div>
+                            <!--
+                            <div class="col-md-3 mb-3">
+                                <label for="precinto" class="form-label text-secondary small">No Precinto</label>
+                                <input type="text" class="form-control" id="precinto" name="precinto" [(ngModel)]="ingreso.precinto" >
+                            </div>
+                            -->
+                            <div class="col-md-3 mb-3" *ngIf="!ingreso.es_vehiculo">
+                                <label for="idtipodescarga" class="form-label text-secondary small">Tipo de Descarga</label>
+                                <ng-select name="idtipodescarga" id="idtipoingreso" [items]="tiposdescarga"
+                                    bindLabel="tipodescarga"
+                                    bindValue="idtipodescarga"
+                                    placeholder="Seleccione"
+                                    [disabled]="!editar_ingresos"
+                                [(ngModel)]="ingreso.idtipodescarga">
+                                </ng-select>
+                            </div>
+                        
+
+                            <div class="col-md-3 mb-3">
+                                <label for="idtipocamion" class="form-label text-secondary small">Tipo Medio Transporte</label>
+                                <ng-select name="idtipocamion" id="idtipocamion" [items]="mediostransporte"
+                                    bindLabel="mediotransporte"
+                                    bindValue="idmediotransporte"
+                                    placeholder="Seleccione"
+                                    [disabled]="!editar_ingresos"
+                                [(ngModel)]="ingreso.idtipocamion">
+                                </ng-select>
+                            </div>
+                            <!--
+                            <div class="col-md-3 mb-3">
+                                <label for="idtipocontenedor" class="form-label text-secondary small">Tipo Contenedor</label>
+                                <ng-select name="idtipocontenedor" id="idtipocontenedor" [items]="tiposcontenedor"
+                                    bindLabel="tipocontenedor"
+                                    bindValue="idtipocontenedor"
+                                    placeholder="Seleccione"
+                                [(ngModel)]="ingreso.idtipocontenedor">
+                                </ng-select>
+                            </div>
+                            -->
+                            <div class="col-md-3 mb-3">
+                                <label for="idtipoproducto" class="form-label text-secondary small">Tipo de Producto</label>
+                                <ng-select [(ngModel)]="ingreso.idtipoproducto" placeholder="Seleccione" [disabled]="!editar_ingresos">
+                                    <ng-container *ngFor="let tipoproducto of tiposproducto">
+                                        <ng-option *ngIf="tipoproducto.es_vehiculo==ingreso.es_vehiculo" [value]="tipoproducto.idtipoproducto">{{tipoproducto.tipoproducto}}</ng-option>
+                                    </ng-container>
+                                </ng-select>
+                                <!--
+                                <ng-select name="idtipoproducto" id="idtipoingreso" [items]="tiposproducto"
+                                    bindLabel="tipoproducto"
+                                    bindValue="idtipoproducto"
+                                    placeholder="Seleccione"
+                                [(ngModel)]="ingreso.idtipoproducto">
+                                </ng-select>
+                                -->
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="piezas_manifestadas" class="form-label text-secondary small">Cantidad Manifestada</label>
+                                <input type="text" class="form-control" id="piezas_manifestadas" name="piezas_manifestadas" [(ngModel)]="ingreso.piezas_manifestadas" [disabled]="!editar_ingresos" >
+                            </div>
+                            <div class="col-md-3 mb-3" *ngIf="!ingreso.es_vehiculo">
+                                <label for="peso_total" class="form-label text-secondary small">Peso Total (KG)</label>
+                                <input type="text" class="form-control" id="peso_total" name="peso_total" [(ngModel)]="ingreso.peso_total" [disabled]="!editar_ingresos" >
+                            </div>
+                        
+                            <div class="col-md-3 mb-3">
+                                <label for="proveedor" class="form-label text-secondary small">Proveedor</label>
+                                <input type="text" class="form-control" id="proveedor" name="proveedor" [(ngModel)]="ingreso.proveedor" [disabled]="!editar_ingresos" >
+                            </div>
+                            <div class="col-md-3 mb-3" *ngIf="!ingreso.es_vehiculo">
+                                <label for="no_contrato" class="form-label text-secondary small">Referencia Cliente</label>
+                                <input type="text" class="form-control" id="no_contrato" name="no_contrato" [(ngModel)]="ingreso.no_contrato" [disabled]="!editar_ingresos" >
+                            </div>
+                            <div class="col-md-3 mb-3" *ngIf="!ingreso.es_vehiculo">
+                                <label for="delivery_batch" class="form-label text-secondary small">No Lote</label>
+                                <input type="text" class="form-control" id="delivery_batch" name="delivery_batch" [(ngModel)]="ingreso.delivery_batch" [disabled]="!editar_ingresos" >
+                            </div>
+                            <div class="col-md-3 mb-3" *ngIf="!ingreso.es_vehiculo">
+                                <label for="rubro_producto" class="form-label text-secondary small">Rubro del Producto</label>
+                                <input type="text" class="form-control" id="rubro_producto" name="rubro_producto" [(ngModel)]="ingreso.rubro_producto" [disabled]="!editar_ingresos" >
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="!ingreso.es_vehiculo">
+                            <div class="col-md-3 mb-3">
+                                <label for="project" class="form-label text-secondary small">Proyecto</label>
+                                <input type="text" class="form-control" id="project" name="project" [(ngModel)]="ingreso.project" [disabled]="!editar_ingresos" >
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="!ingreso.es_vehiculo">
+                            <div class="col-md-3 mb-3">
+                                <label for="invoice" class="form-label text-secondary small">No Invoice</label>
+                                <input type="text" class="form-control" id="invoice" name="invoice" [(ngModel)]="ingreso.invoice" [disabled]="!editar_ingresos" >
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="dui" class="form-label text-secondary small">No DIM</label>
+                                <input type="text" class="form-control" id="dui" name="dui" [(ngModel)]="ingreso.dui" [disabled]="!editar_ingresos" >
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="cantidad_pallet" class="form-label text-secondary small">Cantidad de Pallet</label>
+                                <input type="number" class="form-control" id="cantidad_pallet" name="cantidad_pallet" [(ngModel)]="ingreso.cantidad_pallet" [disabled]="!editar_ingresos" >
+                            </div>
+                            <!--
+                            <div class="col-md-3 mb-3">
+                                <label for="num_res_adm" class="form-label text-secondary small">No Res Administrativa DGSC</label>
+                                <input type="text" class="form-control" id="num_res_adm" name="num_res_adm" [(ngModel)]="ingreso.num_res_adm" >
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="hoja_ruta" class="form-label text-secondary small">No Hoja de Ruta DGSC</label>
+                                <input type="text" class="form-control" id="hoja_ruta" name="hoja_ruta" [(ngModel)]="ingreso.hoja_ruta" >
+                            </div>
+                            -->
+                            <div class="col-md-3 mb-3">
+                                <label for="cantidad_cajas" class="form-label text-secondary small">Cantidad de Cajas</label>
+                                <input type="number" class="form-control" id="cantidad_cajas" name="cantidad_cajas" [(ngModel)]="ingreso.cantidad_cajas" [disabled]="!editar_ingresos" >
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="ingreso.es_vehiculo">
+                            <div class="col-md-3 mb-3">
+                                <label for="partida" class="form-label text-secondary small">Partida</label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="partida" name="partida" [(ngModel)]="ingreso.partida" [disabled]="!editar_ingresos">
+                                    <button *ngIf="tokenDetalle.asgard_almacen && editar_ingresos && ingreso.idsalida_origen==0" class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="buscarAsgard()" [disabled]="!importar_data || ingreso.detalle.length>0"><i class="bi bi-search"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="fecha_cierre_transito" class="form-label text-secondary small">Fecha Cierre de Tr&aacute;nsito</label>
+                                <input type="datetime-local" class="form-control" id="fecha_cierre_transito" name="fecha_cierre_transito" [(ngModel)]="ingreso.fecha_cierre_transito" [disabled]="!editar_ingresos" >
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="fecha_emision_parte" class="form-label text-secondary small">Fecha emisi&oacute;n del parte de recepci&oacute;n</label>
+                                <input type="datetime-local" class="form-control" id="fecha_emision_parte" name="fecha_emision_parte" [(ngModel)]="ingreso.fecha_emision_parte" [disabled]="!editar_ingresos" >
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="pagetitle"><h1>SERVICIO DE RECEPCION DE MERCADERIA</h1></div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="hora_inicio" class="form-label text-secondary small"><span *ngIf="!ingreso.es_vehiculo; else hora_descarga">Hora Inicio Maquina</span><ng-template #hora_descarga>Hora Inicio Descarga</ng-template></label>
+                                <input type="time" class="form-control" id="hora_inicio" name="hora_inicio" [(ngModel)]="ingreso.hora_inicio" [disabled]="!editar_ingresos" >
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="hora_fin" class="form-label text-secondary small"><span *ngIf="!ingreso.es_vehiculo; else hora_fin_descarga">Hora Fin Maquina</span><ng-template #hora_fin_descarga>Hora Fin Descarga</ng-template></label>
+                                <input type="time" class="form-control" id="hora_fin" name="hora_fin" [(ngModel)]="ingreso.hora_fin" [disabled]="!editar_ingresos" >
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="cantidad_estibadores" class="form-label text-secondary small"><span *ngIf="!ingreso.es_vehiculo; else cantidad_aux">Cantidad Estibadores</span><ng-template #cantidad_aux>Cantidad de auxiliares</ng-template></label>
+                                <input type="number" class="form-control" id="cantidad_estibadores" name="cantidad_estibadores" [(ngModel)]="ingreso.cantidad_estibadores" [disabled]="!editar_ingresos" >
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-5 mb-3 pagetitle">
+                                <h1>DETALLE DE ITEMS</h1>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="editar_ingresos">
+                            <div *ngIf="ingreso.idsalida_origen==0" class="col-md-6 mb-3">
+                                <div class="input-group mb-3">
+                                    <button class="btn btn-outline-secondary" type="button" (click)="agregarFila()">Agregar</button>
+                                    <input type="number" step="1" class="form-control text-end" name="filasagregar" id="filasagregar" [(ngModel)]="filasagregar" />
+                                    <span class="input-group-text">Item(s)</span>
+                                </div>
+                            </div>
+                            <!--
+                            <div class="col-md-2 mb-3">
+                                <button type="button" class="btn btn-outline-dark col-12" (click)="getDataFromClipBoard()">Pegar</button>
+                            </div>
+                            -->
+                            <div class="col-md-3 mb-3" *ngIf="!ingreso.es_vehiculo">
+                                <button type="button" class="btn btn-outline-primary col-12" data-bs-toggle="modal" data-bs-target="#ventanaCargaMasiva">Carga Masiva</button>
+                            </div>
+                            <div class="col-md-3 mb-3" *ngIf="ingreso.es_vehiculo && tokenDetalle.asgard_almacen && ingreso.idsalida_origen==0">
+                                <button type="button" class="btn btn-outline-primary col-12" (click)="actualizarData()">Actualizar Data</button>
+                            </div>
+                            <div *ngIf="ingreso.idsalida_origen==0" class="col-md-3 mb-3">
+                                <button type="button" class="btn btn-outline-danger col-12" data-bs-toggle="modal" data-bs-target="#confirmarEliminarTodos" [disabled]="borrar_todo_bloqueado">Borrar Todo</button>
+                            </div>
+                        </div>
+                        
+                        <div class="row" *ngIf="erroresmovimiento.length>0">
+                            <div class="col-md-12">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <h4 class="alert-heading">Error!</h4>
+                                    <p>Los siguientes items no pueden ser eliminados ya que tienen movimiento:</p>
+                                    <ul>
+                                        <li *ngFor="let errormovimiento of erroresmovimiento">{{errormovimiento.codigo}} ({{errormovimiento.cantidad}})</li>
+                                    </ul>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div *ngIf="ingreso.detalle && errordetalle">
+                            <p-table [value]="ingreso.detalle" [resizableColumns]="true" columnResizeMode="expand" responsiveLayout="scroll" styleClass="p-datatable-gridlines p-datatable-sm" scrollDirection="both" [scrollable]="true" scrollHeight="570px"
+                                [globalFilterFields]="['codigo','serie','descripcion','centro_distribucion','categoria','cantidad','codigoembalaje','lote','costo_un','merma','fechavencimiento','relacion_caja','peso','temperatura','observaciones']">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:150px" pResizableColumn pFrozenColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Codigo <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('codigo')"></i>
+                                                <p-columnFilter type="text" field="codigo" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th style="width:150px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                <span *ngIf="!ingreso.es_vehiculo; else chasis">Serie</span><ng-template #chasis>Chasis</ng-template> <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('serie')"></i>
+                                                <p-columnFilter type="text" field="serie" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="ingreso.es_vehiculo" style="width:120px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Modelo <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('modelo')"></i>
+                                                <p-columnFilter type="text" field="modelo" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="ingreso.es_vehiculo" style="width:120px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Marca <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('marca')"></i>
+                                                <p-columnFilter type="text" field="marca" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        
+                                        
+                                        
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:200px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Descripci&oacute;n <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('descripcion')"></i>
+                                                <p-columnFilter type="text" field="descripcion" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:200px" pResizableColumn>
+                                          <div class="flex justify-content-center align-items-center">
+                                            Centro Distribuci&oacute;n <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('centro_distribucion')"></i>
+                                            <p-columnFilter type="text" field="centro_distribucion" display="menu"></p-columnFilter>
+                                          </div>
+                                        </th>
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:150px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Categor&iacute;a <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('categoria')"></i>
+                                                <p-columnFilter type="text" field="categoria" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th style="width:150px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Cantidad <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('cantidad')"></i>
+                                                <p-columnFilter type="numeric" field="cantidad" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th style="width:120px">
+                                            <div class="flex justify-content-center align-items-center">
+                                                Embalaje <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('idembalaje')"></i>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:150px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Lote <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('lote')"></i>
+                                                <p-columnFilter type="text" field="lote" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:150px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Costo Un (USD) <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('costo_un')"></i>
+                                                <p-columnFilter type="numeric" field="costo_un" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:150px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                No Conf <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('idno_conf')"></i>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:150px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Clasificaci&oacute;n <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('idclasificacion')"></i>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:150px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                MERMA <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('idmerma')"></i>
+                                            </div>
+                                        </th>
+                                        <!--<th style="width:150px" pResizableColumn>Fec. Prod. <i class="bi bi-clipboard" role="button" (click)="pegarDatos('fechaproduccion')"></i></th>-->
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:150px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Fec. Venc. <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('fechavencimiento')"></i>
+                                                <p-columnFilter type="date" field="fechavencimiento" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:120px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                PPT <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('relacion_caja')"></i>
+                                                <p-columnFilter type="text" field="relacion_caja" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <!--<th style="width:120px" pResizableColumn>Volumen <i class="bi bi-clipboard" role="button" (click)="pegarDatos('volumen')"></i></th>-->
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:120px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Peso <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('peso')"></i>
+                                                <p-columnFilter type="numeric" field="peso" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:180px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Pallet <i *ngIf="editar_ingresos" class="bi bi-clipboard" role="button" (click)="pegarDatos('pallet')"></i>
+                                                <p-columnFilter type="text" field="pallet" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:120px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Temp. <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('temperatura')"></i>
+                                                <p-columnFilter type="text" field="temperatura" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+					                    <th *ngIf="!ingreso.es_vehiculo" style="width:150px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Doc. errada <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('iddoc_errada')"></i>
+                                            </div>
+                                        </th>
+                                        
+                                        
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:100px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                FC
+                                            </div>
+                                        </th>
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:100px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                QTY
+                                            </div>
+                                        </th>
+                                        <th *ngIf="!ingreso.es_vehiculo" style="width:100px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                U.M.
+                                            </div>
+                                        </th>
+                                        <th *ngIf="ingreso.es_vehiculo" style="width:120px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Color <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('color')"></i>
+                                                <p-columnFilter type="text" field="color" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="ingreso.es_vehiculo && tokenDetalle.asgard_almacen" style="width:120px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Partida Espec&iacute;fica <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('partida_especifica')"></i>
+                                                <p-columnFilter type="text" field="partida_especifica" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th style="width:180px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Observaciones <i *ngIf="editar_ingresos" class="bi bi-clipboard" role="button" (click)="pegarDatos('observaciones')"></i>
+                                                <p-columnFilter type="text" field="observaciones" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="ingreso.es_vehiculo && tokenDetalle.asgard_almacen" style="width:120px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Invoice <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('invoice')"></i>
+                                                <p-columnFilter type="text" field="invoice" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="ingreso.es_vehiculo && tokenDetalle.asgard_almacen" style="width:120px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                No DIM <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('no_dim')"></i>
+                                                <p-columnFilter type="text" field="no_dim" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="ingreso.es_vehiculo && tokenDetalle.asgard_almacen" style="width:120px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Fecha pase Salida <i *ngIf="editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-clipboard" role="button" (click)="pegarDatos('fecha_pase_salida')"></i>
+                                                <p-columnFilter type="date" field="fecha_pase_salida" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        
+                                        <th *ngIf="ingreso.es_vehiculo && tokenDetalle.asgard_almacen && ingreso.idsalida_origen==0" style="width:150px"></th>
+                                        <th style="width:100px"></th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-detalle let-rowIndex="rowIndex">
+                                    <tr>
+                                        <td style="width:150px" pEditableColumn pFrozenColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text" class="form-control form-control-sm no-border" id="codigo{{rowIndex}}" name="codigo{{rowIndex}}" [(ngModel)]="detalle.codigo" placeholder="Codigo" (change)="verificarCodigo(rowIndex)" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.codigo}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                            <small *ngIf="errordetalle[rowIndex].errorcodigo" class="text-danger">Campo Requerido</small>
+                                        </td>
+                                        <td style="width:150px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text" class="form-control form-control-sm no-border" id="serie{{rowIndex}}" name="serie{{rowIndex}}" [(ngModel)]="detalle.serie" placeholder="Serie" (change)="errordetalle[rowIndex].errorserie=false" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.serie}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                            <small *ngIf="errordetalle[rowIndex].errorserie" class="text-danger">Campo Requerido</small>
+                                        </td>
+                                        
+                                        <td *ngIf="ingreso.es_vehiculo" style="width:120px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text" class="form-control form-control-sm no-border" id="modelo{{rowIndex}}" name="modelo{{rowIndex}}" [(ngModel)]="detalle.modelo" placeholder="Modelo" (change)="errordetalle[rowIndex].errormodelo=false" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.modelo}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                            <small *ngIf="errordetalle[rowIndex].errormodelo" class="text-danger">Campo Requerido</small>
+                                        </td>
+                                        <td *ngIf="ingreso.es_vehiculo" style="width:120px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text" class="form-control form-control-sm no-border" id="marca{{rowIndex}}" name="marca{{rowIndex}}" [(ngModel)]="detalle.marca" placeholder="Marca" (change)="errordetalle[rowIndex].errormarca=false" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.marca}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                            <small *ngIf="errordetalle[rowIndex].errormarca" class="text-danger">Campo Requerido</small>
+                                        </td>
+
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:200px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text" class="form-control form-control-sm no-border" id="descripcion{{rowIndex}}" name="descripcion{{rowIndex}}" [(ngModel)]="detalle.descripcion" placeholder="Descripción" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.descripcion}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:200px" pEditableColumn>
+                                          <p-cellEditor>
+                                            <ng-template pTemplate="input">
+                                              <input type="text" class="form-control form-control-sm no-border" id="centro_distribucion{{rowIndex}}" name="centro_distribucion{{rowIndex}}" [(ngModel)]="detalle.centro_distribucion" placeholder="Centro destribucion" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                            </ng-template>
+                                            <ng-template pTemplate="output">
+                                              {{detalle.centro_distribucion}}
+                                            </ng-template>
+                                          </p-cellEditor>
+                                        </td>
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text" class="form-control form-control-sm no-border" id="categoria{{rowIndex}}" name="categoria{{rowIndex}}" [(ngModel)]="detalle.categoria" placeholder="Categoría" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.categoria}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                            <!--<input class="form-check-input" type="checkbox" id="sustanciascontroladas{{rowIndex}}" name="sustanciascontroladas{{rowIndex}}" [checked]="detalle.sustanciascontroladas" (change)="detalle.sustanciascontroladas = !detalle.sustanciascontroladas">-->
+                                        </td>
+                                        <td style="width:150px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="number" step="0.01" class="form-control form-control-sm no-border" id="cantidad{{rowIndex}}" name="cantidad{{rowIndex}}" [(ngModel)]="detalle.cantidad" [disabled]="detalle.dividido==1 || ingreso.es_vehiculo || !editar_ingresos || ingreso.idsalida_origen>0" (ngModelChange)="gettotales();errordetalle[rowIndex].errorcantidad=false; ">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.cantidad | number:'0.2-2'}}<small class="text-primary">/{{detalle.cantidad_saldo | number:'0.2-2'}}</small>
+                                                    <small *ngIf="errordetalle[rowIndex].errorcantidad" class="text-danger"><br />< {{detalle.cantidadextraida | number:'0.2-2'}}</small>
+                                                </ng-template>
+                                            </p-cellEditor>
+
+                                        </td>
+                                        <td style="width:120px">
+                                            <select class="form-select form-select-sm no-border" id="idembalaje{{rowIndex}}" name="idembalaje{{rowIndex}}" [(ngModel)]="detalle.idembalaje" (change)="errordetalle[rowIndex].erroridembalaje=false" [disabled]="ingreso.es_vehiculo || !editar_ingresos || ingreso.idsalida_origen>0">
+                                                <option value="0">-</option>
+                                                <option *ngFor="let embalaje of embalajes"  [ngValue]="embalaje.idembalaje">{{embalaje.codigoembalaje}}</option>
+                                            </select>
+                                            <small *ngIf="errordetalle[rowIndex].erroridembalaje" class="text-danger">Campo Requerido</small>
+                                        </td>
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text" class="form-control form-control-sm no-border" id="lote{{rowIndex}}" name="lote{{rowIndex}}" [(ngModel)]="detalle.lote" placeholder="Lote" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.lote}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="number" step="0.01" class="form-control form-control-sm no-border" id="costo_un{{rowIndex}}" name="costo_un{{rowIndex}}" [(ngModel)]="detalle.costo_un" placeholder="Costo Un (USD)" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.costo_un}}
+                                                    <!--<small *ngIf="errordetalle[rowIndex].errorcantidad_no_conf" class="text-danger"><br />< {{detalle.cantidad_no_confextraidos | number:'0.2-2'}}</small>-->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px">
+                                            <select class="form-select form-select-sm no-border" id="idno_conf{{rowIndex}}" name="idno_conf{{rowIndex}}" [(ngModel)]="detalle.idno_conf" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                <option value=""></option>
+                                                <option *ngFor="let no_conf of no_confs"  [ngValue]="no_conf.idno_conf">{{no_conf.no_conf}}</option>
+                                            </select>
+                                            <!--
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text" class="form-control form-control-sm no-border" id="no_conf{{rowIndex}}" name="no_conf{{rowIndex}}" [(ngModel)]="detalle.no_conf" placeholder="No Conf.">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.no_conf}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                            -->
+                                        </td>
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px">
+                                            <select class="form-select form-select-sm no-border" id="idclasificacion{{rowIndex}}" name="idclasificacion{{rowIndex}}" [(ngModel)]="detalle.idclasificacion" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                <option value=""></option>
+                                                <option *ngFor="let clasificacion of clasificaciones"  [ngValue]="clasificacion.idclasificacion">{{clasificacion.clasificacion}}</option>
+                                            </select>
+                                        </td>
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px">
+                                            <select class="form-select form-select-sm no-border" id="idmerma{{rowIndex}}" name="idmerma{{rowIndex}}" [(ngModel)]="detalle.idmerma" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                <option value=""></option>
+                                                <option *ngFor="let merma of mermas"  [ngValue]="merma.idmerma">{{merma.merma}}</option>
+                                            </select>
+                                        </td>
+                                        <!--
+                                        <td style="width:150px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="date" class="form-control form-control-sm no-border" id="fechaproduccion{{rowIndex}}" name="fechaproduccion{{rowIndex}}" [(ngModel)]="detalle.fechaproduccion" placeholder="Fecha Produccion">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.fechaproduccion | date:'dd/MM/yyyy'}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        -->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="date" class="form-control form-control-sm no-border" id="fechavencimiento{{rowIndex}}" name="fechavencimiento{{rowIndex}}" [(ngModel)]="detalle.fechavencimiento" placeholder="Fecha Vencimiento" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.fechavencimiento | date:'dd/MM/yyyy'}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:120px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text"  class="form-control form-control-sm no-border" id="relacion_caja{{rowIndex}}" name="relacion_caja{{rowIndex}}" [(ngModel)]="detalle.relacion_caja" placeholder="PPT" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0" />
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.relacion_caja}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <!--
+                                        <td style="width:120px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="number" step="0.01" class="form-control form-control-sm no-border" id="volumen{{rowIndex}}" name="volumen{{rowIndex}}" [(ngModel)]="detalle.volumen" placeholder="Volumen" (ngModelChange)="gettotales();">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.volumen | number:'0.2-2'}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        -->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:120px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="number" step="0.01" class="form-control form-control-sm no-border" id="peso{{rowIndex}}" name="peso{{rowIndex}}" [(ngModel)]="detalle.peso" [disabled]="detalle.dividido==1 || !editar_ingresos || ingreso.idsalida_origen>0" placeholder="Peso" (ngModelChange)="gettotales();">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.peso | number:'0.2-2'}}<small class="text-primary">/{{detalle.peso_saldo | number:'0.2-2'}}</small>
+                                                    <small *ngIf="errordetalle[rowIndex].errorpeso" class="text-danger"><br />< {{detalle.pesoextraido | number:'0.2-2'}}</small>
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:120px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text" class="form-control form-control-sm no-border" id="pallet{{rowIndex}}" name="pallet{{rowIndex}}" [(ngModel)]="detalle.pallet" placeholder="Pallet" [disabled]="!editar_ingresos">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.pallet}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:120px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control form-control-sm no-border" id="temperatura{{rowIndex}}" name="temperatura{{rowIndex}}" [(ngModel)]="detalle.temperatura" placeholder="Temperatura" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                        <span class="input-group-text">&deg;C</span>
+                                                    </div>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.temperatura}} <span *ngIf="detalle.temperatura">&deg;C</span>
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px">
+                                            <select class="form-select form-select-sm no-border" id="iddoc_errada{{rowIndex}}" name="iddoc_errada{{rowIndex}}" [(ngModel)]="detalle.iddoc_errada" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                <option value=""></option>
+                                                <option *ngFor="let doc_errada of docs_errada"  [ngValue]="doc_errada.iddoc_errada">{{doc_errada.doc_errada}}</option>
+                                            </select>
+                                        </td>
+                                        
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:100px">
+                                            {{detalle.factor_conversion}}
+                                        </td>
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:100px">
+                                            {{detalle.cantidad/detalle.factor_conversion | number:'0.2-2'}}
+                                        </td>
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:100px">
+                                            {{detalle.codigoembalaje_salida}}
+                                        </td>
+                                        
+                                        <td *ngIf="ingreso.es_vehiculo" style="width:120px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text" class="form-control form-control-sm no-border" id="color{{rowIndex}}" name="color{{rowIndex}}" [(ngModel)]="detalle.color" placeholder="Color" (change)="errordetalle[rowIndex].errorcolor=false" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.color}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                            <small *ngIf="errordetalle[rowIndex].errorcolor" class="text-danger">Campo Requerido</small>
+                                        </td>
+                                        
+                                        <td *ngIf="ingreso.es_vehiculo && tokenDetalle.asgard_almacen" style="width:120px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text" class="form-control form-control-sm no-border" id="partida_especifica{{rowIndex}}" name="partida_especifica{{rowIndex}}" [(ngModel)]="detalle.partida_especifica" placeholder="Partida Específica" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.partida_especifica}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        
+                                        <td style="width:180px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text" class="form-control form-control-sm no-border" id="observaciones{{rowIndex}}" name="observaciones{{rowIndex}}" [(ngModel)]="detalle.observaciones" placeholder="Observaciones" [disabled]="!editar_ingresos">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.observaciones}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        
+                                        <td *ngIf="ingreso.es_vehiculo && tokenDetalle.asgard_almacen" style="width:120px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text" class="form-control form-control-sm no-border" id="invoice{{rowIndex}}" name="invoice{{rowIndex}}" [(ngModel)]="detalle.invoice" placeholder="Invoice" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.invoice}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td *ngIf="ingreso.es_vehiculo && tokenDetalle.asgard_almacen" style="width:120px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="text" class="form-control form-control-sm no-border" id="no_dim{{rowIndex}}" name="no_dim{{rowIndex}}" [(ngModel)]="detalle.no_dim" placeholder="No DIM" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.no_dim}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td *ngIf="ingreso.es_vehiculo && tokenDetalle.asgard_almacen" style="width:100px" pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input type="datetime-local" class="form-control form-control-sm no-border" id="fecha_pase_salida{{rowIndex}}" name="fecha_pase_salida{{rowIndex}}" [(ngModel)]="detalle.fecha_pase_salida" placeholder="Fecha Pase Salida" [disabled]="!editar_ingresos || ingreso.idsalida_origen>0">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{detalle.fecha_pase_salida | date:'dd/MM/yyyy HH:mm'}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td *ngIf="ingreso.es_vehiculo && tokenDetalle.asgard_almacen && ingreso.idsalida_origen==0" style="width:150px;">
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalAccesorios" (click)="prepararAccesoriosVehciulos(rowIndex)">Acesorios</button>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDanos">Da&ntilde;os</button>
+                                            </div>
+                                        </td>
+                                        
+                                        <td style="width:100px;">
+                                            <i *ngIf="detalle.salidas.length==0 && detalle.dividido==0 && editar_ingresos && ingreso.idsalida_origen==0" class="bi bi-x-circle-fill" role="button" data-bs-toggle="modal" data-bs-target="#confirmarEliminarDetalle" (click)="indicedetalleeliminar=rowIndex"></i>
+                                        </td>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td style="width:2040px" colspan="16">No existen registros</td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                    <tr>
+                                        <td style="width:150px" pFrozenColumn></td> <!--codigo-->
+                                        <td style="width:150px"></td> <!--serie/chasis-->
+                                        <td *ngIf="ingreso.es_vehiculo" style="width:120px"></td> <!--modelo-->
+                                        <td *ngIf="ingreso.es_vehiculo" style="width:120px"></td> <!--marca-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:200px"></td> <!--desc-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:200px"></td> <!--centro dist-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px"></td> <!--categoria-->
+                                        <td style="width:150px">{{cantidadtotal | number:'0.2-2'}}</td> <!--cantidad-->
+                                        <td style="width:120px"></td> <!--embalaje-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px"></td> <!--lote-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px"></td> <!--costo un-->
+                                        <!--<td style="width:150px">{{cantidad_no_conftotal | number:'0.2-2'}}</td>-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px"></td> <!--no conf-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px"></td> <!--clasificacion-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px"></td> <!--merma-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px"></td> <!--fecha venc-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:120px"></td> <!--ppt-->
+                                        <!--<td style="width:120px">{{volumentotal | number:'0.2-2'}}</td>-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:120px">{{pesototal | number:'0.2-2'}}</td> <!--peso-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:120px"></td> <!--temp-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:150px"></td> <!--doc err-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:100px"></td>  <!--FC-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:100px">{{cantidadsalidatotal | number:'0.2-2'}}</td>  <!--qty-->
+                                        <td *ngIf="!ingreso.es_vehiculo" style="width:100px"></td> <!--UM-->
+                                        <td *ngIf="ingreso.es_vehiculo" style="width:120px"></td> <!--color-->
+                                        <td *ngIf="ingreso.es_vehiculo" style="width:120px"></td> <!--partida esp-->
+
+                                        <td style="width:180px"></td> <!--obs-->
+                                        <td *ngIf="ingreso.es_vehiculo" style="width:120px"></td> <!--invoice-->
+                                        <td *ngIf="ingreso.es_vehiculo" style="width:120px"></td> <!--no dim-->
+                                        <td *ngIf="ingreso.es_vehiculo && tokenDetalle.asgard_almacen"></td> <!--fecha_pase_salida-->
+                                        <td *ngIf="ingreso.es_vehiculo && tokenDetalle.asgard_almacen && ingreso.idsalida_origen==0"></td> <!--accesorios-->
+                                        <td style="width:100px"></td> <!--eliminar-->
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+
+                        <hr />
+                        <div class="pagetitle"><h1>PIE DE P&Aacute;GINA</h1></div>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="nota_adicional" class="form-label text-secondary small">Notas Adicionales</label>
+                                <textarea autosize class="form-control" id="nota_adicional" name="nota_adicional" rows="3" [(ngModel)]="ingreso.nota_adicional" [disabled]="!editar_ingresos"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="idusuario_recibido" class="form-label text-secondary small">Recibido por</label>
+                                        <ng-select [(ngModel)]="ingreso.idusuario_recibido" (change)="verificarCI()" [disabled]="!editar_ingresos">
+                                            <ng-container *ngFor="let usuario of usuarios">
+                                                <ng-option *ngIf="usuario.activo" [value]="usuario.idusuario">{{usuario.nombre}}</ng-option>
+                                            </ng-container>
+                                        </ng-select>
+                                        <small *ngIf="erroridusuario_recibido" class="text-danger">Campo Requerido</small>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="ci_recibido" class="form-label text-secondary small">CI</label>
+                                        <input type="text" class="form-control" id="ci_recibido" name="ci_recibido" [(ngModel)]="ingreso.ci_recibido" disabled >
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="fecha" class="form-label text-secondary small">Fecha Sistema</label>
+                                        <input type="datetime-local" class="form-control" id="fechasistema" name="fechasistema" [(ngModel)]="ingreso.fechasistema" (change)="errorfechasistema=false" [disabled]="!editar_ingresos" >
+                                        <small *ngIf="errorfechasistema" class="text-danger">Campo Requerido</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="nombre_entrega" class="form-label text-secondary small">Entregado por</label>
+                                        <input type="text" class="form-control" id="nombre_entrega" name="nombre_entrega" [(ngModel)]="ingreso.nombre_entrega" [disabled]="!editar_ingresos" >
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="ci_entrega" class="form-label text-secondary small">CI</label>
+                                        <input type="text" class="form-control" id="ci_entrega" name="ci_entrega" [(ngModel)]="ingreso.ci_entrega" [disabled]="!editar_ingresos" >
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="empresa_entrega" class="form-label text-secondary small">Empresa</label>
+                                        <input type="text" class="form-control" id="empresa_entrega" name="empresa_entrega" [(ngModel)]="ingreso.empresa_entrega" [disabled]="!editar_ingresos" >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="btn btn-primary" (click)="saveIngreso(false)" [disabled]="!editar_ingresos">Guardar</button>
+                            </div>
+                            <div *ngIf="!ingreso.es_vehiculo" class="col text-center">
+                                <button type="button" class="btn btn-success" (click)="duplicarIngreso()" [disabled]="!editar_ingresos">Duplicar</button>
+                            </div>
+                            <div *ngIf="ingreso.idcliente_destino>0" class="col text-center">
+                                <button *ngIf="ingreso.envio_api==null" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#confirmarAPI" [disabled]="!editar_ingresos">Reportar al Cliente</button>
+                                <div class="text-danger" *ngIf="ingreso.idcliente_destino>0 && ingreso.envio_api==null">{{ingreso.respuesta_api}}</div>
+                                <div class="text-primary" *ngIf="ingreso.idcliente_destino>0 && ingreso.envio_api!=null">{{ingreso.respuesta_api}}</div>
+                            </div>
+                            <div class="col text-end">
+                                <button *ngIf="ingreso.idsalida_origen==0" type="button" class="btn btn-warning" (click)="verActaIngreso()">Acta</button>
+                                <button *ngIf="ingreso.idsalida_origen>0" type="button" class="btn btn-warning" (click)="verConstancia()">Constancia</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="adjuntos" role="tabpane2" aria-labelledby="adjuntos-tab">
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="pagetitle"><h1>Documentos Adjuntos:</h1></div>
+                                <div class="list-group">
+                                    <li role="button" *ngFor="let adjunto of ingreso.adjuntos; let indice = index" class="list-group-item list-group-item-action d-flex" (click)="downloadDocumento(indice)">
+                                        {{adjunto.documento}}
+                                        <div role="button" class="ms-auto bd-highlight">
+                                            <i class="bi bi-x-circle-fill" role="button" (click)="ventanaEliminarDocumento(indice,$event)"></i>
+                                        </div>
+                                    </li>
+                                </div>
+                            </div>
+                            <div *ngIf="editar_ingresos" class="mb-3 col-md-6">
+                                <div class="pagetitle"><h1>Subir Documento:</h1></div>
+                                <input class="form-control" type="file" name="fileUpload" id="fileUpload" #UploadFileInput (change)="fileChangeEvent($event)" >
+                                <small *ngIf="errorarchivo" class="text-danger">Campo requerido</small>
+                                <br />
+                                <br />
+                                <button type="button" class="btn btn-outline-primary col-md-6" (click)="validarDocumento()">Cargar documento</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="ubicacion" role="tabpane3" aria-labelledby="ubicacion-tab">
+                        <br />
+                        <div class="row mb-3 container-fluid vh-70">
+                            <div class="col-6 overflow-auto" style="height:100%">
+                                <div *ngIf="almacen" class="table-responsive">
+                                    <table border="1">
+                                        <ng-container *ngFor="let fila of almacen.detalle; let f = index">
+                                            <tr>
+                                                <ng-container *ngFor="let columna of fila; let c = index">
+                                                    <td [ngClass]="columna.tipo == '1' ? (columna.habilitado ? (columna.lineasuperior ? 'sectoralmacenlineasuperior cursor_pointer' : 'sectoralmacen cursor_pointer' ) : 'sectoralmacen')  : 'sectoralmacenvarios'" style="background-color: {{columna.color}};" (click)="columna.habilitado && ubicarEnAlmacen(columna.idalmacendetalle,columna.nombre)">{{columna.texto}}{{columna.columna}}</td>
+                                                </ng-container>
+                                            </tr>
+                                        </ng-container>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-6 overflow-auto" style="height:100%;">
+                                <p-table [value]="ingreso.detalle" [resizableColumns]="true" columnResizeMode="expand" styleClass="p-datatable-gridlines p-datatable-sm" [scrollable]="true"  scrollHeight="70vh" scrollDirection="both">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th style="width:130px" pResizableColumn>Ubicaci&oacute;n <i *ngIf="editar_ingresos" class="bi bi-clipboard" role="button" (click)="pegarDatos('idalmacendetalle')"></i></th>
+                                            <th style="width:35px">
+                                                <input *ngIf="editar_ingresos" class="form-check-input" type="checkbox" id="marcarTodosAlmacen" name="marcarTodosAlmacen" [checked]="marcarTodosAlmacen" (change)="marcarTodos()" >
+                                            </th>
+                                            <th style="width:100px" pResizableColumn>Codigo</th>
+                                            <th style="width:200px" *ngIf="!ingreso.es_vehiculo" pResizableColumn>Descripci&oacute;n</th>
+                                            <th style="width:100px" *ngIf="ingreso.es_vehiculo" pResizableColumn>Chasis</th>
+                                            <th style="width:120px" pResizableColumn>Cantidad</th>
+                                            <th style="width:100px" pResizableColumn>Lote</th>
+                                            <th style="width:100px" pResizableColumn>Fec. Venc.</th>
+
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-detalle let-rowIndex="rowIndex">
+                                        <tr>
+                                            <td style="width:130px">{{detalle.ubicacionalmacen}}</td>
+                                            <td style="width:35px">
+                                                <input  *ngIf="editar_ingresos" class="form-check-input" type="checkbox" id="ubicarenalmacen{{rowIndex}}" name="ubicarenalmacen{{rowIndex}}" [checked]="marcadoAlmacen[rowIndex].ubicarenalmacen" (change)="marcarItem(rowIndex)" >
+                                            </td>
+                                            <td style="width:100px">
+                                                <label class="form-check-label" for="ubicarenalmacen{{rowIndex}}">{{detalle.codigo}}</label>
+                                                </td>
+                                            <td style="width:200px" *ngIf="!ingreso.es_vehiculo">{{detalle.descripcion}}</td>
+                                            <td style="width:200px" *ngIf="ingreso.es_vehiculo">{{detalle.serie}}</td>
+                                            <td style="width:120px">{{detalle.cantidad | number:'0.2-2'}} {{detalle.codigoembalaje}}</td>
+                                            <td style="width:100px">{{detalle.lote}}</td>
+                                            <td style="width:100px">{{detalle.fechavencimiento | date:'dd/MM/yyyy'}}</td>
+
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="emptymessage">
+                                        <tr>
+                                            <td colspan="5">No existen registros</td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-primary col-xl-4 col-sm-10 col-xs-10" (click)="saveIngreso(false)" [disabled]="!editar_ingresos">Guardar</button>
+                            </div>
+                            <div class="col-6 text-end">
+                                <button type="button" class="btn btn-warning col-xl-4 col-sm-10 col-xs-10" (click)="verActaIngreso()">Acta</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>
+
+
+<div class="modal" id="ventanaCargaMasiva" tabindex="-1" aria-labelledby="ventanaCargaMasivaLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaCargaMasivaLabel">Carga Masiva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Para cargar Items directamente desde un archivo xlsx llene el formato que se muestra <a target="_blank" href="{{urlFormatoIngreso}}">aqui</a> y cargelo a continuaci&oacute;n
+                <br /><br />
+                <input class="form-control" type="file" name="fileUpload" id="fileUpload" #UploadFileInput (change)="fileChangeEvent($event)" >
+                <small *ngIf="errorarchivo" class="text-danger">Campo requerido</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="cargarMasivamente()">Cargar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAccesorios" tabindex="-1" aria-labelledby="modalAccesoriosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAccesoriosLabel">Accesorios</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>Chasis: <strong>{{chasis}}</strong></div>
+                <div>Modelo: <strong>{{modelo}}</strong></div>
+                <div>Color: <strong>{{color}}</strong></div>
+                <br />
+                <table class="table table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">Accesorio</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Observaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ingresodetalle_accesorio_vehiculo of ingresodetalles_accesorios_vehiculos; let av = index">
+                            <th scope="row"><input class="form-check-input me-1" type="checkbox" id="ingresodetalle_accesorio_vehiculo{{av}}" [checked]="ingresodetalle_accesorio_vehiculo.marcado" (change)="ingresodetalle_accesorio_vehiculo.marcado=!ingresodetalle_accesorio_vehiculo.marcado" disabled>{{ingresodetalle_accesorio_vehiculo.accesorios_vehiculos}}</th>
+                            <td><input *ngIf="ingresodetalle_accesorio_vehiculo.requiere_cantidad && ingresodetalle_accesorio_vehiculo.marcado" class="form-control form-control-sm" type="number" placeholder="Cantidad" [(ngModel)]="ingresodetalle_accesorio_vehiculo.cantidad" style="width: 100px" disabled ></td>
+                            <td><input *ngIf="ingresodetalle_accesorio_vehiculo.marcado" class="form-control form-control-sm" type="text" [(ngModel)]="ingresodetalle_accesorio_vehiculo.observaciones" disabled /></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!--
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let ingresodetalle_accesorio_vehiculo of ingresodetalles_accesorios_vehiculos; let av = index">
+                        <span><input class="form-check-input me-1" type="checkbox" id="ingresodetalle_accesorio_vehiculo{{av}}" [checked]="ingresodetalle_accesorio_vehiculo.marcado" (change)="ingresodetalle_accesorio_vehiculo.marcado=!ingresodetalle_accesorio_vehiculo.marcado">{{ingresodetalle_accesorio_vehiculo.accesorios_vehiculos}}</span>
+                        <span><input *ngIf="ingresodetalle_accesorio_vehiculo.requiere_cantidad && ingresodetalle_accesorio_vehiculo.marcado" class="form-control form-control-sm" type="number" placeholder="Cantidad" [(ngModel)]="ingresodetalle_accesorio_vehiculo.cantidad" style="width: 100px" ></span>
+                        <span>Otro mas</span>
+                    </li>
+                </ul>
+                -->
+                <!--
+                <div class="form-check" *ngFor="let ingresodetalle_accesorio_vehiculo of ingresodetalles_accesorios_vehiculos; let av = index">
+                    <input class="form-check-input" type="checkbox" id="ingresodetalle_accesorio_vehiculo{{av}}" [checked]="ingresodetalle_accesorio_vehiculo.marcado" (change)="ingresodetalle_accesorio_vehiculo.marcado=!ingresodetalle_accesorio_vehiculo.marcado">
+                    <label class="form-check-label" for="ingresodetalle_accesorio_vehiculo{{av}}">
+                        {{ingresodetalle_accesorio_vehiculo.accesorios_vehiculos}}
+                    </label>
+                </div>
+                -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalDanos" tabindex="-1" aria-labelledby="modalDanosLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDanosLabel">Da&ntilde;os</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarEliminarDetalle" tabindex="-1" aria-labelledby="confirmarEliminarDetalleLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar este registro?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarDetalle()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarEliminarTodos" tabindex="-1" aria-labelledby="confirmarEliminarTodosLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar todos los registros?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarTodos()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarSobreescribirDocumento" tabindex="-1" aria-labelledby="confirmarSobreescribirDocumentoLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+
+                <br />
+                <h4>El archivo <span class="fst-italic fw-bold">{{nombredocumentocargar}}</span> ya existe<br />¿Desea sobreescribirlo?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="cargarDocumento()">Sobreescribir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarEliminarDocumento" tabindex="-1" aria-labelledby="confirmarEliminarDocumentoLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar el archivo?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarDocumento()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarAPI" tabindex="-1" aria-labelledby="confirmarAPILabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+
+                <br />
+                <h4>¿Est&aacute; seguro que desea reportar al cliente?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="confirmarAPI()">Reportar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ventanaLoading" tabindex="-1" aria-labelledby="ventanaLoadingLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: none !important;">
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

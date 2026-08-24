@@ -1,0 +1,13 @@
+.no-border {
+    border: 0;
+    box-shadow: none; /* You may want to include this as bootstrap applies these styles too */
+    
+}
+
+.ancho160 {
+    width: 160px !important;
+}
+
+.disable-td{
+    pointer-events: none;
+}

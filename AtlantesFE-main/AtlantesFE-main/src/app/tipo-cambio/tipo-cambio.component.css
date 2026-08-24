@@ -1,0 +1,13 @@
+input[type="date"]::-webkit-clear-button {
+    display: none;
+  }
+
+  /* Para Firefox (opcional, ya que Firefox no muestra el botón de borrar por defecto) */
+  input[type="date"]::-moz-clear-button {
+    display: none;
+  }
+
+  /* Para otros navegadores */
+  input[type="date"]::-ms-clear {
+    display: none;
+  }

@@ -1,0 +1,98 @@
+<main id="ventanalogin">
+    <div class="container">
+
+        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                        <!--
+                        <div class="d-flex justify-content-center py-4">
+                            <a class="logo d-flex align-items-center w-auto">
+                                <img src="assets/img/logo_banner.png" alt="">
+                            </a>
+                        </div>
+                        -->
+                        <div class="card mb-3">
+
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center py-4">
+                                    <a class="d-flex align-items-center w-auto">
+                                        <img src="assets/img/login_asgard_v1.png" alt="" height="120px">
+                                    </a>
+                                </div>
+
+                                <div class="pb-2">
+                                    <h5 class="text-center pb-0 fs-4">Recuperar Contrase&ntilde;a</h5>
+                                </div>
+
+                                <div *ngIf="etapa==1" class="row g-3 needs-validation">
+                                    <div class="col-12">
+                                        <label for="username" class="form-label">Username o correo electr&oacute;nico</label>
+                                        <input type="text" name="username" class="form-control" id="username" [(ngModel)]="username" (change)="error_username=false" [disabled]="datosenviados">
+                                        <small *ngIf="error_username" class="text-danger">{{mensaje_error_username}}</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <button class="btn btn-light w-100" [routerLink]="['/login']" [disabled]="datosenviados">Cancelar</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button class="btn btn-primary w-100" (click)="enviarVerificacion()" [disabled]="datosenviados">Recuperar</button>
+                                    </div>
+                                </div>
+                                
+                                <div *ngIf="etapa==2" class="row g-3 needs-validation">
+                                    <div class="col-12">
+                                        <p class="text-primary fw-bold">Se envio el c&oacute;digo de verificacion a {{email}}</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="codigo_verificacion" class="form-label">C&oacute;digo de Verificaci&oacute;n</label>
+                                        <input type="text" name="codigo_verificacion" class="form-control" id="codigo_verificacion" [(ngModel)]="codigo_verificacion" (change)="error_codigo_verificacion=false" [disabled]="datosenviados">
+                                        <small *ngIf="error_codigo_verificacion" class="text-danger">{{mensaje_error_codigo_verificacion}}</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <button class="btn btn-light w-100" [routerLink]="['/login']" [disabled]="datosenviados">Cancelar</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button class="btn btn-primary w-100" (click)="verificarCodigo()" [disabled]="datosenviados">Verificar</button>
+                                    </div>
+                                </div>
+                                
+                                <div *ngIf="etapa==3" class="row g-3 needs-validation">
+                                    <div class="col-12">
+                                        <p class="text-primary fw-bold">Seleccione una nueva contrase&ntilde;a</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="contrasena1" class="form-label text-secondary small">Nueva Contrase&ntilde;a</label>
+                                        <input type="password" class="form-control" id="contrasena1" name="contrasena1" [(ngModel)]="contrasena1" (input)="validarContrasena()" [disabled]="datosenviados" />
+                                        <small *ngIf="errorcontrasena1" class="text-danger" [innerHTML]="mensajeerrorcontrasena1"></small>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="contrasena2" class="form-label text-secondary small">Repita Nueva Contrase&ntilde;a</label>
+                                        <input type="password" class="form-control" id="contrasena2" name="contrasena2" [(ngModel)]="contrasena2" (input)="validarContrasena()" [disabled]="datosenviados" />
+                                        <small *ngIf="errorcontrasena2" class="text-danger">No coincide</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <button class="btn btn-light w-100" [routerLink]="['/login']" [disabled]="datosenviados">Cancelar</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="button" class="btn btn-primary" [disabled]="!contrasena_valida || datosenviados" (click)="cambiarContrasena();">Actualizar Contrase&ntilde;a</button>
+                                    </div>
+                                </div>
+                                
+                                <div *ngIf="etapa==4" class="row g-3 needs-validation">
+                                    <div class="col-12">
+                                        <p class="text-primary fw-bold">Contrase&ntilde;a modificada exitosamente</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-light w-100" [routerLink]="['/login']">Volver a Login</button>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>

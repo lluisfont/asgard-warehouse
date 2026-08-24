@@ -1,0 +1,201 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="7.1"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Facturas/Notas de Cobranza</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_reporte_contabilidad_facturas_notas_cobranza" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="porcarpeta" [checked]="porcarpeta" (change)="porcarpeta=!porcarpeta" >
+                            <label class="form-check-label" for="porcarpeta">
+                                Por Carpeta
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row" *ngIf="!porcarpeta">
+                    <div class="col-md-6 mb-3">
+                        <label for="identidad" class="form-label text-secondary small">Cliente</label>
+                        <ng-select [(ngModel)]="identidad" placeholder="Todos" [disabled]="generado">
+                            <ng-container *ngFor="let entidad of entidades">
+                                <ng-option [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                            </ng-container>
+                        </ng-select>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label for="importacion_exportacion" class="form-label text-secondary small">Tipo</label>
+                        <ng-select [(ngModel)]="importacion_exportacion" placeholder="Todos" [disabled]="generado">
+                            <ng-container *ngFor="let imp_exp of importacion_exportaciones">
+                                <ng-option [value]="imp_exp.importacion_exportacion">{{imp_exp.importacion_exportacion_codigo}}</ng-option>
+                            </ng-container>
+                        </ng-select>
+                    </div>
+                
+                    <div class="col-md-2 mb-3">
+                        <label for="fechainicial" class="form-label text-secondary small">Desde</label>
+                        <input type="date" class="form-control" id="fechainicial" name="fechainicial" [(ngModel)]="fechainicial" [disabled]="generado" />
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label for="fechafinal" class="form-label text-secondary small">Hasta</label>
+                        <input type="date" class="form-control" id="fechafinal" name="fechafinal" [(ngModel)]="fechafinal" [disabled]="generado" />
+                    </div>
+                </div>
+                <div class="row" *ngIf="porcarpeta">
+                    <div class="col-md-3 mb-3">
+                        <label for="carpeta" class="form-label text-secondary small">Carpeta</label>
+                        <input type="text" class="form-control" id="carpeta" name="carpeta" [(ngModel)]="carpeta" (keyup)="error_carpeta=false" [disabled]="generado" />
+                        <small *ngIf="error_carpeta" class="text-danger">Debe contener al menos 4 caracteres</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+                
+                <p-table *ngIf="reporte.length>0" [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    [globalFilterFields]="['tipodocumento','fecha','numero','nodui','embarque','nombre','tipo','usuario','carpetapacena','monto','estado','transportista','arribo','regional','estaplanilla']"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                            <!--<button type="button" (click)="exportPdf()" class="btn btn-danger mb-3"><i class="bi bi-file-earmark-pdf"></i></button>-->
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tipo Documento
+                                    <p-columnFilter type="text" field="tipodocumento" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha
+                                    <p-columnFilter type="date" field="fecha" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Numero
+                                    <p-columnFilter type="text" field="numero" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    No DUI/DIM
+                                    <p-columnFilter type="text" field="nodui" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Embarque
+                                    <p-columnFilter type="text" field="embarque" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tipo
+                                    <p-columnFilter type="text" field="tipo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Usuario
+                                    <p-columnFilter type="text" field="usuario" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Carpeta Pace&ntilde;a
+                                    <p-columnFilter type="text" field="carpetapacena" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Monto BOB
+                                    <p-columnFilter type="numeric" field="monto" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Estado
+                                    <p-columnFilter type="text" field="estado" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Transportista
+                                    <p-columnFilter type="text" field="transportista" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Arribo a
+                                    <p-columnFilter type="text" field="arribo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Regional
+                                    <p-columnFilter type="text" field="regional" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Esta en Planilla
+                                    <p-columnFilter type="text" field="estaplanilla" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-fnc>
+                        <tr>
+                            <td>{{fnc.tipodocumento}}</td>
+                            <td>{{fnc.fecha | date:'dd/MM/yyyy'}}</td>
+                            <td>{{fnc.numero}}</td>
+                            <td>{{fnc.nodui}}</td>
+                            <td>{{fnc.embarque}}</td>
+                            <td>{{fnc.nombre}}</td>
+                            <td>{{fnc.tipo}}</td>
+                            <td>{{fnc.usuario}}</td>
+                            <td>{{fnc.carpetapacena}}</td>
+                            <td>{{fnc.monto | number:'0.2-2'}}</td>
+                            <td>{{fnc.estado}}</td>
+                            <td>{{fnc.transportista}}</td>
+                            <td>{{fnc.arribo}}</td>
+                            <td>{{fnc.regional}}</td>
+                            <td>{{fnc.estaplanilla}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="10">No existen registros</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+                
+            </div>
+        </div>
+    </main>
+</div>

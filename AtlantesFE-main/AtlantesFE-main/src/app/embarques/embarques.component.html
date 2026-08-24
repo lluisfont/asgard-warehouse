@@ -1,0 +1,345 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="2.2"></app-menulateral>
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <!--<h1>Embarques</h1>-->
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Embarques</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <div class="card">
+            <div *ngIf="ver_embarques" class="card-body">
+                <br />
+                <button *ngIf="editar_embarques" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoEmbarque" (click)="preperarAgregar()">Nuevo Embarque</button>
+                <hr />
+                <!-- Bordered Tabs -->
+                <ul class="nav nav-tabs nav-tabs-bordered" id="borderedTab" role="tablist">
+                    <li class="nav-item" role="presentation"  *ngFor="let importacion_exportacion of importacion_exportaciones; let ie = index">
+                        <button [ngClass]="ie == 0 ? 'nav-link active' : 'nav-link'" id="tab-{{importacion_exportacion.importacion_exportacion_codigo}}" data-bs-toggle="tab" [attr.data-bs-target]="'#'+importacion_exportacion.importacion_exportacion_codigo" type="button" role="tab" [attr.aria-controls]="importacion_exportacion.importacion_exportacion_codigo" aria-selected="true">{{importacion_exportacion.importacion_exportacion_codigo}}</button>
+                    </li>
+
+                </ul>
+                <div class="tab-content pt-2" id="borderedTabContent">
+                    <ng-container *ngFor="let importacion_exportacion of importacion_exportaciones; let ie = index">
+                        <div [ngClass]="ie == 0 ? 'tab-pane fade show active' : 'tab-pane fade'"  id="{{importacion_exportacion.importacion_exportacion_codigo}}" role="tabpanel" [attr.aria-labelledby]="'tab-'+importacion_exportacion.importacion_exportacion_codigo">
+                            <br />
+                            <!--
+                            <div class="row">
+                                <div class="col-md-9"></div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" name="filtro{{importacion_exportacion.importacion_exportacion_codigo}}" [(ngModel)]="importacion_exportacion.filtro" placeholder="Buscar" (keyup)="importacion_exportacion.p=1">
+                                </div>
+                            </div>
+                            <br />
+                            -->
+                            
+                            <p-table [value]="importacion_exportacion.embarques" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-striped p-datatable-gridlines  p-datatable-sm" scrollDirection="both" [scrollable]="true"
+                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                                [globalFilterFields]="['embarque','cliente','fecharealizacion','descripcioncarga','valorcargado','valorcosteado','balance','nodui']"
+                                >
+                                <!--<p-table [value]="ingreso.detalle" [resizableColumns]="true" columnResizeMode="expand" responsiveLayout="scroll" styleClass="p-datatable-gridlines p-datatable-sm" scrollDirection="both" [scrollable]="true" scrollHeight="570px">-->
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:70px" pResizableColumn pFrozenColumn></th>
+                                        <th style="width:150px" pResizableColumn pFrozenColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Embarque
+                                                <p-columnFilter type="text" field="embarque" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th style="width:300px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Cliente
+                                                <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th style="width:120px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Fecha
+                                                <p-columnFilter type="date" field="fecharealizacion" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th style="width: 400px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Descripcion
+                                                <p-columnFilter type="text" field="descripcioncarga" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th style="width:150px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Cargo
+                                                <p-columnFilter type="numeric" field="valorcargado" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th style="width:150px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Costo
+                                                <p-columnFilter type="numeric" field="valorcosteado" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th style="width:150px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                Balance
+                                                <p-columnFilter type="numeric" field="balance" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                        <th style="width:150px" pResizableColumn>
+                                            <div class="flex justify-content-center align-items-center">
+                                                DIM/DUI
+                                                <p-columnFilter type="text" field="nodui" display="menu"></p-columnFilter>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-embarque>
+                                    <tr  [class.bg-warning] = "embarque.finalizado">
+                                        <td class="text-center d-flex" style="width: 70px" pFrozenColumn>
+                                            <!--<i class="bi bi-file-earmark" role='button' (click)="downloadFactura(factura.idfactura)"></i>
+                                            <i class="bi bi-file-earmark-ruled" role='button' (click)="downloadFacturaMembretada(factura.idfactura)"></i></td>
+                                            -->
+                                            <i class="bi bi-folder2-open" role='button' (click)="abrirDetalle(embarque.idembarque)"></i>
+                                            <i class="bi bi-box-arrow-up-right" role='button' (click)="abrirDetalleNuevo(embarque.idembarque,$event)" style="padding-left: 5px"></i>
+                                        </td>
+                                        <td style="width: 150px" pFrozenColumn>{{embarque.embarque}}</td>
+                                        <td style="width: 300px">
+                                            <div class="text-truncate">{{embarque.cliente}}</div>
+                                        </td>
+                                        <td style="width: 120px">{{ (embarque.fecharealizacion !== null && embarque.fecharealizacion !== '') ? (embarque.fecharealizacion | date: 'dd/MM/yyyy') : ""}}</td>
+                                        <td style="width: 400px"><div class="text-truncate">{{embarque.descripcioncarga}}</div></td>
+                                        <td style="width:150px">{{embarque.valorcargado | number:'0.2-2'}}</td>
+                                        <td style="width:150px">{{embarque.valorcosteado | number:'0.2-2'}}</td>
+                                        <td style="width:150px">{{embarque.balance | number:'0.2-2'}}</td>
+                                        <td style="width:150px">{{embarque.nodui}}</td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td style="width: 70px" pFrozenColumn></td>
+                                        <td style="width: 150px" pFrozenColumn></td>
+                                        <td colspan="7" style="width: 1420px">No existen registros</td>
+                                    </tr>
+                                </ng-template>
+
+                            </p-table>
+                            
+                            
+                            <!--
+                            <div class="list-group">
+                                <ng-container *ngFor="let embarque of importacion_exportacion.embarques | appFilter: importacion_exportacion.filtro: '' | paginate: { itemsPerPage: importacion_exportacion.items, currentPage: importacion_exportacion.p, id: 'page'+importacion_exportacion.importacion_exportacion_codigo }">
+                                    <a role="button" [ngClass]="embarque.finalizado ? 'list-group-item list-group-item-action bg-warning' : 'list-group-item list-group-item-action'" (click)="abrirDetalle(embarque.idembarque)">
+                                       <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">{{embarque.embarque}}</h5>
+                                            <small>{{embarque.fecharealizacion | date:'dd/MM/yyyy'}}</small>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-sm-3 text-truncate">
+                                                {{embarque.cliente}}
+                                            </div>
+                                            <div class="col-lg-4 col-sm-9 text-truncate">
+                                                {{embarque.descripcioncarga}}
+                                            </div>
+                                            <div class="col-lg-2 col-sm-3 text-truncate">
+                                                <small><strong>DUI:</strong></small> {{embarque.nodui}}
+                                            </div>
+                                            <div class="col-lg-2 col-sm-9 d-flex">
+                                                <small>{{embarque.valorcargado | number:'0.2-2'}} - {{embarque.valorcosteado | number:'0.2-2'}} = <br /><strong>{{embarque.valorcargado-embarque.valorcosteado | number:'0.2-2'}}</strong></small>
+                                                <div role="button" class="ms-auto bd-highlight" (click)="abrirDetalleNuevo(embarque.idembarque,$event)"><i class="bi bi-box-arrow-up-right"></i></div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </ng-container>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <pagination-controls 
+                                        (pageChange)="importacion_exportacion.p = $event"  
+                                        id="page{{importacion_exportacion.importacion_exportacion_codigo}}"
+                                        nextLabel="Sig"
+                                        previousLabel="Ant"
+                                        >
+                                    </pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" [(ngModel)]="importacion_exportacion.items" name="items{{importacion_exportacion.importacion_exportacion_codigo}}" (change)="importacion_exportacion.p=1">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                            </div>
+                            -->
+                        </div>
+                    </ng-container>
+                </div><!-- End Bordered Tabs -->
+
+            </div>
+        </div>
+
+    
+
+    </main><!-- End #main -->
+</div>
+
+<!--
+<div class="wrapper">
+    <app-menulateral style="background-color: #7386D5"></app-menulateral>
+    <div id="content">
+        <app-menusuperior></app-menusuperior>
+        <div class="container-fluid">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Embarques</li>
+                </ol>
+            </nav>
+            <hr />
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoEmbarque">Nuevo Embarque</button>
+            <hr />
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                
+                <ng-container *ngFor="let importacion_exportacion of importacion_exportaciones; let ie = index">
+                    <li class="nav-item" role="presentation">
+                        <button [ngClass]="ie == 0 ? 'nav-link active' : 'nav-link'" id="tab-{{importacion_exportacion.importacion_exportacion_codigo}}" data-bs-toggle="tab" [attr.data-bs-target]="'#'+importacion_exportacion.importacion_exportacion_codigo" type="button" role="tab" [attr.aria-controls]="importacion_exportacion.importacion_exportacion_codigo" aria-selected="true">{{importacion_exportacion.importacion_exportacion_codigo}}</button>
+                    </li>
+                </ng-container>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                
+                <ng-container *ngFor="let importacion_exportacion of importacion_exportaciones; let ie = index">
+                    <div [ngClass]="ie == 0 ? 'tab-pane fade show active' : 'tab-pane fade'"  id="{{importacion_exportacion.importacion_exportacion_codigo}}" role="tabpanel" [attr.aria-labelledby]="'tab-'+importacion_exportacion.importacion_exportacion_codigo">
+                        <br />
+                        <div class="row">
+                            <div class="col-md-9"></div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="filtro{{importacion_exportacion.importacion_exportacion_codigo}}" [(ngModel)]="importacion_exportacion.filtro" placeholder="Buscar" (keyup)="importacion_exportacion.p=1">
+                            </div>
+                        </div>
+                        <br />
+                        <div class="list-group">
+                            <ng-container *ngFor="let embarque of importacion_exportacion.embarques | appFilter: importacion_exportacion.filtro: '' | paginate: { itemsPerPage: importacion_exportacion.items, currentPage: importacion_exportacion.p, id: 'page'+importacion_exportacion.importacion_exportacion_codigo }">
+                                <a role="button" class="list-group-item list-group-item-action" (click)="abrirDetalle(embarque.idembarque)">
+                                    <div class="row">
+                                        <div class="col-lg-2 col-sm-3">
+                                            <strong>{{embarque.embarque}}</strong>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-9 text-truncate">
+                                            {{embarque.cliente}}
+                                        </div>
+                                        <div class="col-lg-2 col-sm-3 text-truncate">
+                                            <small><strong>DUI:</strong></small> {{embarque.nodui}}
+                                        </div>
+                                        <div class="col-lg-4 col-sm-9 d-flex">
+                                            {{embarque.valorcargado | number:'0.2-2'}} - {{embarque.valorcosteado | number:'0.2-2'}} = {{embarque.valorcargado-embarque.valorcosteado | number:'0.2-2'}}
+                                            <div role="button" class="ms-auto bd-highlight" (click)="abrirDetalleNuevo(embarque.idembarque,$event)"><i class="bi bi-box-arrow-up-right"></i></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </ng-container>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-10">
+                                <pagination-controls 
+                                    (pageChange)="importacion_exportacion.p = $event"  
+                                    id="page{{importacion_exportacion.importacion_exportacion_codigo}}"
+                                    nextLabel="Sig"
+                                    previousLabel="Ant"
+                                    >
+                                </pagination-controls>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-select" [(ngModel)]="importacion_exportacion.items" name="items{{importacion_exportacion.importacion_exportacion_codigo}}" (change)="importacion_exportacion.p=1">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            
+            
+
+
+        </div>
+
+        
+    </div>
+</div>
+-->
+<div class="modal fade" id="nuevoEmbarque" tabindex="-1" aria-labelledby="nuevoEmbarqueLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoEmbarqueLabel">Nuevo Embarque</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="idcliente" class="form-label">Cliente</label>
+                            <ng-select name="idcliente" id="idcliente" [(ngModel)]="idcliente" placeholder="Seleccione" (change)="erroridcliente=false">
+                                <ng-container *ngFor="let entidad of entidades">
+                                    <ng-option *ngIf="entidad.idtipoentidad=='1'" [value]="entidad.id">{{entidad.entidad}}</ng-option>
+                                </ng-container>
+                            </ng-select>
+                            <small *ngIf="erroridcliente" class="text-danger">Campo Requerido</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check" *ngFor="let importacion_exportacion of importacion_exportaciones; let ie = index">
+                                <input class="form-check-input" type="radio" name="idimportacion_exportacion" id="idimportacion_exportacion{{ie}}" [value]="importacion_exportacion.importacion_exportacion" [(ngModel)]="idimportacion_exportacion">
+                                <label class="form-check-label" for="idimportacion_exportacion{{ie}}">
+                                    {{importacion_exportacion.importacion_exportacion_codigo}}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check" *ngFor="let tipoembarque of tiposembarque; let ie = index">
+                                <input class="form-check-input" type="radio" name="idtipoembarque" id="idtipoembarque{{ie}}" [value]="tipoembarque.idtipoembarque" [(ngModel)]="idtipoembarque">
+                                <label class="form-check-label" for="idtipoembarque{{ie}}">
+                                    {{tipoembarque.tipoembarque}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>  
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="crearEmbarque()">Crear Embarque</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+        
+
+    

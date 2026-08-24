@@ -1,0 +1,9 @@
+#myTabContent{
+    padding-bottom: 70px;
+}
+
+@media (max-width: 768px) {
+    #myTabContent{
+        padding-bottom: 110px;
+    }
+}

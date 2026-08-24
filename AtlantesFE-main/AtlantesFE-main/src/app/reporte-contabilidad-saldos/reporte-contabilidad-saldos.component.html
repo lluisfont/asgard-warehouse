@@ -1,0 +1,127 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="7.7"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Reporte de Saldos</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_reporte_contabilidad_saldos" class="card-body">
+                <br />
+                
+                <div class="row">
+                    <div class="col-md-9 mb-3">
+                        <label for="identidad" class="form-label text-secondary small">Cliente</label>
+                        <ng-select [(ngModel)]="identidad" placeholder="Todos" [disabled]="generado">
+                            <ng-container *ngFor="let entidad of entidades">
+                                <ng-option [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                            </ng-container>
+                        </ng-select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fechacorte" class="form-label text-secondary small">Fecha de Corte</label>
+                        <input type="date" class="form-control" id="fechacorte" name="fechacorte" [(ngModel)]="fechacorte" [disabled]="generado" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="generarReporte();" [disabled]="generado">Generar</button>
+                    </div>
+                </div>
+                
+                <p-table *ngIf="reporte.length>0" [value]="reporte" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    [globalFilterFields]="['cliente','saldo','plazo','v','s_1_5','s_5_30','s_3_60','s_60']"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex">
+                            <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>&nbsp;
+                            <!--<button type="button" (click)="exportPdf()" class="btn btn-danger mb-3"><i class="bi bi-file-earmark-pdf"></i></button>-->
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>
+                                
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Saldo
+                                    <p-columnFilter type="numeric" field="saldo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tiempo Financ.
+                                    <p-columnFilter type="numeric" field="plazo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Vigente
+                                    <p-columnFilter type="numeric" field="v" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    1 a 5 d&iacute;as
+                                    <p-columnFilter type="numeric" field="s_1_5" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    5 a 30 d&iacute;as
+                                    <p-columnFilter type="numeric" field="s_5_30" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    30 a 60 d&iacute;as
+                                    <p-columnFilter type="numeric" field="s_3_60" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    mas de 60 d&iacute;as
+                                    <p-columnFilter type="numeric" field="s_60" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-saldos>
+                        <tr>
+                            <td></td>
+                            <td>{{saldos.cliente}}</td>
+                            <td>{{saldos.saldo | number:'0.2-2'}}</td>
+                            <td>{{saldos.plazo | number:'0.0-0'}}</td>
+                            <td>{{saldos.v | number:'0.2-2'}}</td>
+                            <td>{{saldos.s_1_5 | number:'0.2-2'}}</td>
+                            <td>{{saldos.s_5_30 | number:'0.2-2'}}</td>
+                            <td>{{saldos.s_3_60 | number:'0.2-2'}}</td>
+                            <td>{{saldos.s_60 | number:'0.2-2'}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="10">No existen registros</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+                
+                
+            </div>
+        </div>
+    </main>
+</div>

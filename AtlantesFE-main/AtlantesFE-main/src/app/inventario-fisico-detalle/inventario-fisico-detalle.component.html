@@ -1,0 +1,696 @@
+<p-toast />
+<div id="principal">
+    <app-menusuperior [permite_cambio_almacen]="false"></app-menusuperior>
+    <app-menulateral [menu_item]="1.6"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inventario-fisico']">Inventario F&iacute;sico</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">No. {{idinventariofisico}}</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div class="card-body" *ngIf="inventarioFisico && ver_inventario_fisico_gestion">
+                <br />
+                <div class="pagetitle"><h1>INFORMACI&Oacute;N GENERAL</h1></div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="cliente" class="form-label text-secondary small">Cliente</label>
+                        <input type="text" class="form-control" id="cliente" name="cliente" value="{{inventarioFisico.cliente}}" disabled >
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label for="idstatus" class="form-label text-secondary small">Status</label>
+                        <ng-select name="idstatus" id="idstatus" [items]="status" 
+                            bindLabel="status" 
+                            bindValue="idstatus"
+                            placeholder="Seleccione"
+                            [disabled]="!editar_inventario_fisico_gestion || inventarioFisico.fecha_fin_inventario || inventarioFisico.es_vehiculo"
+                        [(ngModel)]="inventarioFisico.idstatus">
+                        </ng-select>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label for="categoria" class="form-label text-secondary small">Categor&iacute;a</label>
+                        <input type="text" class="form-control" id="categoria" name="categoria" [(ngModel)]="inventarioFisico.categoria" [disabled]="!editar_inventario_fisico_gestion || inventarioFisico.fecha_fin_inventario" >
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label for="fecha" class="form-label text-secondary small">Fecha</label>
+                        <input type="date" class="form-control" id="fecha" name="fecha" [(ngModel)]="inventarioFisico.fecha" (change)="errorfecha=false" [disabled]="!editar_inventario_fisico_gestion || inventarioFisico.fecha_fin_inventario" >
+                        <small *ngIf="errorfecha" class="text-danger">Campo Requerido</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="idasignado" class="form-label text-secondary small">Asignado a</label>
+                        <ng-select [(ngModel)]="inventarioFisico.idasignado" name="idasignado" id="idasignado" placeholder="Seleccione" [disabled]="!editar_inventario_fisico_gestion || inventarioFisico.fecha_fin_inventario">
+                            <ng-container *ngFor="let usuario of usuarios">
+                                <ng-option *ngIf="usuario.idusuario!=inventarioFisico.idapoyo" [value]="usuario.idusuario">{{usuario.nombre}}</ng-option>
+                            </ng-container>
+                        </ng-select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="idapoyo" class="form-label text-secondary small">Apoya</label>
+                        <ng-select [(ngModel)]="inventarioFisico.idapoyo" name="idapoyo" id="idapoyo" placeholder="Seleccione" [disabled]="!editar_inventario_fisico_gestion || inventarioFisico.fecha_fin_inventario">
+                            <ng-container *ngFor="let usuario of usuarios">
+                                <ng-option *ngIf="usuario.idusuario!=inventarioFisico.idasignado" [value]="usuario.idusuario">{{usuario.nombre}}</ng-option>
+                            </ng-container>
+                        </ng-select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fecha_inicio" class="form-label text-secondary small">Fecha y Hora de Inicio</label>
+                        <input type="datetime-local" class="form-control" id="fecha_inicio" name="fecha_inicio" [(ngModel)]="inventarioFisico.fecha_inicio" [disabled]="!editar_inventario_fisico_gestion || inventarioFisico.fecha_fin_inventario" >
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="fecha_fin" class="form-label text-secondary small">Fecha y Hora de Fin</label>
+                        <input type="datetime-local" class="form-control" id="fecha_fin" name="fecha_fin" [(ngModel)]="inventarioFisico.fecha_fin" [disabled]="!editar_inventario_fisico_gestion || inventarioFisico.fecha_fin_inventario || inventarioFisico.es_vehiculo" >
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-5 mb-3 pagetitle">
+                        <h1>DETALLE DE ITEMS</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3" *ngIf="!inventarioFisico.fecha_inicio_conteo && editar_inventario_fisico_gestion && !inventarioFisico.es_vehiculo">
+                        <div class="input-group mb-3">
+                            <button class="btn btn-outline-secondary" type="button" (click)="agregarFila()">Agregar</button>
+                            <input type="number" step="1" class="form-control text-end" name="filasagregar" id="filasagregar" [(ngModel)]="filasagregar" />
+                            <span class="input-group-text">Item(s)</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <button type="button" class="btn btn-outline-success col-12" (click)="verTomaInventarioFisico()">Exportar Excel</button>
+                    </div>
+                    <div class="col-md-3 mb-3" *ngIf="!inventarioFisico.fecha_inicio_conteo && editar_inventario_fisico_gestion">
+                        <button type="button" class="btn btn-outline-primary col-12" data-bs-toggle="modal" data-bs-target="#ventanaCargaMasiva">Carga Masiva</button>
+                    </div>
+                    <div class="col-md-3 mb-3" *ngIf="!inventarioFisico.fecha_inicio_conteo && editar_inventario_fisico_gestion">
+                        <button type="button" class="btn btn-outline-danger col-12" data-bs-toggle="modal" data-bs-target="#confirmarEliminarTodos">Borrar Todo</button>
+                    </div>
+                    
+                    <div class="col-md-3 mb-3" *ngIf="inventarioFisico.es_vehiculo && inventarioFisico.fecha_inicio_conteo && inventarioFisico.fecha_fin_conteo && reabrir_inventario_fisico_conteo">
+                        <button type="button" class="btn btn-outline-primary col-12" data-bs-toggle="modal" data-bs-target="#confirmarReabrirConteo">Reabrir Conteo</button>
+                    </div>
+                    
+                </div>
+                <div *ngIf="inventarioFisico.es_vehiculo">
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-md-3 mb-3">
+                            <ng-select 
+                                [items]="estados_conteo" 
+                                bindLabel="estado_conteo" 
+                                bindValue="idestado_conteo"
+                                [(ngModel)]="idestado_conteo"
+                                [clearable]="false"
+                                class="col-12"
+                                >
+                            </ng-select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <span class="text-primary">Pendientes</span> {{inventarioFisico.pendientes}}
+                        </div>
+                        <div>
+                            <span class="text-primary">Encontrados</span> {{inventarioFisico.encontrados}}
+                        </div>
+                        <div>
+                            <span class="text-primary">Faltantes</span> {{inventarioFisico.faltantes}}
+                        </div>
+                        <div>
+                            <span class="text-primary">Sobrantes</span> {{inventarioFisico.sobrantes}}
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <p-table *ngIf="!inventarioFisico.es_vehiculo" #tabla_inventariofisico [value]="inventarioFisico.detalle" [resizableColumns]="true" columnResizeMode="expand" responsiveLayout="scroll" styleClass="p-datatable-gridlines p-datatable-sm" scrollDirection="both" [scrollable]="true" scrollHeight="570px">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width:150px" pResizableColumn pFrozenColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Codigo <i *ngIf="!inventarioFisico.fecha_inicio_conteo && editar_inventario_fisico_gestion" class="bi bi-clipboard" role="button" (click)="pegarDatos('codigo')"></i>
+                                    <p-columnFilter type="text" field="codigo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Serie
+                                    <p-columnFilter type="text" field="serie" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:200px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Descripci&oacute;n
+                                    <p-columnFilter type="text" field="descripcion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:200px" pResizableColumn>
+                              <div class="flex justify-content-center align-items-center">
+                                  Ubicaci&oacute;n <i *ngIf="!inventarioFisico.fecha_inicio_conteo && editar_inventario_fisico_gestion" class="bi bi-clipboard" role="button" (click)="pegarDatos('ubicacion')"></i>
+                                <p-columnFilter type="text" field="centro_distribucion" display="menu"></p-columnFilter>
+                              </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Categor&iacute;a <i *ngIf="!inventarioFisico.fecha_inicio_conteo && editar_inventario_fisico_gestion" class="bi bi-clipboard" role="button" (click)="pegarDatos('categoria')"></i>
+                                    <p-columnFilter type="text" field="categoria" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cantidad <i *ngIf="!inventarioFisico.fecha_inicio_conteo && editar_inventario_fisico_gestion" class="bi bi-clipboard" role="button" (click)="pegarDatos('cantidad')"></i>
+                                    <p-columnFilter type="numeric" field="cantidad" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cantidad Real <i *ngIf="!inventarioFisico.fecha_inicio_conteo && editar_inventario_fisico_gestion" class="bi bi-clipboard" role="button" (click)="pegarDatos('cantidad_real')"></i>
+                                    <p-columnFilter type="numeric" field="cantidad_real" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Diferencia
+                                    <p-columnFilter type="numeric" field="diferencia" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:120px">
+                                <div class="flex justify-content-center align-items-center">
+                                    Embalaje
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Lote <i *ngIf="!inventarioFisico.fecha_inicio_conteo && editar_inventario_fisico_gestion" class="bi bi-clipboard" role="button" (click)="pegarDatos('lote')"></i>
+                                    <p-columnFilter type="text" field="lote" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:150px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fec. Venc. <i *ngIf="!inventarioFisico.fecha_inicio_conteo && editar_inventario_fisico_gestion" class="bi bi-clipboard" role="button" (click)="pegarDatos('fecha_vencimiento')"></i>
+                                    <p-columnFilter type="date" field="fecha_vencimiento" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:120px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Observaciones <i *ngIf="!inventarioFisico.fecha_inicio_conteo && editar_inventario_fisico_gestion" class="bi bi-clipboard" role="button" (click)="pegarDatos('observaciones')"></i>
+                                    <p-columnFilter type="text" field="observaciones" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th>
+                                
+                            </th>
+                            <th>
+                                
+                            </th>
+                            <th style="width:120px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Estado Conteo
+                                    <p-columnFilter type="text" field="estado_conteo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th style="width:120px" pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Etiqueta
+                                    <!--<p-columnFilter type="text" field="estado_conteo" display="menu"></p-columnFilter>-->
+                                </div>
+                            </th>
+                            <th style="width:100px"></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-detalle let-rowIndex="rowIndex">
+                        <tr [class.bg-danger-light] = "!detalle.existe">
+                            <td style="width:150px" pEditableColumn pFrozenColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input type="text" class="form-control form-control-sm no-border" id="codigo{{rowIndex}}" name="codigo{{rowIndex}}" [(ngModel)]="detalle.codigo" placeholder="Codigo" (change)="verificarCodigo(rowIndex)" [disabled]="inventarioFisico.fecha_inicio_conteo || !editar_inventario_fisico_gestion">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{detalle.codigo}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td style="width:150px">
+                                {{detalle.serie}}
+                            </td>
+
+                            <td style="width:200px">
+                                {{detalle.descripcion}}
+                            </td>
+                            <td style="width:200px" pEditableColumn>
+                              <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                  <input type="text" class="form-control form-control-sm no-border" id="ubicacion{{rowIndex}}" name="ubicacion{{rowIndex}}" [(ngModel)]="detalle.ubicacion" placeholder="Ubicacion" (change)="verificarInventario()" [disabled]="inventarioFisico.fecha_inicio_conteo || !editar_inventario_fisico_gestion">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                  {{detalle.ubicacion}}
+                                </ng-template>
+                              </p-cellEditor>
+                            </td>
+                            <td style="width:150px" pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input type="text" class="form-control form-control-sm no-border" id="categoria{{rowIndex}}" name="categoria{{rowIndex}}" [(ngModel)]="detalle.categoria" placeholder="Categoría" (change)="verificarInventario()" [disabled]="inventarioFisico.fecha_inicio_conteo || !editar_inventario_fisico_gestion">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{detalle.categoria}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td style="width:150px" pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input type="number" step="0.01" class="form-control form-control-sm no-border" id="cantidad{{rowIndex}}" name="cantidad{{rowIndex}}" [(ngModel)]="detalle.cantidad" (change)="calcularDiferencia(rowIndex)" [disabled]="inventarioFisico.fecha_inicio_conteo || !editar_inventario_fisico_gestion">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{detalle.cantidad | number:'0.2-2'}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td style="width:150px" pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input type="number" step="0.01" class="form-control form-control-sm no-border" id="cantidad_real{{rowIndex}}" name="cantidad_real{{rowIndex}}" [(ngModel)]="detalle.cantidad_real" (change)="calcularDiferencia(rowIndex)" [disabled]="inventarioFisico.fecha_inicio_conteo || !editar_inventario_fisico_gestion">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{detalle.cantidad_real | number:'0.2-2'}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td style="width:150px" pEditableColumn>
+                                {{detalle.diferencia | number:'0.2-2'}}
+                            </td>
+                            <td style="width:120px">
+                                {{detalle.embalaje}}
+                            </td>
+                            <td style="width:150px" pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input type="text" class="form-control form-control-sm no-border" id="lote{{rowIndex}}" name="lote{{rowIndex}}" [(ngModel)]="detalle.lote" placeholder="Lote" (change)="verificarInventario()" [disabled]="inventarioFisico.fecha_inicio_conteo || !editar_inventario_fisico_gestion">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{detalle.lote}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td style="width:150px" pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input type="date" class="form-control form-control-sm no-border" id="fecha_vencimiento{{rowIndex}}" name="fecha_vencimiento{{rowIndex}}" [(ngModel)]="detalle.fecha_vencimiento" placeholder="Fecha Vencimiento" (change)="verificarInventario()" [disabled]="inventarioFisico.fecha_inicio_conteo || !editar_inventario_fisico_gestion">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{detalle.fecha_vencimiento | date:'dd/MM/yyyy'}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td style="width:120px" pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input type="text" class="form-control form-control-sm no-border" id="observaciones{{rowIndex}}" name="observaciones{{rowIndex}}" [(ngModel)]="detalle.observaciones" placeholder="Observaciones" [disabled]="inventarioFisico.fecha_inicio_conteo || !editar_inventario_fisico_gestion">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{detalle.observaciones}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-outline-primary" pBadge [value]="detalle.cantidad_imagenes" (click)="prepararImagenes(rowIndex)">
+                                    <i class="bi bi-images"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button *ngIf="inventarioFisico.fecha_fin_conteo && (detalle.idestado_conteo!=1)" type="button" class="btn btn-outline-success" pBadge [value]="detalle.archivos.length" (click)="prepararArchivos(rowIndex)">
+                                    <i class="bi bi-folder"></i>
+                                </button>
+                            </td>
+                            <td style="width:120px">
+                                <span class="badge rounded-pill bg-success">{{detalle.estado_conteo}}</span>
+                            </td>
+                            <td>
+                                <p-dropdown 
+                                    *ngIf="inventarioFisico.fecha_fin_conteo && (detalle.idestado_conteo!=1) && editar_inventario_fisico_gestion && !inventarioFisico.fecha_fin_inventario"
+                                    [options]="inventariofisico_etiquetas" 
+                                    [(ngModel)]="detalle.idinventariofisicoetiqueta" 
+                                    optionLabel="inventariofisicoetiqueta" 
+                                    optionValue="idinventariofisicoetiqueta"
+                                    placeholder="Seleccione"
+                                    appendTo="body"
+                                    [showClear]="true"
+                                    />
+                                <ng-container *ngIf="!editar_inventario_fisico_gestion || inventarioFisico.fecha_fin_inventario">{{detalle.inventariofisicoetiqueta}}</ng-container>
+                                <!--
+                                <ng-select *ngIf="inventarioFisico.fecha_fin_conteo && (detalle.idestado_conteo!=1)" 
+                                    [items]="inventariofisico_etiquetas" 
+                                    bindLabel="inventariofisicoetiqueta" 
+                                    bindValue="idinventariofisicoetiqueta"
+                                    id="idinventariofisicoetiqueta{{rowIndex}}"
+                                    name="idinventariofisicoetiqueta{{rowIndex}}"
+                                    placeholder="Seleccione"
+                                    [(ngModel)]="detalle.idinventariofisicoetiqueta"
+                                    appendTo="body"
+                                    >
+                                </ng-select>
+                                -->
+                            </td>
+                            <td style="width:100px;">
+                                <i *ngIf="!inventarioFisico.fecha_inicio_conteo && editar_inventario_fisico_gestion" class="bi bi-x-circle-fill" role="button" data-bs-toggle="modal" data-bs-target="#confirmarEliminarDetalle" (click)="indicedetalleeliminar=rowIndex"></i>
+                            </td>
+
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td style="width:2040px" colspan="17">No existen registros</td>
+                        </tr>
+                    </ng-template>
+                    
+                    <ng-template pTemplate="footer">
+                        <tr>
+                            <td colspan="5" class="text-right">Totales</td>
+                            <td>{{total_cantidad | number:'0.2-2'}}</td>
+                            <td>{{total_cantidad_real | number:'0.2-2'}}</td>
+                            <td>{{total_diferencia | number:'0.2-2'}}</td>
+                            <td colspan="9"></td>
+                        </tr>
+                    </ng-template>
+                    
+                </p-table>
+                <ul *ngIf="inventarioFisico.es_vehiculo" class="list-group">
+                    <ng-container *ngFor="let detalle of inventarioFisico.detalle; let rowIndex = index">
+                        <li *ngIf="detalle.idestado_conteo==idestado_conteo || idestado_conteo==0" class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-6 p-1">
+                                    <div class="row">
+                                        <div class="col-md-5" *ngIf="!(ver_inventario_fisico_bitacora && tokenDetalle.asgard_almacen)">
+                                            {{detalle.serie}}
+                                        </div>
+                                        <div class="col-md-5" *ngIf="ver_inventario_fisico_bitacora && tokenDetalle.asgard_almacen">
+                                            <button type="button" class="btn btn-link" (click)="prepararBitacora(inventarioFisico.idcliente,detalle.serie)">{{detalle.serie}}</button>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div>{{detalle.codigo}}, {{detalle.categoria}}</div>
+                                            <div>{{detalle.descripcion}}</div>
+                                        </div>
+                                        <!--
+                                        <div class="col-md-2">{{detalle.codigo}}</div>
+                                        <div class="col-md-3">{{detalle.descripcion}}</div>
+                                        <div class="col-md-3">{{detalle.categoria}}</div>
+                                        -->
+                                    </div>
+                                </div>
+                                <div class="col-md-2 p-1">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <button *ngIf="detalle.idestado_conteo!=3" type="button" class="btn btn-outline-primary position-relative" (click)="prepararImagenes(rowIndex)">
+                                                <i class="bi bi-images"></i>
+                                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                    {{detalle.cantidad_imagenes}}
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <div class="col-6">
+                                            <button *ngIf="inventarioFisico.fecha_fin_conteo && (detalle.idestado_conteo!=1)" type="button" class="btn btn-outline-success position-relative" (click)="prepararArchivos(rowIndex)">
+                                                <i class="bi bi-folder"></i>
+                                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                    {{detalle.archivos.length}}
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-1" [ngClass]="(!inventarioFisico.fecha_inicio_conteo && editar_inventario_fisico_gestion) ? 'col-md-3' : 'col-md-4'">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <span class="badge rounded-pill bg-success">{{detalle.estado_conteo}}</span><br />
+                                            <ng-select 
+                                                *ngIf="inventarioFisico.fecha_fin_conteo && (detalle.idestado_conteo!=1) && editar_inventario_fisico_gestion && !inventarioFisico.fecha_fin_inventario"
+                                                [items]="inventariofisico_etiquetas" 
+                                                bindLabel="inventariofisicoetiqueta" 
+                                                class="col-12"
+                                                bindValue="idinventariofisicoetiqueta"
+                                                id="idinventariofisicoetiqueta{{rowIndex}}"
+                                                name="idinventariofisicoetiqueta{{rowIndex}}"
+                                                placeholder="Seleccione"
+                                                [(ngModel)]="detalle.idinventariofisicoetiqueta"
+                                                >
+                                            </ng-select>
+                                            <ng-container *ngIf="!editar_inventario_fisico_gestion || inventarioFisico.fecha_fin_inventario">{{detalle.inventariofisicoetiqueta}}</ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="!inventarioFisico.fecha_inicio_conteo && editar_inventario_fisico_gestion" class="col-1 p-1">
+                                    <i class="bi bi-x-circle-fill" role="button" data-bs-toggle="modal" data-bs-target="#confirmarEliminarDetalle" (click)="indicedetalleeliminar=rowIndex"></i>
+                                </div>
+                            </div>
+
+                        </li>
+                    </ng-container>
+                        
+                </ul>
+                
+                
+                
+                
+                <hr />
+                <div class="row">
+                    <div class="col-6">
+                        <button *ngIf="editar_inventario_fisico_gestion && !inventarioFisico.fecha_fin_inventario" type="button" class="btn btn-primary col-xl-4 col-sm-10 col-xs-10" (click)="saveInventarioFisico()">Guardar</button>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button *ngIf="editar_inventario_fisico_gestion && !inventarioFisico.fecha_fin_inventario && inventarioFisico.fecha_fin_conteo" type="button" class="btn btn-success col-xl-4 col-sm-10 col-xs-10" data-bs-toggle="modal" data-bs-target="#confirmarFinalizarInventarioFisico">Finalizar Inventario</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal" id="ventanaCargaMasiva" tabindex="-1" aria-labelledby="ventanaCargaMasivaLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaCargaMasivaLabel">Carga Masiva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Para cargar Items directamente desde un archivo xlsx llene el formato que se muestra <a target="_blank" href="{{urlFormatoIngreso}}">aqui</a> y cargelo a continuaci&oacute;n
+                <br /><br />
+                <input class="form-control" type="file" name="fileUpload" id="fileUpload" #UploadFileInput (change)="fileChangeEvent($event)" >
+                <small *ngIf="errorarchivo" class="text-danger">Campo requerido</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="cargarMasivamente()">Cargar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarEliminarDetalle" tabindex="-1" aria-labelledby="confirmarEliminarDetalleLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar este registro?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarDetalle()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarEliminarTodos" tabindex="-1" aria-labelledby="confirmarEliminarTodosLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar todos los registros?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminarTodos()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarReabrirConteo" tabindex="-1" aria-labelledby="confirmarReabrirConteoLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+
+                <br />
+                <h4>la reapertura del conteo permite la modificaci&oacute;n de la informaci&oacute;n declarada en una primera instancia, una vez modificada, la informaci&oacute;n anterior no es recuperable</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="reabrirConteo()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarFinalizarInventarioFisico" tabindex="-1" aria-labelledby="confirmarFinalizarInventarioFisicoLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+                <br />
+                <h4>¿Est&aacute; seguro que desea finalizar el inventario?</h4>
+                <p>Ya no ser&aacute; posible hacer mas modificaciones</p>
+                <p>Asegurese de guardar los datos antes de realizar esta acci&oacute;n</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="finalizarInventarioFisico()">Finalizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Bitácora" [modal]="true" [(visible)]="bitacora_visible" [style]="{ width: '75rem' }">
+    <app-inventario-fisico-bitacora *ngIf="bitacora_visible" [chasis]="chasis_bitacora" [idcliente]="idcliente_bitacora"></app-inventario-fisico-bitacora>
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" (click)="bitacora_visible = false">Cerrar</button>
+    </div>
+</p-dialog>
+
+<div class="modal" id="ventanaLoading" tabindex="-1" aria-labelledby="ventanaLoadingLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: none !important;">
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog 
+    header="Imagenes" 
+    [modal]="true" 
+    [(visible)]="fotos_visible" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '50vw' }" 
+    >
+    
+    <p>
+        <p-galleria 
+            [value]="images" 
+            [showItemNavigators]="true" 
+            [showThumbnails]="false" 
+            [showIndicators]="true" 
+            [showIndicatorsOnItem]="true" 
+            [responsiveOptions]="responsiveOptions" 
+            [containerStyle]="{ 'max-width': '640px' }"
+            >
+                <ng-template pTemplate="item" let-item>
+                    <img [src]="item.itemImageSrc" style="width: 100%;" />
+                </ng-template>
+        </p-galleria>
+    </p>
+
+            
+    <hr />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" (click)="fotos_visible=false; fotos_visible=false">Close</button>
+    </div>
+</p-dialog>
+
+
+
+<p-dialog 
+    header="Archivos" 
+    [modal]="true" 
+    [(visible)]="archivos_visible" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '50vw' }" 
+    >
+    
+    
+        <p-fileUpload 
+            name="demo[]" 
+            [url]="url" 
+            [customUpload]="false"
+            [headers]="uploadHeaders"
+            (onUpload)="onUpload($event)" 
+            [multiple]="true" 
+            chooseLabel="Seleccione o arraste los archivos"
+            uploadLabel="Subir"
+            cancelLabel="Cancelar"
+            [maxFileSize]="15000000">
+                <ng-template pTemplate="content">
+                    <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">
+                            {{ file.name }} - {{ file.size }} bytes
+                        </li>
+                    </ul>
+                </ng-template>
+        </p-fileUpload>
+        <br />
+    <div *ngIf="archivos_no_cargados.length>0" class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Error!</h4>
+            <p>Los siguientes archivos no se cargaron.</p>
+            <hr>
+            <ul>
+                <li *ngFor="let no_cargados of archivos_no_cargados; let indice = index">
+                    {{no_cargados}}
+                </li>
+            </ul>
+        </div>
+    
+        Archivos Cargados:
+        <div class="list-group">
+            <li role="button" *ngFor="let archivo of archivos; let indice = index" class="list-group-item list-group-item-action d-flex" (click)="downloadArchivo(archivo.idinventariofisicodetallearchivo)">
+                {{archivo.inventariofisicodetallearchivo}}
+                <!--
+                <div role="button" class="ms-auto bd-highlight">
+                    <i *ngIf="!embarque.finalizado" class="bi bi-x-circle-fill" role="button" (click)="ventanaEliminarDocumento(indice,$event)"></i>
+                </div>
+                -->
+            </li>
+        </div>
+    
+
+            
+    <hr />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" (click)="archivos_visible=false; fotos_visible=false">Close</button>
+    </div>
+</p-dialog>
+
+
+
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+export class InventarioFisicoModel {
+    constructor(
+        public idinventariofisico: number,
+        public idalmacen: number,
+        public idcliente: number,
+        public idcliente_cifrado: string,
+        public cliente: string,
+        public es_vehiculo: boolean,
+        public idstatus: number,
+        public categoria: string,
+        public fecha: string,
+        public idasignado: number,
+        public asignado: number,
+        public idapoyo: number,
+        public apoyo: string,
+        public fecha_inicio: string,
+        public fecha_fin: string,
+        public fecha_inicio_conteo: string,
+        public fecha_fin_conteo: string,
+        public fecha_fin_inventario: string,
+        public pendientes: number,
+        public encontrados: number,
+        public sobrantes: number,
+        public faltantes: number,
+        public detalle: [{
+            idinventariofisicodetalle: number,
+            codigo: string,
+            serie: string,
+            descripcion: string,
+            ubicacion: string,
+            categoria: string,
+            cantidad: number,
+            cantidad_real: number,
+            diferencia: number,
+            embalaje: string,
+            lote: string,
+            fecha_vencimiento: string,
+            observaciones: string,
+            existe: boolean,
+            idestado_conteo: number,
+            estado_conteo: string,
+            idinventariofisicoetiqueta: number,
+            inventariofisicoetiqueta: string,
+            idinventariofisicoconteo: number,
+            cantidad_imagenes: number,
+            archivos: [{
+                idinventariofisicodetallearchivo?: number,
+                inventariofisicodetallearchivo?: string
+            }]
+        }]
+    ){}
+}

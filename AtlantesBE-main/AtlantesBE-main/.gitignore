@@ -1,0 +1,10 @@
+/vendor/
+/composer.lock
+/app/.env.php
+
+# PHPUnit
+.phpunit.result.cache
+
+# IDEs
+.idea/
+.vscode/

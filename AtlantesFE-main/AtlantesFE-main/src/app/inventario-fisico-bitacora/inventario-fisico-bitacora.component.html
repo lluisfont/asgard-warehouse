@@ -1,0 +1,784 @@
+<ng-container *ngIf="buscando_chasis">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</ng-container>
+<ng-container *ngIf="!buscando_chasis">
+    <ng-container *ngIf="chasis_encontrado">
+        
+        <div class="row p-2">
+            <div class="col-md-3 col-6 p-2">
+                <small class="text-primary">Origen</small>
+                <div>{{ cabecera.origen }}</div>
+            </div>
+            <div class="col-md-3 col-6 p-2">
+                <small class="text-primary">Marca</small>
+                <div>{{ cabecera.marca }}</div>
+            </div>
+            <div class="col-md-3 col-6 p-2">
+                <small class="text-primary">Modelo</small>
+                <div>{{ cabecera.modelo }}</div>
+            </div>
+            <div class="col-md-3 col-6 p-2">
+                <small class="text-primary">Tipo</small>
+                <div>{{ cabecera.tipo }}</div>
+            </div>
+            <div class="col-md-3 col-6 p-2">
+                <small class="text-primary">Cilindrada</small>
+                <div>{{ cabecera.cilindrada }}</div>
+            </div>
+            <div class="col-md-3 col-6 p-2">
+                <small class="text-primary">Tracci&oacute;n</small>
+                <div>{{ cabecera.traccion }}</div>
+            </div>
+            <div class="col-md-3 col-12 p-2">
+                <small class="text-primary">Chasis</small>
+                <div>{{ cabecera.chasis }}</div>
+            </div>
+            <div class="col-md-3 col-12 p-2">
+                <small class="text-primary">Motor</small>
+                <div>{{ cabecera.motor }}</div>
+            </div>
+            <div class="col-md-3 col-6 p-2">
+                <small class="text-primary">Color</small>
+                <div>{{ cabecera.color }}</div>
+            </div>
+            <div class="col-md-3 col-6 p-2">
+                <small class="text-primary">A&ntilde;o Comercial</small>
+                <div>{{ cabecera.anio_comercial }}</div>
+            </div>
+            <div class="col-md-3 col-6 p-2">
+                <small class="text-primary">A&ntilde;o Fabricación</small>
+                <div>{{ cabecera.anio_fabricacion }}</div>
+            </div>
+            <!--
+            <div class="col-md-3 col-6 p-2">
+                <small class="text-primary">Transmisi&oacute;n</small>
+                <div>{{ cabecera.transmision }}</div>
+            </div>
+            -->
+        </div>
+        
+        
+        <p-accordion (onOpen)="activeIndexChange($event)">
+            <p-accordionTab>
+                <ng-template pTemplate="header">
+                    <div class="d-flex justify-content-between" style="width: 100%">
+                        <span>Puerto de Carga</span>
+                        <span><i *ngIf="maxKey=='detalle_puerto'" class="bi bi-calendar"></i>&nbsp;<i *ngIf="hayDanios(bitacora.detalle_puerto)" class="bi bi-exclamation-triangle"></i></span>
+                    </div>
+                </ng-template>
+                <ng-container *ngIf="cargando_accesorios">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!cargando_accesorios">
+                    <ng-container *ngIf="!accesorios_encontrado">
+                        No se encontr&oacute; infrmacion
+                    </ng-container>
+                    <ng-container *ngIf="accesorios_encontrado">
+                        <h5>Inventario en Puerto de Carga</h5>
+                        <h6>El vehículo fue registrado en el inventario del puerto antes del despacho nacional.</h6>
+                        <hr />
+                        <button type="button" class="btn btn-danger" (click)="descargarPDF(2,0)"><i class="bi bi-file-pdf"></i></button>
+                        <div class="row p-2">
+                            <div class="col-md-4">
+                                <small class="text-primary">Realizado por</small>
+                                <div>{{ realizado_por }}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <small class="text-primary">Fecha y Hora</small>
+                                <div>{{ fecha_realizacion | date:'dd/MM/yyyy HH:mm' }}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <small class="text-primary">Firmante</small>
+                                <div *ngIf="firmado_por">{{ firmado_por }}</div>
+                                <div *ngIf="!firmado_por"><span pTooltip="Información no registrada aún" tooltipPosition="top">-</span></div>
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-md-4">
+                                <small class="text-primary">Ubicacion</small>
+                                <div *ngIf="ubicacion">{{ ubicacion }}</div>
+                                <div *ngIf="!ubicacion"><span pTooltip="Información no registrada aún" tooltipPosition="top">-</span></div>
+                            </div>
+                            <div class="col-md-4">
+                                <small class="text-primary">Código</small>
+                                <div *ngIf="codigo_ubicacion">{{ codigo_ubicacion }}</div>
+                                <div *ngIf="!codigo_ubicacion"><span pTooltip="Información no registrada aún" tooltipPosition="top">-</span></div>
+                            </div>
+                        </div>
+                        <hr />
+                        <p-tabView [(activeIndex)]="activeTabIndex" (onChange)="onTabChange($event)">
+                            <p-tabPanel header="Accesorios">
+                                <p-table 
+                                [value]="accesorios" 
+                                styleClass="p-datatable-gridlines" 
+                                [tableStyle]="{'min-width': '50rem'}">
+                                    <ng-template pTemplate="header" let-columns>
+                                        <tr>
+                                            <th>Accesorios</th>
+                                            <th>Cantidad</th>
+                                            <th>Comentario</th>
+                                            <th>Fotograf&iacute;as</th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-accesorio>
+                                        <tr>
+                                            <td>{{accesorio.accesorio.nombre}}</td>
+                                            <td>{{accesorio.cantidad}}</td>
+                                            <td>{{accesorio.observaciones}}</td>
+                                            <td>
+                                        <ng-container>
+                                            <a *ngIf="accesorio.imagen" target="_blank" href="{{accesorio.imagen}}">Ver</a>
+                                        </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </p-tabPanel>
+                            <p-tabPanel header="Da&ntilde;os">
+                                <ng-container *ngIf="cargando_danos">
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="!cargando_danos">
+                                    <ng-container *ngIf="!danos_encontrado">
+                                        No se encontr&oacute; informacion
+                                    </ng-container>
+                                    <ng-container *ngIf="danos_encontrado">
+                                        <div *ngIf="errorImagen" class="alert alert-danger" role="alert">
+                                            <h4 class="alert-heading">Error!</h4>
+                                            <p>No se pudo cargar la imagem.</p>
+                                        </div>
+                                        <p-table 
+                                        [value]="danos" 
+                                        [tableStyle]="{'min-width': '50rem'}">
+                                            <ng-template pTemplate="header" let-columns>
+                                                <tr>
+                                                    <th>Atributo</th>
+                                                    <th>Tipo de Da&ntilde;o</th>
+                                                    <th>¿Leve?</th>
+                                                    <th>Ubicaci&oacute;n</th>
+                                                    <th>Comentario</th>
+                                                    <th>Forograf&iacute;as</th>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-dano>
+                                                <tr>
+                                                    <td>{{dano.atributo}}</td>
+                                                    <td>{{dano.tipo_desperfecto}}</td>
+                                                    <td>{{dano.tiene_desperfecto}}</td>
+                                                    <td>
+                                                        <ng-container *ngIf="dano.tiene_ubicacion">
+                                                            <button type="button" class="btn btn-primary" (click)="verImagen(dano.filename,1)">{{dano.ubicacion_danio}}</button>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="!dano.tiene_ubicacion">
+                                                            {{dano.ubicacion_danio}}
+                                                        </ng-container>
+
+                                                    </td>
+                                                    <td>{{dano.comentario}}</td>
+                                                    <td>
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+                                    </ng-container>
+                                </ng-container>
+                            </p-tabPanel>
+                            <p-tabPanel header="Contaminaci&oacute;n">
+                                <ng-container *ngIf="cargando_contaminacion">
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="!cargando_contaminacion">
+                                    <ng-container *ngIf="!contaminacion_encontrado">
+                                        No se encontr&oacute; informacion
+                                    </ng-container>
+                                    <ng-container *ngIf="contaminacion_encontrado">
+                                        <p-table 
+                                        [value]="contaminaciones" 
+                                        [tableStyle]="{'min-width': '50rem'}">
+                                            <ng-template pTemplate="header" let-columns>
+                                                <tr>
+                                                    <th>Evaluaci&oacute;n</th>
+                                                    <th>Resultado de Evaluaci&oacute;n</th>
+                                                    <th>Comentario</th>
+                                                    <th>Fotograf&iacute;as</th>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-contaminacion>
+                                                <tr>
+                                                    <td>{{contaminacion.evaluacion}}</td>
+                                                    <td>{{contaminacion.resultado}}</td>
+                                                    <td>{{contaminacion.comentario}}</td>
+                                                    <td>
+                                                        <ng-container *ngIf="contaminacion.tiene_imagen">
+                                                            <button type="button" class="btn btn-primary" (click)="verImagen(contaminacion.filename,2)">Ver Fotos</button>
+                                                        </ng-container>
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+                                    </ng-container>
+                                </ng-container>
+                            </p-tabPanel>
+                        </p-tabView>
+                    </ng-container>
+                </ng-container>
+            </p-accordionTab>
+            <p-accordionTab>
+                <ng-template pTemplate="header">
+                    <div class="d-flex justify-content-between" style="width: 100%">
+                        <span>Dep&oacute;sito Transitorio</span>
+                        <span><i *ngIf="maxKey=='detalle_dep_transitorio'" class="bi bi-calendar"></i>&nbsp;<i *ngIf="hayDanios(bitacora.detalle_dep_transitorio)" class="bi bi-exclamation-triangle"></i></span>
+                    </div>
+                </ng-template>
+                <ng-container *ngIf="cargando_accesorios">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!cargando_accesorios">
+                    <ng-container *ngIf="!accesorios_encontrado">
+                        No se encontr&oacute; infrmacion
+                    </ng-container>
+                    <ng-container *ngIf="accesorios_encontrado">
+                        <h5>Inventario en Dep&oacute;sito Transitorio</h5>
+                        <h6>El vehículo se encuentra almacenado temporalmente en el depósito.</h6>
+                        <hr />
+                        <button type="button" class="btn btn-danger" (click)="descargarPDF(1,0)"><i class="bi bi-file-pdf"></i></button>
+                        <div class="row p-2">
+                            <div class="col-md-4">
+                                <small class="text-primary">Realizado por</small>
+                                <div>{{ realizado_por }}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <small class="text-primary">Fecha y Hora</small>
+                                <div>{{ fecha_realizacion | date:'dd/MM/yyyy HH:mm' }}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <small class="text-primary">Firmante</small>
+                                <div *ngIf="firmado_por">{{ firmado_por }}</div>
+                                <div *ngIf="!firmado_por"><span pTooltip="Información no registrada aún" tooltipPosition="top">-</span></div>
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-md-4">
+                                <small class="text-primary">Ubicacion</small>
+                                <div *ngIf="ubicacion">{{ ubicacion }}</div>
+                                <div *ngIf="!ubicacion"><span pTooltip="Información no registrada aún" tooltipPosition="top">-</span></div>
+                            </div>
+                            <div class="col-md-4">
+                                <small class="text-primary">Código</small>
+                                <div *ngIf="codigo_ubicacion">{{ codigo_ubicacion }}</div>
+                                <div *ngIf="!codigo_ubicacion"><span pTooltip="Información no registrada aún" tooltipPosition="top">-</span></div>
+                            </div>
+                        </div>
+                        <hr />
+                        <p-tabView [(activeIndex)]="activeTabIndex" (onChange)="onTabChange($event)">
+                            <p-tabPanel header="Accesorios">
+                                <p-table 
+                                [value]="accesorios" 
+                                styleClass="p-datatable-gridlines" 
+                                [tableStyle]="{'min-width': '50rem'}">
+                                    <ng-template pTemplate="header" let-columns>
+                                        <tr>
+                                            <th>Accesorios</th>
+                                            <th>Cantidad</th>
+                                            <th>Comentario</th>
+                                            <th>Fotograf&iacute;as</th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-accesorio>
+                                        <tr>
+                                            <td>{{accesorio.accesorio.nombre}}</td>
+                                            <td>{{accesorio.cantidad}}</td>
+                                            <td>{{accesorio.observaciones}}</td>
+                                            <td>
+                                        <ng-container>
+                                            <a *ngIf="accesorio.imagen" target="_blank" href="{{accesorio.imagen}}">Ver</a>
+                                        </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </p-tabPanel>
+                            <p-tabPanel header="Da&ntilde;os">
+                                <ng-container *ngIf="cargando_danos">
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="!cargando_danos">
+                                    <ng-container *ngIf="!danos_encontrado">
+                                        No se encontr&oacute; informacion
+                                    </ng-container>
+                                    <ng-container *ngIf="danos_encontrado">
+                                        <div *ngIf="errorImagen" class="alert alert-danger" role="alert">
+                                            <h4 class="alert-heading">Error!</h4>
+                                            <p>No se pudo cargar la imagem.</p>
+                                        </div>
+                                        <p-table 
+                                        [value]="danos" 
+                                        [tableStyle]="{'min-width': '50rem'}">
+                                            <ng-template pTemplate="header" let-columns>
+                                                <tr>
+                                                    <th>Atributo</th>
+                                                    <th>Tipo de Da&ntilde;o</th>
+                                                    <th>¿Leve?</th>
+                                                    <th>Ubicaci&oacute;n</th>
+                                                    <th>Comentario</th>
+                                                    <th>Forograf&iacute;as</th>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-dano>
+                                                <tr>
+                                                    <td>{{dano.atributo}}</td>
+                                                    <td>{{dano.tipo_desperfecto}}</td>
+                                                    <td>{{dano.tiene_desperfecto}}</td>
+                                                    <td>
+                                                        <ng-container *ngIf="dano.tiene_ubicacion">
+                                                            <button type="button" class="btn btn-primary" (click)="verImagen(dano.filename,1)">{{dano.ubicacion_danio}}</button>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="!dano.tiene_ubicacion">
+                                                            {{dano.ubicacion_danio}}
+                                                        </ng-container>
+
+                                                    </td>
+                                                    <td>{{dano.comentario}}</td>
+                                                    <td>
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+                                    </ng-container>
+                                </ng-container>
+                            </p-tabPanel>
+                            <p-tabPanel header="Contaminaci&oacute;n">
+                                <ng-container *ngIf="cargando_contaminacion">
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="!cargando_contaminacion">
+                                    <ng-container *ngIf="!contaminacion_encontrado">
+                                        No se encontr&oacute; informacion
+                                    </ng-container>
+                                    <ng-container *ngIf="contaminacion_encontrado">
+                                        <p-table 
+                                        [value]="contaminaciones" 
+                                        [tableStyle]="{'min-width': '50rem'}">
+                                            <ng-template pTemplate="header" let-columns>
+                                                <tr>
+                                                    <th>Evaluaci&oacute;n</th>
+                                                    <th>Resultado de Evaluaci&oacute;n</th>
+                                                    <th>Comentario</th>
+                                                    <th>Fotograf&iacute;as</th>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-contaminacion>
+                                                <tr>
+                                                    <td>{{contaminacion.evaluacion}}</td>
+                                                    <td>{{contaminacion.resultado}}</td>
+                                                    <td>{{contaminacion.comentario}}</td>
+                                                    <td>
+                                                        <ng-container *ngIf="contaminacion.tiene_imagen">
+                                                            <button type="button" class="btn btn-primary" (click)="verImagen(contaminacion.filename,2)">Ver Fotos</button>
+                                                        </ng-container>
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+                                    </ng-container>
+                                </ng-container>
+                            </p-tabPanel>
+                        </p-tabView>
+                    </ng-container>
+                </ng-container>
+                
+                
+            </p-accordionTab>
+            <!--
+            <p-accordionTab header="Post nacionalización" [disabled]="true">
+                <h5>Inventario Post Nacionalizaci&oacute;n</h5>
+                <h6>El vehículo ha sido nacionalizado y está listo para su distribución.</h6>
+                <hr />
+            </p-accordionTab>
+            -->
+            <p-accordionTab>
+                <ng-template pTemplate="header">
+                    <div class="d-flex justify-content-between" style="width: 100%">
+                        <span>Despacho Nacional</span>
+                        <span><i *ngIf="maxKey=='detalle_despacho_nacional'" class="bi bi-calendar"></i>&nbsp;<i *ngIf="hayDanios(bitacora.detalle_despacho_nacional)" class="bi bi-exclamation-triangle"></i></span>
+                    </div>
+                </ng-template>
+                <h5>Inventario en Despacho Nacional</h5>
+                <h6>El vehículo ha sido despachado a nivel nacional.</h6>
+                <hr />
+                
+                <p-table [value]="bitacora.detalle_despacho_nacional" dataKey="id" [tableStyle]="{ 'min-width': '60rem' }" >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>No Embarque</th>
+                            <th>Responsable</th>
+                            <th>Fecha y Hora</th>
+                            <th>Ubicaci&oacute;n</th>
+                            <th>C&oacute;digo</th>
+                            <th>Firmante</th>
+                            <th>Detalle</th>
+                            <th>Archivo</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-embarques let-expanded="expanded">
+                        <tr>
+                            <td>{{ embarques.embarque_id }}</td>
+                            <td>{{ embarques.realizado_por }}</td>
+                            <td>{{ embarques.created_at }}</td>
+                            <td>{{ embarques.ubicacion_almacen }}</td>
+                            <td>{{ embarques.codigo_ubicacion_almacen }}</td>
+                            <td>{{ embarques.nombre_usuario_firmante }}</td>
+                            <ng-container *ngIf="embarques.reportado==0">
+                                <td>
+                                    <button type="button" class="btn btn-primary" (click)="verDetalleLocal(embarques.tipo_inventario_cliente_local_id, embarques.embarque_id)"><i class="bi bi-list-check"></i></button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" (click)="descargarPDF(embarques.tipo_inventario_cliente_local_id, embarques.embarque_id)"><i class="bi bi-file-pdf"></i></button>
+                                </td>
+                            </ng-container>
+                            <ng-container *ngIf="embarques.reportado==1">
+                                <td colspan="2">
+                                    <p-tag value="REPORTADO"
+                                        [pTooltip]="tooltipContentDespachoNacional" 
+                                        tooltipPosition="top" 
+                                        />
+                                    <ng-template #tooltipContentDespachoNacional>
+                                        <div class="flex align-items-center">
+                                            <span>Registrado por {{embarques.reportado_por}},<br /> en fecha {{embarques.reportado_en | date:'dd/MM/yyyy HH:mm'}}</span>
+                                        </div>
+                                    </ng-template>
+                                </td>
+                            </ng-container>
+                                
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-accordionTab>
+            <p-accordionTab>
+                <ng-template pTemplate="header">
+                    <div class="d-flex justify-content-between" style="width: 100%">
+                        <span>recepci&oacute;n Nacional</span>
+                        <span><i *ngIf="maxKey=='detalle_recepcion_nacional'" class="bi bi-calendar"></i>&nbsp;<i *ngIf="hayDanios(bitacora.detalle_recepcion_nacional)" class="bi bi-exclamation-triangle"></i></span>
+                    </div>
+                </ng-template>
+                <h5>Inventario en Recepci&oacute;n Nacional</h5>
+                <h6>El vehículo fue recibido en la base nacional.</h6>
+                <hr />
+                <p-table [value]="bitacora.detalle_recepcion_nacional" dataKey="id" [tableStyle]="{ 'min-width': '60rem' }" >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>No Embarque</th>
+                            <th>Responsable</th>
+                            <th>Fecha y Hora</th>
+                            <th>Ubicaci&oacute;n</th>
+                            <th>C&oacute;digo</th>
+                            <th>Firmante</th>
+                            <th>Detalle</th>
+                            <th>Archivo</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-embarques let-expanded="expanded">
+                        <tr>
+                            <td>{{ embarques.embarque_id }}</td>
+                            <td>{{ embarques.realizado_por }}</td>
+                            <td>{{ embarques?.created_at ? (embarques.created_at | date:'dd/MM/yyyy HH:mm') : '-' }}</td>
+                            <td>{{ embarques.ubicacion_almacen }}</td>
+                            <td>{{ embarques.codigo_ubicacion_almacen }}</td>
+                            <td>{{ embarques.nombre_usuario_firmante }}</td>
+                            <ng-container *ngIf="embarques.reportado==0">
+                                <td>
+                                    <button type="button" class="btn btn-primary" (click)="verDetalleLocal(embarques.tipo_inventario_cliente_local_id, embarques.embarque_id)"><i class="bi bi-list-check"></i></button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" (click)="descargarPDF(embarques.tipo_inventario_cliente_local_id, embarques.embarque_id)"><i class="bi bi-file-pdf"></i></button>
+                                </td>
+                            </ng-container>
+                            <ng-container *ngIf="embarques.reportado==1">
+                                <td colspan="2">
+                                    <p-tag value="REPORTADO"
+                                        pTooltip="Registrado por {{embarques.reportado_por}}, en fecha {{embarques.reportado_en | date:'dd/MM/yyyy HH:mm'}}" 
+                                        tooltipPosition="top" 
+                                        />
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-accordionTab>
+            <p-accordionTab>
+                <ng-template pTemplate="header">
+                    <div class="d-flex justify-content-between" style="width: 100%">
+                        <span>Despacho Local</span>
+                        <span><i *ngIf="maxKey=='detalle_despacho_local'" class="bi bi-calendar"></i>&nbsp;<i *ngIf="hayDanios(bitacora.detalle_despacho_local)" class="bi bi-exclamation-triangle"></i></span>
+                    </div>
+                </ng-template>
+                <h5>Inventario en Despacho Local</h5>
+                <h6>El vehículo ha sido despachado a su destino local.</h6>
+                <hr />
+                <p-table [value]="bitacora.detalle_despacho_local" dataKey="id" [tableStyle]="{ 'min-width': '60rem' }" >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>No Embarque</th>
+                            <th>Responsable</th>
+                            <th>Fecha y Hora</th>
+                            <th>Ubicaci&oacute;n</th>
+                            <th>C&oacute;digo</th>
+                            <th>Firmante</th>
+                            <th>Detalle</th>
+                            <th>Archivo</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-embarques let-expanded="expanded">
+                        <tr>
+                            <td>{{ embarques.embarque_id }}</td>
+                            <td>{{ embarques.realizado_por }}</td>
+                            <td>{{ embarques?.created_at ? (embarques.created_at | date:'dd/MM/yyyy HH:mm') : '-' }}</td>
+                            <td>{{ embarques.ubicacion_almacen }}</td>
+                            <td>{{ embarques.codigo_ubicacion_almacen }}</td>
+                            <td>{{ embarques.nombre_usuario_firmante }}</td>
+                            <ng-container *ngIf="embarques.reportado==0">
+                                <td>
+                                    <button type="button" class="btn btn-primary" (click)="verDetalleLocal(embarques.tipo_inventario_cliente_local_id, embarques.embarque_id)"><i class="bi bi-list-check"></i></button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" (click)="descargarPDF(embarques.tipo_inventario_cliente_local_id, embarques.embarque_id)"><i class="bi bi-file-pdf"></i></button>
+                                </td>
+                            </ng-container>
+                            <ng-container *ngIf="embarques.reportado==1">
+                                <td colspan="2">
+                                    <p-tag value="REPORTADO"
+                                        pTooltip="Registrado por {{embarques.reportado_por}}, en fecha {{embarques.reportado_en | date:'dd/MM/yyyy HH:mm'}}" 
+                                        tooltipPosition="top" 
+                                        />
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-accordionTab>
+            <p-accordionTab>
+                <ng-template pTemplate="header">
+                    <div class="d-flex justify-content-between" style="width: 100%">
+                        <span>Recepci&oacute;n Local</span>
+                        <span><i *ngIf="maxKey=='detalle_recepcion_local'" class="bi bi-calendar"></i>&nbsp;<i *ngIf="hayDanios(bitacora.detalle_recepcion_local)" class="bi bi-exclamation-triangle"></i></span>
+                    </div>
+                </ng-template>
+                <h5>Inventario en Recepci&oacute;n Local</h5>
+                <h6>El vehículo ha sido recibido localmente por el cliente o concesionario.</h6>
+                <hr />
+                <p-table [value]="bitacora.detalle_recepcion_local" dataKey="id" [tableStyle]="{ 'min-width': '60rem' }" >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>No Embarque</th>
+                            <th>Responsable</th>
+                            <th>Fecha y Hora</th>
+                            <th>Ubicaci&oacute;n</th>
+                            <th>C&oacute;digo</th>
+                            <th>Firmante</th>
+                            <th>Detalle</th>
+                            <th>Archivo</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-embarques let-expanded="expanded">
+                        <tr>
+                            <td>{{ embarques.embarque_id }}</td>
+                            <td>{{ embarques.realizado_por }}</td>
+                            <td>{{ embarques?.created_at ? (embarques.created_at | date:'dd/MM/yyyy HH:mm') : '-' }}</td>
+                            <td>{{ embarques.ubicacion_almacen }}</td>
+                            <td>{{ embarques.codigo_ubicacion_almacen }}</td>
+                            <td>{{ embarques.nombre_usuario_firmante }}</td>
+                            <ng-container *ngIf="embarques.reportado==0">
+                                <td>
+                                    <button type="button" class="btn btn-primary" (click)="verDetalleLocal(embarques.tipo_inventario_cliente_local_id, embarques.embarque_id)"><i class="bi bi-list-check"></i></button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" (click)="descargarPDF(embarques.tipo_inventario_cliente_local_id, embarques.embarque_id)"><i class="bi bi-file-pdf"></i></button>
+                                </td>
+                            </ng-container>
+                            <ng-container *ngIf="embarques.reportado==1">
+                                <td colspan="2">
+                                    <p-tag value="REPORTADO"
+                                        pTooltip="Registrado por {{embarques.reportado_por}}, en fecha {{embarques.reportado_en | date:'dd/MM/yyyy HH:mm'}}" 
+                                        tooltipPosition="top" 
+                                        />
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-accordionTab>
+        </p-accordion>
+        
+        <p-dialog header="Detalle" [modal]="true" [(visible)]="mostrar_detalle" [style]="{ width: '80rem' }">
+            <p-tabView [(activeIndex)]="activeTabIndex" (onChange)="onTabChange($event)">
+                <p-tabPanel header="Accesorios">
+                    <ng-container *ngIf="cargando_accesorios">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="!cargando_accesorios">
+                        <ng-container *ngIf="!accesorios_encontrado">
+                            No se encontr&oacute; informacion
+                        </ng-container>
+                        <ng-container *ngIf="accesorios_encontrado">
+                            
+                            <p-table 
+                            [value]="accesorios" 
+                            styleClass="p-datatable-gridlines" 
+                            [tableStyle]="{'min-width': '50rem'}">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th>Accesorios</th>
+                                        <th>Cantidad</th>
+                                        <th>Comentario</th>
+                                        <th>Fotograf&iacute;as</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-accesorio>
+                                    <tr>
+                                        <td>{{accesorio.accesorio.nombre}}</td>
+                                        <td>{{accesorio.cantidad}}</td>
+                                        <td>{{accesorio.observaciones}}</td>
+                                        <td>
+                                            <ng-container *ngIf="accesorio.imagen">
+                                                <button type="button" class="btn btn-primary" (click)="verImagen(accesorio.imagen,11)">Ver Foto</button>
+                                            </ng-container>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </ng-container>
+                    </ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="Da&ntilde;os">
+                    <ng-container *ngIf="cargando_danos">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="!cargando_danos">
+                        <ng-container *ngIf="!danos_encontrado">
+                            No se encontr&oacute; informacion
+                        </ng-container>
+                        <ng-container *ngIf="danos_encontrado">
+                            <div *ngIf="errorImagen" class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">Error!</h4>
+                                <p>No se pudo cargar la imagem.</p>
+                            </div>
+                            <p-table 
+                            [value]="danos" 
+                            [tableStyle]="{'min-width': '50rem'}">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th>Atributo</th>
+                                        <th>Tipo de Da&ntilde;o</th>
+                                        <th>¿Leve?</th>
+                                        <th>Ubicaci&oacute;n</th>
+                                        <th>Comentario</th>
+                                        <th>Forograf&iacute;as</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-dano>
+                                    <tr>
+                                        <td>{{dano.atributo}}</td>
+                                        <td>{{dano.tipo_desperfecto}}</td>
+                                        <td>{{dano.tiene_desperfecto}}</td>
+                                        <td>
+                                            <ng-container *ngIf="dano.tiene_ubicacion">
+                                                <button type="button" class="btn btn-primary" (click)="verImagen(dano.filename,12)">{{dano.ubicacion_danio}}</button>
+                                            </ng-container>
+                                            <ng-container *ngIf="!dano.tiene_ubicacion">
+                                                {{dano.ubicacion_danio}}
+                                            </ng-container>
+                                            
+                                        </td>
+                                        <td>{{dano.comentario}}</td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </ng-container>
+                    </ng-container>
+                </p-tabPanel>
+                <p-tabPanel header="Contaminaci&oacute;n">
+                    <ng-container *ngIf="cargando_contaminacion">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="!cargando_contaminacion">
+                        <ng-container *ngIf="!contaminacion_encontrado">
+                            No se encontr&oacute; informacion
+                        </ng-container>
+                        <ng-container *ngIf="contaminacion_encontrado">
+                            <p-table 
+                            [value]="contaminaciones" 
+                            [tableStyle]="{'min-width': '50rem'}">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th>Evaluaci&oacute;n</th>
+                                        <th>Resultado de Evaluaci&oacute;n</th>
+                                        <th>Comentario</th>
+                                        <th>Fotograf&iacute;as</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-contaminacion>
+                                    <tr>
+                                        <td>{{contaminacion.evaluacion}}</td>
+                                        <td>{{contaminacion.resultado}}</td>
+                                        <td>{{contaminacion.comentario}}</td>
+                                        <td>
+                                            <ng-container *ngIf="contaminacion.tiene_imagen">
+                                                <button type="button" class="btn btn-primary" (click)="verImagen(contaminacion.filename,13)">Ver Fotos</button>
+                                            </ng-container>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </ng-container>
+                    </ng-container>
+                </p-tabPanel>
+            </p-tabView>
+            <div class="flex justify-content-end gap-2">
+                <button type="button" class="btn btn-secondary" (click)="mostrar_detalle = false">Cerrar</button>
+            </div>
+        </p-dialog>
+        
+        <p-dialog header="Foto" [modal]="true" [(visible)]="mostrar_imagen" [style]="{ width: '30rem' }">
+            <img [src]="fotoUrl" alt="Foto" style="width:100%; height:auto; object-fit:contain;">
+            <hr />
+            <div class="flex justify-content-end gap-2">
+                <button type="button" class="btn btn-secondary" (click)="mostrar_imagen = false">Cerrar</button>
+            </div>     
+        </p-dialog>
+
+        <!--
+        <div *ngIf="mostrar_detalle">
+            <button type="button" class="btn btn-primary" (click)="mostrar_detalle=false"><i class="bi bi-arrow-left-short"></i> Atr&aacute;s</button>
+            
+        </div>
+        -->
+    </ng-container>
+    <ng-container *ngIf="!chasis_encontrado">
+        Chasis no Encontrado
+    </ng-container>
+</ng-container>
+
+    
+    

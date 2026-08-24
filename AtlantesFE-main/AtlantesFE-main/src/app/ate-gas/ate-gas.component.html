@@ -1,0 +1,435 @@
+<div id="principal">
+    <app-menusuperior [permite_cambio_almacen]="true"></app-menusuperior>
+    <app-menulateral [menu_item]="12.1"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Previsi&oacute;n VIN</li>
+                </ol>
+            </nav>
+        </div>
+        <div>
+            <div class="row g-3">
+                <!-- Total VINs -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="rounded p-3 me-3 bg-primary bg-opacity-10">
+                                <i class="bi bi-box text-primary fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Total VINs</div>
+                                <div class="fs-4 fw-bold">{{total_vin}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pendientes -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="rounded p-3 me-3 bg-warning bg-opacity-10">
+                                <i class="bi bi-calendar text-warning fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Pendientes</div>
+                                <div class="fs-4 fw-bold">{{total_pendiente}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- En Recepción -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="rounded p-3 me-3 bg-success bg-opacity-10">
+                                <i class="bi bi-clipboard-check text-success fs-4"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">En Recepción</div>
+                                <div class="fs-4 fw-bold">{{total_recepcion}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br />
+        <div class="card">
+            <div *ngIf="ver_ate_gas" class="card-body">
+                <br />
+                <div *ngIf="editar_ate_gas" class="row">
+                    <div class="col-6 mb-3">
+                        <!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoInventarioFisico" (click)="preperarAgregar()">Nuevo Recuento</button>-->
+                        <button type="button" class="btn btn-primary" (click)="preperarCarga()">Carga Masiva</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="filtro_chasis" class="form-label text-secondary small">Buscar VIN</label>
+                        <input type="text" class="form-control" id="filtro_chasis" name="filtro_chasis" (input)="filtrarAteGas()" [(ngModel)]="filtro_chasis" >
+                    </div>
+                </div>
+                
+                
+                <p-table [value]="ategas_filtrado" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50,100]"
+                    >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th></th>
+                            <th>
+                                
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Ubicaci&oacute;n
+                                    <p-columnFilter type="text" field="ubicacion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Cliente
+                                    <p-columnFilter type="text" field="cliente" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Chasis
+                                    <p-columnFilter type="text" field="chasis" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Marca
+                                    <p-columnFilter type="text" field="marca" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Modelo
+                                    <p-columnFilter type="text" field="modelo" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Color
+                                    <p-columnFilter type="text" field="color" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Config
+                                    <p-columnFilter type="text" field="configuracion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Tipo de Tanque
+                                    <p-columnFilter type="text" field="tipo_tanque" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Fecha Carga
+                                    <p-columnFilter type="date" field="created_at" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Estado
+                                    <p-columnFilter type="text" field="estado_recepcion" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                            <th pResizableColumn>
+                                <div class="flex justify-content-center align-items-center">
+                                    Inventario
+                                    <p-columnFilter type="text" field="estado_inventario" display="menu"></p-columnFilter>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-ate_gas>
+                        <tr>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <button [disabled]="!ate_gas.fecha_recepcion" type="button" class="btn btn-outline-primary" (click)="abrirUbicacion(ate_gas.idate_gas)"><i class="bi bi-pin-map-fill"></i></button>
+                                    <button type="button" class="btn btn-outline-secondary" (click)="prepararEditar(ate_gas.idate_gas)"><i class="bi bi-pencil-square"></i></button>
+                                    <button type="button" class="btn btn-outline-danger" (click)="prepararEliminarItem(ate_gas.idate_gas)"><i class="bi bi-trash"></i></button>
+                                </div>
+                                <!--<button *ngIf="ate_gas.fecha_recepcion" type="button" class="btn btn-primary" (click)="abrirUbicacion(ate_gas.idate_gas)">Ubicar</button>-->
+                                <!--<button *ngIf="!ate_gas.fecha_recepcion" type="button" class="btn btn-danger" (click)="abrirUbicacion(ate_gas.idate_gas)">Eliminar</button>-->
+                            </td>
+                            <td class="d-flex justify-content-between">
+                                <button *ngIf="!ate_gas.fecha_recepcion && editar_ate_gas" type="button" class="btn btn-success" (click)="abrirRecepcion(ate_gas.idate_gas)">Registrar Recepcion</button>
+                                <p-tag *ngIf="ate_gas.fecha_recepcion" severity="success" icon="pi pi-check" value="Recepcionado" />
+                            </td>
+                            <td>{{ate_gas.ubicacion}}</td>
+                            <td>{{ate_gas.cliente}}</td>
+                            <td>{{ate_gas.chasis}}</td>
+                            <td>{{ate_gas.marca}}</td>
+                            <td>{{ate_gas.modelo}}</td>
+                            <td>{{ate_gas.color}}</td>
+                            <td>{{ate_gas.configuracion}}</td>
+                            <td>{{ate_gas.tipo_tanque}}</td>
+                            <td>{{ate_gas.created_at  | date:'dd/MM/yyyy'}}</td>
+                            <td>
+                                <p-tag *ngIf="ate_gas.fecha_recepcion" severity="success" icon="pi pi-check" [value]="ate_gas.estado_recepcion" />
+                                <p-tag *ngIf="!ate_gas.fecha_recepcion" severity="warning" [value]="ate_gas.estado_recepcion" />
+                            </td>
+                            <td>
+                                <p-tag *ngIf="ate_gas.fecha_recepcion" severity="info" icon="pi pi-check" [value]="ate_gas.estado_inventario" />
+                                <p-tag *ngIf="!ate_gas.fecha_recepcion" severity="danger" [value]="ate_gas.estado_inventario" />
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="13">No existen registros</td>
+                        </tr>
+                    </ng-template>
+                    
+                </p-table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<p-dialog #nueva_carga header="Carga Masiva" [modal]="true" [(visible)]="visible_carga" [style]="{ width: '50rem' }">
+    <div class="row">
+        <div class="col-12 mb-3">
+            <label for="idcliente" class="form-label text-secondary small">Cliente</label>
+            <p-dropdown 
+                [options]="entidades" 
+                [filter]="true" 
+                [(ngModel)]="idcliente" 
+                name="idcliente" 
+                id="idcliente" 
+                placeholder="Seleccione" 
+                optionLabel="entidad" 
+                optionValue="id" 
+                (onChange)="erroridcliente=false" 
+                [style]="{'width':'100%'}"
+                [appendTo]="nueva_carga"
+                [disabled]="cargando"
+                ></p-dropdown>
+            <small *ngIf="erroridcliente" class="text-danger">Campo Requerido</small>
+        </div>
+    </div>
+    
+    <ng-container>
+        <div class="row">
+            <div class="col-12 mb-3">
+                Para cargar Items directamente desde un archivo xlsx llene el formato que se muestra <a target="_blank" href="{{urlFormatoAteGas}}">aqui</a> y cargelo a continuaci&oacute;n
+                <br /><br />
+                <input [disabled]="cargando" class="form-control" type="file" name="fileUpload" id="fileUpload" #UploadFileInput (change)="fileChangeEvent($event)" >
+                <small *ngIf="errorarchivo" class="text-danger">Campo requerido</small>
+            </div>
+        </div>
+        <div *ngIf="mensajes_error.length>0" class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Error!</h4>
+            <p>Se encontraron los siguientes errores.</p>
+            <hr>
+            <ul>
+                <li *ngFor="let mensaje_error of mensajes_error">Fila {{mensaje_error.fila}}: {{mensaje_error.mensaje}}</li>
+            </ul>
+        </div>
+    </ng-container>
+        
+    <hr />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" [disabled]="cargando" (click)="visible_carga = false">Cerrar</button>&nbsp;
+        <button type="button" class="btn btn-primary" [disabled]="cargando" (click)="cargarAteGas()">Crear Recuento</button>
+        <!--
+        <p-button label="Cancel" severity="secondary" (onClick)="visible_nuevo_recuento = false" />
+        <p-button label="Save" (onClick)="crearInventarioFisico()" />
+        -->
+    </div>
+</p-dialog>
+
+<p-dialog #modal_recepcion header="Inventario de Recepción" [modal]="true" [(visible)]="visible_recepcion" [style]="{ width: '50rem' }">
+    <p-card header="Información del Vehiculo">
+        <div class="row">
+            <div class="col-md-6 p-2">
+                <label for="chasis" class="form-label">VIN/Chasis</label>
+                <input type="text" class="form-control" id="chasis" [(ngModel)]="chasis_recepcion" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" id="marca" [(ngModel)]="marca_recepcion" disabled>
+            </div>
+            <div class="col-12 p-2">
+                <label for="modelo" class="form-label">Modelo</label>
+                <input type="text" class="form-control" id="modelo" [(ngModel)]="modelo_recepcion" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="color" class="form-label">Color</label>
+                <input type="text" class="form-control" id="color" [(ngModel)]="color_recepcion" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="configuracion" class="form-label">Configuracion</label>
+                <input type="text" class="form-control" id="configuracion" [(ngModel)]="configuracion_recepcion" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="color" class="form-label">Fecha de Carga</label>
+                <input type="text" class="form-control" id="color" value="{{fecha_carga_recepcion | date:'dd/MM/yyyy'}}" disabled>
+            </div>
+        </div>
+    </p-card>
+    <br />
+    <p-card header="Registro de Inventario de Recepción">
+        <div class="alert alert-primary d-flex align-items-center" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
+            <div>
+                Complete el inventario de recepci&oacute;n del vehículo. Una vez guardado, el VIN se marcar&aacute; como RECEPCI&Oacute;N y estar&aacute; disponible para asignaci&oacute;n de trabajo.
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 p-2">
+                <label for="estado_vehiculo" class="form-label">Estado del Veh&iacute;culo</label>
+                <input type="text" class="form-control" id="estado_vehiculo" [(ngModel)]="estado_vehiculo" (input)="error_estado_vehiculo=false" placeholder="Ej: Sin daños aparentes, listo para produccion" [disabled]="cargando">
+                <small *ngIf="error_estado_vehiculo" class="text-danger">Campo Requerido</small>
+            </div>
+            <div class="col-12 p-2">
+                <label for="observaciones" class="form-label">Observaciones Generales</label>
+                <textarea class="form-control" id="observaciones" rows="3" [(ngModel)]="observaciones" (input)="error_observaciones=false" placeholder="Ingrese observaciones detalladas del estado general del vehiculo" [disabled]="cargando"></textarea>
+                <small *ngIf="error_observaciones" class="text-danger">Campo Requerido</small>
+            </div>
+        </div>
+        
+        
+    </p-card>
+    
+    
+        
+    <br />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" [disabled]="cargando" (click)="visible_recepcion = false">Cerrar</button>&nbsp;
+        <button type="button" class="btn btn-primary" [disabled]="cargando" (click)="recepcionarVehiculo()">Guardar y marcar como RECEPCI&Oacute;N</button>
+    </div>
+</p-dialog>
+
+<p-dialog #ubicar header="Ubicación" [modal]="true" [(visible)]="visible_ubicacion" [style]="{ width: '50rem' }">
+    <p-card header="Información del Vehiculo">
+        <div class="row">
+            <div class="col-md-6 p-2">
+                <label for="chasis" class="form-label">VIN/Chasis</label>
+                <input type="text" class="form-control" id="chasis" [(ngModel)]="chasis_recepcion" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" id="marca" [(ngModel)]="marca_recepcion" disabled>
+            </div>
+        </div>
+    </p-card>
+    <br />
+    <div class="row">
+        <div class="col-12">
+            <label for="idalmacendetalle" class="form-label">Ubicaci&oacute;n (seg&uacute;n Layout)</label>
+            <p-dropdown 
+                [options]="almacen_ubicaciones" 
+                [filter]="true" 
+                [(ngModel)]="idalmacendetalle" 
+                name="idalmacendetalle" 
+                id="idalmacendetalle" 
+                placeholder="Seleccione" 
+                optionLabel="ubicacion" 
+                optionValue="idalmacendetalle" 
+                [style]="{'width':'100%'}"
+                [disabled]="cargando"
+                [appendTo]="ubicar"
+                (onChange)="error_idalmacendetalle=false"
+                ></p-dropdown>
+            <small *ngIf="error_idalmacendetalle" class="text-danger">Campo Requerido</small>
+        </div>
+    </div>
+    <hr />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" [disabled]="cargando" (click)="visible_ubicacion = false">Cerrar</button>&nbsp;
+        <button type="button" class="btn btn-primary" [disabled]="cargando" (click)="ubicarVehiculo()">Guardar</button>
+    </div>
+</p-dialog>
+
+<p-dialog #editar header="editar" [modal]="true" [(visible)]="visible_edicion" [style]="{ width: '50rem' }">
+    <p-card header="Información del Vehiculo">
+        <div class="row">
+            <div class="col-md-6 p-2">
+                <label for="chasis" class="form-label">VIN/Chasis</label>
+                <input type="text" class="form-control" id="chasis" [(ngModel)]="chasis_recepcion" disabled>
+            </div>
+            <div class="col-md-6 p-2">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" id="marca" [(ngModel)]="marca_recepcion" disabled>
+            </div>
+        </div>
+    </p-card>
+    <br />
+    <div class="row">
+        <div class="col-md-6">
+            <label for="configuracion" class="form-label">Configuraci&oacute;n</label>
+            <input type="text" class="form-control" id="configuracion" [(ngModel)]="configuracion">
+        </div>
+        <div class="col-md-6">
+            <label for="tipo_tanque" class="form-label">Tipo Tanque</label>
+            <input type="text" class="form-control" id="tipo_tanque" [(ngModel)]="tipo_tanque">
+        </div>
+    </div>
+    <hr />
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary" [disabled]="cargando" (click)="visible_edicion = false">Cerrar</button>&nbsp;
+        <button type="button" class="btn btn-primary" [disabled]="cargando" (click)="editarVehiculo()">Guardar</button>
+    </div>
+</p-dialog>
+
+
+
+<div class="modal" id="ventanaLoading" tabindex="-1" aria-labelledby="ventanaLoadingLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: rgba(0,0,0,.0001) !important; border: none !important;">
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="confirmarEliminar" tabindex="-1" aria-labelledby="confirmarEliminarLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #dc3545"></i>
+                </div>
+                <br />
+                <h4>¿Est&aacute; seguro que desea eliminar el registro?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="eliminar()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>

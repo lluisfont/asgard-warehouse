@@ -1,0 +1,224 @@
+<div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar" [class.active]="classApplied">
+        <div class="sidebar-header">
+            <h3>ATLANTES</h3>
+            <!--<img src="../../assets/LogoInverseA.svg" alt="" width="120">-->
+        </div>
+        <ul class="list-unstyled components">
+            <li>
+                <a role="button" (click)="onTabClick(0)"><i class="bi bi-house"></i> Inicio</a>
+                <!--<button type="button" class="btn btn-link"><i class="bi bi-house"></i> Inicio</button>-->
+            </li>
+            <li>
+                <a href="#almacenSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-building"></i> Almacen</a>
+                <ul class="collapse list-unstyled" id="almacenSubmenu">
+                    <li>
+                        <a href="#">Ingresos</a>
+                    </li>
+                    <li>
+                        <a href="#almacenAlmacenSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Almacen</a>
+                        <ul class="collapse list-unstyled" id="almacenAlmacenSubmenu">
+                            <li>
+                                <a href="#">Nuevos Ingresos</a>
+                            </li>
+                            <li>
+                                <a href="#">Mover</a>
+                            </li>
+                            <li>
+                                <a href="#">Sin Ubicacion</a>
+                            </li>
+                            <li>
+                                <a href="#">Ingresos Clientes</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Salidas</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#operacionesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-box-seam"></i> Operaciones</a>
+                <ul class="collapse list-unstyled" id="operacionesSubmenu">
+                    <li>
+                        <a href="#">Cotizaciones</a>
+                    </li>
+                    <li>
+                        <a role="button" (click)="onTabClick(1)">Embarques</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#contabilidadSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-calculator"></i> Contabilidad</a>
+                <ul class="collapse list-unstyled" id="contabilidadSubmenu">
+                    <li>
+                        <a href="#">Facturas</a>
+                    </li>
+                    <li>
+                        <a href="#">Notas de Cobranza</a>
+                    </li>
+                    <li>
+                        <a href="#">Ordenes de Pago</a>
+                    </li>
+                    <li>
+                        <a href="#">Pagos Agente Exterior</a>
+                    </li>
+                    <li>
+                        <a href="#">Planillas</a>
+                    </li>
+                    <li>
+                        <a href="#">Invoices</a>
+                    </li>
+                    <!--<li><hr class="dropdown-divider divisormenu"></li>-->
+                    <li>
+                        <a href="#">Cobros</a>
+                    </li>
+                    <li>
+                        <a href="#">Pagos</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#parametrosSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-gear"></i> Parametros</a>
+                <ul class="collapse list-unstyled" id="parametrosSubmenu">
+                    <li>
+                        <a href="#">Clientes</a>
+                    </li>
+                    <li>
+                        <a href="#">Transportistas</a>
+                    </li>
+                    <li>
+                        <a href="#">Agentes de Carga</a>
+                    </li>
+                    <li>
+                        <a href="#">Proveedores</a>
+                    </li>
+                    <li>
+                        <a href="#">Prestadores de Servicios</a>
+                    </li>
+                    <li>
+                        <a href="#">Conceptos</a>
+                    </li>
+                    <li>
+                        <a href="#">Almacenes</a>
+                    </li>
+                    <li>
+                        <a href="#">Usuarios</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#reportesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-file-earmark-text"></i> Reportes</a>
+                <ul class="collapse list-unstyled" id="reportesSubmenu">
+                    <li>
+                        <a href="#reportesAlmacenSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Almacen</a>
+                        <ul class="collapse list-unstyled" id="reportesAlmacenSubmenu">
+                            <li>
+                                <a href="#">Inv Accuracy</a>
+                            </li>
+                            <li>
+                                <a href="#">Inv Turnover control</a>
+                            </li>
+                            <li>
+                                <a href="#">Inb Control</a>
+                            </li>
+                            <li>
+                                <a href="#">Out Control</a>
+                            </li>
+                            <li>
+                                <a href="#">Reporte General</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#reportesOperacionesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Operaciones</a>
+                        <ul class="collapse list-unstyled" id="reportesOperacionesSubmenu">
+                            <li>
+                                <a href="#">Embarques</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#reportesContabilidadSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Contabilidad</a>
+                        <ul class="collapse list-unstyled" id="reportesContabilidadSubmenu">
+                            <li>
+                                <a href="#">Facturas/Notas Debito</a>
+                            </li>
+                            <li>
+                                <a href="#">Listado Transacciones Facturas/ND</a>
+                            </li>
+                            <li>
+                                <a href="#">Ordenes de Pago</a>
+                            </li>
+                            <li>
+                                <a href="#">Pagos Agente Exterior</a>
+                            </li>
+                            <li>
+                                <a href="#">Informe Completo</a>
+                            </li>
+                            <li>
+                                <a href="#">Estado de Cuentas</a>
+                            </li>
+                            <li>
+                                <a href="#">Saldos</a>
+                            </li>
+                            <li>
+                                <a href="#">Transacciones Facturas de pago</a>
+                            </li>
+                            <li>
+                                <a href="#">Libro de Ventas</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="bi bi-box-arrow-right"></i> Salir</a>
+            </li>
+        </ul>
+    </nav>
+    <!-- Page Content Holder -->
+    <div id="content">
+
+        <nav id="topbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="navbar-btn" (click)="toggleClass()" [class.active]="classApplied">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="btn btn-secondary d-inline-block d-lg-none ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <div class="collapse navbar-collapse flex-grow-1 text-right" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-arrow-left-right"></i> Cambiar de Almacen</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle"></i> Usuario
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarScrollingDropdown">
+                                <li><a class="dropdown-item" href="#">Perfil</a></li>
+                                <li><a class="dropdown-item" href="#">Permisos</a></li>
+                                <!--<li><a class="dropdown-item" href="#">Another action</a></li>-->
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">Salir</a></li>
+                            </ul>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <app-inicio *ngIf="tabIndex === 0"></app-inicio>
+        <app-embarques *ngIf="tabIndex === 1"></app-embarques>
+        
+
+    </div>
+</div>

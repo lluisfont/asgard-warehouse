@@ -1,0 +1,41 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="9.1"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Divisas</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_divisas" class="card-body">
+                <br />
+                <h5>Marque las divisas con las que desea trabajar</h5>
+                <br />
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-4" *ngFor="let divisa of listaDivisas">
+                        <label class="list-group-item border p-2">
+                            <input class="form-check-input me-1" type="checkbox" [checked]="divisa.marcado" (change)="divisa.marcado=!divisa.marcado" [disabled]="!editar_divisas">
+                            {{divisa.codigo}} - {{divisa.divisa}}
+                        </label>
+                    </div>
+                </div>
+                <br />
+                <button *ngIf="editar_divisas" type="button" class="btn btn-primary" (click)="guardarDatos();">Guardar</button>
+            </div>
+        </div>
+    </main>
+</div>
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,117 @@
+
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="10.1"></app-menulateral>
+    <main id="main" class="main">
+        <div class="pagetitle" *ngIf="almacen">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/almacenes']">Almacenes</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{almacen.almacen}}</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div *ngIf="ver_almacenes" class="card-body">
+                <ng-container *ngIf="almacen">
+                    <br />
+                    <div class="pagetitle"><h1>Layout</h1></div>
+                    <!--
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                        <div class="col-md-4">
+                          <div class="card">
+                            <img src="assets/img/seco.png" class="thumb-post" alt="...">
+                            <div class="card-body">
+                              <h5 class="card-title">Card title</h5>
+                              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="card">
+                            <img src="assets/img/congelado.png" class="thumb-post" alt="...">
+                            <div class="card-body">
+                              <h5 class="card-title">Card title</h5>
+                              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="card">
+                            <img src="assets/img/climatizado.png" class="thumb-post" alt="...">
+                            <div class="card-body">
+                              <h5 class="card-title">Card title</h5>
+                              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    -->
+                    <div class="row">
+                        <div class="col-md-4" *ngFor="let tipoalmacen of tipoalmacendetalle; let f = index">
+                            <div class="card mb-3">
+                                <div class="row g-0">
+                                  <div class="col-md-4">
+                                    <img src="assets/img/{{tipoalmacen.imagen}}" class="thumb-post">
+                                  </div>
+                                  <div class="col-md-8">
+                                    <div class="card-body">
+                                      <h5 class="card-title">{{tipoalmacen.tipoalmacendetalle}}</h5>
+                                      <p class="card-text">Capacidad Total: <span class="fw-bold">{{tipoalmacen.capacidad | number:'0.0-2'}}</span></p>
+                                      <p class="card-text">Capacidad Utilizada: <span class="text-success fw-bold">{{tipoalmacen.utilizado*100/tipoalmacen.capacidad | number:'0.2-2'}}%</span></p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <!--
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card info-card">
+                                <div class="card-body">
+                                    <h2 class="card-title">Seco</h2>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <h5>Capacidad total: 145</h5>
+                                            <span class="text-muted small pt-2 ps-1">Capacidad Utilizada:</span> <span class="text-success small pt-1 fw-bold">12%</span> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                        -->
+                    
+                    
+                    <button type="button" (click)="exportExcel()" class="btn btn-success mb-3"><i class="bi bi-file-earmark-excel"></i></button>
+                    <div class="table-responsive">
+                        <table border="1">
+                            <ng-container *ngFor="let fila of almacen.detalle; let f = index">
+                                <tr>
+                                    <ng-container *ngFor="let columna of fila; let c = index">
+                                        <td 
+                                            [ngClass]="columna.tipo == '1' ? (columna.lineasuperior ? 'sectoralmacenlineasuperior' : 'sectoralmacen' ) : 'sectoralmacenvarios'" [style.background-color]="columna.color" 
+                                            pTooltip="{{columna.nombre}}" 
+                                            tooltipPosition="top"
+                                            [attr.role]="columna.tipo == '1' ? 'button' : null"
+                                         >
+                                            {{columna.texto}}{{columna.columna}}
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </ng-container>
+                        </table>
+                    </div>
+
+
+                </ng-container>
+
+            </div>
+        </div>
+    </main>
+</div>

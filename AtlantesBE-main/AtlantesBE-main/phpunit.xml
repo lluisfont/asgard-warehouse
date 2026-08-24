@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         stopOnFailure="false">
+
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="E2E">
+            <directory>tests/E2E</directory>
+        </testsuite>
+    </testsuites>
+
+    <!--
+        Variables de entorno para los tests E2E.
+        Copiar a phpunit.xml.local y completar con valores reales.
+        phpunit.xml.local está en .gitignore — nunca committear secretos.
+    -->
+    <php>
+        <!-- URL base del servidor local (WAMP) -->
+        <env name="TEST_BASE_URL"        value="http://localhost/atlantes-api/public"/>
+        <!-- Credenciales de un usuario de prueba con acceso ATE-GAS -->
+        <env name="TEST_USER"            value="admin"/>
+        <env name="TEST_PASS"            value="v6D2N3P8i2YP9_xIXiwk6TFzt"/>
+        <!-- Azurite (emulador local de Azure Blob Storage) -->
+        <env name="TEST_AZURE_CONN_STR"  value="DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;"/>
+        <env name="TEST_AZURE_CONTAINER" value="datadrive1-pruebas"/>
+        <!-- ID de etapa existente en la BD de prueba -->
+        <env name="TEST_ETAPA_ID"        value="42"/>
+    </php>
+
+</phpunit>

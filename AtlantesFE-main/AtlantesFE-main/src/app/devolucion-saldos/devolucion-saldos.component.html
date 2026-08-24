@@ -1,0 +1,224 @@
+<div id="principal">
+    <app-menusuperior></app-menusuperior>
+    <app-menulateral [menu_item]="3.11"></app-menulateral>
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <!--<h1>Embarques</h1>-->
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a role="button" [routerLink]="['/inicio']">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Devoluci&oacute;n de Saldos</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <div class="card">
+            <div *ngIf="ver_devolucion_saldos" class="card-body">
+                <br />
+                <div class="row">
+                    <div class="col-lg-8 mb-3">
+                        <label for="identidad" class="form-label text-secondary small">Cliente</label>
+                        <ng-select [(ngModel)]="identidad" (change)="erroridentidad=false;" placeholder="[Ninguno]">
+                            <ng-container *ngFor="let entidad of entidades">
+                                <ng-option [value]="entidad.identidad">{{entidad.entidad}} {{entidad.tipoentidad}}</ng-option>
+                            </ng-container>
+                        </ng-select>
+                        <small *ngIf="erroridentidad" class="text-danger">Debe seleccionar un cliente</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 mb-3">
+                        <button type="button" class="btn btn-primary col-12" (click)="consultarDatos()">Consultar</button>
+                    </div>
+                </div>
+                <hr />
+                <ng-container *ngIf="saldos">
+                    <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="saldos-tab" data-bs-toggle="tab" data-bs-target="#saldos" type="button" role="tab" aria-controls="saldos" aria-selected="true">Saldos</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="devueltos-tab" data-bs-toggle="tab" data-bs-target="#devueltos" type="button" role="tab" aria-controls="devueltos" aria-selected="false">Devueltos</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="saldos" role="tabpanel" aria-labelledby="saldos-tab">
+                            <br />
+                            <div class="list-group">
+                                <label class="list-group-item list-group-item-dark">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-sm-12"><strong>Recibo</strong></div>
+                                        <div class="col-lg-6 col-sm-6"><strong>Glosa</strong></div>
+                                        <div class="col-lg-3 col-sm-6"><strong>Monto</strong></div>
+                                    </div>
+                                </label>
+                                
+                                <label class="list-group-item list-group-item-action" *ngFor="let saldo of saldos; let indice = index" role="button">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-sm-12"><input class="form-check-input me-1" type="checkbox" (change)="saldo.marcado = !saldo.marcado; getTotal()" [disabled]="!editar_devolucion_saldos"> <strong>{{saldo.recibo}}</strong></div>
+                                        <div class="col-lg-6 col-sm-6">{{saldo.glosa}}</div>
+                                        <div class="col-lg-3 col-sm-6 text-right">BOB {{saldo.monto | number:'0.2-2'}}</div>
+                                    </div>
+                                </label>
+                                
+                                <label class="list-group-item list-group-item-dark">
+                                    <div class="row">
+                                        <div class="col-lg-9 col-sm-6"><strong>TOTAL</strong></div>
+                                        <div class="col-lg-3 col-sm-6 text-right"><strong>BOB {{ totaldevolver | number:'0.2-2'}}</strong></div>
+                                    </div>
+                                </label>
+                            </div>
+                            <br />
+                            <div *ngIf="editar_devolucion_saldos" class="row">
+                                <div class="col-lg-9 col-sm-6"></div>
+                                <div class="col-lg-3 col-sm-6"><button type="button" class="btn btn-success col-12" [disabled]="totaldevolver==0" data-bs-toggle="modal" data-bs-target="#ventanaDevolver" (click)="prepararDevolucion()">Proceder</button></div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="devueltos" role="tabpanel" aria-labelledby="devueltos-tab">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-9"></div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" name="filtro" [(ngModel)]="filtro" placeholder="Buscar" (keyup)="p=1">
+                                </div>
+                            </div>
+                            <br />
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-dark">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-6"><strong>Fecha</strong></div>
+                                        <div class="col-lg-4 col-sm-6"><strong>Numero</strong></div>
+                                        <div class="col-lg-4 col-sm-6"><strong>Monto</strong></div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-action" *ngFor="let devuelto of devueltos | appFilter: filtro: '' | paginate: { itemsPerPage: items, currentPage: p, id: 'page' }; let indice = index">
+                                    <a role="button" (click)="downloadDevolucion(devuelto.iddevolucion)">
+                                        <div class="row">
+                                            <div class="col-lg-4 col-sm-6">{{devuelto.fechadevolucion | date:'dd/MM/yyyy'}}</div>
+                                            <div class="col-lg-4 col-sm-6">{{devuelto.numero}}</div>
+                                            <div class="col-lg-4 col-sm-6 text-right">BOB {{devuelto.monto | number:'0.2-2'}}</div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <pagination-controls 
+                                        (pageChange)="p = $event"  
+                                        id="page"
+                                        nextLabel="Sig"
+                                        previousLabel="Ant"
+                                        >
+                                    </pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" [(ngModel)]="items" name="items" (change)="p=1">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal fade" id="ventanaDevolver" tabindex="-1" aria-labelledby="ventanaDevolverLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ventanaDevolverLabel">Devolver</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <br />
+                <div class="row mb-3">
+                    <div class="col-lg-4">
+                        <label for="fechadevolucion" class="form-label text-secondary small">Fecha Devoluci&oacute;n</label>
+                        <input type="date" class="form-control" id="fechadevolucion" name="fechadevolucion" [(ngModel)]="fechadevolucion" (change)="error_fechadevolucion=false" />
+                        <small *ngIf="error_fechadevolucion" class="text-danger">Campo Obligatorio</small>
+                    </div>
+                    <div class="col-lg-8">
+                        <label for="idcuenta" class="form-label text-secondary small">Banco/Cuenta</label>
+                        <ng-select name="idcuenta" id="idcuenta" [(ngModel)]="idcuenta" placeholder="Seleccione" (change)="error_idcuenta=false">
+                            <ng-container *ngFor="let cuenta of cuentas">
+                                <ng-option [value]="cuenta.idcuenta">{{cuenta.banco}} {{cuenta.cuenta}} {{cuenta.moneda}}</ng-option>
+                            </ng-container>
+                        </ng-select>
+                        <small *ngIf="error_idcuenta" class="text-danger">Campo Obligatorio</small>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-lg-4">
+                        <label for="numerotransaccion" class="form-label text-secondary small">No Transacci&oacute;n</label>
+                        <input type="text" class="form-control" id="numerotransaccion" name="numerotransaccion" [(ngModel)]="numerotransaccion" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="concepto" class="form-label text-secondary small">Concepto</label>
+                        <input type="text" class="form-control" id="concepto" name="concepto" [(ngModel)]="concepto" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="ordende" class="form-label text-secondary small">A la Orden de</label>
+                        <input type="text" class="form-control" id="ordende" name="ordende" [(ngModel)]="ordende" />
+                    </div>
+                </div>
+                <hr />
+                <h4>Detalle</h4>
+                <p-table [value]="saldosmarcados" responsiveLayout="scroll" columnResizeMode="expand" [resizableColumns]="true" styleClass="p-datatable-gridlines  p-datatable-sm">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn>Recibo</th>
+                            <th pResizableColumn>Saldo Actual</th>
+                            <th pResizableColumn>Devoluci&oacute;n</th>
+                            <th pResizableColumn>Saldo Final</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-saldomarcado let-rowIndex="rowIndex">
+                        <tr>
+                            <td>{{saldomarcado.recibo}}</td>
+                            <td>{{saldomarcado.monto | number:'0.2-2'}}</td>
+                            <td>
+                                <input type="number" step="0.01" class="form-control form-control-sm" id="devuelto{{rowIndex}}" name="devuelto{{rowIndex}}" [(ngModel)]="saldomarcado.devuelto" (ngModelChange)="calcularTotales(); saldomarcado.errormonto=false" />
+                                <small *ngIf="saldomarcado.errormonto" class="text-danger">{{saldomarcado.mensajeerror}}</small>
+                            </td>
+                            <td>
+                                {{saldomarcado.monto-saldomarcado.devuelto | number:'0.2-2'}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                        <tr>
+                            <td></td>
+                            <td>{{total_monto | number:'0.2-2'}}</td>
+                            <td>{{total_devuelto | number:'0.2-2'}}</td>
+                            <td>{{total_monto-total_devuelto | number:'0.2-2'}}</td>
+                        </tr>
+                    </ng-template>
+                    
+                </p-table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="devolver()">Devolver</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" [ngClass]="toast_tipo == 'Exito' ? 'toast align-items-center text-white bg-success border-0' : 'toast align-items-center text-white bg-danger text-white border-0'" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>{{toast_tipo}}</strong><br />{{toast_mensaje}}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
