@@ -1,0 +1,10 @@
+flowchart TD
+  A["Documento BL/Poliza"] --> B["Seleccionar modelo OCR"]
+  B --> C["Resolver embarque"]
+  C --> D{"Tipo documento"}
+  D -->|BL| E["Extraer datos BL"]
+  D -->|Poliza| F["Extraer datos poliza"]
+  E --> G["Insertar/actualizar lectura"]
+  F --> G
+  G --> H["Comparar fechas BL vs poliza"]
+  H --> I["Responder JSON"]

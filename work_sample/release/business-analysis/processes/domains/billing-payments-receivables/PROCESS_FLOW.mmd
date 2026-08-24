@@ -1,0 +1,17 @@
+flowchart TD
+    A["Usuario abre modulo contable"] --> B{"Operacion"}
+    B --> C["Consultar factura-planilla"]
+    C --> D["Calcular montos de factura y planilla"]
+    D --> E["Listar documentos y enlaces PDF"]
+    E --> F["Descargar factura o planilla"]
+    B --> G["Consultar notas de debito"]
+    G --> H["Filtrar notas emitidas/pagadas y sumar detalle"]
+    B --> I["Consultar pagos recibidos"]
+    I --> J["Calcular aplicado, devuelto y saldo"]
+    B --> K["Recepcionar documentos"]
+    K --> L["Listar enviados pendientes"]
+    L --> M["Marcar recepcion individual o multiple"]
+    M --> N["Actualizar fecha y estado de recepcion"]
+    B --> O["Consultar estado de cuentas"]
+    O --> P["Ejecutar cobros2 a fecha de corte"]
+    P --> Q["Calcular vencimiento, saldo y mora"]

@@ -1,0 +1,18 @@
+{
+  "generated_at": "2026-07-30T12:28:50.037771+00:00",
+  "total": 10121,
+  "by_kind": {
+    "permission": 95,
+    "secret_candidate": 897,
+    "sql_query": 8143,
+    "state_transition": 939,
+    "transaction": 47
+  },
+  "secret_values_redacted": true,
+  "confidence_policy": {
+    "observed": "Direct static declaration or control-flow marker",
+    "observed_call_site": "SQL text passed at a recognized execution call site",
+    "candidate": "SQL text assigned to a conventional SQL variable; execution is unconfirmed",
+    "sensitive_candidate": "Potential sensitive material was found and redacted"
+  }
+}

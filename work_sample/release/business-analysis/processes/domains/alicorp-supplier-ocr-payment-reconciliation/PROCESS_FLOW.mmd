@@ -1,0 +1,8 @@
+flowchart TD
+  A["Factura proveedor Alicorp"] --> B["Modelo OCR y concepto"]
+  B --> C["Extraer monto, factura, fecha, DIM"]
+  C --> D["Resolver contexto"]
+  D --> E["Buscar pago pendiente"]
+  C --> F["Validar DIM"]
+  F -->|Coincide| G["Marcar cierre transito"]
+  E -->|Pago y fecha validos| H["Actualizar pago y nota"]

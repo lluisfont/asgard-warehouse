@@ -1,0 +1,12 @@
+flowchart TD
+  A["Cron documentacionAlicorp cron=1"] --> B["Recorrer clientes 775 y 755"]
+  B --> C["Obtener parametrizacion proveedor/linea"]
+  C --> D["Buscar casos pendientes"]
+  D --> E["Obtener contactos consignatario/operador"]
+  E --> F["Resolver documentos requeridos"]
+  F --> G["Consultar documentos del exchange"]
+  G --> H["Descargar archivos parametrizados"]
+  H --> I["Crear ZIP por embarque"]
+  I --> J["Guardar ZIP en documentosOperativosAlicorp"]
+  J --> K["Enviar correo TRAMITES IASA"]
+  K --> L["Marcar carpetas como enviadas"]

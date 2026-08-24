@@ -1,0 +1,10 @@
+flowchart TD
+  A["Seleccionar dashboard en ASGARD"] --> B["Validar sesion y permisos"]
+  B --> C["Renderizar pantalla contenedora"]
+  C --> D{"Tipo de URL Power BI"}
+  D -->|"reportEmbed"| E["Cargar reporte embebido con reportId y tenant"]
+  D -->|"view?r"| F["Cargar reporte publicado"]
+  E --> G["Mostrar dashboard"]
+  F --> G
+  G --> H["Usuario consulta indicadores"]
+  H --> I["Interaccion queda delegada a Power BI"]

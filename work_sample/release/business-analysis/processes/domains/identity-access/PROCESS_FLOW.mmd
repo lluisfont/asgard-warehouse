@@ -1,0 +1,20 @@
+flowchart TD
+  A["Usuario llega a 2fa.php con parametro u"] --> B["Decodificar usuario y correo"]
+  B --> C["Generar codigo 2FA de 6 digitos"]
+  C --> D["Guardar codigo en dav_codigos_2fa"]
+  D --> E["Enviar correo MFA"]
+  E --> F["Usuario introduce codigo"]
+  F --> G["AJAX verificar-codigo.php"]
+  G --> H{"Codigo activo y <= 600s?"}
+  H -- Si --> I["Marcar codigo con deleted_at"]
+  I --> J["AJAX autenticar.php"]
+  J --> K["Crear sesion y JWT"]
+  K --> L{"Debe cambiar password?"}
+  L -- Si --> M["Redirigir a cambiocontrasena.php"]
+  L -- No --> N["Redirigir a principal.php"]
+  H -- No --> O["Incrementar intentos_code"]
+  O --> P{"Mas de 3 intentos?"}
+  P -- Si --> Q["Bloquear dav_clienteusuarios"]
+  P -- No --> R["Mostrar codigo invalido"]
+  E --> S["Reenvio opcional de codigo"]
+  S --> C

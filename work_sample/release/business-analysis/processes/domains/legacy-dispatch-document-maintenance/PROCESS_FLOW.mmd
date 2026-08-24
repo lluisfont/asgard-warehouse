@@ -1,0 +1,15 @@
+flowchart TD
+    A["Abrir despacho legacy"] --> B{"Existe despacho cliente 417?"}
+    B -->|"No"| C["Redirigir a despachos.php"]
+    B -->|"Si"| D["Mostrar ficha y documentos"]
+    D --> E["Editar ficha"]
+    E --> F["UPDATE logis_despachos"]
+    D --> G["Agregar/editar documento"]
+    G --> H["Subir archivo"]
+    H --> I{"iddocumento > 0?"}
+    I -->|"Si"| J["UPDATE logis_documentos"]
+    I -->|"No"| K["Intentar INSERT logis_documentos"]
+    F --> L["Mostrar resultado"]
+    J --> L
+    K --> L
+

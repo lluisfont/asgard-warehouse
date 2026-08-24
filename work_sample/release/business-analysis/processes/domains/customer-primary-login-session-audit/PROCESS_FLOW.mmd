@@ -1,0 +1,23 @@
+flowchart TD
+  A["Enviar formulario login"] --> B["Validar CSRF"]
+  B -->|Invalido| X["HTTP 403"]
+  B --> C["Buscar usuario cliente"]
+  C -->|No existe| E2["Error usuario"]
+  C --> D{"Bloqueado dentro de 24h"}
+  D -->|Si| E5["Error bloqueo"]
+  D -->|No| F["Verificar bcrypt o master password"]
+  F -->|Falla| G["Registrar fallo e incrementar intentos"]
+  G --> H{"Intentos = 5"}
+  H -->|Si| I["Bloquear usuario"]
+  H -->|No| J["Error intentos"]
+  F -->|Ok| K{"Usuario activo"}
+  K -->|No| E4["Error inactivo"]
+  K -->|Si| L{"Misma sesion cliente"}
+  L -->|No| S["Redirigir samesesion"]
+  L -->|Si| M{"2FA activo"}
+  M -->|Si| N["Redirigir 2fa"]
+  M -->|No| O["Crear sesion y JWT"]
+  O --> P["Actualizar usuario, cliente y log exitoso"]
+  P --> Q{"Password vencida 90 dias"}
+  Q -->|Si| R["Redirigir cambiocontrasena"]
+  Q -->|No| T["Redirigir principal o ultimoenlace"]

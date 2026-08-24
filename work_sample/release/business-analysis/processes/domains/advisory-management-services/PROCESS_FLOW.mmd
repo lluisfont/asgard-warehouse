@@ -1,0 +1,16 @@
+flowchart TD
+    A["Tablero de servicios adicionales"] --> B["Ver pestañas por estado"]
+    B --> C{"Accion"}
+    C --> D["Nueva solicitud"]
+    D --> E["Capturar solicitante, email, ciudad, linea y notas"]
+    E --> F["Agregar tramites por entidad, tramite y tipo"]
+    F --> G["Guardar solicitud"]
+    G --> H{"Exchange existente"}
+    H -->|Si| I["Vincular exchange_id"]
+    H -->|No| J["Crear intercambio documental"]
+    I --> K["Actualizar tablero"]
+    J --> K
+    C --> L["Abrir solicitud existente"]
+    L --> M["Editar datos o tramites segun estado y permisos"]
+    M --> K
+    K --> N["Reporte general / exportacion"]

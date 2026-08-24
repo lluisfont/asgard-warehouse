@@ -1,0 +1,7 @@
+flowchart TD
+  A["Documento intercambio"] --> B["Azure Read OCR"]
+  B --> C["Extraer lineas clave"]
+  C --> D{"Campos minimos?"}
+  D -->|No| E["Documento diferente/no aceptado"]
+  D -->|Si| F["Soft delete lectura previa"]
+  F --> G["Insertar dav_planillasdp"]

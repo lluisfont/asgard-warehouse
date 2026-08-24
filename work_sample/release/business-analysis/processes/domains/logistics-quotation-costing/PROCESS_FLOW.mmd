@@ -1,0 +1,13 @@
+flowchart TD
+  A["Cliente crea cotizacion"] --> B["ASGARD guarda embarque/cotizacion"]
+  B --> C["ASGARD asocia operadores candidatos"]
+  C --> D["Cliente envia solicitud"]
+  D --> E["ASGARD envia correo/token a operadores"]
+  E --> F["Operador carga costos y documento"]
+  F --> G["ASGARD guarda logis_costosdetalles"]
+  G --> H["ASGARD anula token y marca llenadocot"]
+  H --> I["Cliente evalua costos"]
+  I --> J{"Decision"}
+  J -->|Aceptar| K["Marca operador aceptado y pasa a embarque"]
+  J -->|Confirmar| L["Marca operador confirmado"]
+  J -->|Revisar| M["Solicita revision al operador"]

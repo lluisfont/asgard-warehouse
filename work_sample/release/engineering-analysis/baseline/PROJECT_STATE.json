@@ -1,0 +1,20 @@
+{
+  "project": "Asgard Clientes",
+  "baseline": {
+    "repository_commit": null,
+    "source_hash": "526dee596b6369a182b432e5677aae3a3a325326f8efb4e696ecb5a93a803e8b",
+    "database_hash": "31c9a0828093d8618f592beaefd843ec93a7465730d7c95ea6627d73836aeaf9",
+    "confirmed": false
+  },
+  "current_domain": "ALL_CANDIDATE_DOMAINS",
+  "current_phase": "candidate_baseline_packaging",
+  "current_version": "0.1",
+  "verdict": "IN_PROGRESS",
+  "last_completed_step": "business_technical_openspec_candidate_baseline_reconstruction",
+  "next_action": "start_human_validation_and_canonical_domain_approval",
+  "blockers": [],
+  "canonical_domains": [],
+  "provisional_domains": [],
+  "rejected_domains": [],
+  "updated_at": "2026-07-31T11:10:00.000000+00:00"
+}

@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-07-30T12:36:59.747466+00:00",
+  "status": "IMPORTED",
+  "source_dir": "graphify-out",
+  "imported": [
+    {
+      "name": "GRAPH_REPORT.md",
+      "source": "graphify-out/GRAPH_REPORT.md",
+      "work_path": "work/graphify/GRAPH_REPORT.md",
+      "size_bytes": 218663,
+      "sha256": "51dd1e8f12fd8d9b29205007285d184193bce3a4cdac4bb0b5723f465076c28f"
+    },
+    {
+      "name": "graph.json",
+      "source": "graphify-out/graph.json",
+      "work_path": "work/graphify/graph.json",
+      "size_bytes": 33756788,
+      "sha256": "c86f0da13ba75b4039342fca3710401d810412616da529a7b56b3310248e8931"
+    }
+  ],
+  "missing": [
+    "graph.html"
+  ],
+  "trust_boundary": "Graphify output is treated as external architecture evidence. Edges tagged EXTRACTED or INFERRED must keep their original confidence and cannot be promoted to confirmed business behavior without review.",
+  "recommended_next_phases": [
+    "04-architecture-reconstruct",
+    "07-domain-discover",
+    "08-business-reconstruct",
+    "12-openspec-baseline"
+  ]
+}

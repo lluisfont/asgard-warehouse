@@ -1,0 +1,13 @@
+flowchart TD
+    A["Usuario descarga formato"] --> B["ASGARD rellena listas maestras"]
+    B --> C["Usuario carga Excel"]
+    C --> D["Guardar archivo en cargasolicitudes"]
+    D --> E["Leer columnas A-Y"]
+    E --> F["Insertar staging dav_solicitudesprevias"]
+    F --> G["Validar maestros y fechas por fila"]
+    G --> H{"Errores bloqueantes?"}
+    H -->|Si| I["Rechazar lote completo y mostrar tabla de errores"]
+    H -->|No| J["Crear dav_casosprevios por fila"]
+    J --> K["Crear documentos previos"]
+    K --> L["Crear tramite adicional si aplica"]
+    L --> M["Confirmar solicitudes cargadas"]

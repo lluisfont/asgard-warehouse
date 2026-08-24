@@ -1,0 +1,8 @@
+flowchart TD
+  A["Vista con rating"] --> B["Consultar rating vigente"]
+  B -->|Existe| C["Mostrar enviado"]
+  B -->|No existe| D["Permitir calificar"]
+  D --> E["Enviar rating/comentario"]
+  E --> F["Insertar dav_rating"]
+  B --> G["Verificacion mensual"]
+  G -->|30 dias cumplidos| D

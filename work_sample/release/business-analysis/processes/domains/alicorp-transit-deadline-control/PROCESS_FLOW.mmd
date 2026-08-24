@@ -1,0 +1,11 @@
+flowchart TD
+    A["Usuario abre control Alicorp"] --> B["Informa fechas y filtros"]
+    B --> C["ASGARD normaliza fechas"]
+    C --> D["Completa vencimientos nulos"]
+    D --> E["Construye tablas temporales"]
+    E --> F["Consulta casos y facturas anuladas"]
+    F --> G["Calcula alerta de vencimiento"]
+    G --> H["Muestra grilla operativa"]
+    H --> I["Usuario revisa o exporta Excel"]
+    J["OCR/intercambio documental"] --> K["Marca cierre de transito"]
+    K --> H

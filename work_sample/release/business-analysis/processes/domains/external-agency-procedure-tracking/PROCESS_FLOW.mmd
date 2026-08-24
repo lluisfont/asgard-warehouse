@@ -1,0 +1,11 @@
+flowchart TD
+    A["Usuario filtra gestiones"] --> B["Cargar etapas de entidad emisora"]
+    B --> C["Crear columnas dinamicas"]
+    C --> D["Cargar tramites por caso/caso previo"]
+    D --> E["Actualizar fechas de etapas"]
+    E --> F["Actualizar estados de etapa"]
+    F --> G["Aplicar filtro de etapa actual"]
+    G --> H["Grilla / Excel"]
+    I["Mantener tramite"] --> J["Entidad emisora + tramite + tipo"]
+    J --> D
+

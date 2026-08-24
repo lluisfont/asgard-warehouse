@@ -1,0 +1,18 @@
+flowchart TD
+    A["Abrir embarque logistico / items"] --> B["Listar DAV/FDM asociadas"]
+    B --> C["Abrir detalle DAV/FDM"]
+    C --> D{"Decision cliente"}
+    D -->|"Aprobar"| E["Guardar idestadocliente = 1"]
+    D -->|"Rechazar"| F["Guardar idestadocliente = 2 + observaciones"]
+    E --> G["Actualizar dav_dav"]
+    F --> G
+    G --> H["Volver a lista de DAV"]
+    H --> I{"Finalizar revision?"}
+    I -->|"No"| C
+    I -->|"Si"| J["Verificar todas aprobadas/rechazadas"]
+    J -->|"Pendientes"| K["Bloquear cierre y mostrar advertencia"]
+    J -->|"Completas"| L["Marcar finalizardav = 1 por carpeta"]
+    L --> M["Registrar EDP estado 14 por DAV"]
+    M --> N["Enviar correo a coordinador y oficial"]
+    N --> O["Revision cliente finalizada"]
+

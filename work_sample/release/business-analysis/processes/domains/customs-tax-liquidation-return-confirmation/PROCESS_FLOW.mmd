@@ -1,0 +1,13 @@
+flowchart TD
+    A["Usuario abre detalle de items"] --> B["ASGARD lee caso y fechas"]
+    B --> C["Calcula liquidacion por item"]
+    C --> D{"Enviada y sin retorno"}
+    D -->|Si| E["Muestra Confirmar"]
+    D -->|No| F["Solo consulta / Excel"]
+    E --> G["Usuario confirma"]
+    G --> H["Busca destinatarios por cliente y ciudad"]
+    H --> I["Envia correo de aprobacion para pago"]
+    I --> J{"Envio sin error"}
+    J -->|Si| K["Marca fecharetornoliquidacion"]
+    J -->|No| L["No marca retorno"]
+    K --> M["Muestra mensaje enviado"]

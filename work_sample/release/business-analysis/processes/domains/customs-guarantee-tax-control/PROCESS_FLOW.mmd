@@ -1,0 +1,16 @@
+flowchart TD
+    A["Usuario selecciona gestion y tipo declaracion"] --> B["Consultar casos no anulados del cliente"]
+    B --> C["Agrupar por mes de envio DAM"]
+    C --> D["Calcular unidades, tributos y boleta en uso"]
+    D --> E["Consultar monto total de garantia tipo documento 4"]
+    E --> F["Mostrar disponible y resumen mensual"]
+    D --> G["Clasificar uso operativo"]
+    G --> H["DAM aceptada"]
+    G --> I["Sin nacionalizar <= 90 dias"]
+    G --> J["Sin nacionalizar > 90 dias"]
+    G --> K["Transito sin DAM aceptada"]
+    A --> L["Exportar detalle por rango <= 90 dias"]
+    L --> M["Excel por chasis, pedido, valores y estado"]
+    N["Reporte tributos"] --> O["Cruzar requerimientos, pagos, anticipos y cobros"]
+    O --> P["Calcular diferencia y saldo a favor"]
+

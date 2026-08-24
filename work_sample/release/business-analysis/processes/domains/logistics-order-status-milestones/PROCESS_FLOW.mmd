@@ -1,0 +1,22 @@
+flowchart TD
+    A["Abrir Estado de Pedidos"] --> B["Cargar historial logis_edp"]
+    A --> C["Cargar catalogo logis_estados_edp"]
+    B --> D{"Tiene permiso escritura 73?"}
+    C --> D
+    D -->|No| E["Solo consulta/exportacion"]
+    D -->|Si| F{"Embarque finalizado?"}
+    F -->|Si| E
+    F -->|No| G["Agregar nuevo hito"]
+    G --> H["Informar fecha, estado, valor y comentario"]
+    H --> I["Guardar via guardar-edp.php"]
+    I --> J["Insertar logis_edp"]
+    J --> K{"Estado 53, 99 o 160?"}
+    K -->|Si| L["Actualizar fecha_finalizacion del embarque"]
+    K -->|No| M["Mantener embarque abierto"]
+    L --> N{"Estado 58 y cliente 429/755?"}
+    M --> N
+    N -->|Si| O["Enviar email pick up y notificacion"]
+    N -->|No| P["Enviar notificacion realtime"]
+    O --> Q["Recargar historial"]
+    P --> Q
+

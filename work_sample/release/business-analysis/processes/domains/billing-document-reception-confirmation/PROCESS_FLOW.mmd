@@ -1,0 +1,17 @@
+flowchart TD
+    A["Usuario abre Recepcion de Planillas"] --> B["Cargar pestana Enviadas"]
+    B --> C["Consultar documentos enviados sin recepcion"]
+    C --> D{"Tipo documental"}
+    D --> E["Planilla / Factura: dav_facturaplanilla"]
+    D --> F["Nota de Cobranza: dav_notasdebito"]
+    D --> G["Cite: dav_cite"]
+    E --> H["Mostrar bandeja pendiente"]
+    F --> H
+    G --> H
+    H --> I{"Accion"}
+    I --> J["Recibido individual"]
+    I --> K["Recibir Marcadas"]
+    J --> L["Actualizar marca/fecha de recepcion segun tipo"]
+    K --> L
+    L --> M["Recargar Enviadas y Recepcionadas"]
+    M --> N["Documento queda en bandeja recepcionada"]

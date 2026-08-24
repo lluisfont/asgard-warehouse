@@ -1,0 +1,16 @@
+flowchart TD
+  A["Cargar facturas y listas"] --> B["Copiar y extraer archivos"]
+  B --> C["OCR por PDF"]
+  C --> D{"OCR valido?"}
+  D -- "No" --> E["Registrar error por archivo"]
+  D -- "Si" --> F["Persistir lectura OCR"]
+  F --> G["Crear embarque logistico"]
+  G --> H{"Embarque creado?"}
+  H -- "No" --> I["Registrar error de embarque"]
+  H -- "Si" --> J{"Datos minimos completos?"}
+  J -- "No" --> K["Dejar embarque para completar manualmente"]
+  J -- "Si" --> L["Crear solicitud GA"]
+  L --> M["Evaluar servicios adicionales"]
+  M --> N["Asociar lista de empaque por pedido"]
+  N --> O["UI crea exchanges y adjunta documentos"]
+  K --> O

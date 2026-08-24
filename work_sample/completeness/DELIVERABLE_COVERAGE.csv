@@ -1,0 +1,24 @@
+family,area,minimum_artifacts,generated_deterministic_artifacts,status,required_next_phase,deterministic_outputs
+engineering-analysis,baseline,15,2,PARTIAL_DETERMINISTIC_SEED,04-architecture-reconstruct,"[""work/inventory/source_inventory.csv"", ""work/inventory/summary.json""]"
+engineering-analysis,architecture,16,0,INFERRED_DRAFT_REVIEW_REQUIRED,04-architecture-reconstruct,[]
+engineering-analysis,data,24,10,PARTIAL_DETERMINISTIC_SEED,03-data-archaeology,"[""work/data_dictionary/DATA_DICTIONARY.xlsx"", ""work/data_dictionary/DATA_DICTIONARY.md"", ""work/data_dictionary/data_dictionary.json"", ""work/data_dictionary/tables.csv"", ""work/data_dictionary/columns.csv"", ""work/data_dictionary/relations.csv"", ""work/data_dictionary/indexes.csv"", ""work/data_dictionary/constraints.csv"", ""work/data_dictionary/database_objects.csv"", ""work/data_dictionary/business_review_backlog.csv""]"
+engineering-analysis,interfaces,18,6,PARTIAL_DETERMINISTIC_SEED,04-architecture-reconstruct,"[""work/process_maps/process_map.json"", ""work/process_maps/process_nodes.csv"", ""work/process_maps/process_edges.csv"", ""work/process_maps/component_index.csv"", ""work/process_maps/PROCESS_MAP.md"", ""work/process_maps/process_business_review.csv""]"
+engineering-analysis,security,18,1,PARTIAL_DETERMINISTIC_SEED,05-security-analyze,"[""work/evidence/evidence.jsonl""]"
+engineering-analysis,behavior,16,1,PARTIAL_DETERMINISTIC_SEED,06-transaction-analyze,"[""work/evidence/evidence.jsonl""]"
+engineering-analysis,integrations,14,1,PARTIAL_DETERMINISTIC_SEED,04-architecture-reconstruct,"[""work/evidence/evidence.jsonl""]"
+engineering-analysis,quality,15,0,INFERRED_DRAFT_REVIEW_REQUIRED,10-characterization-tests-plan,[]
+engineering-analysis,tests,14,0,INFERRED_DRAFT_REVIEW_REQUIRED,10-characterization-tests-plan,[]
+traceability,verification,15,1,PARTIAL_DETERMINISTIC_SEED,11-verify-baseline,"[""work/evidence/evidence.jsonl""]"
+openspec,baseline,12,0,INFERRED_DRAFT_REVIEW_REQUIRED,12-openspec-baseline,[]
+business-analysis,product-context,12,0,INFERRED_DRAFT_REVIEW_REQUIRED,07-domain-discover,[]
+business-analysis,actors,8,0,INFERRED_DRAFT_REVIEW_REQUIRED,08-business-reconstruct,[]
+business-analysis,processes,8,1,PARTIAL_DETERMINISTIC_SEED,08-business-reconstruct,"[""work/process_maps/process_business_review.csv""]"
+business-analysis,rules,12,0,INFERRED_DRAFT_REVIEW_REQUIRED,09-business-rules-reconstruct,[]
+business-analysis,domain-model,9,1,PARTIAL_DETERMINISTIC_SEED,07-domain-discover,"[""work/data_dictionary/business_review_backlog.csv""]"
+business-analysis,use-cases,5,0,INFERRED_DRAFT_REVIEW_REQUIRED,08-business-reconstruct,[]
+business-analysis,ui,9,0,INFERRED_DRAFT_REVIEW_REQUIRED,08-business-reconstruct,[]
+business-analysis,reporting,8,0,INFERRED_DRAFT_REVIEW_REQUIRED,09-business-rules-reconstruct,[]
+business-analysis,documents,8,0,INFERRED_DRAFT_REVIEW_REQUIRED,08-business-reconstruct,[]
+business-analysis,exceptions,7,0,INFERRED_DRAFT_REVIEW_REQUIRED,08-business-reconstruct,[]
+business-analysis,variants,7,0,INFERRED_DRAFT_REVIEW_REQUIRED,09-business-rules-reconstruct,[]
+business-analysis,governance,9,0,INFERRED_DRAFT_REVIEW_REQUIRED,11-verify-baseline,[]

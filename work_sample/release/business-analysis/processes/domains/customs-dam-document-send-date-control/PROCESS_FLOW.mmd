@@ -1,0 +1,5 @@
+flowchart TD
+  A["DAM desde intercambio"] --> B["Resolver solicitud"]
+  B --> C["Verificar fecha envio AP"]
+  C -->|Existe AP| D["Actualizar fechaenviodam"]
+  C -->|Sin AP| E["Enviar correo de alerta"]

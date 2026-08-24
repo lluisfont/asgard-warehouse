@@ -1,0 +1,8 @@
+flowchart TD
+    A["Usuario abre Estado de Pedidos"] --> B["Selecciona filtros y etapas EDP"]
+    B --> C["ASGARD calcula ultimo dav_edp por caso"]
+    C --> D["Deriva etapa desde dav_estadoedp"]
+    D --> E["Cruza facturas, Parte de Recepcion y documentos faltantes"]
+    E --> F["Muestra bandeja de expedientes"]
+    F --> G["Usuario abre detalle"]
+    G --> H["ASGARD muestra historial EDP completo"]

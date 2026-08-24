@@ -1,0 +1,43 @@
+{
+  "domain": "Asgard Clientes candidate baseline",
+  "version": "0.1",
+  "dimensions": {
+    "scope": 7,
+    "actors_permissions": 6,
+    "business_rules": 8,
+    "flows": 8,
+    "data_relations": 8,
+    "states": 6,
+    "integrations": 6,
+    "security": 8,
+    "transactions": 6,
+    "tests": 6,
+    "traceability": 5,
+    "artifact_consistency": 5
+  },
+  "score": 79,
+  "verdict": "CONDITIONAL_PASS",
+  "blockers": [],
+  "findings": [
+    {
+      "severity": "HIGH",
+      "description": "Baseline candidate is not human-confirmed; domains, KPI, owners and regulatory interpretations remain pending validation."
+    },
+    {
+      "severity": "MEDIUM",
+      "description": "Scheduler and production batch inventory are inferred from repository evidence but not confirmed from runtime configuration."
+    },
+    {
+      "severity": "MEDIUM",
+      "description": "API, report and document contracts are reconstructed from static evidence and require characterization tests before refactor."
+    },
+    {
+      "severity": "MEDIUM",
+      "description": "Semantic reverse engineering was generated for tables and fields, but the meanings remain candidate inferences pending business validation."
+    },
+    {
+      "severity": "MEDIUM",
+      "description": "A second semantic pass now cross-links flows, table usage, field usage, rules and evidence; these cross-evidence inferences still require characterization tests before canonical approval."
+    }
+  ]
+}

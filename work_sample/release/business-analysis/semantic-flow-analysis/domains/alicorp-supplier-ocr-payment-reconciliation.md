@@ -1,0 +1,29 @@
+# alicorp-supplier-ocr-payment-reconciliation - semantic flow usage
+
+Estado: FLOW_SEMANTIC_INFERENCE_REVIEW_REQUIRED
+
+## Resumen
+
+- Tablas cruzadas: 4
+- Campos cruzados: 5
+- Tablas con mutacion observada: 4
+- Riesgos candidatos: documentos/OCR
+
+## Tablas en el flujo
+
+| Tabla | Uso | Rol semantico | Campos | Reglas/riesgos | Evidencias |
+|---|---|---|---|---|---|
+| `dav_casos` | UPDATE | Entidad transaccional modificada por el flujo; sus cambios deben caracterizarse antes de refactor. | alicorp_cierre_transito | transicion o bloqueo por estado; regla documental/carga-descarga; calculo financiero/impositivo; persistencia/atomicidad/concurrencia | index_archivos/intercambioDocumental/ajax/lectura-ocr-senavex.php:9-23 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-senavex.php:51-144 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:7-13 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:24-53 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:88-192 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:230-347 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-jennefer.php |
+| `dav_facturacomercial` | UPDATE | Entidad transaccional modificada por el flujo; sus cambios deben caracterizarse antes de refactor. | ages_id, idcasos | transicion o bloqueo por estado; regla documental/carga-descarga; calculo financiero/impositivo; persistencia/atomicidad/concurrencia | index_archivos/intercambioDocumental/ajax/lectura-ocr-senavex.php:9-23 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-senavex.php:51-144 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:7-13 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:24-53 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:88-192 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:230-347 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-jennefer.php |
+| `dav_notasdebitodetalle` | UPDATE | Entidad transaccional modificada por el flujo; sus cambios deben caracterizarse antes de refactor. | nro | transicion o bloqueo por estado; regla documental/carga-descarga; calculo financiero/impositivo; persistencia/atomicidad/concurrencia | index_archivos/intercambioDocumental/ajax/lectura-ocr-senavex.php:9-23 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-senavex.php:51-144 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:7-13 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:24-53 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:88-192 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:230-347 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-jennefer.php |
+| `dav_pagosdetalle` | UPDATE | Entidad transaccional modificada por el flujo; sus cambios deben caracterizarse antes de refactor. | nro | transicion o bloqueo por estado; regla documental/carga-descarga; calculo financiero/impositivo; persistencia/atomicidad/concurrencia | index_archivos/intercambioDocumental/ajax/lectura-ocr-senavex.php:9-23 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-senavex.php:51-144 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:7-13 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:24-53 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:88-192 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-fdab.php:230-347 \| index_archivos/intercambioDocumental/ajax/lectura-ocr-jennefer.php |
+
+## Campos con uso cruzado
+
+| Tabla | Campo | Rol en flujo | Sensibilidad | Contexto |
+|---|---|---|---|---|
+| `dav_casos` | `alicorp_cierre_transito` | Dato documental o referencia a soporte/carga/descarga dentro del flujo. | PERSONAL_OR_CONTACT_DATA | - Actualizacion de `dav_pagosdetalle`, `dav_notasdebitodetalle`, metadata OCR y cierre `alicorp_cierre_transito`. \| BR-ASOPR-006 \| El cierre `alicorp_cierre_transito=1` se marca cuando el DIM OCR coincide con el DIM construido en ASGARD. \| \| `gestiondui`, `nodui`, `codigo`, `alicorp_cierre_transito` \| \| - `UPDATE dav_casos SET alicorp_cierre_transito=1`. \| \| `alicorp_cierre_transito=1`. |
+| `dav_facturacomercial` | `ages_id` | Campo de soporte funcional mencionado en datos/reglas del flujo. | BUSINESS_DATA | \| `ages_id`, `idcasos` \| ## Mutaciones observadas \| - `UPDATE dav_facturacomercial SET ages_id=...` en FDAB. |
+| `dav_facturacomercial` | `idcasos` | Referencia funcional que vincula el flujo con otra entidad/catalogo. | BUSINESS_DATA | \| `idcasosprevios`, `idExchange`, `idembarquelogis` \| \| \| `idpagosdetalle`, `idcasos`, `ages_caso_id`, `idconcepto`, `monto`, `nro`, `fecha_numero`, `idusarocr`, `tipoocr`, `idexchangeocr`, `lecturaocr` \| \| \| `ages_id`, `idcasos` \| ## Mutaciones observadas |
+| `dav_notasdebitodetalle` | `nro` | Dato documental o referencia a soporte/carga/descarga dentro del flujo. | BUSINESS_DATA | - Busqueda de pago pendiente por concepto, monto y `nro` vacio. \| BR-ASOPR-004 \| El pago candidato debe tener concepto esperado, `nro` vacio y monto igual al OCR. \| \| `idpagosdetalle`, `idcasos`, `ages_caso_id`, `idconcepto`, `monto`, `nro`, `fecha_numero`, `idusarocr`, `tipoocr`, `idexchangeocr`, `lecturaocr` \| \| \| `idpagosdetalle`, `nro`, `fecha_numero` \| \| PAGO_CANDIDATO \| Concepto, monto y nro vacio coinciden. |
+| `dav_pagosdetalle` | `nro` | Dato documental o referencia a soporte/carga/descarga dentro del flujo. | BUSINESS_DATA | - Busqueda de pago pendiente por concepto, monto y `nro` vacio. \| BR-ASOPR-004 \| El pago candidato debe tener concepto esperado, `nro` vacio y monto igual al OCR. \| \| `idpagosdetalle`, `idcasos`, `ages_caso_id`, `idconcepto`, `monto`, `nro`, `fecha_numero`, `idusarocr`, `tipoocr`, `idexchangeocr`, `lecturaocr` \| \| \| `idpagosdetalle`, `nro`, `fecha_numero` \| \| PAGO_CANDIDATO \| Concepto, monto y nro vacio coinciden. |

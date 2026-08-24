@@ -1,0 +1,8 @@
+flowchart TD
+    A["Usuario abre Items"] --> B["UI carga detalle-pedido"]
+    B --> C["Renderiza posiciones"]
+    C --> D["Usuario edita campos"]
+    D --> E["Serializa formulario"]
+    E --> F["Backend parsea campo_columna_id"]
+    F --> G["UPDATE logis_pedidos_detalle"]
+    G --> H["UI muestra exito"]

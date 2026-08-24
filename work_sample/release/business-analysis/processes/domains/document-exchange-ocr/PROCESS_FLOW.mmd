@@ -1,0 +1,16 @@
+flowchart TD
+  A["Usuario inicia intercambio documental"] --> B["ASGARD identifica modulo y tramite"]
+  B --> C["Selecciona template documental"]
+  C --> D["Construye companias y coordinadores"]
+  D --> E["Crea o actualiza exchange"]
+  E --> F["Vincula exchange a embarque o pedido"]
+  F --> G["Usuario carga documentos"]
+  G --> H{"Documento con OCR configurado?"}
+  H -->|No| I["Documento queda registrado"]
+  H -->|Si| J["OCR externo lee documento"]
+  J --> K{"Dependencia documental cumplida?"}
+  K -->|No| L["Devuelve error de documento requerido"]
+  K -->|Si| M["Compara datos extraidos"]
+  M --> N{"Hay diferencias?"}
+  N -->|Si| O["Devuelve rechazo o diferencias"]
+  N -->|No| P["Actualiza registros operativos"]

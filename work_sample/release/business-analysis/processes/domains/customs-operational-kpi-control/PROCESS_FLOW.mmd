@@ -1,0 +1,14 @@
+flowchart TD
+    A["Usuario define filtros"] --> B["Consultar cliente y casos/embarques"]
+    B --> C["Construir temporales de fechas e hitos"]
+    C --> D["Calcular dias laborales"]
+    D --> E["Clasificar KPI"]
+    E --> F["CUMPLE / NO CUMPLE"]
+    E --> G["CORRECTO / ATRASADO"]
+    E --> H["EN TIEMPO / REINTEGRO"]
+    C --> I["Control AD: costos, prevision y nacionalizacion"]
+    C --> J["Control OL: operador, estado y viajes"]
+    F --> K["Grilla y Excel"]
+    I --> K
+    J --> K
+

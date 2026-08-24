@@ -1,0 +1,71 @@
+domain,tables_crossed,fields_crossed,mutation_tables,rule_count,evidence_refs,risk_summary
+accounting-ledger-aging-reporting,8,25,0,15,0,permisos/autorizacion; documentos/OCR; catalogos/semantica
+additional-services-request-management,8,16,0,18,0,permisos/autorizacion; documentos/OCR; variante cliente; catalogos/semantica
+advisory-management-services,10,25,0,3,32,documentos/OCR; catalogos/semantica
+alicorp-albo-ocr-payment-reconciliation,4,12,4,9,6,documentos/OCR
+alicorp-ocr-bulk-shipment-intake,4,4,0,17,10,atomicidad/concurrencia; permisos/autorizacion; documentos/OCR; catalogos/semantica
+alicorp-operational-document-package-dispatch,6,37,0,9,17,SQL dinamico; documentos/OCR; catalogos/semantica
+alicorp-supplier-ocr-payment-reconciliation,4,5,4,7,14,documentos/OCR
+alicorp-transit-deadline-control,18,84,1,13,12,atomicidad/concurrencia; documentos/OCR; variante cliente; catalogos/semantica
+billing-document-reception-confirmation,4,14,0,16,0,permisos/autorizacion; documentos/OCR; catalogos/semantica
+billing-invoice-planilla-document-generation,7,18,0,17,0,SQL dinamico; permisos/autorizacion; documentos/OCR; catalogos/semantica
+billing-payments-receivables,12,44,0,1,53,documentos/OCR; catalogos/semantica
+bulk-request-excel-import-validation,19,45,0,18,0,documentos/OCR; catalogos/semantica
+bulk-shipment-quotation-import,8,14,0,16,0,SQL dinamico; atomicidad/concurrencia; documentos/OCR; catalogos/semantica
+certification-expiry-control,12,53,0,13,25,permisos/autorizacion; documentos/OCR; catalogos/semantica
+continuous-improvement-nonconformity,24,76,0,15,38,documentos/OCR; catalogos/semantica
+customer-password-recovery,2,20,0,11,13,SQL dinamico; permisos/autorizacion; documentos/OCR; catalogos/semantica
+customer-primary-login-session-audit,4,29,0,12,31,documentos/OCR; catalogos/semantica
+customer-shipment-rating-feedback,1,11,1,5,12,documentos/OCR; catalogos/semantica
+customs-case-edp-status-monitoring,7,34,0,10,3,documentos/OCR; catalogos/semantica
+customs-dam-document-send-date-control,1,2,1,5,8,documentos/OCR
+customs-dav-client-review-approval,15,78,1,17,28,permisos/autorizacion; documentos/OCR; variante cliente; catalogos/semantica
+customs-dex-ocr-validation-update,1,5,1,8,6,documentos/OCR; catalogos/semantica
+customs-document-approval,6,14,0,5,41,documentos/OCR; catalogos/semantica
+customs-guarantee-tax-control,9,42,0,18,0,documentos/OCR; variante cliente; catalogos/semantica
+customs-operational-kpi-control,3,5,0,17,0,documentos/OCR; catalogos/semantica
+customs-request-intake,14,36,0,1,33,documentos/OCR
+customs-tax-liquidation-return-confirmation,9,56,1,11,17,SQL dinamico; permisos/autorizacion; documentos/OCR
+document-exchange-ocr,9,16,0,6,43,documentos/OCR; variante cliente; catalogos/semantica
+document-service-plan-ocr-capture,1,2,1,6,6,documentos/OCR
+executive-powerbi-dashboard-portal,0,0,0,12,0,permisos/autorizacion; documentos/OCR; catalogos/semantica
+export-mic-dex-physical-reception-control,4,29,2,14,26,SQL dinamico; documentos/OCR
+external-agency-procedure-tracking,6,8,0,14,0,SQL dinamico; atomicidad/concurrencia; permisos/autorizacion; documentos/OCR; catalogos/semantica
+form1-modification-observation-tracking,12,33,0,16,0,SQL dinamico; permisos/autorizacion; documentos/OCR; catalogos/semantica
+identity-access,8,16,0,11,40,SQL dinamico; permisos/autorizacion; documentos/OCR
+inventory-vin-billing-control,2,4,0,13,0,documentos/OCR
+legacy-dispatch-document-maintenance,0,0,0,14,12,documentos/OCR; variante cliente; catalogos/semantica
+logistics-bl-policy-ocr-capture,1,12,1,6,10,documentos/OCR
+logistics-order-item-detail-maintenance,1,13,1,9,6,permisos/autorizacion; documentos/OCR; variante cliente; catalogos/semantica
+logistics-order-status-milestones,12,69,0,12,2,permisos/autorizacion; documentos/OCR; variante cliente; catalogos/semantica
+logistics-quotation-costing,21,26,0,5,36,documentos/OCR; catalogos/semantica
+logistics-route-trip-assignment-management,10,54,2,16,31,SQL dinamico; permisos/autorizacion; documentos/OCR; variante cliente; catalogos/semantica
+logistics-shipment-cost-capture-control,9,39,2,12,8,SQL dinamico; atomicidad/concurrencia; permisos/autorizacion; documentos/OCR; catalogos/semantica
+logistics-shipment-document-attachment-management,2,12,1,13,7,permisos/autorizacion; documentos/OCR
+logistics-shipment-edit-participant-sync,5,26,3,12,7,SQL dinamico; atomicidad/concurrencia; permisos/autorizacion; documentos/OCR; variante cliente
+logistics-shipment-finalization-control,6,46,2,18,27,SQL dinamico; atomicidad/concurrencia; permisos/autorizacion; documentos/OCR; variante cliente; catalogos/semantica
+logistics-shipment-quotation-duplication,6,40,6,12,7,SQL dinamico; atomicidad/concurrencia; documentos/OCR; catalogos/semantica
+logistics-shipment-tracking,24,36,0,5,45,documentos/OCR; catalogos/semantica
+master-data-configuration,24,163,1,14,35,atomicidad/concurrencia; permisos/autorizacion; documentos/OCR; catalogos/semantica
+nationalization-weekly-planning,2,5,0,13,0,documentos/OCR
+operational-case-dossier-access,1,4,0,16,0,permisos/autorizacion; documentos/OCR; catalogos/semantica
+operational-expense-control,7,25,0,16,0,SQL dinamico; permisos/autorizacion; documentos/OCR; catalogos/semantica
+operational-reporting-downloads,13,47,0,13,4,atomicidad/concurrencia; permisos/autorizacion; documentos/OCR; catalogos/semantica
+packing-list-import-validation,3,23,0,15,0,SQL dinamico; documentos/OCR
+realtime-notification-center,12,32,0,14,1,permisos/autorizacion; documentos/OCR; catalogos/semantica
+scp-reception-control,2,25,0,13,1,SQL dinamico; documentos/OCR; catalogos/semantica
+shipment-commercial-invoice-reference-sync,0,0,0,8,4,documentos/OCR; variante cliente
+shipment-customs-request-management,13,74,2,18,24,SQL dinamico; atomicidad/concurrencia; permisos/autorizacion; documentos/OCR; variante cliente; catalogos/semantica
+third-party-token-document-onboarding,24,31,0,8,14,SQL dinamico; permisos/autorizacion; documentos/OCR; catalogos/semantica
+transport-export-tracking,21,56,0,1,58,documentos/OCR
+vehicle-chassis-timeline-trace,0,0,0,15,0,permisos/autorizacion; documentos/OCR; catalogos/semantica
+vehicle-cost-accounting-reporting,15,58,0,16,0,documentos/OCR
+vehicle-excel-intake-validation,4,12,1,18,10,atomicidad/concurrencia; documentos/OCR; catalogos/semantica
+vehicle-import-management,11,36,0,8,56,documentos/OCR; catalogos/semantica
+vehicle-invoice-data-bulk-update,8,50,0,16,7,atomicidad/concurrencia; permisos/autorizacion; documentos/OCR; catalogos/semantica
+vehicle-reception-part-ocr-document-generation,8,34,0,11,22,atomicidad/concurrencia; documentos/OCR; catalogos/semantica
+vehicle-request-bulk-update,3,9,0,17,0,SQL dinamico; permisos/autorizacion; documentos/OCR
+vehicle-sales-invoice-ocr-ledger-capture,1,7,1,5,7,SQL dinamico; atomicidad/concurrencia; permisos/autorizacion; documentos/OCR
+vehicle-soat-pdf-ocr-splitting,0,0,0,8,12,documentos/OCR; catalogos/semantica
+vehicle-transitory-depot-compliance,15,30,0,13,0,documentos/OCR; variante cliente; catalogos/semantica
+warehouse-inventory-reporting,10,34,0,12,27,permisos/autorizacion; documentos/OCR

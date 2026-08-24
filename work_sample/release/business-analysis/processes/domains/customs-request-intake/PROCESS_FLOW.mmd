@@ -1,0 +1,14 @@
+flowchart TD
+  A["Usuario inicia solicitud"] --> B{"Carga archivo?"}
+  B -->|Si| C["Guardar archivo importado"]
+  C --> D["Insertar filas en dav_solicitudesprevias"]
+  B -->|No| E["Capturar datos de solicitud"]
+  D --> F["Validar datos maestros"]
+  E --> F
+  F --> G{"Hay errores?"}
+  G -->|Si| H["Registrar mensajeerror por fila"]
+  G -->|No| I["Crear dav_casosprevios"]
+  I --> J["Crear documentos/tramites iniciales"]
+  J --> K["Enviar/finalizar solicitud"]
+  K --> L["Actualizar fechas y estados"]
+  L --> M["Enviar correos y notificaciones"]

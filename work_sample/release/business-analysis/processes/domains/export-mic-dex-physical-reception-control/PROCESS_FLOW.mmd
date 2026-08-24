@@ -1,0 +1,14 @@
+flowchart TD
+    A["Generar reporte MIC/DEX"] --> B["Consultar dex_suma"]
+    B --> C["Derivar estado documental"]
+    C --> D["Mostrar tabla"]
+    D --> E{"Seleccionar registros mismo estado"}
+    E -->|"Marcar"| F["Actualizar fecha siguiente"]
+    E -->|"Revertir"| G["Limpiar fecha anterior"]
+    F --> H["Insertar historial"]
+    G --> H
+    H --> I["Recargar reporte"]
+    D --> J["Ver historial"]
+    J --> K["Consultar dex_suma_estado_historial"]
+    K --> L["Mostrar modal"]
+

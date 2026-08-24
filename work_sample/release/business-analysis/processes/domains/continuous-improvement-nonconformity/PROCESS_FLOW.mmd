@@ -1,0 +1,24 @@
+flowchart TD
+  A["Detectar hallazgo / NC / SNC"] --> B["Registrar datos del caso"]
+  B --> C["Calcular plazos por impacto"]
+  C --> D{"Accion del usuario"}
+  D -->|Guardar| E["Estado GUARDADO"]
+  D -->|Enviar| F["Estado ENVIADO"]
+  E --> F
+  F --> G["Administrador abre asignacion"]
+  G --> H{"Atencion inmediata?"}
+  H -->|No| I["Postergar con plazo y justificacion"]
+  H -->|Si| J["Asignar analista y plazo"]
+  I --> J
+  J --> K["Estado ANALISIS"]
+  K --> L["Analisis causal y plan correctivo"]
+  L --> M["Adjuntar evidencias"]
+  M --> N["Estado VERIFICAR"]
+  N --> O["Registrar verificacion por accion"]
+  O --> P{"Acciones verificadas?"}
+  P -->|Si| Q["Estado VERIFICADO"]
+  Q --> R["Cerrar caso"]
+  R --> S["Estado CERRADO"]
+  P -->|No| T["Reabrir / nuevo ciclo"]
+  T --> U["Estado REABIERTO"]
+  U --> B

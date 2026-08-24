@@ -1,0 +1,13 @@
+flowchart TD
+  A["Factura ALBO/FALBO"] --> B{"Tipo archivo"}
+  B -->|ZIP/RAR| C["Descomprimir remoto y recorrer PDFs"]
+  B -->|PDF| D["Procesar PDF directo"]
+  C --> E["OCR MODELO_FACTUTA_ALBO"]
+  D --> E
+  E --> F["Resolver contexto por exchange_id"]
+  F --> G["Buscar pago concepto 272 por monto y nro vacio"]
+  F --> H["Comparar DIM OCR con caso"]
+  H -->|Coincide| I["Marcar alicorp_cierre_transito=1"]
+  G -->|Pago encontrado y fecha valida| J["Actualizar pago y nota de debito"]
+  G -->|Sin pago| K["Responder no actualizado"]
+  J --> L["Responder exito"]

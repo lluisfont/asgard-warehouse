@@ -1,0 +1,13 @@
+flowchart TD
+    A["Usuario selecciona factura/planilla"] --> B["Consultar dav_facturaplanilla"]
+    B --> C["Consultar caso, cliente, ciudad, regimen, proveedor"]
+    C --> D["Consultar dosificacion fiscal"]
+    D --> E["Calcular total planilla desde pagos detalle"]
+    D --> F["Calcular total factura desde facturas detalle"]
+    E --> G["Componer Planilla de Despacho"]
+    F --> H["Componer Factura"]
+    H --> I["Generar codigo de control y QR"]
+    G --> J["mPDF escribe PDF combinado"]
+    I --> J
+    J --> K["Descargar PDF"]
+    K --> L["Eliminar QR temporal"]

@@ -1,0 +1,10 @@
+flowchart TD
+  A["Abrir facturacion por VIN"] --> B["Cargar consolidado mensual"]
+  A --> C["Calcular periodo 21-20"]
+  C --> D["Generar precalculo"]
+  D --> E["API calcula VIN internacional/nacional/unicos/facturables"]
+  E --> F["Mostrar KPIs"]
+  F --> G["Confirmar facturacion"]
+  G --> H["Guardar periodo y chasis facturados"]
+  B --> I["Seleccionar periodo"]
+  I --> J["Exportar Excel"]

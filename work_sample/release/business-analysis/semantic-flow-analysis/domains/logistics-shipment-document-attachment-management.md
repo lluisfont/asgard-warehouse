@@ -1,0 +1,34 @@
+# logistics-shipment-document-attachment-management - semantic flow usage
+
+Estado: FLOW_SEMANTIC_INFERENCE_REVIEW_REQUIRED
+
+## Resumen
+
+- Tablas cruzadas: 2
+- Campos cruzados: 12
+- Tablas con mutacion observada: 1
+- Riesgos candidatos: permisos/autorizacion; documentos/OCR
+
+## Tablas en el flujo
+
+| Tabla | Uso | Rol semantico | Campos | Reglas/riesgos | Evidencias |
+|---|---|---|---|---|---|
+| `logis_embarques` | READ_OR_CONTEXT | Entidad documental o soporte usado para validar, adjuntar, generar o descargar evidencias. | created_at, fecha_finalizacion, id, idExchange, idcliente, updated_at | control de acceso/cliente; transicion o bloqueo por estado; regla documental/carga-descarga; calculo financiero/impositivo; persistencia/atomicidad/concurrencia; notificacion o acceso externo; variante cliente pendiente de confirmar; seguridad/autorizacion sensible | index_archivos/logistica/frames/documentos.php:17-39 \| index_archivos/logistica/frames/documentos.php:62-69 \| index_archivos/logistica/frames/documentos.php:132-164 \| index_archivos/logistica/embarquesController.php:333-344 \| index_archivos/logistica/EmbarqueClass.php:575-632 \| index_archivos/logistica/EmbarqueClass.php:638-665 \| .data_base/asgard.sql:12304-12316 \| .data_base/asgard.sql:12304-12316 \| EV-SQL_QUERY-271B8BADD753C8 .data_base/asgard.sql:17875 READS access to logis_embarques \| EV-SQL |
+| `logis_embarquesdocumentos` | CREATE | Entidad transaccional modificada por el flujo; sus cambios deben caracterizarse antes de refactor. | created_at, documento, id, idembarque, nrodocumento, updated_at | control de acceso/cliente; transicion o bloqueo por estado; regla documental/carga-descarga; calculo financiero/impositivo; persistencia/atomicidad/concurrencia; notificacion o acceso externo; variante cliente pendiente de confirmar; seguridad/autorizacion sensible | index_archivos/logistica/frames/documentos.php:17-39 \| index_archivos/logistica/frames/documentos.php:62-69 \| index_archivos/logistica/frames/documentos.php:132-164 \| index_archivos/logistica/embarquesController.php:333-344 \| index_archivos/logistica/EmbarqueClass.php:575-632 \| index_archivos/logistica/EmbarqueClass.php:638-665 \| .data_base/asgard.sql:12304-12316 \| .data_base/asgard.sql:12304-12316 \| EV-SQL_QUERY-D75660F9D7F7F2 index_archivos/logistica/CotizacionClass.php:816 READS access to log |
+
+## Campos con uso cruzado
+
+| Tabla | Campo | Rol en flujo | Sensibilidad | Contexto |
+|---|---|---|---|---|
+| `logis_embarques` | `created_at` | Dato documental o referencia a soporte/carga/descarga dentro del flujo. | BUSINESS_DATA | \| `id`, `idembarque`, `nrodocumento`, `documento`, `created_at`, `updated_at` \| |
+| `logis_embarques` | `fecha_finalizacion` | Campo de estado o hito usado para permitir, bloquear o reportar avance. | PERSONAL_OR_CONTACT_DATA | \| `id`, `idcliente`, `fecha_finalizacion` \| |
+| `logis_embarques` | `id` | Dato documental o referencia a soporte/carga/descarga dentro del flujo. | BUSINESS_DATA | - Resolucion de datos del pedido/embarque segun parametro `pedido`. \| - Deteccion de exchange disponible mediante `idExchange_as` e `idExchange_id`. \| - Alta de archivo local en carpeta `logistica/embarquedocs/{idcliente}/{idembarque}`. \| ASGARD obtiene datos del pedido o embarque. \| ASGARD verifica `idExchange_as` e `idExchange_id`. |
+| `logis_embarques` | `idExchange` | Referencia funcional que vincula el flujo con otra entidad/catalogo. | BUSINESS_DATA | - Deteccion de exchange disponible mediante `idExchange_as` e `idExchange_id`. \| - `idExchange` / `idExchange_as` / `idExchange_id`. \| ASGARD verifica `idExchange_as` e `idExchange_id`. \| Si ambos existen, ASGARD usa `idExchange_as`. \| BR-LSDAM-001 \| Si existen `idExchange_as` e `idExchange_id`, la pantalla usa intercambio documental. |
+| `logis_embarques` | `idcliente` | Referencia funcional que vincula el flujo con otra entidad/catalogo. | BUSINESS_DATA | - Alta de archivo local en carpeta `logistica/embarquedocs/{idcliente}/{idembarque}`. \| \| `id`, `idcliente`, `fecha_finalizacion` \| \| \| `idcliente`, `tokenJWT` \| \| `move_uploaded_file` a `logistica/embarquedocs/{idcliente}/{idembarque}/{documento}`. |
+| `logis_embarques` | `updated_at` | Dato documental o referencia a soporte/carga/descarga dentro del flujo. | BUSINESS_DATA | \| `id`, `idembarque`, `nrodocumento`, `documento`, `created_at`, `updated_at` \| |
+| `logis_embarquesdocumentos` | `created_at` | Dato documental o referencia a soporte/carga/descarga dentro del flujo. | BUSINESS_DATA | \| `id`, `idembarque`, `nrodocumento`, `documento`, `created_at`, `updated_at` \| |
+| `logis_embarquesdocumentos` | `documento` | Dato documental o referencia a soporte/carga/descarga dentro del flujo. | DOCUMENT_OR_FILE_REFERENCE | # Logistics Shipment Document Attachment Management - Process Definition ## Estado INFERRED_DRAFT_REVIEW_REQUIRED ## Objetivo de negocio Gestionar documentos asociados a un embarque logistico, usando intercambio documental cuando existe un exchange vinculado y usando adjuntos locales del embarque cuando no existe intercambio. \| Pestana Documentos del detalle de embarque. \| - Insercion en `logis_embarquesdocumentos` con numero documental consecutivo. \| El usuario abre la pestana Documentos. \| ## Flujo principal B - Adjuntar documento local 1. |
+| `logis_embarquesdocumentos` | `id` | Dato documental o referencia a soporte/carga/descarga dentro del flujo. | BUSINESS_DATA | - Resolucion de datos del pedido/embarque segun parametro `pedido`. \| - Deteccion de exchange disponible mediante `idExchange_as` e `idExchange_id`. \| - Alta de archivo local en carpeta `logistica/embarquedocs/{idcliente}/{idembarque}`. \| ASGARD obtiene datos del pedido o embarque. \| ASGARD verifica `idExchange_as` e `idExchange_id`. |
+| `logis_embarquesdocumentos` | `idembarque` | Referencia funcional que vincula el flujo con otra entidad/catalogo. | BUSINESS_DATA | - Alta de archivo local en carpeta `logistica/embarquedocs/{idcliente}/{idembarque}`. \| \| `id`, `idembarque`, `nrodocumento`, `documento`, `created_at`, `updated_at` \| \| `move_uploaded_file` a `logistica/embarquedocs/{idcliente}/{idembarque}/{documento}`. |
+| `logis_embarquesdocumentos` | `nrodocumento` | Dato documental o referencia a soporte/carga/descarga dentro del flujo. | DOCUMENT_OR_FILE_REFERENCE | - La numeracion usa `MAX(nrodocumento)+1`; en primer documento puede requerir validacion por nulos. \| \| `id`, `idembarque`, `nrodocumento`, `documento`, `created_at`, `updated_at` \| \| Business rules \| `idExchange` checks, filesystem path, `MAX(nrodocumento)+1`, physical delete \| |
+| `logis_embarquesdocumentos` | `updated_at` | Dato documental o referencia a soporte/carga/descarga dentro del flujo. | BUSINESS_DATA | \| `id`, `idembarque`, `nrodocumento`, `documento`, `created_at`, `updated_at` \| |

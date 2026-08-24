@@ -1,0 +1,10 @@
+flowchart TD
+  A["Documento DEX en intercambio"] --> B["Ejecutar OCR MODELO_DEX"]
+  B --> C["Resolver carpeta por exchange_id"]
+  C -->|No encontrada| Z["Responder sin solicitud"]
+  C -->|Encontrada| D["Comparar carpeta OCR vs ASGARD"]
+  D -->|No coincide| E["Informar DEX no pertenece"]
+  D -->|Coincide| F["Actualizar gestion/nodui"]
+  F --> G["Actualizar Sidunea y fecha DUI si existen"]
+  G --> H["Comparar campos DEX contra datos ASGARD"]
+  H --> I["Responder JSON con observaciones"]

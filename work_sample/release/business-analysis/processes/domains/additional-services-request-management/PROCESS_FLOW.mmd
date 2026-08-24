@@ -1,0 +1,20 @@
+flowchart TD
+    A["Abrir Servicios Adicionales"] --> B{"Permite agregar?"}
+    B -->|No| C["Solo consulta por estados"]
+    B -->|Si| D["Capturar solicitante, email, ciudad, linea y notas"]
+    D --> E["Seleccionar entidad emisora"]
+    E --> F["Cargar tramites de la entidad"]
+    F --> G["Seleccionar tramite"]
+    G --> H["Cargar tipos de tramite"]
+    H --> I["Guardar solicitud/tramites"]
+    I --> J{"Exchange existente?"}
+    J -->|Si| K["Vincular exchange"]
+    J -->|No| L["Crear exchange servicio_adicional"]
+    K --> M["Agregar documentos y participantes"]
+    L --> M
+    M --> N["Bandeja Pendientes/Enviados"]
+    N --> O["Recepcionado"]
+    O --> P["Asignado"]
+    P --> Q["En Revision"]
+    Q --> R["En Proceso"]
+    R --> S["Finalizado"]

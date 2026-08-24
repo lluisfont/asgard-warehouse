@@ -1,0 +1,20 @@
+flowchart TD
+  A["Abrir control de certificaciones"] --> B["Cargar tipos, modelos y AP madre"]
+  B --> C["Capturar documento, fechas, alertas y datos de vehiculo/mercancia"]
+  C --> D["Adjuntar archivos / Excel de mercancia"]
+  D --> E{"Codigo ya registrado y tipo != 3?"}
+  E -->|Si| F["Rechazar registro duplicado"]
+  E -->|No| G["Guardar cc_registro_documentos"]
+  G --> H["Guardar cc_archivos"]
+  H --> I["Guardar cc_mercancias"]
+  I --> J["Documento disponible"]
+  J --> K["Consulta por filtros"]
+  K --> L["Calcular f_estado_documento"]
+  L --> M{"Estado"}
+  M --> N["VIGENTE"]
+  M --> O["POR VENCER"]
+  M --> P["VENCIDO"]
+  O --> Q["Incluir en notificacion"]
+  P --> Q
+  Q --> R["Enviar correo"]
+  P --> S["Marcar notificacion_enviada"]

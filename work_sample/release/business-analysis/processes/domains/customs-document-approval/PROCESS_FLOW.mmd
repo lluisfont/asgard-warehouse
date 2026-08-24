@@ -1,0 +1,14 @@
+flowchart TD
+  A["Usuario abre documentacion del caso"] --> B["ASGARD lista documentos previos y otros documentos"]
+  B --> C["Usuario agrega o actualiza datos documentales"]
+  C --> D{"Adjunta archivo?"}
+  D -->|Si| E["Guardar archivo y actualizar adjunto"]
+  D -->|No| F["Guardar solo datos"]
+  E --> G{"Documento intermedio?"}
+  F --> G
+  G -->|Si| H["Crear documento previo y ocultar intermedio"]
+  G -->|No| I["Mantener documento previo"]
+  H --> J["Marcar documentos para envio/aprobacion"]
+  I --> J
+  J --> K["Enviar correo de documentos"]
+  K --> L["Marcar otros documentos enviados"]

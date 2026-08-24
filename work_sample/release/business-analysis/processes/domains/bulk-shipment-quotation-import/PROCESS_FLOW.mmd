@@ -1,0 +1,9 @@
+flowchart TD
+    A["Usuario carga Excel logistico"] --> B["Guardar archivo cargamasiva"]
+    B --> C["Leer filas Excel"]
+    C --> D["Resolver linea, bulto y proveedor"]
+    D --> E["Combinar datos comunes POST"]
+    E --> F["Construir magnitudes, rutas y operador"]
+    F --> G["CotizacionClass::guardarCotizacionCliente"]
+    G --> H["Acumular ids de embarque/cotizacion"]
+    H --> I["Devolver JSON y mostrar resultados"]

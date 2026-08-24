@@ -1,0 +1,13 @@
+flowchart TD
+    A["Registro aging"] --> B["Construir meses/anios"]
+    B --> C["Cargar dav_aging"]
+    C --> D["Usuario edita montos"]
+    D --> E["Insertar o actualizar dav_aging"]
+    F["Estado de cuentas"] --> G["Filtrar cliente, linea y fecha pago DIM"]
+    G --> H["Separar factura y planilla"]
+    H --> I["Agrupar conceptos contables"]
+    J["Libro de compras"] --> K["Filtrar casos y documentos"]
+    K --> L["Calcular base y credito fiscal"]
+    I --> M["Excel"]
+    L --> M
+

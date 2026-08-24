@@ -1,0 +1,14 @@
+flowchart TD
+  A["Abrir reporte de modificaciones"] --> B["Identificar Form1 activos del cliente"]
+  B --> C{"Tipo de servicio"}
+  C -->|"Caso aduanero"| D["Vincular dav_casos"]
+  C -->|"Asesoria/Gestion"| E["Vincular carpeta AGES"]
+  D --> F["Obtener documento, DIM, chasis y placa"]
+  E --> F
+  F --> G["Consolidar subcontravenciones visibles"]
+  G --> H["Construir texto dice/debe decir"]
+  H --> I["Calcular estados y dias"]
+  I --> J["Contar llamadas por Form1"]
+  J --> K["Mostrar grilla y enlaces"]
+  K --> L["Consultar historial de llamadas"]
+  K --> M["Consultar observadas por documento faltante"]
