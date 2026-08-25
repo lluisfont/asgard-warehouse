@@ -83,8 +83,16 @@ jobs:
         continue-on-error: true
         run: |
           set +e
-          npx -y @redocly/cli@2.47.0 lint audit/api/results/audit/openapi.yaml
-          status=$?
+          npx -y @redocly/cli@2.47.0 check-config --config=audit/api/redocly.yaml
+          config_status=$?
+          if [ "$config_status" -eq 0 ]; then
+            npx -y @redocly/cli@2.47.0 lint \
+              --config=audit/api/redocly.yaml \
+              audit/api/results/audit/openapi.yaml
+            status=$?
+          else
+            status=$config_status
+          fi
           echo "exit_code=$status" >> "$GITHUB_OUTPUT"
           exit 0
 
