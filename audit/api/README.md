@@ -5,7 +5,7 @@ ASGARD API Auditor is a centralized repository tool for generating a technical i
 The auditor source code lives outside this Warehouse repository:
 
 - Repository: https://github.com/lluisfont/asgard-api-auditor
-- Pinned commit: `c4eec10f5cf592efc9f35cc1b5a0740408b3fde8`
+- Pinned commit: `e946d59a2eec9e184dba9479a18334f79aedc8e5`
 
 This repository installs the auditor as a versioned tool dependency. Its source code is not copied into Warehouse.
 
