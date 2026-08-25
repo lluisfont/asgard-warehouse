@@ -1,0 +1,96 @@
+name: API Audit
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  api-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install ASGARD API Auditor
+        run: pip install -r audit/api/requirements.txt
+
+      - name: Run technical inventory
+        id: inventory
+        continue-on-error: true
+        run: |
+          mkdir -p audit/api/results
+          set +e
+          asgard-api-auditor inventory . \
+            --repository-id asgard-warehouse \
+            --output audit/api/results/technical-inventory.json
+          status=$?
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Run API discovery
+        id: discover
+        continue-on-error: true
+        run: |
+          set +e
+          asgard-api-auditor discover . \
+            --repository-id asgard-warehouse \
+            --output audit/api/results/api-discovery.json
+          status=$?
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upload API audit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asgard-warehouse-api-audit
+          if-no-files-found: warn
+          path: |
+            audit/api/results/technical-inventory.json
+            audit/api/results/api-discovery.json
+
+      - name: Validate discovery result
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          inventory_exit_code = int("${{ steps.inventory.outputs.exit_code || '1' }}")
+          exit_code = int("${{ steps.discover.outputs.exit_code || '1' }}")
+          inventory_output = Path("audit/api/results/technical-inventory.json")
+          output = Path("audit/api/results/api-discovery.json")
+
+          if not inventory_output.exists():
+              print("technical-inventory.json was not generated")
+              sys.exit(1)
+          if not output.exists():
+              print("api-discovery.json was not generated")
+              sys.exit(1)
+
+          data = json.loads(output.read_text(encoding="utf-8"))
+          discovery_complete = data.get("discovery_complete")
+
+          if inventory_exit_code != 0:
+              print(f"asgard-api-auditor inventory exited with {inventory_exit_code}")
+          if exit_code != 0:
+              print(f"asgard-api-auditor discover exited with {exit_code}")
+          if discovery_complete is not True:
+              print(f"discovery_complete is {discovery_complete!r}")
+
+          if inventory_exit_code != 0 or exit_code != 0 or discovery_complete is not True:
+              sys.exit(1)
+
+          print("API discovery completed successfully")
+          PY
