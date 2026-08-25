@@ -1,1 +1,1 @@
-git+https://github.com/lluisfont/asgard-api-auditor.git@c378669201101c1da4ee50cb661d0920fd58c317
+git+https://github.com/lluisfont/asgard-api-auditor.git@a43e7b188bb47942ddeb5693c6761aca72de09b4
