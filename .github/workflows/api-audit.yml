@@ -72,6 +72,22 @@ jobs:
           echo "exit_code=$status" >> "$GITHUB_OUTPUT"
           exit 0
 
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22.12.0"
+          check-latest: false
+
+      - name: Validate generated OpenAPI
+        id: openapi
+        continue-on-error: true
+        run: |
+          set +e
+          npx -y @redocly/cli@2.47.0 lint audit/api/results/audit/openapi.yaml
+          status=$?
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
       - name: Upload API audit results
         if: always()
         uses: actions/upload-artifact@v4
@@ -97,6 +113,7 @@ jobs:
           inventory_exit_code = int("${{ steps.inventory.outputs.exit_code || '1' }}")
           discovery_exit_code = int("${{ steps.discover.outputs.exit_code || '1' }}")
           audit_exit_code = int("${{ steps.audit.outputs.exit_code || '1' }}")
+          openapi_exit_code = int("${{ steps.openapi.outputs.exit_code || '1' }}")
 
           inventory_output = Path("audit/api/results/technical-inventory.json")
           discovery_output = Path("audit/api/results/api-discovery.json")
@@ -123,6 +140,7 @@ jobs:
           print(f"inventory exit code: {inventory_exit_code}")
           print(f"discover exit code: {discovery_exit_code}")
           print(f"audit exit code: {audit_exit_code}")
+          print(f"OpenAPI validation exit code: {openapi_exit_code}")
           print(f"discovery_complete: {discovery_complete!r}")
           print(f"audit status: {audit_status!r}")
 
@@ -132,6 +150,8 @@ jobs:
               print("API discovery is incomplete.")
           if audit_exit_code != 0 or audit_status != "complete":
               print("Behavioral API audit is incomplete.")
+          if openapi_exit_code != 0:
+              print("Generated OpenAPI failed Redocly validation.")
 
           if (
               inventory_exit_code != 0
@@ -139,6 +159,7 @@ jobs:
               or discovery_complete is not True
               or audit_exit_code != 0
               or audit_status != "complete"
+              or openapi_exit_code != 0
           ):
               sys.exit(1)
 
