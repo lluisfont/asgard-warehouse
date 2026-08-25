@@ -5,8 +5,8 @@ ASGARD API Auditor is a centralized repository tool for inventorying integration
 The auditor source code lives outside this Warehouse repository:
 
 - Repository: https://github.com/lluisfont/asgard-api-auditor
-- Pinned commit: `c378669201101c1da4ee50cb661d0920fd58c317`
-- Version: `0.5.0`
+- Pinned commit: `a43e7b188bb47942ddeb5693c6761aca72de09b4`
+- Version: `0.5.1`
 
 This repository installs the auditor as a versioned tool dependency. Its source code is not copied into Warehouse.
 
@@ -92,8 +92,20 @@ When the OVP WSDL is available, add:
 - OpenAPI contains only proven HTTP endpoints exposed by Warehouse.
 - HTTP calls consumed by Warehouse stay in `findings.json` and `api-knowledge.md`; they are not represented as Warehouse provider paths.
 - SOAP remains a separate integration surface.
+- Source routes whose templates differ only by parameter names are represented through a canonical OpenAPI path while preserving every original source path and parameter name in ASGARD traceability extensions.
+- If two equivalent source templates use the same HTTP method, generation fails closed instead of silently overwriting one route.
 - Request/response/authentication/authorization reconstruction is not complete yet.
 - Therefore `audit` currently returns a partial status through `contract-enrichment-v0.5.0`; this is intentional and must not be treated as a successful complete behavioral contract.
+
+## OpenAPI validation
+
+The generated Warehouse OpenAPI is linted with the versioned policy at:
+
+```text
+audit/api/redocly.yaml
+```
+
+This policy keeps actual structural conflicts such as equivalent OpenAPI templates as errors, while it does not require inventing unknown server URLs or security schemes. Source-observed trailing slashes are preserved and reported only as guidance.
 
 ## Completion levels
 
@@ -101,7 +113,7 @@ When the OVP WSDL is available, add:
 
 `discovery_complete` concerns API/integration discovery coverage.
 
-`audit status=complete` is stricter and additionally requires a reconstructed and validated behavioral contract. v0.5.0 generates the artifacts but deliberately remains `partial` until contract enrichment is implemented.
+`audit status=complete` is stricter and additionally requires a reconstructed and validated behavioral contract. v0.5.x generates the artifacts but deliberately remains `partial` until contract enrichment is implemented.
 
 ## Results
 
