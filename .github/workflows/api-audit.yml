@@ -2,6 +2,11 @@ name: API Audit
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/api-audit.yml"
+      - "audit/api/**"
 
 permissions:
   contents: read
@@ -53,6 +58,20 @@ jobs:
           echo "exit_code=$status" >> "$GITHUB_OUTPUT"
           exit 0
 
+      - name: Generate v0.5 audit artifacts
+        id: audit
+        continue-on-error: true
+        run: |
+          set +e
+          asgard-api-auditor audit . \
+            --repository-id asgard-warehouse \
+            --exclude-path audit \
+            --exclude-path work_sample \
+            --output audit/api/results/audit
+          status=$?
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
       - name: Upload API audit results
         if: always()
         uses: actions/upload-artifact@v4
@@ -62,8 +81,12 @@ jobs:
           path: |
             audit/api/results/technical-inventory.json
             audit/api/results/api-discovery.json
+            audit/api/results/audit/openapi.yaml
+            audit/api/results/audit/api-knowledge.md
+            audit/api/results/audit/findings.json
+            audit/api/results/audit/audit-report.md
 
-      - name: Validate discovery result
+      - name: Validate API audit result
         if: always()
         run: |
           python - <<'PY'
@@ -72,29 +95,52 @@ jobs:
           from pathlib import Path
 
           inventory_exit_code = int("${{ steps.inventory.outputs.exit_code || '1' }}")
-          exit_code = int("${{ steps.discover.outputs.exit_code || '1' }}")
+          discovery_exit_code = int("${{ steps.discover.outputs.exit_code || '1' }}")
+          audit_exit_code = int("${{ steps.audit.outputs.exit_code || '1' }}")
+
           inventory_output = Path("audit/api/results/technical-inventory.json")
-          output = Path("audit/api/results/api-discovery.json")
+          discovery_output = Path("audit/api/results/api-discovery.json")
+          findings_output = Path("audit/api/results/audit/findings.json")
+          primary_artifacts = [
+              Path("audit/api/results/audit/openapi.yaml"),
+              Path("audit/api/results/audit/api-knowledge.md"),
+              findings_output,
+              Path("audit/api/results/audit/audit-report.md"),
+          ]
 
-          if not inventory_output.exists():
-              print("technical-inventory.json was not generated")
-              sys.exit(1)
-          if not output.exists():
-              print("api-discovery.json was not generated")
+          missing = [str(path) for path in [inventory_output, discovery_output, *primary_artifacts] if not path.exists()]
+          if missing:
+              print("Missing generated artifacts:")
+              for path in missing:
+                  print(f"- {path}")
               sys.exit(1)
 
-          data = json.loads(output.read_text(encoding="utf-8"))
-          discovery_complete = data.get("discovery_complete")
+          discovery = json.loads(discovery_output.read_text(encoding="utf-8"))
+          findings = json.loads(findings_output.read_text(encoding="utf-8"))
+          discovery_complete = discovery.get("discovery_complete")
+          audit_status = findings.get("status")
+
+          print(f"inventory exit code: {inventory_exit_code}")
+          print(f"discover exit code: {discovery_exit_code}")
+          print(f"audit exit code: {audit_exit_code}")
+          print(f"discovery_complete: {discovery_complete!r}")
+          print(f"audit status: {audit_status!r}")
 
           if inventory_exit_code != 0:
-              print(f"asgard-api-auditor inventory exited with {inventory_exit_code}")
-          if exit_code != 0:
-              print(f"asgard-api-auditor discover exited with {exit_code}")
-          if discovery_complete is not True:
-              print(f"discovery_complete is {discovery_complete!r}")
+              print("Technical inventory is incomplete or failed.")
+          if discovery_exit_code != 0 or discovery_complete is not True:
+              print("API discovery is incomplete.")
+          if audit_exit_code != 0 or audit_status != "complete":
+              print("Behavioral API audit is incomplete.")
 
-          if inventory_exit_code != 0 or exit_code != 0 or discovery_complete is not True:
+          if (
+              inventory_exit_code != 0
+              or discovery_exit_code != 0
+              or discovery_complete is not True
+              or audit_exit_code != 0
+              or audit_status != "complete"
+          ):
               sys.exit(1)
 
-          print("API discovery completed successfully")
+          print("API audit completed successfully")
           PY
