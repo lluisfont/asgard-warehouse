@@ -1,0 +1,17 @@
+extends:
+  - recommended
+
+rules:
+  # Do not invent a server URL when runtime/configuration evidence has not proved it.
+  no-empty-servers: off
+  # AS-IS generated contracts are technical evidence, not licensing documents.
+  info-license: off
+  # Preserve trailing slashes observed in source instead of rewriting route behavior.
+  no-path-trailing-slash: warn
+  # Equivalent path templates are a real OpenAPI modeling conflict and remain blocking.
+  no-identical-paths: error
+  operation-operationId: error
+  operation-summary: warn
+  no-unused-components: warn
+  # Security remains unknown until contract enrichment proves a real scheme.
+  security-defined: warn
