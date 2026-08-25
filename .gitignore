@@ -31,3 +31,7 @@ __pycache__/
 *-errors.txt
 tmp/
 temp/
+
+# ASGARD API Auditor generated results
+audit/api/results/*
+!audit/api/results/.gitkeep
