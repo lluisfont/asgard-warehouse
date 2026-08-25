@@ -32,6 +32,8 @@ jobs:
           set +e
           asgard-api-auditor inventory . \
             --repository-id asgard-warehouse \
+            --exclude-path audit \
+            --exclude-path work_sample \
             --output audit/api/results/technical-inventory.json
           status=$?
           echo "exit_code=$status" >> "$GITHUB_OUTPUT"
@@ -44,6 +46,8 @@ jobs:
           set +e
           asgard-api-auditor discover . \
             --repository-id asgard-warehouse \
+            --exclude-path audit \
+            --exclude-path work_sample \
             --output audit/api/results/api-discovery.json
           status=$?
           echo "exit_code=$status" >> "$GITHUB_OUTPUT"
