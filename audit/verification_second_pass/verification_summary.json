@@ -1,0 +1,108 @@
+{
+  "verdict": "PASS",
+  "status_counts": {
+    "PASS": 9
+  },
+  "summary_counts": {
+    "files": 518,
+    "backend_routes": 339,
+    "frontend_routes": 99,
+    "frontend_service_calls": 328,
+    "tables": 189,
+    "columns": 1716,
+    "sql_refs": 2567,
+    "integrations": 1058,
+    "documents": 4036,
+    "findings": 10
+  },
+  "missing_from_inventory": [],
+  "unexpected_in_inventory": [],
+  "graphify": {
+    "available": true,
+    "nodes": 2932,
+    "edges": 6227,
+    "commit": "7a4639ec0c93be207400b75dbfd7af01b9d4c722",
+    "god_nodes": [
+      {
+        "label": "DatoMaestroService",
+        "degree": 237
+      },
+      {
+        "label": "UsuarioService",
+        "degree": 230
+      },
+      {
+        "label": "AlmacenesService",
+        "degree": 223
+      },
+      {
+        "label": "app.module.ts",
+        "degree": 215
+      },
+      {
+        "label": "app.routing.ts",
+        "degree": 198
+      },
+      {
+        "label": "almacen.sql",
+        "degree": 189
+      },
+      {
+        "label": "ContabilidadService",
+        "degree": 106
+      },
+      {
+        "label": ".getTokenDetalle()",
+        "degree": 103
+      },
+      {
+        "label": "usuario.service.ts",
+        "degree": 101
+      },
+      {
+        "label": ".getToken()",
+        "degree": 100
+      },
+      {
+        "label": "QRcode",
+        "degree": 99
+      },
+      {
+        "label": "EmbarquesDetalleComponent",
+        "degree": 93
+      },
+      {
+        "label": "ExcelModel",
+        "degree": 92
+      },
+      {
+        "label": "ExportExcelService",
+        "degree": 90
+      },
+      {
+        "label": "EntidadesService",
+        "degree": 89
+      },
+      {
+        "label": "datomaestro.service.ts",
+        "degree": 82
+      },
+      {
+        "label": ".getCurrentDateFilterValue()",
+        "degree": 64
+      },
+      {
+        "label": "SalidasDetalleComponent",
+        "degree": 59
+      },
+      {
+        "label": "almacenes.service.ts",
+        "degree": 52
+      },
+      {
+        "label": "GestionMovimientoComponent",
+        "degree": 50
+      }
+    ]
+  }
+}

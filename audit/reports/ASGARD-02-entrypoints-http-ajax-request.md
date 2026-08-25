@@ -28,6 +28,14 @@ Estado: `COMPLETED_WITH_REVIEW_REQUIRED`
 
 `public/index.php` requiere `app/start.php`; `start.php` configura Slim, CORS, parser de cuerpo, middleware de rutas/error, conexion PDO y carga rutas por dominio. El frontend consume endpoints mediante servicios Angular que adjuntan `Authorization` en multiples llamadas.
 
+## Evidencias
+
+- `audit/evidence/backend_routes.csv`
+- `audit/evidence/frontend_routes.csv`
+- `audit/evidence/frontend_service_calls.csv`
+- `AtlantesBE-main/AtlantesBE-main/public/index.php`
+- `AtlantesBE-main/AtlantesBE-main/app/start.php`
+
 ## Estado
 
 `COMPLETED`: entry points principales y catalogos HTTP/AJAX trazados.

@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -30,7 +31,14 @@ EXCLUDE_DIRS = {
     "build",
 }
 
-SENSITIVE_FILE_RE = re.compile(r"(^|/)\.env(\.|$)|\.env\.(example\.)?php$", re.IGNORECASE)
+EXCLUDE_FILES = {
+    "ASGARD_ANALYSIS_FRAMEWORK.md",
+}
+
+EXCLUDE_FILE_RE = re.compile(
+    r"(^|/)\.env(\.|$)|\.env\.(example\.)?php$|\.orig$|-errors\.txt$|\.pyc$",
+    re.IGNORECASE,
+)
 
 TEXT_EXT = {
     ".php",
@@ -67,7 +75,9 @@ def should_skip(path: Path) -> bool:
     relative = path.relative_to(ROOT).as_posix()
     if any(part in EXCLUDE_DIRS for part in path.relative_to(ROOT).parts):
         return True
-    return bool(SENSITIVE_FILE_RE.search(relative))
+    if relative in EXCLUDE_FILES:
+        return True
+    return bool(EXCLUDE_FILE_RE.search(relative))
 
 
 def redact_evidence(text: str) -> str:
@@ -87,6 +97,24 @@ def redact_evidence(text: str) -> str:
 
 
 def iter_files() -> list[Path]:
+    try:
+        result = subprocess.run(
+            ["git", "ls-files"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        files = []
+        for line in result.stdout.splitlines():
+            path = ROOT / line
+            if path.is_file() and not should_skip(path):
+                files.append(path)
+        return sorted(files, key=lambda p: rel(p).lower())
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pass
+
     files: list[Path] = []
     for path in ROOT.rglob("*"):
         if path.is_file() and not should_skip(path):
@@ -667,6 +695,12 @@ La ejecucion previa de Graphify sobre el repo real produjo `2932` nodos, `6227` 
 
 {top_counter(Counter(inv_summary["by_extension"]), 15)}
 
+## Evidencias
+
+- `audit/evidence/source_inventory.csv`
+- `audit/evidence/source_inventory_summary.json`
+- `audit/audit_summary.json`
+
 ## Estado
 
 `COMPLETED`: evidencia determinista suficiente para cierre AS-IS de inventario.
@@ -691,6 +725,14 @@ La ejecucion previa de Graphify sobre el repo real produjo `2932` nodos, `6227` 
 ## Ciclo observado
 
 `public/index.php` requiere `app/start.php`; `start.php` configura Slim, CORS, parser de cuerpo, middleware de rutas/error, conexion PDO y carga rutas por dominio. El frontend consume endpoints mediante servicios Angular que adjuntan `Authorization` en multiples llamadas.
+
+## Evidencias
+
+- `audit/evidence/backend_routes.csv`
+- `audit/evidence/frontend_routes.csv`
+- `audit/evidence/frontend_service_calls.csv`
+- `AtlantesBE-main/AtlantesBE-main/public/index.php`
+- `AtlantesBE-main/AtlantesBE-main/app/start.php`
 
 ## Estado
 
@@ -790,6 +832,11 @@ La ejecucion previa de Graphify sobre el repo real produjo `2932` nodos, `6227` 
 ## Tablas mas referenciadas
 
 {top_counter(sql_by_table, 12)}
+
+## Evidencias
+
+- `audit/evidence/sql_usage_refs.csv`
+- `audit/evidence/php_sql_matrix.csv`
 
 ## Estado
 

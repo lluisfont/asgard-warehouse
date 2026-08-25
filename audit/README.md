@@ -19,8 +19,8 @@ Esta carpeta contiene la auditoria AS-IS del repositorio en el commit `38f97fea2
 
 | Medida | Valor |
 | --- | ---: |
-| Archivos analizados | 522 |
-| Tamano analizado | 24679551 bytes |
+| Archivos analizados | 518 |
+| Tamano analizado | 24650609 bytes |
 | Rutas backend Slim detectadas | 339 |
 | Rutas frontend Angular detectadas | 99 |
 | Llamadas HTTP frontend detectadas | 328 |

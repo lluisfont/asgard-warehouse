@@ -7,7 +7,7 @@ Estado: `COMPLETED_WITH_REVIEW_REQUIRED`
 | Medida | Valor |
 | --- | ---: |
 | Fases obligatorias ASGARD-01..15 | 15/15 |
-| Archivos analizados | 522 |
+| Archivos analizados | 518 |
 | Evidencias CSV/JSON generadas | 12 |
 | Reportes de fase generados | 15 |
 | Hallazgos candidatos | 10 |

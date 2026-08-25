@@ -1,0 +1,10 @@
+area,check,status,detail
+scope,tracked_source_vs_inventory,PASS,tracked_scope=518 inventory=518 missing=0 unexpected=0
+scope,excluded_control_and_local_noise,PASS,"Framework, work_sample, audit outputs, graphify-out, env files, .orig, pyc and error logs are outside source evidence."
+evidence,expected_evidence_files,PASS,missing=none extra=none
+evidence,summary_counts_match_artifacts,PASS,"{""mismatches"": 0}"
+phases,asgards_01_to_15_reports_exist,PASS,reports=15 missing=none
+phases,phase_reports_have_status_and_evidence,PASS,weak_reports=none
+security,audit_outputs_do_not_embed_known_secret_patterns,PASS,hits=none
+graphify,graphify_cross_check_available,PASS,nodes=2932 edges=6227 built_at_commit=7a4639ec0c93be207400b75dbfd7af01b9d4c722
+graphify,graphify_hubs_are_reflected_in_audit,PASS,"top_hubs=['DatoMaestroService', 'UsuarioService', 'AlmacenesService', 'app.module.ts', 'app.routing.ts', 'almacen.sql', 'ContabilidadService', '.getTokenDetalle()', 'usuario.service.ts', '.getToken()']; missing_expected=none"

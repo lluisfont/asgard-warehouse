@@ -1,7 +1,6 @@
 path,extension,category,size_bytes,sha256
 .gitignore,(none),other,341,ff3457a401e5f43534ccc324bf4563b1c5717629d724d10be692aa5f53bdc68f
 almacen.sql,.sql,code,284941,1183fb66b4e8e4881fe18f04d890045b7757d24cc0c3e72ba9dd24ead52643ef
-ASGARD_ANALYSIS_FRAMEWORK.md,.md,document,8273,ff44b67b2e16357fac39bc3270a1071477d700ab72cbe3da0e48c6617ba4b523
 AtlantesBE-main/AtlantesBE-main/.gitignore,(none),other,94,459e21134ed44f8bc6ee460a3bf91881b94689f383457251ae1f40e81e39df4b
 AtlantesBE-main/AtlantesBE-main/app/assets/ate_gas_bateria.png,.png,asset,4140,b35e126fe1596950a47ec6d082f6706ed88f09bdc0c69b081dc443e600eabbdc
 AtlantesBE-main/AtlantesBE-main/app/assets/ate_gas_combustible.png,.png,asset,10560,086333b797bc53174434cb5023a26f5b2068115dfe7593ea83166101308ae158
@@ -63,8 +62,6 @@ AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/index.php,.php,code,3579,ccd0a5ece
 AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/INSTALL,(none),other,1975,914dac56b8674237ba113e5f7431008f3d57c978b8aa935e13642bebc286db4a
 AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/LICENSE,(none),other,7650,f3834b4a6b6e7c112207c84a11e87d4255bee0310b90338b5aaccd849fab1afb
 AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/phpqrcode.php,.php,code,118563,20e7231b044ac44a504316500193c9ca4a53bb12500f54c675f008e433c3270f
-AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/QR_code-8778.png-errors.txt,.txt,document,146,c5dac87dbb02206c3cc6b57fa78082df5b186b2660a32da392b170c26c76b64b
-AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/QR_code-8886.png-errors.txt,.txt,document,146,c5f1e005ea8f3488fd132971e07219316c5d85debfe7c6e1e5a6226015201c38
 AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/qrbitstream.php,.php,code,5206,7e1ecdcfc58f574dfeabdf8055c803fb24cc436fe33e40cb842acd543a59a407
 AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/qrconfig.php,.php,code,1430,c8e28eed3a0289279cefaa180e553a134595721ab7203003bc2b56f7c304569b
 AtlantesBE-main/AtlantesBE-main/lib/phpqrcode/qrconst.php,.php,code,1708,33721bcf7c1e07bd23071c2fdcfcfaaa3bcdab57dfd044ee4b3b06d1c1ed2d13
@@ -458,7 +455,6 @@ AtlantesFE-main/AtlantesFE-main/src/app/services/common.service.ts,.ts,code,864,
 AtlantesFE-main/AtlantesFE-main/src/app/services/contabilidad.service.ts,.ts,code,18878,49f8cb7051752ec6b6a1cdd0f6f48c6dd265d42de763ea35c6d9e600a0c5ce6e
 AtlantesFE-main/AtlantesFE-main/src/app/services/date-time-context.service.ts,.ts,code,3648,01e555fd8262d6270d3c267527e9e43ea3de3b36c89d8b82918442255e736df6
 AtlantesFE-main/AtlantesFE-main/src/app/services/datomaestro.service.ts,.ts,code,21136,54b4cf42ab8485168dac0fdf301bd69e8f5f4181ab2877beac692e41469209b1
-AtlantesFE-main/AtlantesFE-main/src/app/services/datomaestro.service.ts.orig,.orig,other,20377,aa738dcba92713a3c9dae8848d15b8e97a039a18b4560b4777b01cec244a3292
 AtlantesFE-main/AtlantesFE-main/src/app/services/embarque.service.ts,.ts,code,9170,f8f1269a99e5ad444c586c1d4c6ec296687a0a1f5ac54ab9496570cdfbaf19b4
 AtlantesFE-main/AtlantesFE-main/src/app/services/empresa.service.ts,.ts,code,1538,7298015012987ec8ea67ddc85c1848bb58fef50c4f3ec5293423760630db3985
 AtlantesFE-main/AtlantesFE-main/src/app/services/entidades.service.ts,.ts,code,5608,22c8b843b180347c978ca1ac6f4480a473342ad341c660a83805d02c94bcbfb3

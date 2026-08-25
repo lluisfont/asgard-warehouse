@@ -26,6 +26,11 @@ Estado: `COMPLETED_WITH_REVIEW_REQUIRED`
 | t_ingreso | 42 |
 | t_notadebito | 42 |
 
+## Evidencias
+
+- `audit/evidence/sql_usage_refs.csv`
+- `audit/evidence/php_sql_matrix.csv`
+
 ## Estado
 
 `COMPLETED`: matriz tecnica generada; debe usarse como base para revisar transacciones y efectos laterales.
