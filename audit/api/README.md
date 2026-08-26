@@ -5,8 +5,8 @@ ASGARD API Auditor is a centralized repository tool for inventorying integration
 The auditor source code lives outside this Warehouse repository:
 
 - Repository: https://github.com/lluisfont/asgard-api-auditor
-- Pinned commit: `a43e7b188bb47942ddeb5693c6761aca72de09b4`
-- Version: `0.5.1`
+- Pinned commit: `9cc356633a0a8bbe2a54b5b6a6ffee98cd4ed4a4`
+- Version: `0.5.3`
 
 This repository installs the auditor as a versioned tool dependency. Its source code is not copied into Warehouse.
 
@@ -87,15 +87,18 @@ When the OVP WSDL is available, add:
 --soap-wsdl servicioovp=contracts/soap/ovp.wsdl
 ```
 
-### Current v0.5 semantics
+### Current v0.5.3 semantics
 
 - OpenAPI contains only proven HTTP endpoints exposed by Warehouse.
 - HTTP calls consumed by Warehouse stay in `findings.json` and `api-knowledge.md`; they are not represented as Warehouse provider paths.
 - SOAP remains a separate integration surface.
 - Source routes whose templates differ only by parameter names are represented through a canonical OpenAPI path while preserving every original source path and parameter name in ASGARD traceability extensions.
 - If two equivalent source templates use the same HTTP method, generation fails closed instead of silently overwriting one route.
-- Request/response/authentication/authorization reconstruction is not complete yet.
-- Therefore `audit` currently returns a partial status through `contract-enrichment-v0.5.0`; this is intentional and must not be treated as a successful complete behavioral contract.
+- Slim/PHP request shapes are reconstructed conservatively from demonstrated source usage, including JSON arrays, nested object arrays, local function propagation and multipart fields.
+- Dynamic keys remain fail-closed unless their array-index role is demonstrated by local loop structure.
+- Warehouse HTTP contract enrichment currently reaches 208/208 path parameters, 112/112 applicable requests, 338/338 responses and 332/332 applicable security findings with zero contract-enrichment unresolved findings.
+- Raw JWT authentication remains represented as the `Authorization` header using an OpenAPI `apiKey` scheme; Bearer is not inferred without explicit evidence.
+- `audit` remains `partial` because the OVP WSDL and later provider/consumer correlation gates are still pending.
 
 ## OpenAPI validation
 
@@ -113,7 +116,7 @@ This policy keeps actual structural conflicts such as equivalent OpenAPI templat
 
 `discovery_complete` concerns API/integration discovery coverage.
 
-`audit status=complete` is stricter and additionally requires a reconstructed and validated behavioral contract. v0.5.x generates the artifacts but deliberately remains `partial` until contract enrichment is implemented.
+`audit status=complete` is stricter and additionally requires all configured completion gates, including contract and cross-repository dependency coverage. v0.5.3 keeps the global audit deliberately `partial` until those remaining gates are satisfied.
 
 ## Results
 
