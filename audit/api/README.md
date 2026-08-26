@@ -1,12 +1,12 @@
 # ASGARD API Auditor
 
-ASGARD API Auditor is a centralized repository tool for inventorying integrations, discovering APIs and generating traceable audit artifacts from the Warehouse codebase.
+ASGARD API Auditor is a centralized repository tool for inventorying integrations, discovering APIs, reconstructing HTTP contracts and generating traceable audit artifacts from the Warehouse codebase.
 
 The auditor source code lives outside this Warehouse repository:
 
 - Repository: https://github.com/lluisfont/asgard-api-auditor
-- Pinned commit: `ce308296cda4227325cff43bd858bb9638d84074`
-- Version: `0.5.4`
+- Pinned commit: `b58638665281d4e5bf720075e963828f62e33651`
+- Version: `0.6.0`
 
 This repository installs the auditor as a versioned tool dependency. Its source code is not copied into Warehouse.
 
@@ -61,7 +61,7 @@ asgard-api-auditor discover . \
 
 The WSDL snapshot must be inside this repository and tracked by Git. The auditor does not download SOAP contracts from the network.
 
-## Generate v0.5 Audit Artifacts
+## Generate Audit Artifacts
 
 ```bash
 asgard-api-auditor audit . \
@@ -87,7 +87,30 @@ When the OVP WSDL is available, add:
 --soap-wsdl servicioovp=contracts/soap/ovp.wsdl
 ```
 
-### Current v0.5.4 semantics
+## Correlate Providers and Consumers
+
+v0.6.0 adds deterministic provider-consumer correlation over generated `findings.json` artifacts. Correlation is intentionally separate from repository scanning so multiple audited ASGARD repositories can be combined reproducibly.
+
+Example:
+
+```bash
+asgard-api-auditor correlate \
+  --findings warehouse/findings.json \
+  --findings mobile/findings.json \
+  --output correlation-results/
+```
+
+It generates:
+
+```text
+correlation-results/
+├── correlations.json
+└── api-relations.md
+```
+
+Correlation uses exact HTTP method plus normalized path shape. Unique structural matches are candidates unless provider identity is independently proven. It does not use fuzzy matching, host guessing, repository-name heuristics or mandatory manual mappings.
+
+### Current v0.6.0 semantics
 
 - OpenAPI contains only proven HTTP endpoints exposed by Warehouse.
 - HTTP calls consumed by Warehouse stay in `findings.json` and `api-knowledge.md`; they are not represented as Warehouse provider paths.
@@ -98,9 +121,10 @@ When the OVP WSDL is available, add:
 - Dynamic keys remain fail-closed unless their array-index role is demonstrated by local loop structure.
 - Consumer detectors ignore commented HTTP calls while preserving original source offsets and line-number evidence.
 - Warehouse currently exposes 338 HTTP endpoints and contains 336 active consumed HTTP calls after removing comment-only false positives.
-- Warehouse HTTP contract enrichment currently reaches 208/208 path parameters, 112/112 applicable requests, 338/338 responses and 332/332 applicable security findings with zero contract-enrichment unresolved findings.
+- Warehouse HTTP contract enrichment reaches 208/208 path parameters, 112/112 applicable requests, 338/338 responses and 332/332 applicable security findings with zero contract-enrichment unresolved findings.
 - Raw JWT authentication remains represented as the `Authorization` header using an OpenAPI `apiKey` scheme; Bearer is not inferred without explicit evidence.
-- `audit` remains `partial` because the OVP WSDL and later provider/consumer correlation gates are still pending.
+- Correlation artifacts validate fail-closed against packaged schemas, including when the auditor is installed as a wheel in another repository.
+- `audit` remains `partial`: the OVP WSDL is still pending and global cross-repository dependency coverage is not complete merely because the correlation engine exists.
 
 ## OpenAPI validation
 
@@ -118,7 +142,7 @@ This policy keeps actual structural conflicts such as equivalent OpenAPI templat
 
 `discovery_complete` concerns API/integration discovery coverage.
 
-`audit status=complete` is stricter and additionally requires all configured completion gates, including contract and cross-repository dependency coverage. v0.5.4 keeps the global audit deliberately `partial` until those remaining gates are satisfied.
+`audit status=complete` is stricter and additionally requires all configured completion gates, including contract and cross-repository dependency coverage. v0.6.0 keeps the global audit deliberately `partial` until those remaining gates are satisfied.
 
 ## Results
 
