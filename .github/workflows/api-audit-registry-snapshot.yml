@@ -1,0 +1,51 @@
+name: API audit registry snapshot
+
+on:
+  push:
+    branches:
+      - audit-v08-registry-snapshot
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout audited snapshot
+        uses: actions/checkout@v4
+        with:
+          ref: 42ff19fc56a10ac4a07b27552b0b77a74a3167d3
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ASGARD API Auditor v0.8
+        run: python -m pip install "git+https://github.com/lluisfont/asgard-api-auditor.git@3060706be49481178d8c3e07f8a1f751815f708d"
+
+      - name: Audit Warehouse and build canonical catalog
+        shell: bash
+        run: |
+          set +e
+          asgard-api-auditor audit . \
+            --repository-id asgard-warehouse \
+            --exclude-path audit \
+            --output api-audit-output
+          code=$?
+          set -e
+          if [ "$code" -ne 0 ] && [ "$code" -ne 3 ]; then
+            exit "$code"
+          fi
+          asgard-api-auditor catalog-api \
+            --findings api-audit-output/findings.json \
+            --output api-audit-output/api-catalog.json
+
+      - name: Upload audit artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: asgard-warehouse-api-audit-v08
+          path: api-audit-output/
+          if-no-files-found: error
